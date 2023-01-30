@@ -2,6 +2,7 @@
 
 const context = [
     "/weatherforecast",
+    "/user"
 ];
 
 module.exports = function (app) {
