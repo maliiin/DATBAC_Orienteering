@@ -8,7 +8,7 @@ using orienteering_backend.Infrastructure.Data;
 
 #nullable disable
 
-namespace orienteeringbackend.Migrations
+namespace orienteering_backend.Migrations
 {
     [DbContext(typeof(OrienteeringContext))]
     [Migration("20230127125956_AddIdentityTables")]

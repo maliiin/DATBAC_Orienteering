@@ -8,7 +8,7 @@ using orienteering_backend.Core.Domain.Login;
 
 namespace orienteering_backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -51,15 +51,9 @@ namespace orienteering_backend.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Hei()
+        public string Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return "hello";
         }
 
 

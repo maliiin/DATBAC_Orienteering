@@ -5,24 +5,24 @@ import Home from "./pages/Home";
 import Checkpoint from "./pages/Checkpoint";
 
 
-export default function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route index element={<Home />} />
-                    <Route path="checkpoint/:checkpointId" element={<Checkpoint />} />
+//export default function App() {
+//    return (
+//        <BrowserRouter>
+//            <Routes>
+//                <Route path="/" element={<Layout />}>
+//                    <Route index element={<Home />} />
+//                    <Route path="checkpoint/:checkpointId" element={<Checkpoint />} />
                     
-                </Route>
-            </Routes>
-        </BrowserRouter>
-    );
-}
+//                </Route>
+//            </Routes>
+//        </BrowserRouter>
+//    );
+//}
 
 //const root = ReactDOM.createRoot(document.getElementById('root'));
 //root.render(<App />);
 
-/*import React, { Component } from 'react';
+import React, { Component } from 'react';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -69,7 +69,7 @@ export default class App extends Component {
         return (
             <div>
                 <h1 id="tabelLabel" >Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server.</p>
+                <p>Thvgjhkl.ml-jhkjlk.</p>
                 {contents}
             </div>
         );
@@ -81,4 +81,3 @@ export default class App extends Component {
         this.setState({ forecasts: data, loading: false });
     }
 }
-*/

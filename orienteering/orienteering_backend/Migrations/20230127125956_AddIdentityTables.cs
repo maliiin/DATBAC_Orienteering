@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace orienteeringbackend.Migrations
+namespace orienteering_backend.Migrations
 {
     /// <inheritdoc />
     public partial class AddIdentityTables : Migration
