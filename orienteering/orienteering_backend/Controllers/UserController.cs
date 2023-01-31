@@ -13,30 +13,29 @@ namespace orienteering_backend.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        // private readonly SignInManager<IdentityUser> _signInManager;
+        //private readonly SignInManager<IdentityUser> _signInManager;
 
-        //public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
-
-        public UserController(UserManager<IdentityUser> userManager)
+       // public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+public UserController(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
-            //_signInManager = signInManager;
+          //  _signInManager = signInManager;
         }
 
         //POST
         //log in user
         //[HttpPost]
-        //public async Task<ActionResult<Microsoft.AspNetCore.Identity.SignInResult>> LogInUser (User user)
+        //public async Task<ActionResult<Microsoft.AspNetCore.Identity.SignInResult>> SignInUser(User user)
         //{
         //    Console.WriteLine("login user");
-        //    if (!ModelState.IsValid) { return BadRequest(ModelState);}
+        //    if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
         //    var result = await _signInManager.PasswordSignInAsync(
-                                
+
         //        new IdentityUser()
         //        {
         //            UserName = user.UserName,
-                   
+
         //        },
         //        user.Password,
         //        false,
@@ -82,6 +81,8 @@ namespace orienteering_backend.Controllers
             user.Password = null;
             return Created("", user);
         }
+
+
 
         // GET: api/Users/username
         //get userinfo from username

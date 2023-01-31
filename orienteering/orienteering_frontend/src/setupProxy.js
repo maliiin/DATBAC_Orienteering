@@ -2,7 +2,9 @@
 
 const context = [
     "/weatherforecast",
-    "/api/user"
+    "/api/user"///createuser"//,
+    //"/api/user/signinuser"
+
 ];
 
 module.exports = function (app) {
