@@ -11,6 +11,12 @@ function Layout() {
                     <li>
                         <Link to="/checkpoint/2">Checkpoint/2</Link>
                     </li>
+                    <li>
+                        <Link to="/login">Log in</Link>
+                    </li>
+                    <li>
+                        <Link to="/registration">Registrer deg</Link>
+                    </li>
                    
                 </ul>
             </nav>
