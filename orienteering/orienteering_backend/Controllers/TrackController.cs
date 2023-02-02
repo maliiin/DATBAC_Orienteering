@@ -8,18 +8,18 @@ namespace orienteering_backend.Controllers
     [Route("track")]
     public class TrackController : ControllerBase
     {
-        private readonly IMediator Mediator;
-        public TrackController(IMediator mediator)
+        private readonly IMediator _mediator;
+        public TrackController(IMediator Mediator)
         {
-            Mediator = mediator;
+            _mediator = Mediator;
         }
 
         [HttpGet]
         public async Task<Guid> Get()
         {
             //Fiks fakeGuid
-           var fakeGuid = Guid.NewGuid();
-            var newTrack = await Mediator.Send(new CreateTrack.Request(fakeGuid));
+            var fakeGuid = Guid.NewGuid();
+            var newTrack = await _mediator.Send(new CreateTrack.Request(fakeGuid));
             return newTrack;
 
         }

@@ -22,8 +22,7 @@ public static class CreateTrack
             var newTrack = new Track();
             newTrack.UserId = request.UserId;
             await _db.Tracks.AddAsync(newTrack);
-            await _db.SaveChangesAsync();
-            //await _db.SaveChangesAsync(cancellationToken);
+            await _db.SaveChangesAsync(cancellationToken);
             return newTrack.Id;
         }
     }
