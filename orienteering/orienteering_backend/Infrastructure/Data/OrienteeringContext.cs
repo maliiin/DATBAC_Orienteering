@@ -13,8 +13,8 @@ public class OrienteeringContext : DbContext
         _mediator = mediator;
     }
 
-    public DbSet<Checkpoint> Checkpoint { get; set; } = null!;
-    public DbSet<Track> Track { get; set; } = null!;
+    public DbSet<Checkpoint> Checkpoints { get; set; } = null!;
+    public DbSet<Track> Tracks { get; set; } = null!;
 
 
 

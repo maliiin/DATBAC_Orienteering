@@ -25,7 +25,7 @@ namespace orienteering_backend.Controllers;
 [Route("qrcode")]
 public class QRCodeController : ControllerBase
 {
-    public static byte[] generateQR()
+    private byte[] generateQR()
     {
         //Kilder: https://www.c-sharpcorner.com/article/create-qr-code-using-google-charts-api-in-vb-net/ (31.01.2023)
         //Lisens quickchart api: https://github.com/typpo/quickchart (31.01.2023)
@@ -47,7 +47,7 @@ public class QRCodeController : ControllerBase
         }
 
     }
-    public static Image byteArrayToImage(byte[] byteArray)
+    private Image byteArrayToImage(byte[] byteArray)
     {
         var image = Image.Load<Rgba32>(byteArray);
         image.Mutate(x => x.Grayscale());
