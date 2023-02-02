@@ -13,7 +13,8 @@ function Login() {
     }
     const [userInfo, setUserInfo] = useState({
         username: "",
-        password: ""
+        password: "",
+        email:"falsk@kkk.com"
     });
 
 
@@ -27,11 +28,7 @@ function Login() {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                username: 'test',
-                password: 'passord123',
-                email: 'testmail@gmail.com'
-            })
+            body: JSON.stringify(userInfo)
         };
         fetch('https://localhost:3000/api/user/signinuser', requestOptions)
             .then(response => response.json())

@@ -2,6 +2,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,22 +17,29 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//signinmanager fix
+builder.Services.AddAuthentication();
+
 
 
 //about the settings
 //https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityoptions?view=aspnetcore-6.0
-builder.Services.AddIdentityCore<IdentityUser>(options => {
-        //user settings
-        options.SignIn.RequireConfirmedAccount = false;
-        options.User.RequireUniqueEmail = true;
+builder.Services.AddIdentityCore<IdentityUser>(options =>
+{
+    //user settings
+    options.SignIn.RequireConfirmedAccount = false;
+    options.User.RequireUniqueEmail = true;
 
-        //password settings
-        options.Password.RequireDigit = false;
-        options.Password.RequiredLength = 6;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireLowercase = false;
-    })
+    //password settings
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+})
+    //uten linjen under fant den ikke _signInManager i controlleren
+    .AddSignInManager<SignInManager<IdentityUser>>()
+
     .AddEntityFrameworkStores<OrienteeringContext>();
 
 

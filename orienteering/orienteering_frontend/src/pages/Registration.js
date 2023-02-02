@@ -40,7 +40,7 @@ function Registration() {
 
         };
 
-        fetch('https://localhost:3000/api/user', requestOptions)
+        fetch('https://localhost:3000/api/user/createuser', requestOptions)
             .then(response => response.json())
             .then(data => console.log(data));
 

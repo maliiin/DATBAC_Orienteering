@@ -2,7 +2,8 @@
 
 const context = [
     "/weatherforecast",
-    "/api/user"///createuser"//,
+    "/api/user",
+    //"/api/user/createuser",
     //"/api/user/signinuser"
 
 ];
