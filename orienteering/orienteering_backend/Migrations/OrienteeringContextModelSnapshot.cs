@@ -7,7 +7,7 @@ using orienteering_backend.Infrastructure.Data;
 
 #nullable disable
 
-namespace orienteering_backend.Migrations
+namespace orienteeringbackend.Migrations
 {
     [DbContext(typeof(OrienteeringContext))]
     partial class OrienteeringContextModelSnapshot : ModelSnapshot
@@ -169,7 +169,7 @@ namespace orienteering_backend.Migrations
 
                     b.HasIndex("TrackId");
 
-                    b.ToTable("Checkpoint");
+                    b.ToTable("Checkpoint", (string)null);
                 });
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Track.Track", b =>
@@ -180,7 +180,7 @@ namespace orienteering_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Track");
+                    b.ToTable("Track", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>

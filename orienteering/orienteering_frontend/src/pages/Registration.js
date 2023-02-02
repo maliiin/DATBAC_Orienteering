@@ -6,8 +6,9 @@ function Registration() {
 
     const [userInfo, setUserInfo] = useState({
         username: "",
-        email: "",
-        password: ""
+        password: "",
+        email: ""
+
     });
 
     const handleChange = (event) => {
@@ -27,8 +28,9 @@ function Registration() {
         //setUserInfo({ name: "", email: "", phonenumber: "" });
     }
 
-   function addUserToDb() {
-        
+    function addUserToDb() {
+        console.log("user to be created");
+        console.log(userInfo);
         const requestOptions = {
 
             method: 'POST',
@@ -43,8 +45,6 @@ function Registration() {
         fetch('https://localhost:3000/api/user/createuser', requestOptions)
             .then(response => response.json())
             .then(data => console.log(data));
-
-
 
     }
 

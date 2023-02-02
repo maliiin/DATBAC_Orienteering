@@ -14,7 +14,7 @@ function Login() {
     const [userInfo, setUserInfo] = useState({
         username: "",
         password: "",
-        email:"falsk@kkk.com"
+        email:"hallo@gmail.com"
     });
 
 

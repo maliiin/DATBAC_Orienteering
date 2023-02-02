@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Login;
 using System.Threading.Tasks;
 using orienteering_backend.Core.Domain.Login;
+using orienteering_backend.Core.Domain.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using System.Web;
 
 
 namespace orienteering_backend.Controllers
@@ -16,12 +19,14 @@ namespace orienteering_backend.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IJwtService _jwtService;
 
-        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IJwtService jwtService)
         //public UserController(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _jwtService = jwtService;
         }
 
 
@@ -55,7 +60,7 @@ namespace orienteering_backend.Controllers
                 return BadRequest(result.Errors);
             }
 
-            Console.WriteLine("added successfully");
+            Console.WriteLine($"added successfully\n px: {user.Password}");
             user.Password = null;
             return Created("", user);
         }
@@ -70,44 +75,64 @@ namespace orienteering_backend.Controllers
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
             Console.WriteLine("a");
 
-            //var result = await _signInManager.PasswordSignInAsync(
 
-            //    new IdentityUser()
-            //    {
-            //        UserName = user.UserName,
-
-            //    },
-            //    user.Password,
-            //    false,
-            //    false
-            //);
             Console.WriteLine($"username {user.UserName}\n password {user.Password}\n\n");
+
+            var testuser = await _userManager.FindByNameAsync(user.UserName);
+            var test2 = await _userManager.CheckPasswordAsync(
+                testuser,
+                user.Password
+                );
+            Console.WriteLine("\ncorrect password?");
+
+            Console.WriteLine(test2.ToString());
+
+
+            var testing = await _signInManager.CanSignInAsync(
+                user: new IdentityUser(
+                        userName: user.UserName
+                    )
+                );
+            Console.WriteLine("\n har lov til å logge inn??");
+            Console.WriteLine(testing.ToString());
+
+            //denne er vanskeligere??
             var result = await _signInManager.PasswordSignInAsync(
 
-                user.UserName,
+            //var result = await _signInManager.CheckPasswordSignInAsync(
+                testuser,
                 user.Password,
                 false,
                 false
                 
             );
+            
 
 
-            Console.WriteLine("har prøvd å logge inn\n");
+
+
+            Console.WriteLine("\nhar prøvd å logge inn\n");
 
             if (!result.Succeeded)
             {
                 Console.WriteLine("problem!!\n");
-                //Console.WriteLine(result.to);
+                Console.WriteLine(result.Succeeded);
+                return BadRequest(result);
 
-                return BadRequest("problems logging in\n");
             }
-            Console.WriteLine("ok login!!");
+            Console.WriteLine("\nok login!!");
+
+            //sjekk om logget inn
+            //var ferdig=await _userManager.is
+            Console.WriteLine("er logget inn nå? ");
+            //testuser.is
+            //var ferdig=testuser.Identity.IsAuthenticated;
+            //Console.WriteLine(ferdig);
+            //bool val1 = HttpContext.Current.User.Identity.IsAuthenticated;
 
             //er dette ok?
             return Ok("user signed in");
         }
-
-
 
         /*
          bytte fra 1 til flere endpoint
@@ -120,14 +145,14 @@ namespace orienteering_backend.Controllers
          
          */
 
-
-
-
-
         // GET: api/Users/username
         //get userinfo from username
         [HttpGet("{username}")]
         //[Route("api/user/getuser")]
+
+
+        //testing authorization/authentication
+        [Authorize]
 
         public async Task<ActionResult<User>> GetUser(string username)
         {
@@ -143,9 +168,38 @@ namespace orienteering_backend.Controllers
                 UserName = user.UserName,
                 Email = user.Email
             };
-//return CreatedAtAction("GetUser", new { username = user.UserName }, user);
+            //return CreatedAtAction("GetUser", new { username = user.UserName }, user);
         }
 
 
+        //kilde 2/2/23 https://www.endpointdev.com/blog/2022/06/implementing-authentication-in-asp.net-core-web-apis/
+        // POST: api/Users/BearerToken
+        [HttpPost("BearerToken")]
+        public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken(AuthenticationRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Bad credentials");
+            }
+
+            var user = await _userManager.FindByNameAsync(request.UserName);
+
+            if (user == null)
+            {
+                return BadRequest("Bad credentials");
+            }
+
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
+
+            if (!isPasswordValid)
+            {
+                return BadRequest("Bad credentials");
+            }
+
+            var token = _jwtService.CreateToken(user);
+
+            return Ok(token);
+
+        }
     }
 }
