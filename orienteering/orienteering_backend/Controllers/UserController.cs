@@ -71,10 +71,10 @@ namespace orienteering_backend.Controllers
         //[Route("api/user/signinuser")]
         public async Task<ActionResult<User>> SignInUser(User user)
         {
-            Console.WriteLine("er logget inn nå? ");
+            //bør sjekke om forrige bruker skal logges ut før du logger inn!!
 
-            Console.WriteLine(HttpContext.User.Identity.IsAuthenticated);
-            Console.WriteLine(HttpContext.User.Claims.First().Value);
+
+
             //Console.WriteLine(HttpContent.)
             Console.WriteLine("login user");
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
@@ -100,6 +100,9 @@ namespace orienteering_backend.Controllers
                 );
             Console.WriteLine("\n har lov til å logge inn??");
             Console.WriteLine(testing.ToString());
+
+
+                        
 
             //denne er vanskeligere??
             var result = await _signInManager.PasswordSignInAsync(
@@ -127,6 +130,9 @@ namespace orienteering_backend.Controllers
             }
             Console.WriteLine("\nok login!!");
 
+
+
+
             //sjekk om logget inn
             //var ferdig=await _userManager.is
             Console.WriteLine("er logget inn nå? ");
@@ -137,6 +143,27 @@ namespace orienteering_backend.Controllers
             //Console.WriteLine(ferdig);
             //bool val1 = HttpContext.Current.User.Identity.IsAuthenticated;
 
+
+            Console.WriteLine("er logget inn nå? ");
+            //denne gir ut brukernavn
+            Console.WriteLine(User.Identity.Name);
+
+            Console.WriteLine(_userManager.GetUserId(HttpContext.User));
+            
+
+            Console.WriteLine(User.Identity.ToString());
+            var claimsUser = User.Identity.GetType();
+            Console.WriteLine(claimsUser.GUID);
+            //Console.WriteLine(_userManager.GetUserId(claimsUser));
+            Console.WriteLine(_userManager.GetUserAsync(HttpContext.User));
+
+            Console.WriteLine(User.Identity.IsAuthenticated);
+
+
+            // Console.WriteLine(HttpContext.User.Identity.IsAuthenticated);
+
+            //dette er userId til den som er logget inn!!
+            //Console.WriteLine(HttpContext.User.Claims.First().Value);
             //er dette ok?
             return Ok("user signed in");
         }

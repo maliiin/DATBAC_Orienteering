@@ -27,6 +27,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//fix finne current user
+builder.Services.AddHttpContextAccessor();
+
+
 //signinmanager fix
 //builder.Services.AddAuthentication();
 builder.Services.AddAuthentication(options =>
