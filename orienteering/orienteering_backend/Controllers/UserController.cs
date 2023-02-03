@@ -71,6 +71,11 @@ namespace orienteering_backend.Controllers
         //[Route("api/user/signinuser")]
         public async Task<ActionResult<User>> SignInUser(User user)
         {
+            Console.WriteLine("er logget inn nå? ");
+
+            Console.WriteLine(HttpContext.User.Identity.IsAuthenticated);
+            Console.WriteLine(HttpContext.User.Claims.First().Value);
+            //Console.WriteLine(HttpContent.)
             Console.WriteLine("login user");
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
             Console.WriteLine("a");
@@ -125,6 +130,8 @@ namespace orienteering_backend.Controllers
             //sjekk om logget inn
             //var ferdig=await _userManager.is
             Console.WriteLine("er logget inn nå? ");
+
+            Console.WriteLine(HttpContext.User.Identity.IsAuthenticated);
             //testuser.is
             //var ferdig=testuser.Identity.IsAuthenticated;
             //Console.WriteLine(ferdig);
