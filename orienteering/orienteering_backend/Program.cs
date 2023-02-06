@@ -91,7 +91,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
     //fix- lag skikkelig url- blir videresendt hvis ikke
-    options.LoginPath = "/signin";
+    options.LoginPath = "/login";
     options.AccessDeniedPath = "/AccessDenied";
     options.SlidingExpiration = true;
 });

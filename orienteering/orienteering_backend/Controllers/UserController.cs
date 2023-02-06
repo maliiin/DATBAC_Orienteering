@@ -18,6 +18,7 @@ namespace orienteering_backend.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        //denne brukes ikke
         private readonly IJwtService _jwtService;
         private readonly IIdentityService _identityService;
 
@@ -26,13 +27,15 @@ namespace orienteering_backend.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            //brukes ikke??
             _jwtService = jwtService;
             _identityService = identityService;
         }
 
         //POST sign out
 
-        [HttpPost("signOut")]
+        [HttpPost]
+        [Route("signOut")]
         public async Task SignOut()
         {
             Console.WriteLine("sign out");
@@ -41,152 +44,26 @@ namespace orienteering_backend.Controllers
 
 
         // POST: api/User
-        //create user
         [HttpPost("createuser")]
-        //[Route("api/user/createuser")]
         public async Task<ActionResult<User>> CreateUser(User user)
-        //public string CreateUser()
-
         {
-            Console.WriteLine("create user");
-            //if (!ModelState.IsValid)
-            //{
-            //    Console.WriteLine("modelstate not valid");
-            //    return BadRequest(ModelState);
-            //}
-
-            //var result = await _userManager.CreateAsync(
-            //    new IdentityUser()
-            //    {
-            //        UserName = user.UserName,
-            //        Email = user.Email
-            //    },
-            //    user.Password
-            //);
-
-            //if (!result.Succeeded)
-            //{
-            //    Console.WriteLine("not successfull added");
-            //    return BadRequest(result.Errors);
-            //}
-
-            //Console.WriteLine($"added successfully\n px: {user.Password}");
-            //user.Password = null;
-
-            //return Created("", user);
-
-            ////
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var createduser = await _identityService.CreateUser(user);
             if (createduser == null) { return BadRequest("problem creating the user"); }
 
             return Created("", createduser);
-
-
-
         }
 
         //POST
-        //log in user
         [HttpPost("signinuser")]
-        //[Route("api/user/signinuser")]
         public async Task<ActionResult<User>> SignInUser(User user)
         {
-            ////bør sjekke om forrige bruker skal logges ut før du logger inn!!
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
-
-
-            ////Console.WriteLine(HttpContent.)
-            //Console.WriteLine("login user");
-            //if (!ModelState.IsValid) { return BadRequest(ModelState); }
-            //Console.WriteLine("a");
-
-
-            //Console.WriteLine($"username {user.UserName}\n password {user.Password}\n\n");
-
-            //var testuser = await _userManager.FindByNameAsync(user.UserName);
-            //var test2 = await _userManager.CheckPasswordAsync(
-            //    testuser,
-            //    user.Password
-            //    );
-            //Console.WriteLine("\ncorrect password?");
-
-            //Console.WriteLine(test2.ToString());
-
-
-            //var testing = await _signInManager.CanSignInAsync(
-            //    user: new IdentityUser(
-            //            userName: user.UserName
-            //        )
-            //    );
-            //Console.WriteLine("\n har lov til å logge inn??");
-            //Console.WriteLine(testing.ToString());
-
-
-                        
-
-            ////denne er vanskeligere??
-            //var result = await _signInManager.PasswordSignInAsync(
-
-            ////var result = await _signInManager.CheckPasswordSignInAsync(
-            //    testuser,
-            //    user.Password,
-            //    false,
-            //    false
-                
-            //);
-            
-
-
-
-
-            //Console.WriteLine("\nhar prøvd å logge inn\n");
-
-            //if (!result.Succeeded)
-            //{
-            //    Console.WriteLine("problem!!\n");
-            //    Console.WriteLine(result.Succeeded);
-            //    return BadRequest(result);
-
-            //}
-            //Console.WriteLine("\nok login!!");
-
-
-
-
-            ////sjekk om logget inn
-            ////var ferdig=await _userManager.is
-            //Console.WriteLine("er logget inn nå? ");
-
-            //Console.WriteLine(HttpContext.User.Identity.IsAuthenticated);
-            ////testuser.is
-            ////var ferdig=testuser.Identity.IsAuthenticated;
-            ////Console.WriteLine(ferdig);
-            ////bool val1 = HttpContext.Current.User.Identity.IsAuthenticated;
-
-
-            //Console.WriteLine("er logget inn nå? ");
-            ////denne gir ut brukernavn
-            //Console.WriteLine(User.Identity.Name);
-
-            ////dette er innlogget bruker
-            //Console.WriteLine(_userManager.GetUserId(HttpContext.User));
-            
-
-            //Console.WriteLine(User.Identity.ToString());
-            //var claimsUser = User.Identity.GetType();
-            //Console.WriteLine(claimsUser.GUID);
-            ////Console.WriteLine(_userManager.GetUserId(claimsUser));
-            //Console.WriteLine(_userManager.GetUserAsync(HttpContext.User));
-
-            //Console.WriteLine(User.Identity.IsAuthenticated);
-
-
-            //Console.WriteLine(HttpContext.User.Identity.IsAuthenticated);
-
-            //dette er userId til den som er logget inn!!
-            //Console.WriteLine(HttpContext.User.Claims.First().Value);
-            //er dette ok?
             var userSignedIn = await _identityService.SignInUser(user);
             if (userSignedIn == null) { return BadRequest(new string("could not sign in the user")); }
             return Ok("user signed in");
@@ -197,17 +74,16 @@ namespace orienteering_backend.Controllers
         [Route("GetSignedInUserId")]
         public ActionResult<string> GetSignedInUserId()
         {
-            Console.WriteLine("is signed in???\n");
             
             //er en bruker logget in?
-            var h = HttpContext.User.Identity.IsAuthenticated;
+            var userIsAuthenticated = HttpContext.User.Identity.IsAuthenticated;
 
             //gir userid, men exeption om ingen er logget inn
             //var p = HttpContext.User.Claims.First().Value;
 
             //gir userid, men er null om ingen er logget inn (klikker hvis du kjører .value når ingen er logget inn (null.value))            
             var id = HttpContext.User.Claims.FirstOrDefault();
-            Console.WriteLine($"is authenticated?? {h}");
+            Console.WriteLine($"is authenticated?? {userIsAuthenticated}");
 
             if (id is null) 
             { 
@@ -215,70 +91,32 @@ namespace orienteering_backend.Controllers
                 return NotFound();
 
             }
-            else 
-            
+            else             
             {
-
                 Console.WriteLine($"value of id? {id.Value}");
                 return id.Value;
-
             }
-
-            //dette gir id om man er logget inn!!!
-            //var p = HttpContext.User.Claims.FirstOrDefault().Value;
-
-
-
-
-
-            //var t=HttpContext.User.Identity
-
-            //_signInManager.IsSignedIn();
-
-
-            //if (h!=null)
-            //{
-            //    _userManager.GetUserId(h);
-
-            //}
         }
 
-        /*
-         bytte fra 1 til flere endpoint
 
-            fungerer med registrering, men signInManager ødelegger!!!
-            -url til controller
-            -fetch url
-            -setup proxy url
-            -sign inn manager
-         
-         */
+        // GET: api/User/username
+        [HttpGet]
+        //testing authorization/authentication
+        [Authorize]
+        [Route("{username}")]
+        
+        public async Task<ActionResult<User>> GetUser(string username)
+        {
+            IdentityUser user = await _userManager.FindByNameAsync(username);
 
-        //// GET: api/Users/username
-        ////get userinfo from username
-        //[HttpGet("{username}")]
-        ////[Route("api/user/getuser")]
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
 
-
-        ////testing authorization/authentication
-        //[Authorize]
-
-        //public async Task<ActionResult<User>> GetUser(string username)
-        //{
-        //    IdentityUser user = await _userManager.FindByNameAsync(username);
-
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    //var user= new User
-        //    //{
-        //    //    UserName = user.UserName,
-        //    //    Email = user.Email
-        //    //};
-        //    return CreatedAtAction("GetUser", new { username = user.UserName }, user);
-        //}
+            //return CreatedAtAction("GetUser", new { username = user.UserName }, user);
+        }
 
 
         ////kilde 2/2/23 https://www.endpointdev.com/blog/2022/06/implementing-authentication-in-asp.net-core-web-apis/
