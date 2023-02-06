@@ -12,7 +12,7 @@ function Registration() {
     });
 
     const handleChange = (event) => {
-        console.log("change");
+       // console.log("change");
         //update state
         setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
     };

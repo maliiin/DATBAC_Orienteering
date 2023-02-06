@@ -6,30 +6,25 @@ using Microsoft.AspNetCore;
 using orienteering_backend.Core.Domain.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
-
-
-//IConfiguration
-
-
+using orienteering_backend.Core.Domain.Authentication.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IIdentityService, IdentityService>();
 
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //fix finne current user
 builder.Services.AddHttpContextAccessor();
-
 
 //signinmanager fix
 //builder.Services.AddAuthentication();
@@ -40,7 +35,6 @@ builder.Services.AddAuthentication(options =>
     options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 })
 .AddIdentityCookies();
-
 
 
 //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -80,11 +74,8 @@ builder.Services.AddIdentityCore<IdentityUser>(options =>
     options.Password.RequiredLength = 6;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-
-    
-    
-})
+    options.Password.RequireLowercase = false; 
+    })
     //uten linjen under fant den ikke _signInManager i controlleren
     .AddSignInManager<SignInManager<IdentityUser>>()
 
