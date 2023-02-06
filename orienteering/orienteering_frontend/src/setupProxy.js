@@ -2,9 +2,9 @@
 
 const context = [
     "/weatherforecast",
-    "/api/user"
-    
+    "/api/user",  
 
+    "/qrcode"
 ];
 
 module.exports = function (app) {
