@@ -1,14 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace orienteering_backend.Core.Domain.Login
+namespace orienteering_backend.Core.Domain.Authentication
 {
-    public class User
+    public class UserSignIn
     {
         [Required]
         public string UserName { get; set; }
         [Required]
         public string Password { get; set; }
-        [Required]
-        public string Email { get; set; }
     }
 }

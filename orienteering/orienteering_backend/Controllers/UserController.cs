@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using orienteering_backend.Core.Domain.Login;
 using System.Threading.Tasks;
-using orienteering_backend.Core.Domain.Login;
 using orienteering_backend.Core.Domain.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using orienteering_backend.Core.Domain.Authentication.Services;
@@ -19,16 +17,15 @@ namespace orienteering_backend.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         //denne brukes ikke
-        private readonly IJwtService _jwtService;
         private readonly IIdentityService _identityService;
 
-        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IJwtService jwtService, IIdentityService identityService)
-        //public UserController(UserManager<IdentityUser> userManager)
+        public UserController(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            IIdentityService identityService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            //brukes ikke??
-            _jwtService = jwtService;
             _identityService = identityService;
         }
 
@@ -45,7 +42,7 @@ namespace orienteering_backend.Controllers
 
         // POST: api/User
         [HttpPost("createuser")]
-        public async Task<ActionResult<User>> CreateUser(User user)
+        public async Task<ActionResult<UserRegistration>> CreateUser(UserRegistration user)
         {
             if (!ModelState.IsValid)
             {
@@ -60,7 +57,7 @@ namespace orienteering_backend.Controllers
 
         //POST
         [HttpPost("signinuser")]
-        public async Task<ActionResult<User>> SignInUser(User user)
+        public async Task<ActionResult<UserSignIn>> SignInUser(UserSignIn user)
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
@@ -105,7 +102,7 @@ namespace orienteering_backend.Controllers
         [Authorize]
         [Route("{username}")]
         
-        public async Task<ActionResult<User>> GetUser(string username)
+        public async Task<ActionResult<UserRegistration>> GetUser(string username)
         {
             IdentityUser user = await _userManager.FindByNameAsync(username);
 
@@ -118,35 +115,5 @@ namespace orienteering_backend.Controllers
             //return CreatedAtAction("GetUser", new { username = user.UserName }, user);
         }
 
-
-        ////kilde 2/2/23 https://www.endpointdev.com/blog/2022/06/implementing-authentication-in-asp.net-core-web-apis/
-        //// POST: api/Users/BearerToken
-        //[HttpPost("BearerToken")]
-        //public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken(AuthenticationRequest request)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest("Bad credentials");
-        //    }
-
-        //    var user = await _userManager.FindByNameAsync(request.UserName);
-
-        //    if (user == null)
-        //    {
-        //        return BadRequest("Bad credentials");
-        //    }
-
-        //    var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
-
-        //    if (!isPasswordValid)
-        //    {
-        //        return BadRequest("Bad credentials");
-        //    }
-
-        //    var token = _jwtService.CreateToken(user);
-
-        //    return Ok(token);
-
-        //}
     }
 }

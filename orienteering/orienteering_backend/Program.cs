@@ -2,20 +2,12 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore;
-using orienteering_backend.Core.Domain.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.Options;
 using orienteering_backend.Core.Domain.Authentication.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
-
 
 builder.Services.AddControllers();
 
@@ -23,11 +15,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//fix finne current user
 builder.Services.AddHttpContextAccessor();
 
-//signinmanager fix
-//builder.Services.AddAuthentication();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
@@ -35,31 +24,6 @@ builder.Services.AddAuthentication(options =>
     options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 })
 .AddIdentityCookies();
-
-
-//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-//    .AddCookie();
-
-
-//builder.Services
-//    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    //.AddJwtBearer(options =>
-    //{
-    //    options.TokenValidationParameters = new TokenValidationParameters()
-    //    {
-    //        ValidateIssuer = true,
-    //        ValidateAudience = true,
-    //        ValidateLifetime = true,
-    //        ValidateIssuerSigningKey = true,
-    //        ValidAudience = builder.Configuration["Jwt:Audience"],  //la til builder. her
-    //        ValidIssuer = builder.Configuration["Jwt:Issuer"],              //la til builder. her
-    //        IssuerSigningKey = new SymmetricSecurityKey(
-    //            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])    //la til builder. her
-    //        )
-    //    };
-    //});
-
-
 
 //about the settings
 //https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityoptions?view=aspnetcore-6.0 //02.02.23
@@ -81,7 +45,6 @@ builder.Services.AddIdentityCore<IdentityUser>(options =>
 
     .AddEntityFrameworkStores<OrienteeringContext>();
 
-//login fungerer. med cookie
 
 //fra dat240 malin
 builder.Services.ConfigureApplicationCookie(options =>
@@ -96,25 +59,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
-////https://stackoverflow.com/questions/52379176/invalidoperationexception-no-authentication-handler-is-registered-for-the-schem
-//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-//            .AddCookie(o =>
-//            {
-//                o.Cookie.Name = "coockiename";// options.CookieName;
-//                //o.Cookie.Domain = options.CookieDomain;
-//                o.SlidingExpiration = true;
-//                //o.ExpireTimeSpan = options.CookieLifetime;
-//                //o.TicketDataFormat = ticketFormat;
-//                //o.CookieManager = new CustomChunkingCookieManager();
-//            });
-
-
-
 var version = new MySqlServerVersion(new Version(8, 0, 28));
 var connectionString = "server=localhost; port=3306; database=orienteering; user=root; password=passord123";
 builder.Services.AddMediatR(typeof(Program));
-
-
 
 builder.Services.AddDbContext<OrienteeringContext>(
     options => options.UseMySql(connectionString: connectionString, serverVersion: version)
@@ -134,11 +81,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-//trengs??
-//app.UseAuthentication();
-
 app.MapControllers();
-
-//app.MapDefaultControllerRoute();
 
 app.Run();

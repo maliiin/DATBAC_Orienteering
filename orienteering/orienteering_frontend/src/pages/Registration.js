@@ -1,6 +1,6 @@
 import { TextField, Button } from '@mui/material';
 import React, { useState } from "react";
-import { Link, redirect, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 
 
 function Registration() {
@@ -57,8 +57,6 @@ function Registration() {
 
         var response = await fetch('/api/user/createuser', requestOptions);
         return response;
-            
-
     }
 
 

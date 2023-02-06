@@ -21,12 +21,10 @@ function Login() {
             console.log("not ok");
         }
 
-        
     }
     const [userInfo, setUserInfo] = useState({
         username: "",
-        password: "",
-        email:"hallo@gmail.com"
+        password: ""
     });
 
 
@@ -48,10 +46,6 @@ function Login() {
         const response = await fetch('/api/user/signinuser', requestOptions);
         //if (response.status.su
         return response;
-
-        
-
-
     }
 
         return (
@@ -65,11 +59,6 @@ function Login() {
                         name="username"
                         variant="standard"
                         value={userInfo.username}
-
-                        /*form validation 
-                        error={userInfo.username === ""}
-                        helperText={userInfo.username === "" ? 'Srkiv inn brukernavn' : ''}*/
-
                     />
                     <br></br>
 
@@ -80,11 +69,6 @@ function Login() {
                         id="standard-basic" label="Password"
                         variant="standard" value={userInfo.password}
                         name="password"
-
-                        /*form validation
-                        error={userInfo.password === "" || userInfo.password.length<6}
-                        helperText={userInfo.password === "" ? 'Passordet må bestå av minst 6 tegn.' : ''}*/
-
                     />
 
                     <br></br>
@@ -98,6 +82,5 @@ function Login() {
             </>
         );
     }
-
 
     export default Login;
