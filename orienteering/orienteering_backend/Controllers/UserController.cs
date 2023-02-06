@@ -32,9 +32,9 @@ namespace orienteering_backend.Controllers
             _identityService = identityService;
         }
 
-        //POST sign out
-
-        [HttpPost]
+        //Get sign out
+        //fix: bør dette være post heller? sender ikke inn noe data, og post gir 404
+        [HttpGet]
         [Route("signOut")]
         public async Task SignOut()
         {

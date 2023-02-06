@@ -1,15 +1,27 @@
 import { TextField, Button } from '@mui/material';
 import React, { useState } from "react";
+import { Link, redirect, useNavigate } from 'react-router-dom';
 
 
 
 //dette er registrer, ikke login!!
 function Login() {
+    const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
-        logInUser()
+        const response = await SignInUser();
+
+        if (response.ok) {
+            //fix dette bør byttes ut med 'admin' side (redigere poster)
+            navigate("/");
+        } else {
+            console.log("not ok");
+        }
+
+        
     }
     const [userInfo, setUserInfo] = useState({
         username: "",
@@ -24,7 +36,7 @@ function Login() {
         setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
     };
 
-    function logInUser() {
+    const SignInUser = async ()=> {
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -33,9 +45,9 @@ function Login() {
             },
             body: JSON.stringify(userInfo)
         };
-        fetch('https://localhost:3000/api/user/signinuser', requestOptions)
-            .then(response => response.json())
-            .then(data => console.log(data));
+        const response = await fetch('/api/user/signinuser', requestOptions);
+        //if (response.status.su
+        return response;
 
         
 
@@ -47,22 +59,33 @@ function Login() {
                 <form onSubmit={handleSubmit}>
 
                     <TextField
+                        required
                         onChange={(e) => handleChange(e)}
                         id="standard-basic" label="Username"
                         name="username"
-                        variant="standard" value={userInfo.username}
+                        variant="standard"
+                        value={userInfo.username}
+
+                        /*form validation*/ 
+                        error={userInfo.username === ""}
+                        helperText={userInfo.username === "" ? 'Srkiv inn brukernavn' : ''}
 
                     />
                     <br></br>
 
                     <TextField
+                        required
                         type="password"
                         onChange={(e) => handleChange(e)}
                         id="standard-basic" label="Password"
                         variant="standard" value={userInfo.password}
                         name="password"
+                        /*form validation*/ 
+                        error={userInfo.password === "" || userInfo.password.length<6}
+                        helperText={userInfo.password === "" ? 'Passordet må bestå av minst 6 tegn.' : ''}
 
                     />
+
                     <br></br>
 
 

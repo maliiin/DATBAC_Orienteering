@@ -1,8 +1,10 @@
 import { TextField, Button } from '@mui/material';
 import React, { useState } from "react";
+import { Link, redirect, useNavigate } from 'react-router-dom';
 
 
 function Registration() {
+    const navigate = useNavigate();
 
     const [userInfo, setUserInfo] = useState({
         username: "",
@@ -17,18 +19,29 @@ function Registration() {
         setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
+        console.log("handle submut registrer")
+
         event.preventDefault();
+        console.log("handle submut registrer")
 
         console.log(userInfo);
 
-        addUserToDb();
+        const response = await addUserToDb();
+        
+        if (response.ok)
+        {
+            navigate("/login");
+        } else
+        {
+            console.log("not ok");
+        }
 
         //clear input field
         //setUserInfo({ name: "", email: "", phonenumber: "" });
     }
 
-    function addUserToDb() {
+    const addUserToDb=async ()=> {
         console.log("user to be created");
         console.log(userInfo);
         const requestOptions = {
@@ -42,9 +55,9 @@ function Registration() {
 
         };
 
-        fetch('https://localhost:3000/api/user/createuser', requestOptions)
-            .then(response => response.json())
-            .then(data => console.log(data));
+        var response = await fetch('/api/user/createuser', requestOptions);
+        return response;
+            
 
     }
 
