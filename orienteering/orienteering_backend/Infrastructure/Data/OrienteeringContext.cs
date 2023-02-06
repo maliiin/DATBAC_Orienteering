@@ -15,8 +15,8 @@ public class OrienteeringContext : IdentityUserContext<IdentityUser>
         _mediator = mediator;
     }
 
-    public DbSet<Checkpoint> Checkpoint { get; set; } = null!;
-    public DbSet<Track> Track { get; set; } = null!;
+    public DbSet<Checkpoint> Checkpoints { get; set; } = null!;
+    public DbSet<Track> Tracks { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

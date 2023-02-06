@@ -7,7 +7,7 @@ using orienteering_backend.Infrastructure.Data;
 
 #nullable disable
 
-namespace orienteeringbackend.Migrations
+namespace orienteering_backend.Migrations
 {
     [DbContext(typeof(OrienteeringContext))]
     partial class OrienteeringContextModelSnapshot : ModelSnapshot
@@ -162,8 +162,8 @@ namespace orienteeringbackend.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("TrackId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("TrackId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -174,8 +174,11 @@ namespace orienteeringbackend.Migrations
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Track.Track", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

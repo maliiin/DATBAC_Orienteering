@@ -2,7 +2,8 @@
 {
     public class Track
     {
-        public int Id { get; set; }
+        public Guid Id { get; protected set; }
+        public Guid UserId { get; set; }
         public List<Checkpoint>? CheckpointList { get; set; }
     }
 }
