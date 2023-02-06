@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 
 import Checkpoint from "./pages/Checkpoint";
 import Registration from "./pages/Registration";
+import NoPage from "./pages/NoPage";
 
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
                     <Route path="checkpoint/:checkpointId" element={<Checkpoint />} />
                     <Route path="login" element={<Login />} />
                     <Route path="registration" element={<Registration />} />
+                    <Route path="*" element={<NoPage />} />
 
 
                     

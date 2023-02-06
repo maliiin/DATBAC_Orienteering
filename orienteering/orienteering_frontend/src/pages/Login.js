@@ -66,9 +66,9 @@ function Login() {
                         variant="standard"
                         value={userInfo.username}
 
-                        /*form validation*/ 
+                        /*form validation 
                         error={userInfo.username === ""}
-                        helperText={userInfo.username === "" ? 'Srkiv inn brukernavn' : ''}
+                        helperText={userInfo.username === "" ? 'Srkiv inn brukernavn' : ''}*/
 
                     />
                     <br></br>
@@ -80,9 +80,10 @@ function Login() {
                         id="standard-basic" label="Password"
                         variant="standard" value={userInfo.password}
                         name="password"
-                        /*form validation*/ 
+
+                        /*form validation
                         error={userInfo.password === "" || userInfo.password.length<6}
-                        helperText={userInfo.password === "" ? 'Passordet må bestå av minst 6 tegn.' : ''}
+                        helperText={userInfo.password === "" ? 'Passordet må bestå av minst 6 tegn.' : ''}*/
 
                     />
 
