@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Checkpoint from "./pages/Checkpoint";
+import TrackOverview from "./pages/TrackOverview";
 
 
 export default function App() {
@@ -12,11 +13,12 @@ export default function App() {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
                     <Route path="checkpoint/:checkpointId" element={<Checkpoint />} />
+                    <Route path="trackoverview" element={<TrackOverview />} />
                     
                 </Route>
             </Routes>
         </BrowserRouter>
-    );
+    )
 }
 
 //const root = ReactDOM.createRoot(document.getElementById('root'));

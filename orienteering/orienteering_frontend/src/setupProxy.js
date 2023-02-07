@@ -2,7 +2,8 @@
 
 const context = [
     "/weatherforecast",
-    "/qrcode"
+    "/qrcode",
+    "/track"
 ];
 
 module.exports = function (app) {

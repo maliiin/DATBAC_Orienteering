@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Track.Pipelines;
+using orienteering_backend.Core.Domain.Track;
 
 namespace orienteering_backend.Controllers
 {
@@ -19,9 +20,25 @@ namespace orienteering_backend.Controllers
         {
             //Fiks fakeGuid
             var fakeGuid = Guid.NewGuid();
-            var newTrack = await _mediator.Send(new CreateTrack.Request(fakeGuid));
-            return newTrack;
+            var newTrackId = await _mediator.Send(new CreateTrack.Request(fakeGuid));
+            return newTrackId;
 
         }
+        [HttpGet("createcheckpoint")]
+        public async Task<int> CreateCheckpoint(Guid TrackId)
+        {
+            var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(TrackId));
+            return newCheckPointId;
+        }
+
+        [HttpGet("gettracks")]
+        public async Task<List<Track>> GetTracksByUserId(Guid UserId)
+        {
+            var tracks = await _mediator.Send(new GetTrack.Request(UserId));
+            return tracks;
+
+        }
+
+
     }
 }
