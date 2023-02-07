@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using orienteering_backend.Infrastructure.Data;
 
@@ -10,9 +11,11 @@ using orienteering_backend.Infrastructure.Data;
 namespace orienteering_backend.Migrations
 {
     [DbContext(typeof(OrienteeringContext))]
-    partial class OrienteeringContextModelSnapshot : ModelSnapshot
+    [Migration("20230127125956_AddIdentityTables")]
+    partial class AddIdentityTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,28 +165,25 @@ namespace orienteering_backend.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("TrackId")
-                        .HasColumnType("char(36)");
+                    b.Property<int?>("TrackId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TrackId");
 
-                    b.ToTable("Checkpoint", (string)null);
+                    b.ToTable("Checkpoint");
                 });
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Track.Track", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Track", (string)null);
+                    b.ToTable("Track");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
