@@ -7,7 +7,7 @@ using orienteering_backend.Infrastructure.Data;
 
 #nullable disable
 
-namespace orienteering_backend.Migrations
+namespace orienteeringbackend.Migrations
 {
     [DbContext(typeof(OrienteeringContext))]
     partial class OrienteeringContextModelSnapshot : ModelSnapshot
@@ -149,12 +149,15 @@ namespace orienteering_backend.Migrations
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Track.Checkpoint", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<int?>("GameId")
                         .HasColumnType("int");
+
+                    b.Property<byte[]>("QRCode")
+                        .HasColumnType("longblob");
 
                     b.Property<int?>("QuizId")
                         .HasColumnType("int");
@@ -169,7 +172,7 @@ namespace orienteering_backend.Migrations
 
                     b.HasIndex("TrackId");
 
-                    b.ToTable("Checkpoint", (string)null);
+                    b.ToTable("Checkpoints");
                 });
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Track.Track", b =>
@@ -183,7 +186,7 @@ namespace orienteering_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Track", (string)null);
+                    b.ToTable("Tracks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
