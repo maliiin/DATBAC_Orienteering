@@ -11,8 +11,8 @@ using orienteering_backend.Infrastructure.Data;
 namespace orienteering_backend.Migrations
 {
     [DbContext(typeof(OrienteeringContext))]
-    [Migration("20230202090408_namechangeTables")]
-    partial class namechangeTables
+    [Migration("20230202124314_CheckpointGuidtoInt")]
+    partial class CheckpointGuidtoInt
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,8 +52,8 @@ namespace orienteering_backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 

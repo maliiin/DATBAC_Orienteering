@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Checkpoint from "./pages/Checkpoint";
 import Registration from "./pages/Registration";
 import NoPage from "./pages/NoPage";
+import TrackOverview from "./pages/TrackOverview";
 
 
 export default function App() {
@@ -22,8 +23,11 @@ export default function App() {
 
 
                     
+                    <Route path="registration" element={<Registration />} />
+                    <Route path="*" element={<NoPage />} />
+                    <Route path="trackoverview" element={<TrackOverview />} />
                 </Route>
             </Routes>
         </BrowserRouter>
-    );
+    )
 }
