@@ -8,8 +8,6 @@ import Checkpoint from "./pages/Checkpoint";
 import Registration from "./pages/Registration";
 import NoPage from "./pages/NoPage";
 import TrackOverview from "./pages/TrackOverview";
-import Registration from "./pages/Registration";
-import NoPage from "./pages/NoPage";
 
 
 export default function App() {
