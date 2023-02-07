@@ -18,13 +18,8 @@ export default function App() {
                     <Route index element={<Home />} />
                     <Route path="checkpoint/:checkpointId" element={<Checkpoint />} />
                     <Route path="login" element={<Login />} />
-                    <Route path="registration" element={<Registration />} />
                     <Route path="*" element={<NoPage />} />
-
-
-                    
                     <Route path="registration" element={<Registration />} />
-                    <Route path="*" element={<NoPage />} />
                     <Route path="trackoverview" element={<TrackOverview />} />
                 </Route>
             </Routes>

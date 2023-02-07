@@ -17,6 +17,9 @@ function Layout() {
                     <li>
                         <Link to="/registration">Registrer deg</Link>
                     </li>
+                    <li>
+                        <Link to="/trackoverview">track overview1</Link>
+                    </li>
                    
                 </ul>
             </nav>

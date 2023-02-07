@@ -16,14 +16,18 @@ namespace orienteering_backend.Controllers
         }
 
         [HttpGet]
+        //greate new track
         public async Task<Guid> Get()
         {
-            //Fiks fakeGuid
+            //Fiks fakeGuid-->userGuid
             var fakeGuid = Guid.NewGuid();
             var newTrackId = await _mediator.Send(new CreateTrack.Request(fakeGuid));
             return newTrackId;
 
         }
+
+        //create checkpoint
+        //bør ikke dette være post??
         [HttpGet("createcheckpoint")]
         public async Task<int> CreateCheckpoint(Guid TrackId)
         {
@@ -31,6 +35,7 @@ namespace orienteering_backend.Controllers
             return newCheckPointId;
         }
 
+        //list of all tracks of a user
         [HttpGet("gettracks")]
         public async Task<List<Track>> GetTracksByUserId(Guid UserId)
         {
