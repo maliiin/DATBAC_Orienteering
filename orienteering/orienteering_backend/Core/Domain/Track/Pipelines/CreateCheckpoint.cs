@@ -40,7 +40,7 @@ public static class CreateCheckpoint
             }
             await _db.SaveChangesAsync(cancellationToken);
             // publishing event 
-            newCheckpoint.DomainEvents.Add(new CheckpointCreated(newCheckpoint.Id));
+            await _mediator.Publish(new CheckpointCreated(newCheckpoint.Id));
             //await _mediator.Send(new GenerateQR.Request(newCheckpoint.Id));
 
             await _db.SaveChangesAsync(cancellationToken);

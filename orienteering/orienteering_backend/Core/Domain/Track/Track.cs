@@ -1,8 +1,8 @@
-﻿using orienteering_backend.SharedKernel;
+﻿//using orienteering_backend.SharedKernel;
 
 namespace orienteering_backend.Core.Domain.Track
 {
-    public class Track : BaseEntity
+    public class Track
     {
         public Guid Id { get; protected set; }
         public Guid UserId { get; set; }
