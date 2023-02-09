@@ -1,22 +1,81 @@
-import { TextField, Button } from '@mui/material';
+import {  Button } from '@mui/material';
 import { useState, useEffect } from "react";
+import  TrackInfo  from "./TrackInfo";
 import Drawer from '@mui/material/Drawer';
 
 function TrackOverview() {
 
-    const [userId, setUserId] = useState("");
 
-    const loasUserId = async () => {
-        const data = await fetch("api/user/getsignedinuserid").then(res => res.json());
-        //const value = await data.json();
-        setUserId(data.id);
-    };
+    const [userId, setUserId] = useState("a7803486-9413-41c1-b85d-6772213ac551");
+    const [trackList, setTrackList] = useState("");
+    const [list, setList] = useState("");
+
+
+
+
+    //const loadUserId = async () => {
+    //    const data = await fetch("api/user/getsignedinuserid").then(res => res.json());//.then(r=>r.json());
+    //    //const value = await data.json();
+    //    setUserId(data);
+    //};
+
+    const loadTrack = async () => {
+       
+        const data = await fetch("api/track/getTracks?userId=a7803486-9413-41c1-b85d-6772213ac551").then(res => res.json());
+        console.log(data);
+
+        setTrackList(data);
+
+        console.log("data og liste");
+        console.log(trackList);
+
+        setList(data.map((trackElement, index) =>
+            //setList(trackList.map((trackElement, index) =>
+            <TrackInfo key={trackElement.id + "-" + index} trackInfo={trackElement}></TrackInfo>
+            //<p key={trackElement.Id + "-" + index}> {trackElement.Id}</p>
+        ));
+
+        //setTrackList(Array.from(data));
+    }
+
+    const createTrack = async () => {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(userId) //JSON.stringify(userInfo) //send userid her
+        };
+        const response = await fetch('/api/track/createTrack', requestOptions);
+        console.log(response.json());
+    }
+
+    //useEffect(() => {
+        
+    //    //loadUserId();
+    //}, []);
+
 
     useEffect(() => {
+        loadTrack();
+        //key={trackElement.id} 
         
-        loasUserId();
-    }, []);
 
+
+
+    }, []); // <- add the count variable here
+
+
+    //generate list of tracks
+
+    //const list = trackList.map(trackElement => <TrackInfo props={trackElement}></TrackInfo>)
+
+
+    //const list = trackList.map(trackElement => <li>heihei</li>)
+
+
+    //const list = testing.map(test => <li>{test * 2}</li>)
 
 
 
@@ -34,13 +93,14 @@ function TrackOverview() {
     //};
 
 
-    //<Button onClick={getSignedInUser}> hent user id</Button>
         //<Button onClick={async () => { await getSignedInUser(); }}> hent user id</Button>
     //
-    return <>
-
-        <h1>hei {userId}</h1>
-    </>
+    return (
+        <>
+            <p>id til bruker {userId}</p>
+            <div>{list}</div>
+            <Button onClick={createTrack}> lag track</Button>
+        </>);
 
 }
 
