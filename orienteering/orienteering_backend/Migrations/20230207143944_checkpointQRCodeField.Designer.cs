@@ -8,11 +8,11 @@ using orienteering_backend.Infrastructure.Data;
 
 #nullable disable
 
-namespace orienteering_backend.Migrations
+namespace orienteeringbackend.Migrations
 {
     [DbContext(typeof(OrienteeringContext))]
-    [Migration("20230127125956_AddIdentityTables")]
-    partial class AddIdentityTables
+    [Migration("20230207143944_checkpointQRCodeField")]
+    partial class checkpointQRCodeField
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -152,12 +152,15 @@ namespace orienteering_backend.Migrations
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Track.Checkpoint", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<int?>("GameId")
                         .HasColumnType("int");
+
+                    b.Property<byte[]>("QRCode")
+                        .HasColumnType("longblob");
 
                     b.Property<int?>("QuizId")
                         .HasColumnType("int");
@@ -165,25 +168,28 @@ namespace orienteering_backend.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("TrackId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("TrackId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TrackId");
 
-                    b.ToTable("Checkpoint");
+                    b.ToTable("Checkpoints");
                 });
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Track.Track", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Track");
+                    b.ToTable("Tracks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>

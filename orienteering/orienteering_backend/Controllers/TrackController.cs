@@ -6,7 +6,7 @@ using orienteering_backend.Core.Domain.Track;
 namespace orienteering_backend.Controllers
 {
     [ApiController]
-    [Route("track")]
+    [Route("api/track")]
     public class TrackController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -25,9 +25,10 @@ namespace orienteering_backend.Controllers
 
         }
         [HttpGet("createcheckpoint")]
-        public async Task<int> CreateCheckpoint(Guid TrackId)
+        public async Task<Guid> CreateCheckpoint(Guid TrackId)
         {
             var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(TrackId));
+
             return newCheckPointId;
         }
 
