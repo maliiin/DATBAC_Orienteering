@@ -22,12 +22,13 @@ namespace orienteering_backend.Controllers
         //greate new track
         //POST
         [HttpPost("createTrack")]
-        //public async Task<Guid> CreateTrack(Guid userGuid)
         public async Task<Guid> CreateTrack(IdentityUser userInfo)
+        //public async Task<Guid> CreateTrack(IdentityUser userInfo)
 
         {
             //fiks objekter her. lage et nytt?? vil sende id men må sende objekt
             //convert from string to guid
+            Console.WriteLine($"i create track, userid før behandling er {userInfo.Id}");
             var userGuid = new Guid(userInfo.Id);
 
             //Fiks fakeGuid-->userGuid
@@ -39,8 +40,6 @@ namespace orienteering_backend.Controllers
 
         //create checkpoint
         //POST
-        //bør ikke dette være post??
-        //[HttpGet("createcheckpoint")]
         [HttpPost("createCheckpoint")]
         public async Task<int> CreateCheckpoint(Guid TrackId)
         {
@@ -59,7 +58,6 @@ namespace orienteering_backend.Controllers
             //Guid UserId = new Guid(userInfo.Id);
             Console.WriteLine($"\n\nuser id før tracksUserId {userId}\n\n");
             
-            var test = new Guid("a7803486-9413-41c1-b85d-6772213ac551");
 
 
 

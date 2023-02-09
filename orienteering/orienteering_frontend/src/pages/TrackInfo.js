@@ -1,4 +1,4 @@
-import { React, props } from "react";
+import { React } from "react";
 
 export default function TrackInfo(props) {
     return <h6>id: {props.trackInfo.id} userId: {props.trackInfo.userId}</h6>;
