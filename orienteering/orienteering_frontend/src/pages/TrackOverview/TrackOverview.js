@@ -30,7 +30,7 @@ function TrackOverview() {
 
         //console.log("data og liste");
         //console.log(trackList);
-
+        console.log(data);
         setList(data.map((trackElement, index) =>
             /*<Button key={trackElement.id + "-button-" + index}>*/
                 <TrackInfo key={trackElement.id + "-" + index} trackInfo={trackElement}>

@@ -24,7 +24,13 @@ export default function TrackInfo(props) {
 
 
 
-    return <Button onClick={showTrack}><h6>id: {props.trackInfo.id} userId: {props.trackInfo.userId}</h6></Button>;
+    return (<>
+        <Button onClick={showTrack}>
+            <h6>
+                title {props.trackInfo.name} id: {props.trackInfo.id} userId: {props.trackInfo.userId} 
+            </h6>
+        </Button>
+    </>);
 }
 
 //videre:
