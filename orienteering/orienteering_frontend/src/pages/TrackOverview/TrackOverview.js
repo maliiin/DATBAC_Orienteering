@@ -70,9 +70,10 @@ function TrackOverview() {
 
     return (
         <>
-            <CreateTrackForm id={userInfo.Id }></CreateTrackForm>
             <p>id til brukeren {userInfo.Id}</p>
-                <div>{list}</div>
+
+            <CreateTrackForm id={userInfo.Id }></CreateTrackForm>
+            <div>{list}</div>
             
         </>);
 }

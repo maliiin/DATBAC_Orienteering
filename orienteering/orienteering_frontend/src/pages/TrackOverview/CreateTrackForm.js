@@ -56,7 +56,6 @@ export default function CreateTrackForm(props) {
 
 
     return (<>
-        <p>heihei</p>
         <form onSubmit={handleSubmit}>
 
             <TextField
