@@ -4,7 +4,7 @@ import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 
-import Checkpoint from "./pages/Checkpoint";
+import CheckpointDetails from "./pages/CheckpointDetails/CheckpointDetails";
 import Registration from "./pages/Registration";
 import NoPage from "./pages/NoPage";
 import TrackOverview from "./pages/TrackOverview/TrackOverview";
@@ -17,7 +17,7 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
-                    <Route path="checkpoint/:checkpointId" element={<Checkpoint />} />
+                    <Route path="checkpoint/:checkpointId" element={<CheckpointDetails />} />
                     <Route path="login" element={<Login />} />
                     <Route path="*" element={<NoPage />} />
                     <Route path="registration" element={<Registration />} />

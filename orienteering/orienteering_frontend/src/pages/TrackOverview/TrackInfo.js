@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { Link, redirect, useNavigate } from 'react-router-dom';
 
 
-//some info of track
+//some info of track, not details
 
 export default function TrackInfo(props) {
     //props is props.Trackinfo (id, name, userid ...)

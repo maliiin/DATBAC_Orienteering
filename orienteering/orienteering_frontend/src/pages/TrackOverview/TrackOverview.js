@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import  TrackInfo  from "./TrackInfo";
 import React from "react";
 
-//displays all the tracks
+//displays all the tracks of a user. not details of the tracks
 
 function TrackOverview() {
     const [userInfo, setUserInfo] = useState ({
