@@ -2,6 +2,7 @@ import {  Button } from '@mui/material';
 import { useState, useEffect } from "react";
 import  TrackInfo  from "./TrackInfo";
 import React from "react";
+import CreateTrackForm from "./CreateTrackForm";
 
 //displays all the tracks of a user. not details of the tracks
 
@@ -69,10 +70,12 @@ function TrackOverview() {
 
     return (
         <>
-            <p>id til bruker {userInfo.Id}</p>
+            <CreateTrackForm id={userInfo.Id }></CreateTrackForm>
+            <p>id til brukeren {userInfo.Id}</p>
             <div>{list}</div>
-            <Button onClick={createTrack}> lag track</Button>
+            
         </>);
 }
 
 export default TrackOverview;
+//<Button onClick={createTrack}> lag track</Button>

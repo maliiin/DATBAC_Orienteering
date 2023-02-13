@@ -4,6 +4,7 @@ import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import {  useEffect } from "react";
 import CheckpointInfo from './CheckpointInfo';
+import CreateCheckpointForm from './CreateCheckpointForm';
 
 //all details of single track, list of the checkpoints
 
@@ -57,9 +58,10 @@ export default function TrackDetails() {
 
     //console.log(params);
     return (<>
-
+        <CreateCheckpointForm trackId={trackInfo.Id }></CreateCheckpointForm>
         <p>single track {params.trackId}</p>
-        <Button onClick={createNewCheckpoint }>lag checkpoint</Button>
         <div>{checkpointList}</div>
     </>);
 }
+        //<Button onClick={createNewCheckpoint }>lag checkpoint</Button>
+//
