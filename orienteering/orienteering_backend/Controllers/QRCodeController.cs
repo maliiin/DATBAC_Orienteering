@@ -72,9 +72,12 @@ public class QRCodeController : ControllerBase
     }
 
     [HttpGet("getqrcodes")]
-    public async Task<List<CheckpointNameAndQRCodeDto>> GetQRCodes(Guid UserId, Guid TrackId)
+    public async Task<List<CheckpointNameAndQRCodeDto>> GetQRCodes(string UserId, string TrackId)
     {
-        var checkpointList = await _mediator.Send(new GetQRCodes.Request(UserId, TrackId));
+        var user = new Guid(UserId);
+        var track = new Guid(TrackId);
+
+        var checkpointList = await _mediator.Send(new GetQRCodes.Request(user, track));
         return checkpointList;
     }
 }

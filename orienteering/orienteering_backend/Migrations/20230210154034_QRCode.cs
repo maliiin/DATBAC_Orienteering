@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace orienteeringbackend.Migrations
 {
     /// <inheritdoc />
-    public partial class checkpointQRCodeField : Migration
+    public partial class QRCode : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

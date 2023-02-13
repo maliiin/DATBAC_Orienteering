@@ -8,19 +8,26 @@ function QRCodePage() {
     const fetchCheckpoints = async () => {
         console.log("start");
 
-        const TrackId = "08db0a9a-91b6-47f0-89b2-d85e6971d57b";
-        const UserId = "51eb9aee-1817-47fb-ac86-6e6a9dc7f3b5";
+        const TrackId = "df085e87-91c8-4c84-ac33-44f1ba680a80";
+        const UserId = "d492968b-1d81-46f5-b2ae-eacfd20b5b5d"
         //const userResponse = await fetch("api/user/GetSignedInUserId").then(response => response.json());
         //const user = await userResponse.json();
        // const UserId = user.Id;
         const url = "api/qrcode/getqrcodes?UserId=" + UserId + "&TrackId=" + TrackId;
         //console.log("hei");
-        const data = await fetch(url).then(response => response.json());
+        //const data = await fetch(url).then(response => response.json());
+        const response = await fetch(url);
+        const data = await response.json();
+
         //const data = await response.json();
         //console.log(data);
-        setCheckpointList(data);
-        setListItems(CheckpointList.map((checkpoint, index) =>
-            <QRContainer key={checkpoint.Id + "-" + index} data={checkpoint.QRCode}></QRContainer>
+        //setCheckpointList(data);
+        setListItems(data.map((checkpoint, index) =>
+            <>
+                <h2>Checkpoint: {checkpoint.id}</h2>
+            <QRContainer key={checkpoint.id + "-" + index} data={checkpoint.qrCode}></QRContainer>
+                <br></br>
+            </>
         ));
     }
     useEffect(() => {
@@ -30,8 +37,7 @@ function QRCodePage() {
     ////Kilder: https://reactjs.org/docs/lists-and-keys.html (02.02.2023)
     //console.log(CheckpointList);
     return (<>
-        <h1> Tracks</h1>
-        <h2>List of tracks</h2>
+        <h1> Checkpoints:</h1>
         <div>{ListeItems}</div>
         
     </>);
