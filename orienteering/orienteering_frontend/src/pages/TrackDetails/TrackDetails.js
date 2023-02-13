@@ -4,6 +4,7 @@ import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import {  useEffect } from "react";
 import CheckpointInfo from './CheckpointInfo';
+import CreateCheckpointForm from './CreateCheckpointForm';
 
 //all details of single track, list of the checkpoints
 
@@ -15,7 +16,6 @@ export default function TrackDetails() {
     });
 
     const [checkpointList, setCheckpointList] = useState("");
-    //console.log(trackInfo);
 
     //get all checkpoints for this id
     const loadCheckpoints = async () => {
@@ -34,32 +34,13 @@ export default function TrackDetails() {
     useEffect(() => {
         setTrackInfo(prevState => { return { ...prevState, Id: params.trackId } });
 
-        //console.log("før checkpoints!!!!");
         loadCheckpoints();
     }, []); 
 
-
-    const createNewCheckpoint = async () => {
-        //console.log(trackInfo);
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify(trackInfo)
-        };
-        
-        const response = await fetch('/api/track/createCheckpoint', requestOptions);
-        //if (response.status.su
-        return response;
-    }
-
-    //console.log(params);
     return (<>
-
+        <CreateCheckpointForm trackId={trackInfo.Id }></CreateCheckpointForm>
         <p>single track {params.trackId}</p>
-        <Button onClick={createNewCheckpoint }>lag checkpoint</Button>
         <div>{checkpointList}</div>
     </>);
 }
+

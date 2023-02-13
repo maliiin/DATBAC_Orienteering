@@ -5,7 +5,8 @@ using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Authentication;
 using Microsoft.AspNetCore.Identity;
 using orienteering_backend.Core.Domain.Track.Services;
- 
+using orienteering_backend.Core.Domain.Track.Dto;
+
 namespace orienteering_backend.Controllers
 {
     [ApiController]
@@ -25,16 +26,9 @@ namespace orienteering_backend.Controllers
         //greate new track
         //POST
         [HttpPost("createTrack")]
-        public async Task<Guid> CreateTrack(IdentityUser userInfo)
+        public async Task<Guid> CreateTrack(TrackDto trackDto)
         {
-            //fiks objekter her. lage et nytt?? vil sende id men må sende objekt
-            //convert from string to guid
-            Console.WriteLine($"i create track, userid før behandling er {userInfo.Id}");
-            var userGuid = new Guid(userInfo.Id);
-
-            //Fiks fakeGuid-->userGuid
-            //var fakeGuid = Guid.NewGuid();
-            var newTrackId = await _mediator.Send(new CreateTrack.Request(userGuid));
+            var newTrackId = await _mediator.Send(new CreateTrack.Request(trackDto));
             return newTrackId;
         }
 
@@ -44,13 +38,13 @@ namespace orienteering_backend.Controllers
         //create checkpoint
         //POST
         [HttpPost("createCheckpoint")]
-        public async Task<Guid> CreateCheckpoint(Tester track)
+        public async Task<Guid> CreateCheckpoint(CheckpointDto checkpointDto)
         {
             //fiks objekt her i parameter
             
-            Guid TrackId =new Guid(track.Id);
-            Console.WriteLine("inni create checkpoint");
-            var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(TrackId));
+            //Guid TrackId =new Guid(track.Id);
+            //Console.WriteLine("inni create checkpoint");
+            var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(checkpointDto));
 
             return newCheckPointId;
         }

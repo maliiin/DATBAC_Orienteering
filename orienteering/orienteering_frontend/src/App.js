@@ -28,6 +28,6 @@ export default function App() {
                     <Route path="qrcodepage" element={<QRCodePage />} />
                 </Route>
             </Routes>
-        </BrowserRouter>
+            </BrowserRouter>
     )
 }

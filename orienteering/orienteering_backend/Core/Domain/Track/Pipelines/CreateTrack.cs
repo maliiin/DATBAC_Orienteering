@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Infrastructure.Data;
 //Kilder: CampusEats lab fra dat240
 
@@ -8,7 +9,7 @@ namespace orienteering_backend.Core.Domain.Track.Pipelines;
 public static class CreateTrack
 {
     public record Request(
-        Guid UserId) : IRequest<Guid>;
+        TrackDto trackDto) : IRequest<Guid>;
 
 
     public class Handler : IRequestHandler<Request, Guid>
@@ -19,9 +20,8 @@ public static class CreateTrack
 
         public async Task<Guid> Handle(Request request, CancellationToken cancellationToken)
         {
-            var newTrack = new Track();
-            newTrack.UserId = request.UserId;
-            await _db.Tracks.AddAsync(newTrack);
+            var newTrack = new Track(request.trackDto.UserId, request.trackDto.TrackName);
+            await _db.Tracks.AddAsync(newTrack, cancellationToken);
             await _db.SaveChangesAsync(cancellationToken);
             return newTrack.Id;
         }

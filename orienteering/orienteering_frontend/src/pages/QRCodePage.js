@@ -9,7 +9,7 @@ function QRCodePage() {
         console.log("start");
 
         const TrackId = "df085e87-91c8-4c84-ac33-44f1ba680a80";
-        const UserId = "d492968b-1d81-46f5-b2ae-eacfd20b5b5d"
+        const UserId = "d492968b-1d81-46f5-b2ae-eacfd20b5b5d";
         //const userResponse = await fetch("api/user/GetSignedInUserId").then(response => response.json());
         //const user = await userResponse.json();
        // const UserId = user.Id;
