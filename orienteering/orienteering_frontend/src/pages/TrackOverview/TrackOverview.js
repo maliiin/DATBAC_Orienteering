@@ -72,7 +72,7 @@ function TrackOverview() {
         <>
             <CreateTrackForm id={userInfo.Id }></CreateTrackForm>
             <p>id til brukeren {userInfo.Id}</p>
-            <div>{list}</div>
+                <div>{list}</div>
             
         </>);
 }
