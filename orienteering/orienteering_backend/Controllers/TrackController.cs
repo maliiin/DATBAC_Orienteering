@@ -4,7 +4,8 @@ using orienteering_backend.Core.Domain.Track.Pipelines;
 using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Authentication;
 using Microsoft.AspNetCore.Identity;
-
+using orienteering_backend.Core.Domain.Track.Services;
+ 
 namespace orienteering_backend.Controllers
 {
     [ApiController]
@@ -12,19 +13,19 @@ namespace orienteering_backend.Controllers
     public class TrackController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public TrackController(IMediator Mediator)
+        private readonly ITrackService _trackService;
+
+        public TrackController(IMediator Mediator, ITrackService trackService)
         {
             _mediator = Mediator;
+            _trackService = trackService;
         }
         //bør userGuid sendes inn fra frontend? eller skal backend hente userId fra seg selv fra den som er logget inn?
 
-        //[HttpGet]
         //greate new track
         //POST
         [HttpPost("createTrack")]
         public async Task<Guid> CreateTrack(IdentityUser userInfo)
-        //public async Task<Guid> CreateTrack(IdentityUser userInfo)
-
         {
             //fiks objekter her. lage et nytt?? vil sende id men må sende objekt
             //convert from string to guid
@@ -35,32 +36,33 @@ namespace orienteering_backend.Controllers
             //var fakeGuid = Guid.NewGuid();
             var newTrackId = await _mediator.Send(new CreateTrack.Request(userGuid));
             return newTrackId;
-
         }
+
+
+
 
         //create checkpoint
         //POST
         [HttpPost("createCheckpoint")]
-        public async Task<int> CreateCheckpoint(Guid TrackId)
+        public async Task<int> CreateCheckpoint(Tester track)
         {
+            //fiks objekt her i parameter
+            
+            Guid TrackId =new Guid(track.Id);
+            Console.WriteLine("inni create checkpoint");
             var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(TrackId));
             return newCheckPointId;
         }
+
+
+
         
         //list of all tracks of a user
-        //GET
         [HttpGet("getTracks")]
-        //public async Task<List<Track>> GetTracksByUserId(string userId)
         public async Task<Array> GetTracksByUserId(string userId)
-
         {
-
             //Guid UserId = new Guid(userInfo.Id);
             Console.WriteLine($"\n\nuser id før tracksUserId {userId}\n\n");
-            
-
-
-
 
             var UserId =  new Guid(userId);
             var tracks = await _mediator.Send(new GetTrack.Request(UserId));
@@ -71,6 +73,20 @@ namespace orienteering_backend.Controllers
             return tracks;
         }
 
+        [HttpGet("getCheckpoints")]
+        public async Task<List<Checkpoint>> GetCheckponitsOfTrack(string trackId)
+        {
 
+            Guid trackGuid= new Guid(trackId);
+            var checkpoints = await _trackService.GetCheckponitsForTrack(trackGuid);
+            return checkpoints;
+
+        }
+    }
+
+
+    public class Tester
+    {
+        public string Id { get; set; }
     }
 }

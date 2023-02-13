@@ -7,7 +7,8 @@ import Login from "./pages/Login";
 import Checkpoint from "./pages/Checkpoint";
 import Registration from "./pages/Registration";
 import NoPage from "./pages/NoPage";
-import TrackOverview from "./pages/TrackOverview";
+import TrackOverview from "./pages/TrackOverview/TrackOverview";
+import TrackDetails from "./pages/TrackDetails/TrackDetails";
 
 
 export default function App() {
@@ -21,6 +22,8 @@ export default function App() {
                     <Route path="*" element={<NoPage />} />
                     <Route path="registration" element={<Registration />} />
                     <Route path="trackoverview" element={<TrackOverview />} />
+                    <Route path="track/:trackId" element={<TrackDetails />} />
+
                 </Route>
             </Routes>
         </BrowserRouter>

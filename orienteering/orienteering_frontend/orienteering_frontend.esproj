@@ -11,4 +11,9 @@
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\build</BuildOutputFolder>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\pages\NewFolder1\" />
+    <Folder Include="src\pages\NewFolder2\" />
+    <Folder Include="src\pages\NewFolder\" />
+  </ItemGroup>
 </Project>
