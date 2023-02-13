@@ -44,13 +44,14 @@ namespace orienteering_backend.Controllers
         //create checkpoint
         //POST
         [HttpPost("createCheckpoint")]
-        public async Task<int> CreateCheckpoint(Tester track)
+        public async Task<Guid> CreateCheckpoint(Tester track)
         {
             //fiks objekt her i parameter
             
             Guid TrackId =new Guid(track.Id);
             Console.WriteLine("inni create checkpoint");
             var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(TrackId));
+
             return newCheckPointId;
         }
 

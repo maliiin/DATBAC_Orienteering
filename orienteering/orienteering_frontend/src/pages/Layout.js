@@ -18,6 +18,9 @@ function Layout() {
                         <Link to="/registration">Registrer deg</Link>
                     </li>
                     <li>
+                        <Link to="/qrcodepage">QR Codes</Link>
+                    </li>
+                    <li>
                         <Link to="/trackoverview">track overview1</Link>
                     </li>
                    

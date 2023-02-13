@@ -18,13 +18,22 @@ using System.Collections;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.AspNetCore.Mvc;
 using static System.Net.WebRequestMethods;
+using orienteering_backend.Core.Domain.Track.Pipelines;
+using orienteering_backend.Core.Domain.Track;
+using MediatR;
+using orienteering_backend.Core.Domain.Track.Dto;
 
 namespace orienteering_backend.Controllers;
 
 [ApiController]
-[Route("qrcode")]
+[Route("api/qrcode")]
 public class QRCodeController : ControllerBase
 {
+    private readonly IMediator _mediator;
+    public QRCodeController(IMediator Mediator)
+    {
+        _mediator = Mediator;
+    }
     private byte[] generateQR()
     {
         //Kilder: https://www.c-sharpcorner.com/article/create-qr-code-using-google-charts-api-in-vb-net/ (31.01.2023)
@@ -60,5 +69,15 @@ public class QRCodeController : ControllerBase
     {
         var result = generateQR();
         return result;
+    }
+
+    [HttpGet("getqrcodes")]
+    public async Task<List<CheckpointNameAndQRCodeDto>> GetQRCodes(string UserId, string TrackId)
+    {
+        var user = new Guid(UserId);
+        var track = new Guid(TrackId);
+
+        var checkpointList = await _mediator.Send(new GetQRCodes.Request(user, track));
+        return checkpointList;
     }
 }

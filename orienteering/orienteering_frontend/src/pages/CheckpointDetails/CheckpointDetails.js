@@ -1,5 +1,6 @@
 import { createSearchParams, Link, useParams } from 'react-router-dom'
 
+//page
 //display all info of a single checkpoint
 
 export default function CheckpointDetails(props) {

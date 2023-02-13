@@ -3,7 +3,7 @@
 const context = [
     "/weatherforecast",
     "/api/user",  
-    "/qrcode",
+    "/api/qrcode",
     "/api/track"
 ];
 
