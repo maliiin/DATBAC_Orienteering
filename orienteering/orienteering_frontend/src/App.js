@@ -8,7 +8,7 @@ import Checkpoint from "./pages/Checkpoint";
 import Registration from "./pages/Registration";
 import NoPage from "./pages/NoPage";
 import TrackOverview from "./pages/TrackOverview";
-
+import QRCodePage from "./pages/QRCodePage"
 
 export default function App() {
     return (
@@ -26,6 +26,7 @@ export default function App() {
                     <Route path="registration" element={<Registration />} />
                     <Route path="*" element={<NoPage />} />
                     <Route path="trackoverview" element={<TrackOverview />} />
+                    <Route path="qrcodepage" element={<QRCodePage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

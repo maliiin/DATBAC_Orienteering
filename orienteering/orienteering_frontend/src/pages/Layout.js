@@ -17,6 +17,9 @@ function Layout() {
                     <li>
                         <Link to="/registration">Registrer deg</Link>
                     </li>
+                    <li>
+                        <Link to="/qrcodepage">QR Codes</Link>
+                    </li>
                    
                 </ul>
             </nav>

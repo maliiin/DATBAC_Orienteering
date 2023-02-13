@@ -11,8 +11,8 @@ using orienteering_backend.Infrastructure.Data;
 namespace orienteeringbackend.Migrations
 {
     [DbContext(typeof(OrienteeringContext))]
-    [Migration("20230207143944_checkpointQRCodeField")]
-    partial class checkpointQRCodeField
+    [Migration("20230210154034_QRCode")]
+    partial class QRCode
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
