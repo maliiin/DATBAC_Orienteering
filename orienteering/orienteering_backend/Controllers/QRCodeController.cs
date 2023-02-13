@@ -48,7 +48,7 @@ public class QRCodeController : ControllerBase
             const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
             ServicePointManager.SecurityProtocol = Tls12;
             byte[] data = webClient.DownloadData(QrLink);
-            Console.WriteLine(data);
+            //Console.WriteLine(data);
             //Image newImage = byteArrayToImage(data);
             //PictureBox1.Image = newImage;
             //string? result = System.Text.Encoding.UTF8.GetString(data);

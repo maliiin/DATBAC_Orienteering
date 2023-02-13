@@ -10,18 +10,25 @@ namespace orienteering_backend.Core.Domain.Track.Pipelines;
 public static class GetTrack
 {
     public record Request(
-        Guid UserId) : IRequest<List<Track>>;
+        Guid UserId) : IRequest<Array>;
+    //Guid UserId) : IRequest<List<Track>>;
 
 
-    public class Handler : IRequestHandler<Request, List<Track>>
+    public class Handler : IRequestHandler<Request, Array>
+    //public class Handler : IRequestHandler<Request, List<Track>>
     {
         private readonly OrienteeringContext _db;
 
         public Handler(OrienteeringContext db) => _db = db ?? throw new ArgumentNullException(nameof(db));
 
-        public async Task<List<Track>> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<Array> Handle(Request request, CancellationToken cancellationToken)
+       // public async Task<List<Track>> Handle(Request request, CancellationToken cancellationToken)
         {
-            var tracks = await _db.Tracks.Where(t => t.UserId == request.UserId).Include(t => t.CheckpointList).ToListAsync();
+            var tracks = await _db.Tracks
+                                         .Where(t => t.UserId == request.UserId)
+                                         .Include(t => t.CheckpointList)
+                                         .ToArrayAsync(cancellationToken);//ToListAsync();
+            //Console.WriteLine($"lengde inni {tracks.Count}");
             return tracks;
         }
     }

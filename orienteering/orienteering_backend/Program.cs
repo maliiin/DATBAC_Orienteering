@@ -3,11 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using orienteering_backend.Core.Domain.Authentication.Services;
+using orienteering_backend.Core.Domain.Track.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddScoped<ITrackService, TrackService>();
+
 
 builder.Services.AddControllers();
 
@@ -73,7 +76,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI();//c=>{c.SwaggerEndpoint("/swagger/v1/swagger.json", "Employee API V1"););
 }
 
 app.UseHttpsRedirection();

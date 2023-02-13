@@ -69,7 +69,7 @@ namespace orienteering_backend.Controllers
 
         [HttpGet]
         [Route("GetSignedInUserId")]
-        public ActionResult<string> GetSignedInUserId()
+        public ActionResult<object> GetSignedInUserId()
         {
             
             //er en bruker logget in?
@@ -91,7 +91,13 @@ namespace orienteering_backend.Controllers
             else             
             {
                 Console.WriteLine($"value of id? {id.Value}");
-                return id.Value;
+                //return id.Value;
+                //fiks fix returtypen her, bør lage eget objekt, ikke sende identity user!!
+                var user1 = new IdentityUser();
+                user1.Id = id.Value;
+                return user1;
+                
+                
             }
         }
 
