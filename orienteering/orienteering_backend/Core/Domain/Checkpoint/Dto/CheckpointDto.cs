@@ -8,7 +8,7 @@
             TrackId = trackId;
         }
 
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string Title { get; set; }
         public Guid TrackId { get; set; }
 

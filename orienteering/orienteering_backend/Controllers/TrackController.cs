@@ -56,22 +56,15 @@ namespace orienteering_backend.Controllers
         
         //list of all tracks of a user
         [HttpGet("getTracks")]
-        public async Task<Array> GetTracksByUserId(string userId)
+        public async Task<List<TrackDto>> GetTracksByUserId(string userId)
         {
-            //Guid UserId = new Guid(userInfo.Id);
-            Console.WriteLine($"\n\nuser id før tracksUserId {userId}\n\n");
-
             var UserId =  new Guid(userId);
             var tracks = await _mediator.Send(new GetTrack.Request(UserId));
-            Console.WriteLine($"\n\n\n{tracks}");
-            //Console.WriteLine(tracks.Count);
-            Console.WriteLine(tracks.Length);
-            Console.WriteLine("slutt");
             return tracks;
         }
 
         [HttpGet("getCheckpoints")]
-        public async Task<List<Checkpoint>> 
+        public async Task<List<CheckpointDto>> 
             OfTrack(string trackId)
         {
 
