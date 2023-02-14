@@ -4,6 +4,7 @@ import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import {  useEffect } from "react";
 import CheckpointInfo from './CheckpointInfo';
+import CreateCheckpointForm from './CreateCheckpointForm';
 
 //all details of single track, list of the checkpoints
 
@@ -36,7 +37,6 @@ export default function TrackDetails() {
     useEffect(() => {
         setTrackInfo(prevState => { return { ...prevState, Id: params.trackId } });
 
-        //console.log("før checkpoints!!!!");
         loadCheckpoints();
     }, []); 
 
@@ -70,10 +70,11 @@ export default function TrackDetails() {
 
     //console.log(params);
     return (<>
-
+        <CreateCheckpointForm trackId={trackInfo.Id }></CreateCheckpointForm>
         <p>single track {params.trackId}</p>
         <Button onClick={createNewCheckpoint}>lag checkpoint</Button>
         <Button onClick={showQrcodes}>Vis QR-koder</Button>
         <div>{checkpointList}</div>
     </>);
 }
+

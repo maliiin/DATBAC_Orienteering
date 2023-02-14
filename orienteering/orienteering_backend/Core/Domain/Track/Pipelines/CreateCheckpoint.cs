@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Track.Events;
 using orienteering_backend.Infrastructure.Data;
 //Kilder: CampusEats lab fra dat240
@@ -11,7 +12,7 @@ namespace orienteering_backend.Core.Domain.Track.Pipelines;
 public static class CreateCheckpoint
 {
     public record Request(
-        Guid Trackid) : IRequest<Guid>;
+        CheckpointDto checkpointDto) : IRequest<Guid>;
 
 
     public class Handler : IRequestHandler<Request, Guid>
@@ -27,9 +28,10 @@ public static class CreateCheckpoint
             }
         public async Task<Guid> Handle(Request request, CancellationToken cancellationToken)
         {
-            var newCheckpoint = new Checkpoint();
+
+            var newCheckpoint = new Checkpoint(request.checkpointDto.Title);
             //await _db.Checkpoints.AddAsync(newCheckpoint);
-            var track = await _db.Tracks.FirstOrDefaultAsync(t => t.Id == request.Trackid);
+            var track = await _db.Tracks.FirstOrDefaultAsync(t => t.Id == request.checkpointDto.TrackId);
             if (track != null)
             {
                 track.AddCheckpoint(newCheckpoint);
@@ -41,7 +43,6 @@ public static class CreateCheckpoint
             await _db.SaveChangesAsync(cancellationToken);
             // publishing event 
             await _mediator.Publish(new CheckpointCreated(newCheckpoint.Id));
-            //await _mediator.Send(new GenerateQR.Request(newCheckpoint.Id));
 
             await _db.SaveChangesAsync(cancellationToken);
 
