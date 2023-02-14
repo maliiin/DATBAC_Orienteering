@@ -3,6 +3,7 @@ using MediatR;
 using orienteering_backend.Core.Domain.Track;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using orienteering_backend.Core.Domain.Checkpoint;
 
 namespace orienteering_backend.Infrastructure.Data;
 

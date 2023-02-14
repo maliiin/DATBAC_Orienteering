@@ -1,4 +1,4 @@
-﻿namespace orienteering_backend.Core.Domain.Track.Dto
+﻿namespace orienteering_backend.Core.Domain.Checkpoint.Dto
 {
     public class CheckpointDto
     {

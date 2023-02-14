@@ -2,8 +2,8 @@
 using System;
 using orienteering_backend.Core.Domain.Track.Events;
 using orienteering_backend.Infrastructure.Data;
-using orienteering_backend.Core.Domain.Track.Pipelines;
 using Microsoft.EntityFrameworkCore;
+using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 
 namespace orienteering_backend.Core.Domain.Track.Handlers;
 //Kilder: CampusEats Handlers

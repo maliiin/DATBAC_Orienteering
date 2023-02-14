@@ -26,7 +26,6 @@ public static class GetTrack
         {
             var tracks = await _db.Tracks
                                          .Where(t => t.UserId == request.UserId)
-                                         .Include(t => t.CheckpointList)
                                          .ToArrayAsync(cancellationToken);//ToListAsync();
             //Console.WriteLine($"lengde inni {tracks.Count}");
             return tracks;

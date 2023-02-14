@@ -1,6 +1,6 @@
 ﻿//using orienteering_backend.SharedKernel;
 
-namespace orienteering_backend.Core.Domain.Track
+namespace orienteering_backend.Core.Domain.Checkpoint
 {
     public class Checkpoint
     {
@@ -14,5 +14,6 @@ namespace orienteering_backend.Core.Domain.Track
         public int? QuizId { get; set; }
         public int? GameId { get; set; }
         public byte[]? QRCode { get; set; }
+        public Guid TrackId { get; set; }
     }
 }

@@ -18,10 +18,10 @@ using System.Collections;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.AspNetCore.Mvc;
 using static System.Net.WebRequestMethods;
-using orienteering_backend.Core.Domain.Track.Pipelines;
 using orienteering_backend.Core.Domain.Track;
 using MediatR;
-using orienteering_backend.Core.Domain.Track.Dto;
+using orienteering_backend.Core.Domain.Checkpoint.Dto;
+using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 
 namespace orienteering_backend.Controllers;
 
