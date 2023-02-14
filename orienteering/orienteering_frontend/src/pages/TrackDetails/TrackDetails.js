@@ -15,7 +15,9 @@ export default function TrackDetails() {
     });
 
     const [checkpointList, setCheckpointList] = useState("");
-    //console.log(trackInfo);
+
+    const navigate = useNavigate();
+
 
     //get all checkpoints for this id
     const loadCheckpoints = async () => {
@@ -55,11 +57,23 @@ export default function TrackDetails() {
         return response;
     }
 
+
+    const showQrcodes = async () => {
+        const trackid = params.trackId;
+        //const link = "/qrcodepage/" + trackid;
+        //
+        navigate('/qrcodepage', { state: { trackid: trackid } })
+
+    }
+
+
+
     //console.log(params);
     return (<>
 
         <p>single track {params.trackId}</p>
-        <Button onClick={createNewCheckpoint }>lag checkpoint</Button>
+        <Button onClick={createNewCheckpoint}>lag checkpoint</Button>
+        <Button onClick={showQrcodes}>Vis QR-koder</Button>
         <div>{checkpointList}</div>
     </>);
 }

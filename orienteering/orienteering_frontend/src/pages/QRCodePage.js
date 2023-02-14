@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import QRContainer from '../components/QRContainer';
+import { useLocation } from 'react-router-dom';
 
 function QRCodePage() {
     const [CheckpointList, setCheckpointList] = useState("");
     const [ListeItems, setListItems] = useState("");
+    const location = useLocation();
 
     const fetchCheckpoints = async () => {
         console.log("start");
-
-        const TrackId = "df085e87-91c8-4c84-ac33-44f1ba680a80";
+        // Kilder: til location.state.trackid: linje 13 under https://stackoverflow.com/questions/64566405/react-router-dom-v6-usenavigate-passing-value-to-another-component (13.02.2023)
+        const TrackId = location.state.trackid;
+        //const TrackId = "08db0da6-3633-48ec-8b8f-0799ce2f9cbd";
+        //const TrackId = params.TrackId;
         const UserId = "d492968b-1d81-46f5-b2ae-eacfd20b5b5d"
         //const userResponse = await fetch("api/user/GetSignedInUserId").then(response => response.json());
         //const user = await userResponse.json();
