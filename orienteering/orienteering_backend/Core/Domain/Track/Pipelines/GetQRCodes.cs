@@ -12,7 +12,6 @@ namespace orienteering_backend.Core.Domain.Track.Pipelines;
 public static class GetQRCodes
 {
     public record Request(
-        Guid UserId,
         Guid TrackId
         ) : IRequest<List<CheckpointNameAndQRCodeDto>>;
 
@@ -33,13 +32,13 @@ public static class GetQRCodes
         {
 
             var track = await _db.Tracks.Include(t => t.CheckpointList).FirstOrDefaultAsync(t => t.Id == request.TrackId);
-            var trackOwner = track.UserId;
+            //var trackOwner = track.UserId;
             var checkpointList = track.CheckpointList;
             var dtoList = new List<CheckpointNameAndQRCodeDto>();
-            if (trackOwner != request.UserId)
-            {
-                return dtoList;
-            }
+            //if (trackOwner != request.UserId)
+            //{
+            //    return dtoList;
+            //}
             for (var i=0; i<checkpointList.Count; i++)
             {
                 var checkpoint = checkpointList[i];
