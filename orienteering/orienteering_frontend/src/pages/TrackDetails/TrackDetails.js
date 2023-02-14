@@ -5,10 +5,14 @@ import { createSearchParams, useParams } from 'react-router-dom';
 import {  useEffect } from "react";
 import CheckpointInfo from './CheckpointInfo';
 import CreateCheckpointForm from './CreateCheckpointForm';
+import useAuthentication from "../../hooks/useAuthentication";
+
 
 //all details of single track, list of the checkpoints
 
 export default function TrackDetails() {
+    useAuthentication();
+
     const params = useParams();
 
     const [trackInfo, setTrackInfo] = useState({

@@ -24,6 +24,7 @@ public static class GetTrack
         public async Task<Array> Handle(Request request, CancellationToken cancellationToken)
        // public async Task<List<Track>> Handle(Request request, CancellationToken cancellationToken)
         {
+
             var tracks = await _db.Tracks
                                          .Where(t => t.UserId == request.UserId)
                                          .Include(t => t.CheckpointList)

@@ -6,6 +6,7 @@ using orienteering_backend.Core.Domain.Authentication;
 using Microsoft.AspNetCore.Identity;
 using orienteering_backend.Core.Domain.Track.Services;
 using orienteering_backend.Core.Domain.Track.Dto;
+using Microsoft.AspNetCore.Authorization;
 
 namespace orienteering_backend.Controllers
 {
@@ -25,6 +26,7 @@ namespace orienteering_backend.Controllers
 
         //greate new track
         //POST
+        [Authorize]
         [HttpPost("createTrack")]
         public async Task<Guid> CreateTrack(TrackDto trackDto)
         {

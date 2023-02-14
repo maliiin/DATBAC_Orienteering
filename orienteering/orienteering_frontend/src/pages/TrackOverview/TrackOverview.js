@@ -3,21 +3,39 @@ import { useState, useEffect } from "react";
 import  TrackInfo  from "./TrackInfo";
 import React from "react";
 import CreateTrackForm from "./CreateTrackForm";
+import { useNavigate } from 'react-router-dom';
+import { redirect } from "react-router-dom";
+import useAuthentication from "../../hooks/useAuthentication";
+
 
 //displays all the tracks of a user. not details of the tracks
 
 function TrackOverview() {
+    //ensure that user is authenticated
+    useAuthentication();
+
+
+   // const navigate = useNavigate();
+    //console.log(useAuthentication().id);
     const [userInfo, setUserInfo] = useState ({
-        Id: ""
+       Id:""// useAuthentication()
     });
 
     const [trackList, setTrackList] = useState("");
     const [list, setList] = useState("");
 
+    //laster userid og sjekker at det stemmer
     const loadUserId = async () => {
-        const data = await fetch("api/user/getsignedinuserid").then(res => res.json());
-        //console.log("the user id is " + data.id);
-        //setUserId(data.id);
+        const response = await fetch("api/user/getsignedinuserid");
+
+        ////not signed in
+        //if (!response.ok) {
+        //    console.log("ikke innlogget!!!");
+        //    navigate("/login");
+        //}
+
+        const data = await response.json();
+
         setUserInfo(prevState => { return { ...prevState, Id: data.id } });
     };
 
@@ -39,21 +57,23 @@ function TrackOverview() {
         ));
     }
 
-    const createTrack = async () => {
-        //userInfo.UserId = userId;
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(userInfo)
-        };
-        const response = await fetch('/api/track/createTrack', requestOptions);
-        //console.log("lag track userinfo er " + userInfo.Id);
-       // console.log(response.json());
-    }
+    //const createTrack = async () => {
+    //    //userInfo.UserId = userId;
+    //    const requestOptions = {
+    //        method: 'POST',
+    //        headers: {
+    //            'Content-Type': 'application/json',
+    //            'Accept': 'application/json'
+    //        },
+    //        body: JSON.stringify(userInfo)
+    //    };
+    //    const response = await fetch('/api/track/createTrack', requestOptions);
+    //    //console.log("lag track userinfo er " + userInfo.Id);
+    //   // console.log(response.json());
+    //}
 
+
+    //dette gjør at brukerid lastes
     useEffect(() => {
         loadUserId();
         
