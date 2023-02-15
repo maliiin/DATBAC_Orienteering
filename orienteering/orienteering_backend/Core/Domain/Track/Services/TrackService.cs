@@ -30,6 +30,7 @@ public class TrackService:ITrackService
         {
             var checkpoint = checkpointList[i];
             var dtoElement = new CheckpointDto(checkpoint.Title, checkpoint.TrackId);
+            dtoElement.Id = checkpoint.Id;
             checkpointDtoList.Add(dtoElement);
         }
         return checkpointDtoList;
