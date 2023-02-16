@@ -8,7 +8,7 @@ using orienteering_backend.Core.Domain.Track.Dto;
 
 namespace orienteering_backend.Core.Domain.Track.Pipelines;
 
-public static class GetTrack
+public static class GetTracks
 {
     public record Request(
         Guid UserId) : IRequest<List<TrackDto>>;

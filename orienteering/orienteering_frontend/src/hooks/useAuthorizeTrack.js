@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 
 //reload tar lang tid
 //fiks sikring av checkpoint
+//fiks ikke i bruk??
 
 export default function useAuthorizeTrack(trackId) {
     const navigate = useNavigate();

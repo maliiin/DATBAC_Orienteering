@@ -61,7 +61,7 @@ namespace orienteering_backend.Controllers
         public async Task<List<TrackDto>> GetTracksByUserId(string userId)
         {
             var UserId =  new Guid(userId);
-            var tracks = await _mediator.Send(new GetTrack.Request(UserId));
+            var tracks = await _mediator.Send(new GetTracks.Request(UserId));
             return tracks;
         }
 
