@@ -90,6 +90,17 @@ namespace orienteering_backend.Controllers
             return track;
 
         }
+
+        [HttpGet("getCheckpoint")]
+        public async Task<Checkpoint> GetSingleCheckpoint(string checkpointId)
+        {
+
+            Guid CheckpointId = new Guid(checkpointId);
+            Checkpoint checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(CheckpointId));
+
+            return checkpoint;
+
+        }
     }
 
 }
