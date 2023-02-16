@@ -79,11 +79,17 @@ namespace orienteering_backend.Controllers
             return checkpoints;
 
         }
+
+        [HttpGet("getTrack")]
+        public async Task<Track> GetSingleTrack(string trackId)
+        {
+
+            Guid trackGuid = new Guid(trackId);
+            Track track = await _mediator.Send(new GetSingleTrack.Request(trackGuid));
+
+            return track;
+
+        }
     }
 
-
-    public class Tester
-    {
-        public string Id { get; set; }
-    }
 }

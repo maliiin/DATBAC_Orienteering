@@ -6,14 +6,21 @@ import {  useEffect } from "react";
 import CheckpointInfo from './CheckpointInfo';
 import CreateCheckpointForm from './CreateCheckpointForm';
 import useAuthentication from "../../hooks/useAuthentication";
+import useAuthorizeTrack from "../../hooks/useAuthorizeTrack";
+
 
 
 //all details of single track, list of the checkpoints
 
 export default function TrackDetails() {
-    useAuthentication();
-
     const params = useParams();
+    const [shouldRender, setShouldRender] = useState(false);
+
+
+
+    //useAuthentication();
+
+
 
     const [trackInfo, setTrackInfo] = useState({
         Id: params.trackId
@@ -36,15 +43,25 @@ export default function TrackDetails() {
     }
 
     useEffect(() => {
+
         setTrackInfo(prevState => { return { ...prevState, Id: params.trackId } });
 
         loadCheckpoints();
-    }, []); 
 
-    return (<>
-        <CreateCheckpointForm trackId={trackInfo.Id }></CreateCheckpointForm>
-        <p>single track {params.trackId}</p>
-        <div>{checkpointList}</div>
-    </>);
+
+        //setShouldRender(useAuthorizeTrack(params.trackId));
+        //setShouldRender(true);
+
+    }, []); 
+    console.log(shouldRender);
+    if (!shouldRender) { return <p> { shouldRender}heohahahhsdjdkk</p> }
+    else {
+        return (<>
+            <h1>{shouldRender} hehehe</h1>
+            <CreateCheckpointForm trackId={trackInfo.Id}></CreateCheckpointForm>
+            <p>single track {params.trackId}</p>
+            <div>{checkpointList}</div>
+        </>);
+    };
 }
 

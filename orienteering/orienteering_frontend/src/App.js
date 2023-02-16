@@ -7,6 +7,8 @@ import Login from "./pages/Login";
 import CheckpointDetails from "./pages/CheckpointDetails/CheckpointDetails";
 import Registration from "./pages/Registration";
 import NoPage from "./pages/NoPage";
+import Unauthorized from "./pages/Unauthorized";
+
 import TrackOverview from "./pages/TrackOverview/TrackOverview";
 import TrackDetails from "./pages/TrackDetails/TrackDetails";
 
@@ -38,6 +40,8 @@ export default function App() {
                     <Route path="track/:trackId" element={<TrackDetails />} />
 
                     <Route path="qrcodepage" element={<QRCodePage />} />
+                    <Route path="unauthorized" element={<Unauthorized />} />
+
                 </Route>
             </Routes>
             </BrowserRouter>
