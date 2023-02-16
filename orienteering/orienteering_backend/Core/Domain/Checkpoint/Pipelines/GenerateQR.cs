@@ -7,7 +7,7 @@ using System.Security.Authentication;
 // Kilder: https://github.com/dat240-2022/assignments/blob/main/Lab3/UiS.Dat240.Lab3/Core/Domain/Cart/Pipelines/AddItem.cs (07.02.2023)
 // Brukte samme struktur på pipelinen som i kilden
 
-namespace orienteering_backend.Core.Domain.Track.Pipelines;
+namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 
 public static class GenerateQR
 {

@@ -61,6 +61,8 @@ export default function TrackDetails() {
 
 
 
+
+
     //get all checkpoints for this id
     const loadCheckpoints = async () => {
         const url = "/api/track/getCheckpoints?trackId=" + params.trackId;
@@ -80,10 +82,48 @@ export default function TrackDetails() {
     }, []);
 
 
+    //const createNewCheckpoint = async () => {
+    //    //console.log(trackInfo);
+    //    const requestOptions = {
+    //        method: 'POST',
+    //        headers: {
+    //            'Content-Type': 'application/json',
+    //            'Accept': 'application/json',
+    //        },
+    //        body: JSON.stringify(trackInfo)
+    //    };
+        
+    //    const response = await fetch('/api/track/createCheckpoint', requestOptions);
+    //    //if (response.status.su
+    //    return response;
+    //}
+
+
+    const showQrcodes = async () => {
+        const trackid = params.trackId;
+        //const link = "/qrcodepage/" + trackid;
+        //
+        navigate('/qrcodepage', { state: { trackid: trackid } })
+
+    }
+
+
+
+    //console.log(params);
+    //return (<>
+    //    <CreateCheckpointForm trackId={trackInfo.Id }></CreateCheckpointForm>
+    //    <p>single track {params.trackId}</p>
+    //    <Button onClick={createNewCheckpoint}>lag checkpoint</Button>
+    //    <Button onClick={showQrcodes}>Vis QR-koder</Button>
+    //    <div>{checkpointList}</div>
+    //</>);
+
     if (render == true) {
         return (<>
             <CreateCheckpointForm trackId={trackInfo.Id}></CreateCheckpointForm>
             <p>single track {params.trackId}</p>
+            <Button onClick={showQrcodes}>Vis QR-koder</Button>
+
             <div>{checkpointList}</div>
         </>);
     };

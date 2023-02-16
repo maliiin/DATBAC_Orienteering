@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Track.Pipelines;
-using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Authentication;
 using Microsoft.AspNetCore.Identity;
 using orienteering_backend.Core.Domain.Track.Services;
 using orienteering_backend.Core.Domain.Track.Dto;
+using orienteering_backend.Core.Domain.Checkpoint.Dto;
+using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
+using orienteering_backend.Core.Domain.Checkpoint;
 using Microsoft.AspNetCore.Authorization;
 
 namespace orienteering_backend.Controllers
@@ -26,7 +28,7 @@ namespace orienteering_backend.Controllers
 
         //greate new track
         //POST
-        [Authorize]
+       // [Authorize]
         [HttpPost("createTrack")]
         public async Task<Guid> CreateTrack(TrackDto trackDto)
         {
@@ -56,47 +58,41 @@ namespace orienteering_backend.Controllers
         
         //list of all tracks of a user
         [HttpGet("getTracks")]
-        public async Task<Array> GetTracksByUserId(string userId)
+        public async Task<List<TrackDto>> GetTracksByUserId(string userId)
         {
-            //Guid UserId = new Guid(userInfo.Id);
-            Console.WriteLine($"\n\nuser id før tracksUserId {userId}\n\n");
-
             var UserId =  new Guid(userId);
             var tracks = await _mediator.Send(new GetTrack.Request(UserId));
-            Console.WriteLine($"\n\n\n{tracks}");
-            //Console.WriteLine(tracks.Count);
-            Console.WriteLine(tracks.Length);
-            Console.WriteLine("slutt");
             return tracks;
         }
 
         [HttpGet("getCheckpoints")]
-        public async Task<List<Checkpoint>> GetCheckponitsOfTrack(string trackId)
+        public async Task<List<CheckpointDto>> 
+            OfTrack(string trackId)
         {
 
             Guid trackGuid= new Guid(trackId);
-            var checkpoints = await _trackService.GetCheckponitsForTrack(trackGuid);
+            var checkpoints = await _trackService.GetCheckpointsForTrack(trackGuid);
             return checkpoints;
 
         }
 
         [HttpGet("getTrack")]
-        public async Task<Track> GetSingleTrack(string trackId)
+        public async Task<TrackDto> GetSingleTrack(string trackId)
         {
 
             Guid trackGuid = new Guid(trackId);
-            Track track = await _mediator.Send(new GetSingleTrack.Request(trackGuid));
+            TrackDto trackDto = await _mediator.Send(new GetSingleTrack.Request(trackGuid));
 
-            return track;
+            return trackDto;
 
         }
 
         [HttpGet("getCheckpoint")]
-        public async Task<Checkpoint> GetSingleCheckpoint(string checkpointId)
+        public async Task<CheckpointDto> GetSingleCheckpoint(string checkpointId)
         {
 
             Guid CheckpointId = new Guid(checkpointId);
-            Checkpoint checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(CheckpointId));
+            CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(CheckpointId));
 
             return checkpoint;
 
