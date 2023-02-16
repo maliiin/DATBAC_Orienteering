@@ -75,9 +75,4 @@ namespace orienteering_backend.Controllers
         }
     }
 
-
-    public class Tester
-    {
-        public string Id { get; set; }
-    }
 }
