@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+//fiks, not in use???
 
 //hook to ensure that the user is signed in,
 //redirect to login if not
