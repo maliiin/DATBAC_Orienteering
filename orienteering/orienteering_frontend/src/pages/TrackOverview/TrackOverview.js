@@ -50,7 +50,7 @@ export default function TrackOverview() {
                 </TrackInfo>
         ));
     }
-
+    //
     //dette gjør at brukerid lastes
     useEffect(() => {
 
@@ -67,13 +67,10 @@ export default function TrackOverview() {
             };
 
         };
-        //verdi = isAuthenticated();
-        //console.log(verdi);
+
 
         isAuthenticated().then(result => { setRender(result) });
-        //setRender(isAuthenticated());
-        //isAuthenticated();
-        //isAuthenticated().then(res => console.log(res));
+
         loadUserId();
         
         
