@@ -9,6 +9,7 @@ export default function CheckpointInfo(props) {
     const navigate = useNavigate();
 
 
+
     //display spesific track
     const showCheckpoint = (event) => {
         //fix- skal det være track/id/checkpoint/id??

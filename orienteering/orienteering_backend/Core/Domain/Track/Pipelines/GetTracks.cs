@@ -8,7 +8,7 @@ using orienteering_backend.Core.Domain.Track.Dto;
 
 namespace orienteering_backend.Core.Domain.Track.Pipelines;
 
-public static class GetTrack
+public static class GetTracks
 {
     public record Request(
         Guid UserId) : IRequest<List<TrackDto>>;
@@ -25,6 +25,7 @@ public static class GetTrack
         public async Task<List<TrackDto>> Handle(Request request, CancellationToken cancellationToken)
        // public async Task<List<Track>> Handle(Request request, CancellationToken cancellationToken)
         {
+
             var tracks = await _db.Tracks
                                          .Where(t => t.UserId == request.UserId)
                                          .ToArrayAsync(cancellationToken);//ToListAsync();
