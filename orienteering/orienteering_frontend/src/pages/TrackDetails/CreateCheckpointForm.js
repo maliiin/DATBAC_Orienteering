@@ -38,7 +38,7 @@ export default function CreateCheckpointForm(props) {
             body: JSON.stringify(checkpointInfo)
         };
 
-        const response = await fetch('/api/track/createCheckpoint', requestOptions);
+        const response = await fetch('/api/checkpoint/createCheckpoint', requestOptions);
         return response;
 
 
