@@ -8,6 +8,7 @@ using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint;
+using Microsoft.AspNetCore.Authorization;
 
 namespace orienteering_backend.Controllers
 {
@@ -27,6 +28,7 @@ namespace orienteering_backend.Controllers
 
         //greate new track
         //POST
+       // [Authorize]
         [HttpPost("createTrack")]
         public async Task<Guid> CreateTrack(TrackDto trackDto)
         {
@@ -59,7 +61,7 @@ namespace orienteering_backend.Controllers
         public async Task<List<TrackDto>> GetTracksByUserId(string userId)
         {
             var UserId =  new Guid(userId);
-            var tracks = await _mediator.Send(new GetTrack.Request(UserId));
+            var tracks = await _mediator.Send(new GetTracks.Request(UserId));
             return tracks;
         }
 
@@ -71,6 +73,28 @@ namespace orienteering_backend.Controllers
             Guid trackGuid= new Guid(trackId);
             var checkpoints = await _trackService.GetCheckpointsForTrack(trackGuid);
             return checkpoints;
+
+        }
+
+        [HttpGet("getTrack")]
+        public async Task<TrackDto> GetSingleTrack(string trackId)
+        {
+
+            Guid trackGuid = new Guid(trackId);
+            TrackDto trackDto = await _mediator.Send(new GetSingleTrack.Request(trackGuid));
+
+            return trackDto;
+
+        }
+
+        [HttpGet("getCheckpoint")]
+        public async Task<CheckpointDto> GetSingleCheckpoint(string checkpointId)
+        {
+
+            Guid CheckpointId = new Guid(checkpointId);
+            CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(CheckpointId));
+
+            return checkpoint;
 
         }
     }
