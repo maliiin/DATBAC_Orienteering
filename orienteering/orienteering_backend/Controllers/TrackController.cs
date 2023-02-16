@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Track.Pipelines;
-using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Authentication;
 using Microsoft.AspNetCore.Identity;
 using orienteering_backend.Core.Domain.Track.Services;
 using orienteering_backend.Core.Domain.Track.Dto;
+using orienteering_backend.Core.Domain.Checkpoint.Dto;
+using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
+using orienteering_backend.Core.Domain.Checkpoint;
 
 namespace orienteering_backend.Controllers
 {
@@ -54,26 +56,20 @@ namespace orienteering_backend.Controllers
         
         //list of all tracks of a user
         [HttpGet("getTracks")]
-        public async Task<Array> GetTracksByUserId(string userId)
+        public async Task<List<TrackDto>> GetTracksByUserId(string userId)
         {
-            //Guid UserId = new Guid(userInfo.Id);
-            Console.WriteLine($"\n\nuser id før tracksUserId {userId}\n\n");
-
             var UserId =  new Guid(userId);
             var tracks = await _mediator.Send(new GetTrack.Request(UserId));
-            Console.WriteLine($"\n\n\n{tracks}");
-            //Console.WriteLine(tracks.Count);
-            Console.WriteLine(tracks.Length);
-            Console.WriteLine("slutt");
             return tracks;
         }
 
         [HttpGet("getCheckpoints")]
-        public async Task<List<Checkpoint>> GetCheckponitsOfTrack(string trackId)
+        public async Task<List<CheckpointDto>> 
+            OfTrack(string trackId)
         {
 
             Guid trackGuid= new Guid(trackId);
-            var checkpoints = await _trackService.GetCheckponitsForTrack(trackGuid);
+            var checkpoints = await _trackService.GetCheckpointsForTrack(trackGuid);
             return checkpoints;
 
         }

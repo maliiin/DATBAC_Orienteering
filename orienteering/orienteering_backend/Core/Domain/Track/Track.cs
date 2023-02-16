@@ -1,4 +1,5 @@
 ﻿//using orienteering_backend.SharedKernel;
+using orienteering_backend.Core.Domain.Checkpoint;
 
 namespace orienteering_backend.Core.Domain.Track
 {
@@ -14,12 +15,12 @@ namespace orienteering_backend.Core.Domain.Track
         public Guid UserId { get; set; }
 
         public string Name { get; set; }
-        public List<Checkpoint> CheckpointList { get; set; } = new();
+        //public List<Guid> CheckpointList { get; set; } = new();
 
-        public void AddCheckpoint(Checkpoint checkpoint)
-        {
-                CheckpointList.Add(checkpoint);
-        }
+        //public void AddCheckpoint(Guid checkpointId)
+        //{
+        //        CheckpointList.Add(checkpointId);
+        //}
     }
 
 }
