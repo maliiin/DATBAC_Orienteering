@@ -31,14 +31,13 @@ public static class CreateCheckpoint
         public async Task<Guid> Handle(Request request, CancellationToken cancellationToken)
         {
 
-            var newCheckpoint = new Checkpoint(request.checkpointDto.Title);
+            var newCheckpoint = new Checkpoint(request.checkpointDto.Title, request.checkpointDto.GameId, request.checkpointDto.TrackId);
             //await _db.Checkpoints.AddAsync(newCheckpoint);
             //var track = await _db.Tracks.FirstOrDefaultAsync(t => t.Id == request.checkpointDto.TrackId);
             //if (track != null)
             //{
             //    track.AddCheckpoint(newCheckpoint.Id);
             //}
-            newCheckpoint.TrackId = request.checkpointDto.TrackId;
             await _db.Checkpoints.AddAsync(newCheckpoint);
             await _db.SaveChangesAsync(cancellationToken);
             // publishing event 
