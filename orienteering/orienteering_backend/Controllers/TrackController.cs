@@ -8,6 +8,8 @@ using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint;
 using Microsoft.AspNetCore.Authorization;
+using orienteering_backend.Core.Domain.Quiz.Dto;
+using orienteering_backend.Core.Domain.Quiz.Pipelines;
 
 namespace orienteering_backend.Controllers
 {
@@ -54,6 +56,38 @@ namespace orienteering_backend.Controllers
             return trackDto;
 
         }
+
+        //fiks flytt denne
+
+        [HttpPost("addQuizQuestion")]
+        public async Task<bool> AddQuizQuestion(QuizQuestionDto quizQuestionDto)//, Guid quizId)
+        {
+            Console.WriteLine("inni her! track!!!\n\n\n\n\n\n");
+            //var status = await _mediator.Send(new AddQuizQuestion.Request(quizQuestionDto, quizId));
+            //return status;
+            return true;
+        }
+
+        [HttpGet("test")]
+        public async Task<IdentityUser> TestGet(string k)
+        {
+            Console.WriteLine($"Test {k}");
+            Console.WriteLine("ddjdjjdjd\n\n\n\n\n\n\n");
+
+            var t = new IdentityUser();
+            t.UserName = "test111111111111111";
+            return t;
+        }
+
+
+        [HttpGet("getQuiz")]
+        public async Task<QuizDto> GetQuiz(string quizId)
+        {
+            var QuizId = new Guid(quizId);
+            var quizDto = await _mediator.Send(new GetQuiz.Request(QuizId));
+            return quizDto;
+        }
+
 
     }
 

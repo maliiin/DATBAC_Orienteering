@@ -9,6 +9,7 @@
         }
         public string Question { get; set; }
         public List<Option> Options { get; set; } = new();
+
         public int CorrectOption { get; set; }
     }
 }

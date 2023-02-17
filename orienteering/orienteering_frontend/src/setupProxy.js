@@ -1,11 +1,13 @@
 ﻿const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const context = [
-    "/weatherforecast",
-    "/api/user",  
-    "/api/qrcode",
-    "/api/track",
-    "/api/checkpoint"
+    //"/api/user",
+    //"/api/qrcode",
+    //"/api/track",
+    //"/api/checkpoint",
+    //"/api/quiz"
+
+    "/api/"
 
 ];
 

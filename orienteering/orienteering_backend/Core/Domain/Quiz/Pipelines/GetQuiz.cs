@@ -33,7 +33,7 @@ public static class GetQuiz
                 throw new Exception("Quiz not found");
             }
             var dtoList = new List<QuizQuestionDto>();
-            for (var i=0; i<Quiz.QuizQuestions.Count; i++)
+            for (var i = 0; i < Quiz.QuizQuestions.Count; i++)
             {
                 var quizQuestion = Quiz.QuizQuestions[i];
                 var dtoElement = new QuizQuestionDto(quizQuestion.Question, quizQuestion.CorrectOption);

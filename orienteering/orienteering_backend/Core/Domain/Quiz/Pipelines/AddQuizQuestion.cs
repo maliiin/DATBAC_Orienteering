@@ -11,8 +11,7 @@ namespace orienteering_backend.Core.Domain.Quiz.Pipelines;
 public static class AddQuizQuestion
 {
     public record Request(
-        QuizQuestionDto QuizQuestionDto, 
-        Guid QuizId
+        InputCreateQuestionDto inputCreateQuestionDto
         ) : IRequest<bool>;
 
 
@@ -28,14 +27,20 @@ public static class AddQuizQuestion
         }
         public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
         {
-            var Quiz = await _db.Quiz.FirstOrDefaultAsync(q => q.Id == request.QuizId, cancellationToken);
+            var Quiz = await _db.Quiz.FirstOrDefaultAsync(q => q.Id == request.inputCreateQuestionDto.QuizId, cancellationToken);
             if (Quiz == null)
             {
                 return false;
             }
-            var quizQuestion = new QuizQuestion(request.QuizQuestionDto.Question, request.QuizQuestionDto.CorrectOption);
-            quizQuestion.Options = request.QuizQuestionDto.Options;
-            Quiz.AddQuizQuestion(quizQuestion); 
+            var quizQuestion = new QuizQuestion(request.inputCreateQuestionDto.Question, request.inputCreateQuestionDto.CorrectOption);
+
+            List<Option> options = new List<Option>();
+            foreach (var dto in request.inputCreateQuestionDto.Options)
+            {
+                options.Append(new Option(dto.Text));
+            }
+            quizQuestion.Options = options;
+            Quiz.AddQuizQuestion(quizQuestion);
             await _db.SaveChangesAsync();
             return true;
         }
