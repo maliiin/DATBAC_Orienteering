@@ -5,7 +5,8 @@ const context = [
     "/api/user",  
     "/api/qrcode",
     "/api/track",
-    "/api/checkpoint"
+    "/api/checkpoint",
+    "/api/quiz"
 
 ];
 

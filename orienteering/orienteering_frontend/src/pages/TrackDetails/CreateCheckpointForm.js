@@ -1,16 +1,19 @@
 import { React, useState, useEffect } from "react";
-import { Button, TextField } from '@mui/material';
 import { Link, redirect, useNavigate } from 'react-router-dom';
+import { useRadioGroup } from '@mui/material/RadioGroup';
+import { Radio, FormLabel, RadioGroup, FormControlLabel, Select, MenuItem, Button, TextField } from '@mui/material';
 
 
 //some info of track, not details
 
 export default function CreateCheckpointForm(props) {
     //props is props.Trackinfo (id, name, userid ...)
+    const [showForm, setShowForm] = useState(false);
+
     const [checkpointInfo, setCheckpointInfo] = useState({
         Title: "",
-        TrackId: ""
-
+        TrackId: "",
+        GameId: 0
     });
 
 
@@ -23,10 +26,8 @@ export default function CreateCheckpointForm(props) {
 
 
     const handleSubmit = async (event) => {
-        //setCheckpointInfo(prevState => { return { ...prevState, UserId: props.trackId } });
-
-        console.log(checkpointInfo.Title)
-        console.log(props.trackId)
+        //setCheckpointInfo(prevState => { return { ...prevState, UserId: props.trackId } })
+        
         event.preventDefault();
 
         const requestOptions = {
@@ -44,27 +45,63 @@ export default function CreateCheckpointForm(props) {
 
     };
 
-    const handleChange = (event) => {
+
+    const changeTitle = (event) => {
         //update state
         setCheckpointInfo({ ...checkpointInfo, [event.target.name]: event.target.value });
     };
 
+    const changeGame = (event) => {
+        //update state
+        setCheckpointInfo({ ...checkpointInfo, [event.target.name]: event.target.value });
+    };
 
+    const changeActivity = (event) => {
+        //setCheckpointInfo({ ...checkpointInfo, [event.target.name]: event.target.value });
+        if (event.target.value === "spill") {
+            setShowForm(true);
+        }
+        else {
+            setShowForm(false);
+        }
+    };
 
 
 
 
     return (<>
         <form onSubmit={handleSubmit}>
-
             <TextField
                 required
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => changeTitle(e)}
                 id="standard-basic" label="Tittel"
                 name="Title"
                 variant="standard"
                 value={checkpointInfo.Title}
             />
+            <br></br>
+            <FormLabel id="demo-controlled-radio-buttons-group">Velg aktivitet</FormLabel>
+            <RadioGroup
+                aria-labelledby="demo-controlled-radio-buttons-group"
+                name="controlled-radio-buttons-group"
+                row
+                onChange={(e) => changeActivity(e)}
+            >
+                <FormControlLabel value="spill" control={<Radio />} label="Spill" />
+                <FormControlLabel value="quiz" control={<Radio />} label="Quiz" />
+            </RadioGroup>
+            <FormLabel style={showForm ? {} : { display: 'none' }} id="demo-controlled-radio-buttons-group">Velg spill</FormLabel>
+            <Select style={showForm ? {} : { display: 'none' }} sx={{ m: 1, minWidth: 120 }} size="small"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                onChange={changeGame}
+                name="GameId"
+                value={checkpointInfo.GameId}
+            >
+                <MenuItem value={1}>Spill1</MenuItem>
+                <MenuItem value={2}>Spill2</MenuItem>
+                <MenuItem value={3}>Spill3</MenuItem>
+            </Select>
             <br></br>
             <Button type="submit">Lag post</Button>
         </form>

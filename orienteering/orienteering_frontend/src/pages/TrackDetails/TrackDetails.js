@@ -5,6 +5,7 @@ import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import CheckpointInfo from './CheckpointInfo';
 import CreateCheckpointForm from './CreateCheckpointForm';
+import CheckpointTypeForm from '../../components/CheckpointTypeForm'
 
 
 
