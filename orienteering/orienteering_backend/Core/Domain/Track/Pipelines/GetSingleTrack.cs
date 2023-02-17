@@ -25,7 +25,9 @@ public static class GetSingleTrack
         public async Task<TrackDto> Handle(Request request, CancellationToken cancellationToken)
         // public async Task<List<Track>> Handle(Request request, CancellationToken cancellationToken)
         {
-            var track = await _db.Tracks.Where(t => t.Id == request.trackId).FirstOrDefaultAsync();
+            var track = await _db.Tracks
+                .Where(t => t.Id == request.trackId)
+                .FirstOrDefaultAsync();
 
             //var tracks = await _db.Tracks
             //                             .Where(t => t.UserId == request.UserId)
