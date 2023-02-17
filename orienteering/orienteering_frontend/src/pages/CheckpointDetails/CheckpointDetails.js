@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
+import DropdownMenu from '../../components/DropdownMenu';
 
 
 //page
@@ -64,7 +65,9 @@ export default function CheckpointDetails() {
 
     if (render) {
 
-        return <h1>post id {params.checkpointId}</h1>;
+        return <>
+            <h1>post id {params.checkpointId}</h1>;
+        </>
 
     };
 };

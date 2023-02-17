@@ -9,8 +9,8 @@ function DropdownMenu() {
 
             <Dropdown.Menu>
                 <Dropdown.Item href="#/action-1">Game1</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Game2 action</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Game3 else</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Game2</Dropdown.Item>
+                <Dropdown.Item href="#/action-3">Game3</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
     );
