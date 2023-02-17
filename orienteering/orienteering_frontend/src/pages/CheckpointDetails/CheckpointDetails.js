@@ -36,7 +36,7 @@ export default function CheckpointDetails() {
             const user = await response.json();
             const userId = user.id;
             console.log(checkpointId);
-            const checkpoint = await fetch("/api/track/getCheckpoint?checkpointId=" + checkpointId).then(r => r.json());
+            const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId).then(r => r.json());
             
             const trackId = checkpoint.trackId;
             console.log(trackId);

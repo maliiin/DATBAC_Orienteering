@@ -4,7 +4,9 @@ const context = [
     "/weatherforecast",
     "/api/user",  
     "/api/qrcode",
-    "/api/track"
+    "/api/track",
+    "/api/checkpoint"
+
 ];
 
 module.exports = function (app) {
