@@ -37,6 +37,7 @@ public static class GetSingleCheckpoint
             //Console.WriteLine($"lengde inni {tracks.Count}");
             CheckpointDto checkpointDto = new(checkpoint.Title, checkpoint.TrackId);
             checkpointDto.Id = checkpoint.Id;
+            checkpointDto.QuizId = checkpoint.QuizId;
 
             return checkpointDto;
         }

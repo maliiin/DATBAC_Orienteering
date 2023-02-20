@@ -2,17 +2,17 @@
 {
     public class InputCreateQuestionDto
     {
-        public InputCreateQuestionDto(string question, List<OptionDto> options, int correctOption, Guid quizId)
+        public InputCreateQuestionDto(string question, List<AlternativeDto> alternatives, int correctAlternative, Guid quizId)
         {
             Question = question;
-            Options = options;
-            CorrectOption = correctOption;
+            Alternatives = alternatives;
+            CorrectAlternative = correctAlternative;
             QuizId = quizId;
         }
 
         public string Question { get; set; }
-        public List<OptionDto> Options { get; set; } = new();
-        public int CorrectOption { get; set; }
+        public List<AlternativeDto> Alternatives { get; set; } = new();
+        public int CorrectAlternative { get; set; }
         public Guid QuizId { get; set; }
 
 

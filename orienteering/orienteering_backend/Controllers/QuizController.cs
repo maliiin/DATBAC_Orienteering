@@ -3,6 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Quiz.Pipelines;
 using orienteering_backend.Core.Domain.Quiz.Dto;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using orienteering_backend.Core.Domain.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using orienteering_backend.Core.Domain.Authentication.Services;
 
 namespace orienteering_backend.Controllers
 {
@@ -25,13 +32,22 @@ namespace orienteering_backend.Controllers
             var quizDto = await _mediator.Send(new GetQuiz.Request(QuizId));
             return quizDto;
         }
+        //fiks
+        //bytt navn på option i db set (til alternative elns)
+        //fiks at du ikke kan lage quiz hvis du har valgt spill
+        //fiks hardkoding av quiz id i addQuizQuestion
+
 
         [HttpPost("addQuizQuestion")]
-        public async Task<bool> AddQuizQuestion(InputCreateQuestionDto inputQuizQuestions)
+        public async Task<ActionResult> AddQuizQuestion(InputCreateQuestionDto inputQuizQuestions)
         {
 
             var status = await _mediator.Send(new AddQuizQuestion.Request(inputQuizQuestions));
-            return status;
+            if (status) { 
+                return NotFound(); 
+            };
+            //fiks returtypen her!!!
+            return Created("Added quiz question.", null);
         }
 
 

@@ -1,36 +1,41 @@
 import { TextField, FormGroup, Box, Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import {useParams} from "react-router-dom"; 
 
 
 export default function AddQuizQuestion() {
+    const params = useParams();
+    //const [quizId, setQuizId] = useState("";)
+    //const CheckpointId = params.checkpointId;
+    console.log(params.checkpointId);
     //fiks hardkodet quizid
     const [questionInfo, setQuestionInfo] = useState({
         Question: "",
-        QuizId: "08db1019-cac8-4445-8a85-7195fce75e20",
-        Options: [{
+        QuizId: "",//"08db1019-cac8-4445-8a85-7195fce75e20",
+        Alternatives: [{
             Id: 1,
             Text: ""
         }, {
             Id: 2,
             Text: ""
             }],
-        CorrectOption: 2
+        CorrectAlternative: 2
 
     });
 
     const [count, setCount] = useState(2);
 
     //adds one more field for option
-    const handleAddOption = (event) => {
+    const handleAddAlternative = (event) => {
         //event.PreventDefault();
 
-        //update optionslist to contain one more element
-        let newItems = questionInfo.Options.slice();
+        //update alternativeslist to contain one more element
+        let newItems = questionInfo.Alternatives.slice();
         newItems.push({
             Id: count + 1,
             Text: ""
         });
-        setQuestionInfo({ ...questionInfo, Options: newItems });
+        setQuestionInfo({ ...questionInfo, Alternatives: newItems });
         setCount(count + 1);
 
 
@@ -48,7 +53,7 @@ export default function AddQuizQuestion() {
         //console.log(q);
 
 
-        const requestOptions = {
+        const requestAlternatives = {
 
             method: 'POST',
             headers: {
@@ -59,21 +64,21 @@ export default function AddQuizQuestion() {
 
         };
 
-        var response = await fetch('/api/quiz/addQuizQuestion', requestOptions);
+        var response = await fetch('/api/quiz/addQuizQuestion', requestAlternatives);
         console.log(response);
         //return false;
 
     }
 
-    const handleOptionChange = (event, i) => {
+    const handleAlternativeChange = (event, i) => {
         //make copy
-        const newItems = questionInfo.Options.slice();
+        const newItems = questionInfo.Alternatives.slice();
 
         //utdate value
         newItems[i].Text = event.target.value;
 
         //update original list to include the updated value
-        setQuestionInfo({ ...questionInfo, Options: newItems });
+        setQuestionInfo({ ...questionInfo, Alternatives: newItems });
 
     }
 
@@ -83,6 +88,23 @@ export default function AddQuizQuestion() {
         //update state
         setQuestionInfo({ ...questionInfo, [event.target.name]: event.target.value });
     };
+
+
+    useEffect(() => {
+
+        //load quiz id
+        const GetQuizId = async () => {
+            const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId).then(res => res.json());
+            setQuestionInfo({ ...questionInfo, QuizId: checkpoint.QuizId });
+            console.log(checkpoint);
+
+        }
+
+        GetQuizId();
+
+    },[]);
+
+
 
     return (<>
         <Box
@@ -108,7 +130,7 @@ export default function AddQuizQuestion() {
                 id="standard-basic" label="CorrectOption"
                 name="CorrectOption"
                 variant="standard"
-                value={questionInfo.CorrectOption}
+                value={questionInfo.CorrectAlternative}
             />
 
 
@@ -117,12 +139,12 @@ export default function AddQuizQuestion() {
                     <TextField
                         key={index +"-"+ element}
                         required
-                        onChange={newVal => handleOptionChange(newVal, index)}
+                        onChange={newVal => handleAlternativeChange(newVal, index)}
                         //onChange={(e) => handleOptionChange(e)}
                         id="standard-basic" label="Svaralternativ"
                         name="Options"
                         variant="standard"
-                        value={questionInfo.Options[index].Text}
+                        value={questionInfo.Alternatives[index].Text}
                     //value={questionInfo.Options}
                     />
 
@@ -132,7 +154,7 @@ export default function AddQuizQuestion() {
             </>
 
 
-            <Button variant="contained" onClick={handleAddOption}>Legg til alternativ</Button>
+            <Button variant="contained" onClick={handleAddAlternative}>Legg til alternativ</Button>
             <Button type="submit" variant="contained" onClick={handleSubmit}>Legg til spørsmål</Button>
 
         </Box>

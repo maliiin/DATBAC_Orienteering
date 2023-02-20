@@ -1,8 +1,8 @@
 ﻿namespace orienteering_backend.Core.Domain.Quiz.Dto
 {
-    public class OptionDto
+    public class AlternativeDto
     {
-        public OptionDto(string text)
+        public AlternativeDto(string text)
         {
             Text = text;
         }

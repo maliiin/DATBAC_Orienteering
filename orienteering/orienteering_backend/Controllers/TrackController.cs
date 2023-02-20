@@ -57,38 +57,6 @@ namespace orienteering_backend.Controllers
 
         }
 
-        //fiks flytt denne
-
-        [HttpPost("addQuizQuestion")]
-        public async Task<bool> AddQuizQuestion(QuizQuestionDto quizQuestionDto)//, Guid quizId)
-        {
-            Console.WriteLine("inni her! track!!!\n\n\n\n\n\n");
-            //var status = await _mediator.Send(new AddQuizQuestion.Request(quizQuestionDto, quizId));
-            //return status;
-            return true;
-        }
-
-        [HttpGet("test")]
-        public async Task<IdentityUser> TestGet(string k)
-        {
-            Console.WriteLine($"Test {k}");
-            Console.WriteLine("ddjdjjdjd\n\n\n\n\n\n\n");
-
-            var t = new IdentityUser();
-            t.UserName = "test111111111111111";
-            return t;
-        }
-
-
-        [HttpGet("getQuiz")]
-        public async Task<QuizDto> GetQuiz(string quizId)
-        {
-            var QuizId = new Guid(quizId);
-            var quizDto = await _mediator.Send(new GetQuiz.Request(QuizId));
-            return quizDto;
-        }
-
-
     }
 
 }

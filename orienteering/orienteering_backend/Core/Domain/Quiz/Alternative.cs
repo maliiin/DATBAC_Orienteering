@@ -1,8 +1,8 @@
 ﻿namespace orienteering_backend.Core.Domain.Quiz
 {
-    public class Option
+    public class Alternative
     {
-        public Option(string text) {
+        public Alternative(string text) {
             Text = text;
         }
         public int Id { get; set; }

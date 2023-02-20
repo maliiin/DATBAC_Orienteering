@@ -32,14 +32,14 @@ public static class AddQuizQuestion
             {
                 return false;
             }
-            var quizQuestion = new QuizQuestion(request.inputCreateQuestionDto.Question, request.inputCreateQuestionDto.CorrectOption);
+            var quizQuestion = new QuizQuestion(request.inputCreateQuestionDto.Question, request.inputCreateQuestionDto.CorrectAlternative);
 
-            List<Option> options = new List<Option>();
-            foreach (var dto in request.inputCreateQuestionDto.Options)
+            List<Alternative> alternatives = new List<Alternative>();
+            foreach (var dto in request.inputCreateQuestionDto.Alternatives)
             {
-                options.Append(new Option(dto.Text));
+                alternatives.Append(new Alternative(dto.Text));
             }
-            quizQuestion.Options = options;
+            quizQuestion.Alternatives = alternatives;
             Quiz.AddQuizQuestion(quizQuestion);
             await _db.SaveChangesAsync();
             return true;
