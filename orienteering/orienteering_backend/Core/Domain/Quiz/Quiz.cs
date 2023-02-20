@@ -2,6 +2,11 @@
 {
     public class Quiz
     {
+        public Quiz(Guid id)
+        {
+            Id = id;
+        }
+
         public Guid Id { get; set; }
         public List<QuizQuestion> QuizQuestions { get; set; } = new();
 

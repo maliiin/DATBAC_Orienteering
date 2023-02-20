@@ -2,7 +2,7 @@
 {
     public class InputCreateQuestionDto
     {
-        public InputCreateQuestionDto(string question, List<AlternativeDto> alternatives, int correctAlternative, Guid quizId)
+        public InputCreateQuestionDto(string question, List<AlternativeDto> alternatives, int correctAlternative, string quizId)
         {
             Question = question;
             Alternatives = alternatives;
@@ -13,7 +13,7 @@
         public string Question { get; set; }
         public List<AlternativeDto> Alternatives { get; set; } = new();
         public int CorrectAlternative { get; set; }
-        public Guid QuizId { get; set; }
+        public string QuizId { get; set; }
 
 
     }

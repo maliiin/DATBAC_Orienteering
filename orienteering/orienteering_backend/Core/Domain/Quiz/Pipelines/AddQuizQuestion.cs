@@ -27,9 +27,14 @@ public static class AddQuizQuestion
         }
         public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
         {
-            var Quiz = await _db.Quiz.FirstOrDefaultAsync(q => q.Id == request.inputCreateQuestionDto.QuizId, cancellationToken);
+            Guid QuizGuid = new Guid(request.inputCreateQuestionDto.QuizId);
+            var Quiz = await _db.Quiz
+                .FirstOrDefaultAsync(q => q.Id == QuizGuid, cancellationToken);
+
+
             if (Quiz == null)
             {
+                Console.WriteLine("quiz er null");
                 return false;
             }
             var quizQuestion = new QuizQuestion(request.inputCreateQuestionDto.Question, request.inputCreateQuestionDto.CorrectAlternative);
@@ -37,9 +42,11 @@ public static class AddQuizQuestion
             List<Alternative> alternatives = new List<Alternative>();
             foreach (var dto in request.inputCreateQuestionDto.Alternatives)
             {
-                alternatives.Append(new Alternative(dto.Text));
+                alternatives.Add(new Alternative(dto.Id, dto.Text));
+                //alternatives.Append(new Alternative(dto.Text));
             }
             quizQuestion.Alternatives = alternatives;
+
             Quiz.AddQuizQuestion(quizQuestion);
             await _db.SaveChangesAsync();
             return true;

@@ -43,8 +43,9 @@ namespace orienteering_backend.Controllers
         {
 
             var status = await _mediator.Send(new AddQuizQuestion.Request(inputQuizQuestions));
-            if (status) { 
-                return NotFound(); 
+            Console.WriteLine(status);
+            if (!status) { 
+                return NotFound("Could not add Quiz question"); 
             };
             //fiks returtypen her!!!
             return Created("Added quiz question.", null);

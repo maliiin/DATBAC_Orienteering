@@ -2,7 +2,8 @@
 {
     public class Alternative
     {
-        public Alternative(string text) {
+        public Alternative( int id, string text) {
+            Id = id;
             Text = text;
         }
         public int Id { get; set; }
