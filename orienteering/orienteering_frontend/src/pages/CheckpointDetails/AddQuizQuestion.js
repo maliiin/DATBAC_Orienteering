@@ -108,6 +108,7 @@ export default function AddQuizQuestion() {
 
     return (<>
         <Box
+            onSubmit={handleSubmit }
             //kilde. akuratt sx= er fra https://mui.com/material-ui/react-text-field/ 17.02
             component="form"
             sx={{
@@ -125,23 +126,24 @@ export default function AddQuizQuestion() {
 
             <TextField
                 required
-                type="number"
+                type='number'
                 onChange={(e) => handleChange(e)}
-                id="standard-basic" label="CorrectOption"
-                name="CorrectOption"
+                id="standard-basic" label="CorrectAlternative"
+                name="CorrectAlternative"
                 variant="standard"
                 value={questionInfo.CorrectAlternative}
+                InputProps={{ inputProps: { min: 1, max: questionInfo.Alternatives.length } }}
             />
 
 
             <>
                 {[...Array(count)].map((element, index) => (
                     <TextField
-                        key={index +"-"+ element}
+                        key={index + "-" + element}
                         required
                         onChange={newVal => handleAlternativeChange(newVal, index)}
                         //onChange={(e) => handleOptionChange(e)}
-                        id="standard-basic" label="Svaralternativ"
+                        id="standard-basic" label={"Svaralternativ (" + (index+ 1) + ")"}
                         name="Options"
                         variant="standard"
                         value={questionInfo.Alternatives[index].Text}
@@ -155,7 +157,7 @@ export default function AddQuizQuestion() {
 
 
             <Button variant="contained" onClick={handleAddAlternative}>Legg til alternativ</Button>
-            <Button type="submit" variant="contained" onClick={handleSubmit}>Legg til spørsmål</Button>
+            <Button type="submit" variant="contained">Legg til spørsmål</Button>
 
         </Box>
 
