@@ -39,32 +39,36 @@ public static class AddQuizQuestion
                 return false;
             }
 
-            var test = new QuizQuestion("dette er spm111112", 2);
+            //dette er testing som virker
+            //var test = new QuizQuestion("dette er spm111112", 2);
             //test.Alternatives.Add(new Alternative(1, "dette er alternativ1"));
             //test.Alternatives.Add(new Alternative(2, "dette er alternativ2122"));
 
             //test uten å sette id
-            test.Alternatives.Add(new Alternative(1, "dette er alternativ1"));
-            test.Alternatives.Add(new Alternative(2, "dette er alternativ2122"));
+            //test.Alternatives.Add(new Alternative(1, "dette er alternativ1"));
+            //test.Alternatives.Add(new Alternative(2, "dette er alternativ2122"));
 
-            Quiz.AddQuizQuestion(test);
+            //Quiz.AddQuizQuestion(test);
 
-            //var quizQuestion = new QuizQuestion(request.inputCreateQuestionDto.Question, request.inputCreateQuestionDto.CorrectAlternative);
 
-            //List<Alternative> alternatives = new List<Alternative>();
-            //foreach (var dto in request.inputCreateQuestionDto.Alternatives)
-            //{
-            //    alternatives.Add(new Alternative(dto.Id, dto.Text));
-            //    //alternatives.Append(new Alternative(dto.Text));
-            //}
-            //quizQuestion.Alternatives = alternatives;
-            //Console.WriteLine($"the whole quiz {Quiz}\n\n");
 
-            //Quiz.AddQuizQuestion(quizQuestion);
+
+            var quizQuestion = new QuizQuestion(request.inputCreateQuestionDto.Question, request.inputCreateQuestionDto.CorrectAlternative);
+
+            List<Alternative> alternatives = new List<Alternative>();
+            foreach (var dto in request.inputCreateQuestionDto.Alternatives)
+            {
+                alternatives.Add(new Alternative(dto.Id, dto.Text));
+                //alternatives.Append(new Alternative(dto.Text));
+            }
+            quizQuestion.Alternatives = alternatives;
+            Console.WriteLine($"the whole quiz {Quiz}\n\n");
+
+            Quiz.AddQuizQuestion(quizQuestion);
 
             //try
             //{
-               await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             //    // move on
             //}
             //catch (DbUpdateException)
