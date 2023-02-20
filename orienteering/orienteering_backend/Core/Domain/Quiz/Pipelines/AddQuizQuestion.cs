@@ -44,8 +44,8 @@ public static class AddQuizQuestion
             //test.Alternatives.Add(new Alternative(2, "dette er alternativ2122"));
 
             //test uten å sette id
-            test.Alternatives.Add(new Alternative( "dette er alternativ1"));
-            test.Alternatives.Add(new Alternative( "dette er alternativ2122"));
+            test.Alternatives.Add(new Alternative(1, "dette er alternativ1"));
+            test.Alternatives.Add(new Alternative(2, "dette er alternativ2122"));
 
             Quiz.AddQuizQuestion(test);
 
