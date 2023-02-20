@@ -95,7 +95,7 @@ export default function AddQuizQuestion() {
         //load quiz id
         const GetQuizId = async () => {
             const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId).then(res => res.json());
-            setQuestionInfo({ ...questionInfo, QuizId: checkpoint.QuizId });
+            setQuestionInfo({ ...questionInfo, QuizId: checkpoint.quizId });
             console.log(checkpoint);
 
         }
