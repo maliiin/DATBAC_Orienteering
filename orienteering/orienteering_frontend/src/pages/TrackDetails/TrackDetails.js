@@ -42,7 +42,8 @@ export default function TrackDetails() {
             const userId = user.id;
             const trackId = params.trackId;
 
-            const getTrackUrl = "https://localhost:3000/api/track/getTrack?trackId=" + trackId;
+            
+            const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
 
             const result = await fetch(getTrackUrl);
             const track = await result.json();
