@@ -71,7 +71,6 @@ export default function CheckpointDetails() {
 
             const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
 
-            //const getTrackUrl = "https://localhost:3000/api/track/getTrack?trackId=" + trackId;
 
             const result = await fetch(getTrackUrl);
             const track = await result.json();
