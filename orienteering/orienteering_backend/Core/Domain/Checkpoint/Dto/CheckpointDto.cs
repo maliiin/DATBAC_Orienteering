@@ -14,6 +14,8 @@
         public Guid TrackId { get; set; }
 
         public int GameId { get; set; }
+        public Guid? QuizId { get; set; }
+
 
     }
 }

@@ -2,15 +2,15 @@
 {
     public class QuizQuestion
     {
-        public QuizQuestion(string question, int correctOption) 
+        public QuizQuestion(string question, int correctAlternative) 
         { 
             Question= question;
-            CorrectOption= correctOption;
+            CorrectAlternative= correctAlternative;
         }
         public Guid Id { get; set; }
         public string Question { get; set; }
-        public List<Option> Options { get; set; } = new();
-        public int CorrectOption { get; set; }
+        public List<Alternative> Alternatives { get; set; } = new();
+        public int CorrectAlternative { get; set; }
         
     }
 }

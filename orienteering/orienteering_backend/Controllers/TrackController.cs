@@ -8,6 +8,8 @@ using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint;
 using Microsoft.AspNetCore.Authorization;
+using orienteering_backend.Core.Domain.Quiz.Dto;
+using orienteering_backend.Core.Domain.Quiz.Pipelines;
 
 namespace orienteering_backend.Controllers
 {

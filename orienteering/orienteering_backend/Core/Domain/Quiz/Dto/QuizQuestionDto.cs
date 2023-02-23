@@ -2,13 +2,14 @@
 {
     public class QuizQuestionDto
     {
-        public QuizQuestionDto(string question, int correctOption) {
+        public QuizQuestionDto(string question, int correctAlternative) {
             Question = question;
-            CorrectOption = correctOption;
+            CorrectAlternative = correctAlternative;
 
         }
         public string Question { get; set; }
-        public List<Option> Options { get; set; } = new();
-        public int CorrectOption { get; set; }
+        public List<Alternative> Alternative { get; set; } = new();
+
+        public int CorrectAlternative { get; set; }
     }
 }

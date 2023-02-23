@@ -4,7 +4,9 @@ import React, { useState } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
-import DropdownMenu from '../../components/DropdownMenu';
+import AddQuizQuestion from "./AddQuizQuestion";
+//
+//import DropdownMenu from '../../components/DropdownMenu';
 
 
 //page
@@ -14,6 +16,7 @@ export default function CheckpointDetails() {
     //useAuthentication();
     const navigate = useNavigate();
     const [render, setRender] = useState(false);
+    const [hasQuiz, setHasQuiz] = useState(false);
 
 
     const params = useParams();
@@ -38,7 +41,28 @@ export default function CheckpointDetails() {
             const userId = user.id;
             console.log(checkpointId);
             const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId).then(r => r.json());
-            
+
+            console.log(checkpoint.quizId);
+            console.log(typeof (checkpoint.quizId));
+            console.log(checkpoint.gameId);
+
+
+            if (checkpoint.gameId == 0) {
+                setHasQuiz(true);
+
+            };
+            //if (typeof(checkpoint.quizId) !== "undefined") {
+            //    setHasQuiz(true);
+            //    console.log("checkpoint quizid is not null");
+               
+            //} else {
+               
+
+            //    console.log("den er undefined");
+
+            //}
+
+
             const trackId = checkpoint.trackId;
             console.log(trackId);
 
@@ -63,12 +87,23 @@ export default function CheckpointDetails() {
 
     }, []);
 
-    if (render) {
 
-        return <>
-            <h1>post id {params.checkpointId}</h1>;
-        </>
+    console.log(hasQuiz);
+    if (render && hasQuiz) {
 
+        return (<>
+            <h3>post id {params.checkpointId}</h3>
+            <p>du har valgt quiz</p>
+
+
+            <AddQuizQuestion></AddQuizQuestion>
+        </>);
+
+    } else if(render) {
+        return (<>
+            <h3>post id {params.checkpointId}</h3>
+            <p> du har valgt spill</p>
+        </>);
     };
 };
 
