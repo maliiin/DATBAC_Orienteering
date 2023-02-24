@@ -38,6 +38,7 @@ public static class GetQuiz
                 var quizQuestion = Quiz.QuizQuestions[i];
                 var dtoElement = new QuizQuestionDto(quizQuestion.Question, quizQuestion.CorrectAlternative);
                 dtoElement.Alternative = quizQuestion.Alternatives;
+                dtoElement.QuizQuestionId = quizQuestion.Id;
                 dtoList.Add(dtoElement);
             }
             var quizDto = new QuizDto(Quiz.Id, dtoList);

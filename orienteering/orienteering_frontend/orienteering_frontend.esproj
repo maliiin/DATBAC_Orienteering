@@ -15,12 +15,6 @@
     <Folder Include="src\pages\CheckpointDetails\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptConfiguration Remove="src\pages\NewFolder\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="src\pages\NewFolder\**" />
-  </ItemGroup>
-  <ItemGroup>
     <TypeScriptConfiguration Remove="src\pages\NewFolder1\**" />
   </ItemGroup>
   <ItemGroup>
