@@ -12,9 +12,6 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\build</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\pages\CheckpointDetails\" />
-  </ItemGroup>
-  <ItemGroup>
     <TypeScriptConfiguration Remove="src\pages\NewFolder\**" />
   </ItemGroup>
   <ItemGroup>

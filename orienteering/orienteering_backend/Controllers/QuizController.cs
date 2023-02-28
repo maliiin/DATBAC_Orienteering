@@ -32,11 +32,6 @@ namespace orienteering_backend.Controllers
             var quizDto = await _mediator.Send(new GetQuiz.Request(QuizId));
             return quizDto;
         }
-        //fiks
-        //bytt navn på option i db set (til alternative elns)
-        //fiks at du ikke kan lage quiz hvis du har valgt spill
-        //fiks hardkoding av quiz id i addQuizQuestion
-
 
         [HttpPost("addQuizQuestion")]
         public async Task<ActionResult> AddQuizQuestion(InputCreateQuestionDto inputQuizQuestions)
@@ -53,17 +48,6 @@ namespace orienteering_backend.Controllers
             return Created("Added quiz question.", null);
         }
 
-
-        [HttpGet("test")]
-        public async Task<IdentityUser> TestGet(string k)
-        {
-            Console.WriteLine($"Test {k}");
-            Console.WriteLine("ddjdjjdjd\n\n\n\n\n\n\n");
-
-            var t= new IdentityUser();
-            t.UserName= "test111111111111111";
-            return t;
-        }
 
     }
 }

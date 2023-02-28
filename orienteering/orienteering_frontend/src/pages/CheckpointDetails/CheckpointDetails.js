@@ -5,6 +5,7 @@ import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import AddQuizQuestion from "./AddQuizQuestion";
+import DisplayQuiz from "./DisplayQuiz";
 //
 //import DropdownMenu from '../../components/DropdownMenu';
 
@@ -51,17 +52,6 @@ export default function CheckpointDetails() {
                 setHasQuiz(true);
 
             };
-            //if (typeof(checkpoint.quizId) !== "undefined") {
-            //    setHasQuiz(true);
-            //    console.log("checkpoint quizid is not null");
-               
-            //} else {
-               
-
-            //    console.log("den er undefined");
-
-            //}
-
 
             const trackId = checkpoint.trackId;
             console.log(trackId);
@@ -98,6 +88,7 @@ export default function CheckpointDetails() {
 
 
             <AddQuizQuestion></AddQuizQuestion>
+            <DisplayQuiz></DisplayQuiz>
         </>);
 
     } else if(render) {
