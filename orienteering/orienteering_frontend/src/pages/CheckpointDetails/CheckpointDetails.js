@@ -6,6 +6,9 @@ import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import AddQuizQuestion from "./AddQuizQuestion";
 import DisplayQuiz from "./DisplayQuiz";
+import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
+
+
 //
 //import DropdownMenu from '../../components/DropdownMenu';
 
@@ -18,6 +21,8 @@ export default function CheckpointDetails() {
     const navigate = useNavigate();
     const [render, setRender] = useState(false);
     const [hasQuiz, setHasQuiz] = useState(false);
+    const [QuizId, setQuizId] = useState("");
+
 
 
     const params = useParams();
@@ -49,7 +54,10 @@ export default function CheckpointDetails() {
 
 
             if (checkpoint.gameId == 0) {
+                //this checkpoint has quiz
                 setHasQuiz(true);
+                console.log(checkpoint.quizId);
+                setQuizId(checkpoint.quizId);
 
             };
 
@@ -83,12 +91,13 @@ export default function CheckpointDetails() {
     if (render && hasQuiz) {
 
         return (<>
+            <AccessAlarm />
             <h3>post id {params.checkpointId}</h3>
             <p>du har valgt quiz</p>
 
 
             <AddQuizQuestion></AddQuizQuestion>
-            <DisplayQuiz></DisplayQuiz>
+            <DisplayQuiz quizId={QuizId}></DisplayQuiz>
         </>);
 
     } else if(render) {
