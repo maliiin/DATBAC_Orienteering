@@ -7,6 +7,7 @@
             CorrectAlternative = correctAlternative;
 
         }
+        public Guid QuizQuestionId { get; set; }
         public string Question { get; set; }
         public List<Alternative> Alternative { get; set; } = new();
 

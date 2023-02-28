@@ -11,8 +11,10 @@ import Unauthorized from "./pages/Unauthorized";
 
 import TrackOverview from "./pages/TrackOverview/TrackOverview";
 import TrackDetails from "./pages/TrackDetails/TrackDetails";
+import QuizPage from "./pages/QuizPage";
 
 import QRCodePage from "./pages/QRCodePage"
+import CheckpointRedirection from "./pages/CheckpointRedirection"
 
 export default function App() {
     const authenticated = false;
@@ -32,15 +34,17 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
-                    <Route path="checkpoint/:checkpointId" element={<CheckpointDetails />} />
+                    <Route path="checkpointdetails/:checkpointId" element={<CheckpointDetails />} />
                     <Route path="login" element={<Login />} />
                     <Route path="*" element={<NoPage />} />
                     <Route path="registration" element={<Registration />} />
                     <Route path="trackoverview" element={<TrackOverview />}  />
                     <Route path="track/:trackId" element={<TrackDetails />} />
-
                     <Route path="qrcodepage" element={<QRCodePage />} />
                     <Route path="unauthorized" element={<Unauthorized />} />
+                    <Route path="checkpoint/quiz/:quizId" element={<QuizPage />} />
+                    <Route path="checkpoint/:checkpointId" element={<CheckpointRedirection />} />
+
 
                 </Route>
             </Routes>

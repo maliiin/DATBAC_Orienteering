@@ -15,7 +15,6 @@ import useAuthentication from "../../hooks/useAuthentication";
 export default function TrackOverview() {
     //const [shouldRender, setShouldRender] = useState(false);
     const [render, setRender] = useState(false);
-    var verdi = "hehehe";
 
     const navigate = useNavigate();
     //gir undefined
