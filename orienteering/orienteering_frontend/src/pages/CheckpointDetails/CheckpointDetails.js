@@ -100,10 +100,10 @@ export default function CheckpointDetails() {
                     <DisplayQuiz quizId={QuizId}></DisplayQuiz>
                 </Grid>
                 <Grid item xs={6}>
+
                     <h4>Legg til flere spørsmål her</h4>
                     <AddQuizQuestion></AddQuizQuestion>
-                </Grid>
-
+                    </Grid>
             </Grid>
         </>);
 
