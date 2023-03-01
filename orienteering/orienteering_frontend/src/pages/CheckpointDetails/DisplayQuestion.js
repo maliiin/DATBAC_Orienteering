@@ -12,23 +12,23 @@ import DeleteIcon from '@mui/icons-material/Delete';
 export default function DisplayQuestion(props) {
 
     return (
-        <div>
+        <Box border="1px solid lightblue;" margin="2px;">
 
             <p>Sporsmal: {props.questionInfo.question}</p>
+            <p>Svaralternativer:</p>
             
             {
-            props.questionInfo.alternative.map((alternative, index) =>
-                
-                    
-                <Box key={index + "-" + alternative.text}>
-                    
-                        <p>{alternative.text}</p>
-                    </Box>
+                props.questionInfo.alternative.map((alternative, index) =>
+
+
+                    <p key={index + "-" + alternative.text} style={{ backgroundColor: props.questionInfo.correctAlternative-1==index ? "lightGreen": "pink" }}>    
+                       {alternative.text}
+                </p>
 
                 
                 )
             }
             
-        </div>
+        </Box>
     );
 }

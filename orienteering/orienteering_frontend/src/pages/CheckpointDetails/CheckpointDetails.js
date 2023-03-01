@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import AddQuizQuestion from "./AddQuizQuestion";
 import DisplayQuiz from "./DisplayQuiz";
 import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 //
@@ -91,10 +92,8 @@ export default function CheckpointDetails() {
     if (render && hasQuiz) {
 
         return (<>
-            <AccessAlarm />
             <h3>post id {params.checkpointId}</h3>
             <p>du har valgt quiz</p>
-
 
             <AddQuizQuestion></AddQuizQuestion>
             <DisplayQuiz quizId={QuizId}></DisplayQuiz>
