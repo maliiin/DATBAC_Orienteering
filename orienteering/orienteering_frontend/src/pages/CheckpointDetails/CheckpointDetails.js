@@ -1,5 +1,6 @@
 import useAuthentication from "../../hooks/useAuthentication";
 import { TextField, Button } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import React, { useState } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
@@ -92,8 +93,18 @@ export default function CheckpointDetails() {
     if (render && hasQuiz) {
 
         return (<>
-            <AddQuizQuestion></AddQuizQuestion>
-            <DisplayQuiz quizId={QuizId}></DisplayQuiz>
+            <Grid container spacing={3} margin="10px">
+                
+                <Grid item xs={6}>
+                    <h4>Oversikt over spørsmål til quiz</h4>
+                    <DisplayQuiz quizId={QuizId}></DisplayQuiz>
+                </Grid>
+                <Grid item xs={6}>
+                    <h4>Legg til flere spørsmål her</h4>
+                    <AddQuizQuestion></AddQuizQuestion>
+                </Grid>
+
+            </Grid>
         </>);
 
     } else if(render) {
