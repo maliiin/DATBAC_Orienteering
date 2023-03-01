@@ -15,5 +15,18 @@
             QuizQuestions.Add(quizQuestion);
         }
 
+        public bool RemoveQuizQuestion(Guid questionId)
+        {
+            Console.WriteLine("skal slette question i klasse");
+            Console.WriteLine(questionId);
+
+            var questionToDelete=QuizQuestions.SingleOrDefault(question=>question.Id== questionId);
+            if (questionToDelete == null) { return false; };
+            _ = QuizQuestions.Remove(questionToDelete);
+            return true;
+            
+
+        }
+
     }
 }

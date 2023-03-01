@@ -30,7 +30,7 @@ export default function DisplayQuiz(props) {
                 //ikke klikker den
 
                 quizQuestions.map((quizQuestion, index) =>
-                    <DisplayQuestion key={index + "-" + quizQuestion.quizQuestionId} questionInfo={quizQuestion}></DisplayQuestion>
+                    <DisplayQuestion key={index + "-" + quizQuestion.quizQuestionId} questionInfo={quizQuestion} quizId={props.quizId}></DisplayQuestion>
                 )
             }
 

@@ -92,9 +92,6 @@ export default function CheckpointDetails() {
     if (render && hasQuiz) {
 
         return (<>
-            <h3>post id {params.checkpointId}</h3>
-            <p>du har valgt quiz</p>
-
             <AddQuizQuestion></AddQuizQuestion>
             <DisplayQuiz quizId={QuizId}></DisplayQuiz>
         </>);

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using orienteering_backend.Core.Domain.Authentication.Services;
+using orienteering_backend.Core.Domain.Quiz.Events;
 
 namespace orienteering_backend.Controllers
 {
@@ -46,6 +47,20 @@ namespace orienteering_backend.Controllers
             };
             //fiks returtypen her!!!
             return Created("Added quiz question.", null);
+        }
+
+        [HttpDelete("deleteQuestion")]
+        public async Task DeleteQuestion(string questionId, string quizId)
+        {
+            Console.WriteLine("\n\n\n\nn\n\n delete!!!");
+            //fix er dette ok navn på event?? det har jo ikke blitt slettet enda
+            Guid questionGuid=new Guid(questionId);
+            Guid quizGuid = new Guid(quizId);
+
+            //fix sjekk at det er rett bruker som er logget inn for dette
+
+            await _mediator.Publish(new QuizQuestionDeleted(quizGuid, questionGuid));
+
         }
 
 
