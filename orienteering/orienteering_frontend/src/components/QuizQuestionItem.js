@@ -12,20 +12,19 @@ export default function QuizQuestionItem(props) {
         //setCheckpointInfo({ ...checkpointInfo, [event.target.name]: event.target.value });
 
     };
-    const alternativeList = props.alternativeList;
 
     useEffect(() => {
         //console.log("gjort")
         //console.log(props.id)
-        setAlternatives(alternativeList.map((alternative, index) =>
-            <QuizQuestionAlternative data={alternative}></QuizQuestionAlternative>
-
+        setAlternatives(props.alternativeList.map((alternative, index) =>
+            //<QuizQuestionAlternative key={index + "_"} data={alternative}></QuizQuestionAlternative>
+            <FormControlLabel value={alternative.text} key={alternative.id + "-" + index} control={<Radio />} label={alternative.text} />
 
         ));
-    }, []);
+    }, [props.alternativeList]);
 
     return <>
-         
+
         <div> {alternatives} </div>
 
     </>
