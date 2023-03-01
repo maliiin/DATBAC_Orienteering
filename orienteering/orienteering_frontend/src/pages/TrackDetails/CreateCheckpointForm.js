@@ -80,20 +80,20 @@ export default function CreateCheckpointForm(props) {
                 value={checkpointInfo.Title}
             />
             <br></br>
-            <FormLabel id="demo-controlled-radio-buttons-group">Velg aktivitet</FormLabel>
+            <FormLabel id="radio-buttons-group">Velg aktivitet</FormLabel>
             <RadioGroup
-                aria-labelledby="demo-controlled-radio-buttons-group"
-                name="controlled-radio-buttons-group"
+                aria-labelledby="radio-buttons-group"
+                name="radio-buttons-group"
                 row
                 onChange={(e) => changeActivity(e)}
             >
                 <FormControlLabel value="spill" control={<Radio />} label="Spill" />
                 <FormControlLabel value="quiz" control={<Radio />} label="Quiz" />
             </RadioGroup>
-            <FormLabel style={showForm ? {} : { display: 'none' }} id="demo-controlled-radio-buttons-group">Velg spill</FormLabel>
+            <FormLabel style={showForm ? {} : { display: 'none' }} id="radio-buttons-group">Velg spill</FormLabel>
             <Select style={showForm ? {} : { display: 'none' }} sx={{ m: 1, minWidth: 120 }} size="small"
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="select-label"
+                id="select"
                 onChange={changeGame}
                 name="GameId"
                 value={checkpointInfo.GameId}

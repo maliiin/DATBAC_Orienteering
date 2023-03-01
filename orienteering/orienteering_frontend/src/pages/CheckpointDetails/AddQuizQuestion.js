@@ -1,6 +1,8 @@
 import { TextField, FormGroup, Box, Button } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import {useParams} from "react-router-dom"; 
+import { useParams } from "react-router-dom"; 
+import Grid from '@mui/material/Grid';
+
 
 
 export default function AddQuizQuestion() {
@@ -45,14 +47,6 @@ export default function AddQuizQuestion() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        
-        //var test = await fetch('/api/track/test?k=heihei');//.then(res=>res.json());
-
-        //console.log(test);
-        //var q = await test.json();
-        //console.log(q);
-
-
         const requestAlternatives = {
 
             method: 'POST',
@@ -71,7 +65,7 @@ export default function AddQuizQuestion() {
     }
 
     const handleAlternativeChange = (event, i) => {
-        //make copy
+        //make copy of list
         const newItems = questionInfo.Alternatives.slice();
 
         //utdate value
@@ -84,7 +78,6 @@ export default function AddQuizQuestion() {
 
 
     const handleChange = (event) => {
-        console.log("change");
         //update state
         setQuestionInfo({ ...questionInfo, [event.target.name]: event.target.value });
     };
@@ -107,6 +100,7 @@ export default function AddQuizQuestion() {
 
 
     return (<>
+
         <Box
             onSubmit={handleSubmit }
             //kilde. akuratt sx= er fra https://mui.com/material-ui/react-text-field/ 17.02
@@ -115,51 +109,70 @@ export default function AddQuizQuestion() {
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}>
 
-            <TextField
-                required
-                onChange={(e) => handleChange(e)}
-                id="standard-basic" label="Spørsmål"
-                name="Question"
-                variant="standard"
-                value={questionInfo.Question}
-            />
+            <Grid container spacing={6}>
 
-            <TextField
-                required
-                type='number'
-                onChange={(e) => handleChange(e)}
-                id="standard-basic" label="CorrectAlternative"
-                name="CorrectAlternative"
-                variant="standard"
-                value={questionInfo.CorrectAlternative}
-                InputProps={{ inputProps: { min: 1, max: questionInfo.Alternatives.length } }}
-            />
+                <Grid item sx={4}>
+                    <Button variant="contained" onClick={handleAddAlternative}>Legg til alternativ</Button>
+                </Grid>
+
+                <Grid item sx={4}>
+                    <Button type="submit" variant="contained">Legg til spørsmål</Button>
+                </Grid>
+
+            </Grid>
+            <Grid container >
+                <Grid item sx={6 }>
+                    <TextField
+                        required
+                        onChange={(e) => handleChange(e)}
+                        id="standard-basic" label="Spørsmål"
+                        name="Question"
+                        variant="standard"
+                        value={questionInfo.Question}
+                        />
+                </Grid>
+
+
+                <Grid item sx={6}>
+
+                    <TextField
+                        required
+                        type='number'
+                        onChange={(e) => handleChange(e)}
+                        id="standard-basic" label="CorrectAlternative"
+                        name="CorrectAlternative"
+                        variant="standard"
+                        value={questionInfo.CorrectAlternative}
+                        InputProps={{ inputProps: { min: 1, max: questionInfo.Alternatives.length } }}
+                    />
+
+                </Grid>
 
 
             <>
-                {[...Array(count)].map((element, index) => (
-                    <TextField
-                        key={index + "-" + element}
-                        required
-                        onChange={newVal => handleAlternativeChange(newVal, index)}
-                        //onChange={(e) => handleOptionChange(e)}
-                        id="standard-basic" label={"Svaralternativ (" + (index+ 1) + ")"}
-                        name="Options"
-                        variant="standard"
-                        value={questionInfo.Alternatives[index].Text}
-                    //value={questionInfo.Options}
-                    />
+                    {[...Array(count)].map((element, index) => (
+                        <Grid item sx={6 }>
+                            <TextField
+                                key={index + "-" + element}
+                                required
+                                onChange={newVal => handleAlternativeChange(newVal, index)}
+                                //onChange={(e) => handleOptionChange(e)}
+                                id="standard-basic" label={"Svaralternativ (" + (index+ 1) + ")"}
+                                name="Options"
+                                variant="standard"
+                                value={questionInfo.Alternatives[index].Text}
+                            //value={questionInfo.Options}
+                            />
+                        </Grid>
 
                     ))
                     }
                     
             </>
 
+            </Grid>
 
-            <Button variant="contained" onClick={handleAddAlternative}>Legg til alternativ</Button>
-            <Button type="submit" variant="contained">Legg til spørsmål</Button>
-
-        </Box>
+            </Box>
 
     </>);
 }

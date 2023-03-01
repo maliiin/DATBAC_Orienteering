@@ -19,9 +19,9 @@ export default function CheckpointTypeForm() {
 
     return<>
         <FormControl>
-            <FormLabel id="demo-controlled-radio-buttons-group">Velg aktivitet</FormLabel>
+            <FormLabel id="radio-buttons-group">Velg aktivitet</FormLabel>
             <RadioGroup
-                aria-labelledby="demo-controlled-radio-buttons-group"
+                aria-labelledby="radio-buttons-group"
                 name="controlled-radio-buttons-group"
                 row
                 onChange={(e) => handleChange(e)}
@@ -29,10 +29,10 @@ export default function CheckpointTypeForm() {
                 <FormControlLabel value="spill" control={<Radio />} label="Spill" />
                 <FormControlLabel value="quiz" control={<Radio />} label="Quiz" />
             </RadioGroup>
-            <FormLabel style={showForm ? {} : { display: 'none' }} id="demo-controlled-radio-buttons-group">Velg spill</FormLabel>
+            <FormLabel style={showForm ? {} : { display: 'none' }} id="radio-buttons-group">Velg spill</FormLabel>
             <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="simple-select-label"
+                id="simple-select"
                 onChange={handleChange}
             >
                 <MenuItem value={10}>Ten</MenuItem>

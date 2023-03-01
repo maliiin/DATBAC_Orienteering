@@ -1,10 +1,16 @@
 import useAuthentication from "../../hooks/useAuthentication";
 import { TextField, Button } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import React, { useState } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import AddQuizQuestion from "./AddQuizQuestion";
+import DisplayQuiz from "./DisplayQuiz";
+import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+
 //
 //import DropdownMenu from '../../components/DropdownMenu';
 
@@ -17,6 +23,8 @@ export default function CheckpointDetails() {
     const navigate = useNavigate();
     const [render, setRender] = useState(false);
     const [hasQuiz, setHasQuiz] = useState(false);
+    const [QuizId, setQuizId] = useState("");
+
 
 
     const params = useParams();
@@ -48,20 +56,12 @@ export default function CheckpointDetails() {
 
 
             if (checkpoint.gameId == 0) {
+                //this checkpoint has quiz
                 setHasQuiz(true);
+                console.log(checkpoint.quizId);
+                setQuizId(checkpoint.quizId);
 
             };
-            //if (typeof(checkpoint.quizId) !== "undefined") {
-            //    setHasQuiz(true);
-            //    console.log("checkpoint quizid is not null");
-               
-            //} else {
-               
-
-            //    console.log("den er undefined");
-
-            //}
-
 
             const trackId = checkpoint.trackId;
             console.log(trackId);
@@ -93,11 +93,18 @@ export default function CheckpointDetails() {
     if (render && hasQuiz) {
 
         return (<>
-            <h3>post id {params.checkpointId}</h3>
-            <p>du har valgt quiz</p>
+            <Grid container spacing={3} margin="10px">
+                
+                <Grid item xs={6}>
+                    <h4>Oversikt over spørsmål til quiz</h4>
+                    <DisplayQuiz quizId={QuizId}></DisplayQuiz>
+                </Grid>
+                <Grid item xs={6}>
 
-
-            <AddQuizQuestion></AddQuizQuestion>
+                    <h4>Legg til flere spørsmål her</h4>
+                    <AddQuizQuestion></AddQuizQuestion>
+                    </Grid>
+            </Grid>
         </>);
 
     } else if(render) {

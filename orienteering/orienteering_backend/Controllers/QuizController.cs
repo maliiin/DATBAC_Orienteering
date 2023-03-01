@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using orienteering_backend.Core.Domain.Authentication.Services;
+using orienteering_backend.Core.Domain.Quiz.Events;
 
 namespace orienteering_backend.Controllers
 {
@@ -32,11 +33,6 @@ namespace orienteering_backend.Controllers
             var quizDto = await _mediator.Send(new GetQuiz.Request(QuizId));
             return quizDto;
         }
-        //fiks
-        //bytt navn på option i db set (til alternative elns)
-        //fiks at du ikke kan lage quiz hvis du har valgt spill
-        //fiks hardkoding av quiz id i addQuizQuestion
-
 
         [HttpPost("addQuizQuestion")]
         public async Task<ActionResult> AddQuizQuestion(InputCreateQuestionDto inputQuizQuestions)
@@ -53,17 +49,20 @@ namespace orienteering_backend.Controllers
             return Created("Added quiz question.", null);
         }
 
-
-        [HttpGet("test")]
-        public async Task<IdentityUser> TestGet(string k)
+        [HttpDelete("deleteQuestion")]
+        public async Task DeleteQuestion(string questionId, string quizId)
         {
-            Console.WriteLine($"Test {k}");
-            Console.WriteLine("ddjdjjdjd\n\n\n\n\n\n\n");
+            Console.WriteLine("\n\n\n\nn\n\n delete!!!");
+            //fix er dette ok navn på event?? det har jo ikke blitt slettet enda
+            Guid questionGuid=new Guid(questionId);
+            Guid quizGuid = new Guid(quizId);
 
-            var t= new IdentityUser();
-            t.UserName= "test111111111111111";
-            return t;
+            //fix sjekk at det er rett bruker som er logget inn for dette
+
+            await _mediator.Publish(new QuizQuestionDeleted(quizGuid, questionGuid));
+
         }
+
 
     }
 }
