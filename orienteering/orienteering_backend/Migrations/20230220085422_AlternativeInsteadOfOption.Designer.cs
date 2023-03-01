@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using orienteering_backend.Infrastructure.Data;
 
@@ -10,9 +11,11 @@ using orienteering_backend.Infrastructure.Data;
 namespace orienteeringbackend.Migrations
 {
     [DbContext(typeof(OrienteeringContext))]
-    partial class OrienteeringContextModelSnapshot : ModelSnapshot
+    [Migration("20230220085422_AlternativeInsteadOfOption")]
+    partial class AlternativeInsteadOfOption
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,11 +179,8 @@ namespace orienteeringbackend.Migrations
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Quiz.Alternative", b =>
                 {
-                    b.Property<Guid>("UniqueId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<Guid?>("QuizQuestionId")
@@ -190,7 +190,7 @@ namespace orienteeringbackend.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("UniqueId");
+                    b.HasKey("Id");
 
                     b.HasIndex("QuizQuestionId");
 

@@ -52,7 +52,10 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     // cookie settings
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    //fiks fix sett ned tiden!!
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(35);
+
+    //options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
     //fix- lag skikkelig url- blir videresendt hvis ikke
     options.LoginPath = "/login";

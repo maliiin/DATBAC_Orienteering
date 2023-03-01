@@ -11,7 +11,8 @@ import { useNavigate } from "react-router";
 export default function useAuthorizeTrack(trackId) {
     const navigate = useNavigate();
     //const [data, setData] = useState(null);
-    const checkUserUrl = "https://localhost:3000/api/user/getSignedInUserId";
+    const checkUserUrl = "/api/user/getSignedInUserId";
+
     //var data;
     let lovlig = false;
 
@@ -24,7 +25,8 @@ export default function useAuthorizeTrack(trackId) {
             const data = await fetch(checkUserUrl).then(res=>res.json());
             var userId = data.id;
 
-            const getTrackUrl = "https://localhost:3000/api/track/getTrack?trackId=" + trackId;
+            const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
+
             const result = await fetch(getTrackUrl);
             console.log(result);
             const track = await result.json();

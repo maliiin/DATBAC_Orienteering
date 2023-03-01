@@ -34,8 +34,7 @@ namespace orienteering_backend.Controllers
 
 
         [HttpGet("getCheckpoints")]
-        public async Task<List<CheckpointDto>>
-            OfTrack(string trackId)
+        public async Task<List<CheckpointDto>> GetCheckpointsOfTrack(string trackId)
         {
 
             Guid trackGuid = new Guid(trackId);

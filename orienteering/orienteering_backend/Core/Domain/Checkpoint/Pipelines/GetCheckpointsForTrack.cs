@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Track;
-using orienteering_backend.Core.Domain.Track.Events;
 using orienteering_backend.Infrastructure.Data;
 
 namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines

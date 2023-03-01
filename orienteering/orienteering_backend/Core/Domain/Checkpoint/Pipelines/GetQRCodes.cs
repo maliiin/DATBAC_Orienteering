@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using orienteering_backend.Core.Domain.Track.Events;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Infrastructure.Data;
 //Kilder: CampusEats lab fra dat240

@@ -27,17 +27,18 @@ public static class GetQuiz
         }
         public async Task<QuizDto> Handle(Request request, CancellationToken cancellationToken)
         {
-            var Quiz = await _db.Quiz.Include(q => q.QuizQuestions).FirstOrDefaultAsync(q => q.Id == request.QuizId, cancellationToken);
+            var Quiz = await _db.Quiz.Include(q => q.QuizQuestions).ThenInclude(a => a.Alternatives).FirstOrDefaultAsync(q => q.Id == request.QuizId, cancellationToken);
             if (Quiz == null)
             {
                 throw new Exception("Quiz not found");
             }
             var dtoList = new List<QuizQuestionDto>();
-            for (var i=0; i<Quiz.QuizQuestions.Count; i++)
+            for (var i = 0; i < Quiz.QuizQuestions.Count; i++)
             {
                 var quizQuestion = Quiz.QuizQuestions[i];
-                var dtoElement = new QuizQuestionDto(quizQuestion.Question, quizQuestion.CorrectOption);
-                dtoElement.Options = quizQuestion.Options;
+                var dtoElement = new QuizQuestionDto(quizQuestion.Question, quizQuestion.CorrectAlternative);
+                dtoElement.Alternative = quizQuestion.Alternatives;
+                dtoElement.QuizQuestionId = quizQuestion.Id;
                 dtoList.Add(dtoElement);
             }
             var quizDto = new QuizDto(Quiz.Id, dtoList);

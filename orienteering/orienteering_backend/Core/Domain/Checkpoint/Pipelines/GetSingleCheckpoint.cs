@@ -35,8 +35,10 @@ public static class GetSingleCheckpoint
             //                             .Include(t => t.CheckpointList)
             //                             .ToArrayAsync(cancellationToken);//ToListAsync();
             //Console.WriteLine($"lengde inni {tracks.Count}");
-            CheckpointDto checkpointDto = new(checkpoint.Title, checkpoint.TrackId);
+            Console.WriteLine(checkpoint.GameId);
+            CheckpointDto checkpointDto = new(checkpoint.Title, checkpoint.TrackId, checkpoint.GameId);
             checkpointDto.Id = checkpoint.Id;
+            checkpointDto.QuizId = checkpoint.QuizId;
 
             return checkpointDto;
         }
