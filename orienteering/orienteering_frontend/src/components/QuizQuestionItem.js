@@ -17,11 +17,11 @@ export default function QuizQuestionItem(props) {
         //console.log("gjort")
         //console.log(props.id)
         setAlternatives(props.alternativeList.map((alternative, index) =>
-            <QuizQuestionAlternative key={index + "_"} data={alternative}></QuizQuestionAlternative>
-
+            //<QuizQuestionAlternative key={index + "_"} data={alternative}></QuizQuestionAlternative>
+            <FormControlLabel value={alternative.text} key={alternative.id + "-" + index} control={<Radio />} label={alternative.text} />
 
         ));
-    }, []);
+    }, [props.alternativeList]);
 
     return <>
 

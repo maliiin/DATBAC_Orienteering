@@ -1,4 +1,4 @@
-import { TextField, Button, FormControl, FormLabel, RadioGroup } from '@mui/material';
+import { TextField, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import React, { useState } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
@@ -11,42 +11,78 @@ export default function QuizPage() {
 
     const [quizQuestionList, setQuizQuestionList] = useState("");
     const [currentQuizQuestion, setCurrentQuizQuestion] = useState("");
+    const [chosenAlternative, setChosenAlternative] = useState("");
+    const [currentQuizQuestionIndex, setCurrentQuizQuestionIndex] = useState(0);
 
     const [trackInfo, setTrackInfo] = useState({
         Id: params.quizId
     });
 
-    const currentQuizQuestionIndex = 0;
 
     useEffect(() => {
         setTrackInfo(prevState => { return { ...prevState, Id: params.quizId } });
         fetchQuiz();
     }, []);
 
-    function updateAnswer() {
-        console.log("svar oppdatert");
-    }
+    useEffect(() => {
+        showQuizQuestion();
+    }, [currentQuizQuestionIndex, quizQuestionList]);
+
 
     async function fetchQuiz() {
         var url = "/api/quiz/getQuiz?quizId=" + trackInfo.Id;
         var quiz = await fetch(url).then(res => res.json());
         setQuizQuestionList(quiz.quizQuestions);
-        console.log(quiz.quizQuestions.alternative);
+    }
+
+    function handleChange(event) {
+        console.log("endret radiovalg");
+        console.log(event.target.value);
+        setChosenAlternative(event.target.value);
+    }
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        if (currentQuizQuestionIndex + 1 < quizQuestionList.length) {
+            var newIndex = currentQuizQuestionIndex + 1;
+            setCurrentQuizQuestionIndex(newIndex);
+        }
+        else {
+            console.log("Alle spørsmål besvart");
+        }
+        console.log(currentQuizQuestionIndex);
+    }
+
+    function showQuizQuestion() {
+        if (quizQuestionList != "") {
+            if (typeof quizQuestionList[currentQuizQuestionIndex].alternative != 'undefined') {
+                var currentAlternatives = quizQuestionList[currentQuizQuestionIndex].alternative;
+                setCurrentQuizQuestion(
+                    <form onSubmit={handleSubmit}>
+                        <FormLabel id="question">{quizQuestionList[currentQuizQuestionIndex].question}</FormLabel>
+                        <RadioGroup
+                            aria-labelledby="question"
+                            name="radio-buttons-group"
+                            onChange={handleChange}
+                        >
+                            
+                            <QuizQuestionItem alternativeList={currentAlternatives}>
+                            </QuizQuestionItem>
+
+                        </RadioGroup>
+                        <Button type="submit" variant="contained">Besvar spørsmål</Button>
+                    </form>
+                );
+            }
+        }
     }
 
 
 
     return (<>
-        <FormControl>
-            <FormLabel id="question">Gender</FormLabel>
-            <RadioGroup
-                aria-labelledby="question"
-                name="radio-buttons-group"
-            >
-                <QuizQuestionItem onChange={updateAnswer} alternativeList={quizQuestionList[currentQuizQuestionIndex].alternative}>
-                </QuizQuestionItem>
-            </RadioGroup>
-        </FormControl>
+        {currentQuizQuestion}
+        
+        
     </>
     );
 
