@@ -25,8 +25,6 @@ namespace orienteering_backend.Controllers
         {
             //fiks objekt her i parameter
 
-            //Guid TrackId =new Guid(track.Id);
-            //Console.WriteLine("inni create checkpoint");
             var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(checkpointDto));
 
             return newCheckPointId;
@@ -34,6 +32,7 @@ namespace orienteering_backend.Controllers
 
 
         [HttpGet("getCheckpoints")]
+        //get all checkpoints that belongs to a track
         public async Task<List<CheckpointDto>> GetCheckpointsOfTrack(string trackId)
         {
 
