@@ -5,7 +5,8 @@ import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import CheckpointInfo from './CheckpointInfo';
 import CreateCheckpointForm from './CreateCheckpointForm';
-import CheckpointTypeForm from '../../components/CheckpointTypeForm'
+import Grid from '@mui/material/Grid';
+
 
 
 
@@ -45,7 +46,7 @@ export default function TrackDetails() {
             setTrackInfo(prevState => { return { ...prevState, Id: params.trackId } });
 
 
-            
+
             const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
 
             const result = await fetch(getTrackUrl);
@@ -76,7 +77,7 @@ export default function TrackDetails() {
         ));
     }
 
-    
+
 
     useEffect(() => {
         loadCheckpoints();
@@ -91,12 +92,20 @@ export default function TrackDetails() {
 
     if (render == true) {
         return (<>
-            <CreateCheckpointForm updateCheckpointList={loadCheckpoints} trackId={trackInfo.Id}></CreateCheckpointForm>
-
             <Button onClick={showQrcodes}>Vis QR-koder</Button>
 
-            <h3>Her er en oversikt over alle orienteringsløypene dine</h3>
-            <div>{checkpointList}</div>
+            <Grid container spacing={3} margin="10px">
+                
+                <Grid item xs={6}>
+                    <h4>Her er en oversikt over alle postene til denne loypen</h4>
+                    <div>{checkpointList}</div>
+                </Grid>
+
+                <Grid item xs={6}>
+                    <CreateCheckpointForm updateCheckpointList={loadCheckpoints} trackId={trackInfo.Id}></CreateCheckpointForm>
+                </Grid>
+
+            </Grid>
         </>);
     };
 }

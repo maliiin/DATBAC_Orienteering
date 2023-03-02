@@ -84,6 +84,7 @@ export default function CreateCheckpointForm(props) {
 
     return (
         <>
+            <h4>Legg til ny post</h4>
             <Box onSubmit={handleSubmit} component="form">
                 <TextField
                     required

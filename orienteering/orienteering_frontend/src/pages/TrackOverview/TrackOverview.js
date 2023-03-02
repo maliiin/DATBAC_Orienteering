@@ -1,11 +1,12 @@
-import {  Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { useState, useEffect } from "react";
-import  TrackInfo  from "./TrackInfo";
+import TrackInfo from "./TrackInfo";
 import React from "react";
 import CreateTrackForm from "./CreateTrackForm";
 import { useNavigate } from 'react-router-dom';
 import { redirect } from "react-router-dom";
-import useAuthentication from "../../hooks/useAuthentication";
+import Grid from '@mui/material/Grid';
+
 
 //få returtype fra de ulike hooksene, ikke i use state men i const. så blir det
 //if den og den er true vis dette, pass på at det kun blir en navigate--> kanskje slå sammen to hooks
@@ -20,8 +21,8 @@ export default function TrackOverview() {
     //gir undefined
     //const test = useAuthentication();
 
-    const [userInfo, setUserInfo] = useState ({
-       Id:""
+    const [userInfo, setUserInfo] = useState({
+        Id: ""
     });
 
     const [trackList, setTrackList] = useState("");
@@ -46,8 +47,8 @@ export default function TrackOverview() {
         const data = await fetch("api/track/getTracks?userId=" + userInfo.Id).then(res => res.json());
 
         setList(data.map((trackElement, index) =>
-                <TrackInfo key={trackElement.id + "-" + index} trackInfo={trackElement}>
-                </TrackInfo>
+            <TrackInfo key={trackElement.id + "-" + index} trackInfo={trackElement}>
+            </TrackInfo>
         ));
     }
     //
@@ -72,18 +73,18 @@ export default function TrackOverview() {
         isAuthenticated().then(result => { setRender(result) });
 
         loadUserId();
-        
-        
-    }, []); 
+
+
+    }, []);
 
     useEffect(() => {
-        if (userInfo.Id != "" && typeof(userInfo.Id)!== "undefined" ) {
+        if (userInfo.Id != "" && typeof (userInfo.Id) !== "undefined") {
             console.log("load track--------------");
             console.log(userInfo.Id);
             //console.log("ved load track, user id er" + userInfo.Id);
             loadTrack();
         }
-       
+
     }, [userInfo.Id]);
 
     const test = () => {
@@ -95,10 +96,18 @@ export default function TrackOverview() {
 
         return (
             <>
-                <p>id til brukeren {userInfo.Id}</p>
+                <Grid container spacing={3} margin="10px">
+                    <Grid item xs={6}>
+                        <h4>Liste over loypene dine</h4>
+                        <div>{list}</div>
+                    </Grid>
 
-                <CreateTrackForm updateTracks={loadTrack} id={userInfo.Id}></CreateTrackForm>
-                <div>{list}</div>
+                    <Grid item xs={6}>
+
+                        <CreateTrackForm updateTracks={loadTrack} id={userInfo.Id}></CreateTrackForm>
+                    </Grid>
+                </Grid>
+
 
             </>
         );
