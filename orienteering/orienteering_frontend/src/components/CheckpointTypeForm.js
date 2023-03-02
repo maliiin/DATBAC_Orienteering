@@ -17,7 +17,7 @@ export default function CheckpointTypeForm() {
         }
     };
 
-    return<>
+    return <>
         <FormControl>
             <FormLabel id="radio-buttons-group">Velg aktivitet</FormLabel>
             <RadioGroup
@@ -29,12 +29,26 @@ export default function CheckpointTypeForm() {
                 <FormControlLabel value="spill" control={<Radio />} label="Spill" />
                 <FormControlLabel value="quiz" control={<Radio />} label="Quiz" />
             </RadioGroup>
+
+
             <FormLabel style={showForm ? {} : { display: 'none' }} id="radio-buttons-group">Velg spill</FormLabel>
+
             <Select
+                
+                
                 labelId="simple-select-label"
                 id="simple-select"
                 onChange={handleChange}
+                renderValue={(selected) => {
+                    if (selected.length === 0) {
+                        return <em>Placeholder</em>;
+                    }
+                    return selected.join(', ');
+                }}
             >
+                <MenuItem value="">
+                    None
+                </MenuItem>
                 <MenuItem value={10}>Ten</MenuItem>
                 <MenuItem value={20}>Twenty</MenuItem>
                 <MenuItem value={30}>Thirty</MenuItem>

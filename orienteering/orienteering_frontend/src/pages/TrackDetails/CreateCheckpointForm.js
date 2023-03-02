@@ -89,14 +89,24 @@ export default function CreateCheckpointForm(props) {
             <FormLabel id="radio-buttons-group">Velg aktivitet</FormLabel>
 
             <RadioGroup
+                required
                 aria-labelledby="radio-buttons-group"
                 name="radio-buttons-group"
                 row
                 onChange={(e) => changeActivity(e)}
             >
 
-                <FormControlLabel value="spill" control={<Radio />} label="Spill" />
-                <FormControlLabel value="quiz" control={<Radio />} label="Quiz" />
+                <FormControlLabel
+                    value="spill"
+                    label="Spill"
+                    control={<Radio required={true} />}
+                />
+
+                <FormControlLabel
+                    value="quiz"
+                    control={<Radio required={true} />}
+                    label="Quiz"
+                />
 
             </RadioGroup>
 

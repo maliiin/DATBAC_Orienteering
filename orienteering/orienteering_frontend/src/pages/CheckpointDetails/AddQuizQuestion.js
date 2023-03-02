@@ -108,8 +108,10 @@ export default function AddQuizQuestion(props) {
             onSubmit={handleSubmit }
             //kilde. akuratt sx= er fra https://mui.com/material-ui/react-text-field/ 17.02
             component="form"
+            sx={{
+                '& .MuiTextField-root': { m: 1, width: '25ch' },
+            }}>
 
-        >
             <Grid container spacing={6}>
 
                 <Grid item sx={4}>
@@ -121,6 +123,7 @@ export default function AddQuizQuestion(props) {
                 </Grid>
 
             </Grid>
+
             <Grid container spacing={3 } >
                 <Grid item sx={6 }>
                     <TextField
@@ -179,6 +182,3 @@ export default function AddQuizQuestion(props) {
 }
 
 
-//<>
-//    {[...Array(count)].map((element, index) => <p key={index}>heiheihei</p>)}
-//</>
