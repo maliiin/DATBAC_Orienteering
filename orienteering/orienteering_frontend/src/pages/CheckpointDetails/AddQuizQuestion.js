@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 
 
 
-export default function AddQuizQuestion() {
+export default function AddQuizQuestion(props) {
     const params = useParams();
     //const [quizId, setQuizId] = useState("";)
     //const CheckpointId = params.checkpointId;
@@ -61,6 +61,9 @@ export default function AddQuizQuestion() {
         var response = await fetch('/api/quiz/addQuizQuestion', requestAlternatives);
         console.log(response);
         //return false;
+
+        //update value to render quizquestions
+        props.setQuizChanged(props.quizChanged * -1);
 
     }
 
@@ -120,7 +123,8 @@ export default function AddQuizQuestion() {
                 </Grid>
 
             </Grid>
-            <Grid container >
+
+            <Grid container spacing={3 } >
                 <Grid item sx={6 }>
                     <TextField
                         required
@@ -151,9 +155,9 @@ export default function AddQuizQuestion() {
 
             <>
                     {[...Array(count)].map((element, index) => (
-                        <Grid item sx={6 }>
+                        <Grid item sx={6} key={index + "-" + element}>
                             <TextField
-                                key={index + "-" + element}
+                                
                                 required
                                 onChange={newVal => handleAlternativeChange(newVal, index)}
                                 //onChange={(e) => handleOptionChange(e)}
@@ -178,6 +182,3 @@ export default function AddQuizQuestion() {
 }
 
 
-//<>
-//    {[...Array(count)].map((element, index) => <p key={index}>heiheihei</p>)}
-//</>

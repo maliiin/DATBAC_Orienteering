@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
-import QuizQuestionItem from '../components/QuizQuestionItem';
+import QuizQuestionItem from './QuizQuestionItem';
 export default function QuizPage() {
     //kan være greit å få inn checkpointid slik at det senere blir mulig å registrere at noen har vært på checkpointet, lagre score osv...
 

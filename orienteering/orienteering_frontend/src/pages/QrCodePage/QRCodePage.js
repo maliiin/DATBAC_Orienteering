@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import QRContainer from '../components/QRContainer';
+import QRContainer from './QRContainer';
 import { useLocation } from 'react-router-dom';
 
 function QRCodePage() {

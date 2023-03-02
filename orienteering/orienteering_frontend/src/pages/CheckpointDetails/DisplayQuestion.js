@@ -3,16 +3,19 @@ import { TextField, Button, Box } from '@mui/material';
 import React, { useState } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
-import { useEffect } from "react";
-import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
-import DeleteIcon from '@mui/icons-material/Delete';
+
 
 
 export default function DisplayQuestion(props) {
 
-    const deleteQuestion = async() => {
-        console.log("g");
-        await fetch('/api/quiz/deleteQuestion?questionId=' + props.questionInfo.quizQuestionId+'&quizId='+props.quizId, { method: 'DELETE' });
+    const deleteQuestion = async () => {
+        const url = '/api/quiz/deleteQuestion?';
+        const parameter= 'questionId=' + props.questionInfo.quizQuestionId + '&quizId=' + props.quizId;
+        await fetch(url + parameter, { method: 'DELETE' });
+
+        //update value to render quizquestions
+        props.setQuizChanged(props.quizChanged * -1);
+        
 
     }
 
@@ -28,7 +31,8 @@ export default function DisplayQuestion(props) {
                     <p
                         key={index + "-" + alternative.text}
                         style={{ backgroundColor: props.questionInfo.correctAlternative - 1 == index ? "lightGreen" : "pink" }}
-                    >    
+                    >  
+                        
                         {alternative.text}
 
                     </p>                
