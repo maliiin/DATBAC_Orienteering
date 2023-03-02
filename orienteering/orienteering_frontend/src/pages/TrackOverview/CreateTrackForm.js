@@ -23,6 +23,7 @@ export default function CreateTrackForm(props) {
 
     //display spesific track
     const handleSubmit = async (event) => {
+        
         setTrackInfo(prevState => { return { ...prevState, UserId: props.id } });
 
         console.log(trackInfo.id)
@@ -39,6 +40,8 @@ export default function CreateTrackForm(props) {
         };
 
         const response = await fetch('/api/track/createTrack', requestOptions);
+
+        props.updateTracks();
         //if (response.status.su
         return response;
 

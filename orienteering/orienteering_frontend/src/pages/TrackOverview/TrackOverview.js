@@ -86,7 +86,9 @@ export default function TrackOverview() {
        
     }, [userInfo.Id]);
 
-
+    const test = () => {
+        console.log("dette er test");
+    }
     console.log(render);
     if (render == true) {
         //if (verdi == true) {
@@ -95,7 +97,7 @@ export default function TrackOverview() {
             <>
                 <p>id til brukeren {userInfo.Id}</p>
 
-                <CreateTrackForm id={userInfo.Id}></CreateTrackForm>
+                <CreateTrackForm updateTracks={loadTrack} id={userInfo.Id}></CreateTrackForm>
                 <div>{list}</div>
 
             </>

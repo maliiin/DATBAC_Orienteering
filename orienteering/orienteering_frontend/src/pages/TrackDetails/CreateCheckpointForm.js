@@ -40,6 +40,10 @@ export default function CreateCheckpointForm(props) {
         };
 
         const response = await fetch('/api/checkpoint/createCheckpoint', requestOptions);
+
+        //update checkpointlist of parent
+        props.updateCheckpointList();
+
         return response;
 
 
@@ -79,18 +83,26 @@ export default function CreateCheckpointForm(props) {
                 variant="standard"
                 value={checkpointInfo.Title}
             />
+
             <br></br>
+
             <FormLabel id="radio-buttons-group">Velg aktivitet</FormLabel>
+
             <RadioGroup
                 aria-labelledby="radio-buttons-group"
                 name="radio-buttons-group"
                 row
                 onChange={(e) => changeActivity(e)}
             >
+
                 <FormControlLabel value="spill" control={<Radio />} label="Spill" />
                 <FormControlLabel value="quiz" control={<Radio />} label="Quiz" />
+
             </RadioGroup>
+
+
             <FormLabel style={showForm ? {} : { display: 'none' }} id="radio-buttons-group">Velg spill</FormLabel>
+
             <Select style={showForm ? {} : { display: 'none' }} sx={{ m: 1, minWidth: 120 }} size="small"
                 labelId="select-label"
                 id="select"
@@ -98,11 +110,15 @@ export default function CreateCheckpointForm(props) {
                 name="GameId"
                 value={checkpointInfo.GameId}
             >
+
                 <MenuItem value={1}>Spill1</MenuItem>
                 <MenuItem value={2}>Spill2</MenuItem>
                 <MenuItem value={3}>Spill3</MenuItem>
+
             </Select>
+
             <br></br>
+
             <Button type="submit">Lag post</Button>
         </form>
     </>);

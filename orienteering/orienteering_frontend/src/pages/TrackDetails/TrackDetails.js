@@ -22,12 +22,13 @@ export default function TrackDetails() {
         Id: params.trackId
     });
 
-    //kanksje flytt alt dette til en hook?
+    //fiks kanksje flytt alt dette til en hook?
     //hook har use effect, blir kalt på som funskjoen her blir kalt.
     useEffect(() => {
         //is authenticated and correct track?
         const isAuthenticated = async () => {
 
+            //check that user is signed in
             const checkUserUrl = "/api/user/getSignedInUserId";
             const response = await fetch(checkUserUrl);
 
@@ -41,6 +42,8 @@ export default function TrackDetails() {
             const user = await response.json();
             const userId = user.id;
             const trackId = params.trackId;
+            setTrackInfo(prevState => { return { ...prevState, Id: params.trackId } });
+
 
             
             const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
@@ -61,10 +64,6 @@ export default function TrackDetails() {
 
     }, []);
 
-
-
-
-
     //get all checkpoints for this id
     const loadCheckpoints = async () => {
         const url = "/api/checkpoint/getCheckpoints?trackId=" + params.trackId;
@@ -74,58 +73,29 @@ export default function TrackDetails() {
         setCheckpointList(data.map((checkpointElement, index) =>
             <CheckpointInfo key={checkpointElement.id + "-" + index} checkpointInfo={checkpointElement}>
             </CheckpointInfo>
-
         ));
     }
 
+    
+
     useEffect(() => {
-        setTrackInfo(prevState => { return { ...prevState, Id: params.trackId } });
         loadCheckpoints();
     }, []);
-
-
-    //const createNewCheckpoint = async () => {
-    //    //console.log(trackInfo);
-    //    const requestOptions = {
-    //        method: 'POST',
-    //        headers: {
-    //            'Content-Type': 'application/json',
-    //            'Accept': 'application/json',
-    //        },
-    //        body: JSON.stringify(trackInfo)
-    //    };
-        
-    //    const response = await fetch('/api/track/createCheckpoint', requestOptions);
-    //    //if (response.status.su
-    //    return response;
-    //}
-
 
     const showQrcodes = async () => {
         const trackid = params.trackId;
         //const link = "/qrcodepage/" + trackid;
         //
         navigate('/qrcodepage', { state: { trackid: trackid } })
-
     }
-
-
-
-    //console.log(params);
-    //return (<>
-    //    <CreateCheckpointForm trackId={trackInfo.Id }></CreateCheckpointForm>
-    //    <p>single track {params.trackId}</p>
-    //    <Button onClick={createNewCheckpoint}>lag checkpoint</Button>
-    //    <Button onClick={showQrcodes}>Vis QR-koder</Button>
-    //    <div>{checkpointList}</div>
-    //</>);
 
     if (render == true) {
         return (<>
-            <CreateCheckpointForm trackId={trackInfo.Id}></CreateCheckpointForm>
-            <p>single track {params.trackId}</p>
+            <CreateCheckpointForm updateCheckpointList={loadCheckpoints} trackId={trackInfo.Id}></CreateCheckpointForm>
+
             <Button onClick={showQrcodes}>Vis QR-koder</Button>
 
+            <h3>Her er en oversikt over alle orienteringsløypene dine</h3>
             <div>{checkpointList}</div>
         </>);
     };
