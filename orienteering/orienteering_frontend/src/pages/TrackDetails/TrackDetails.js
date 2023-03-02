@@ -7,9 +7,6 @@ import CheckpointInfo from './CheckpointInfo';
 import CreateCheckpointForm from './CreateCheckpointForm';
 import Grid from '@mui/material/Grid';
 
-
-
-
 //all details of single track, list of the checkpoints
 
 export default function TrackDetails() {
