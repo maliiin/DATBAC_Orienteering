@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import QRContainer from '../components/QRContainer';
 
 function Home() {
 

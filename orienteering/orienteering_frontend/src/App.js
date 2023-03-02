@@ -1,19 +1,19 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./pages/Layout";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Layout from "./pages/Layout/Layout";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
 
 import CheckpointDetails from "./pages/CheckpointDetails/CheckpointDetails";
-import Registration from "./pages/Registration";
+import Registration from "./pages/Registration/Registration";
 import NoPage from "./pages/NoPage";
-import Unauthorized from "./pages/Unauthorized";
+import Unauthorized from "./pages/Unauthorized/Unauthorized";
 
 import TrackOverview from "./pages/TrackOverview/TrackOverview";
 import TrackDetails from "./pages/TrackDetails/TrackDetails";
-import QuizPage from "./pages/QuizPage";
+import QuizPage from "./pages/QuizPage/QuizPage";
 
-import QRCodePage from "./pages/QRCodePage"
+import QRCodePage from "./pages/QrCodePage/QRCodePage"
 import CheckpointRedirection from "./pages/CheckpointRedirection"
 
 export default function App() {
