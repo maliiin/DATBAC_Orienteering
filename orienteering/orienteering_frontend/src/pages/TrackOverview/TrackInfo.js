@@ -27,13 +27,8 @@ export default function TrackInfo(props) {
     return (<>
         <Button onClick={showTrack}>
             <h6>
-                title {props.trackInfo.trackName} id: {props.trackInfo.trackId} userId: {props.trackInfo.userId} 
+                title {props.trackInfo.trackName} track-id: {props.trackInfo.trackId}
             </h6>
         </Button>
     </>);
 }
-
-//videre:
-//lag onclik som redirecter til enTrack overview
-//lag side som displayer hver enkelt post
-//flytt ting i mappe

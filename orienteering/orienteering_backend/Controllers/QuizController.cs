@@ -62,7 +62,23 @@ namespace orienteering_backend.Controllers
             await _mediator.Publish(new QuizQuestionDeleted(quizGuid, questionGuid));
 
         }
+        [HttpGet("getNextQuizQuestion")]
+        public async Task<NextQuizQuestionDto> GetNextQuizQuestion(string quizId, string quizQuestionIndex)
+        {
+            var QuizId = new Guid(quizId);
+            var QuizQuestionIndex = Int32.Parse(quizQuestionIndex);
+            var nextQuizQuestionDto = await _mediator.Send(new GetNextQuizQuestion.Request(QuizId, QuizQuestionIndex));
+            return nextQuizQuestionDto;
+        }
 
+        [HttpGet("getSolution")]
+        public async Task<string> getSolution(string quizId, string quizQuestionId)
+        {
+            var QuizId = new Guid(quizId);
+            var QuizQuestionId = new Guid(quizQuestionId);
+            var solution = await _mediator.Send(new GetSolution.Request(QuizId, QuizQuestionId));
+            return solution;
+        }
 
     }
 }

@@ -28,8 +28,7 @@ export default function CheckpointInfo(props) {
     return (<>
         <Button onClick={showCheckpoint}>
             <h6>
-                id: {props.checkpointInfo.id}
-                name: {props.checkpointInfo.title}
+                Tittel: {props.checkpointInfo.title}
             </h6>
         </Button>
     </>);
