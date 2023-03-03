@@ -7,13 +7,11 @@ import Grid from '@mui/material/Grid';
 
 export default function AddQuizQuestion(props) {
     const params = useParams();
-    //const [quizId, setQuizId] = useState("";)
-    //const CheckpointId = params.checkpointId;
     console.log(params.checkpointId);
-    //fiks hardkodet quizid
+
     const [questionInfo, setQuestionInfo] = useState({
         Question: "",
-        QuizId: "",//"08db1019-cac8-4445-8a85-7195fce75e20",
+        QuizId: "",
         Alternatives: [{
             Id: 1,
             Text: ""
@@ -25,11 +23,11 @@ export default function AddQuizQuestion(props) {
 
     });
 
+    //amount of alternatives
     const [count, setCount] = useState(2);
 
-    //adds one more field for option
+    //adds one more field for alternative
     const handleAddAlternative = (event) => {
-        //event.PreventDefault();
 
         //update alternativeslist to contain one more element
         let newItems = questionInfo.Alternatives.slice();
@@ -79,6 +77,17 @@ export default function AddQuizQuestion(props) {
 
     }
 
+    const handleRemoveAlternative = (event) => {
+        //all exept last alternative
+        let shorterList = questionInfo.Alternatives.slice(0, -1);
+
+       
+        setQuestionInfo({ ...questionInfo, Alternatives: shorterList });
+        setCount(count -1);
+
+
+    }
+
 
     const handleChange = (event) => {
         //update state
@@ -112,14 +121,38 @@ export default function AddQuizQuestion(props) {
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}>
 
-            <Grid container spacing={6}>
+            <Grid container spacing={2}>
 
-                <Grid item sx={4}>
-                    <Button variant="contained" onClick={handleAddAlternative}>Legg til alternativ</Button>
+                <Grid item sx={2}>
+                    <Button
+                        disabled={count <= 5 ? false : true}
+                        variant="contained"
+                        onClick={handleAddAlternative}>
+                        
+                        Legg til alternativ
+
+                    </Button>
                 </Grid>
 
-                <Grid item sx={4}>
-                    <Button type="submit" variant="contained">Legg til spørsmål</Button>
+                <Grid item sx={2}>
+                    <Button
+                        disabled={count >= 3 ? false : true}
+
+                        variant="contained"
+                        onClick={handleRemoveAlternative}>
+
+                        Fjern siste alternativ
+
+                    </Button>
+                </Grid>
+
+
+                <Grid item sx={2}>
+                    <Button
+                        type="submit"
+                        variant="contained">
+                        Legg til spørsmål
+                    </Button>
                 </Grid>
 
             </Grid>
@@ -160,12 +193,10 @@ export default function AddQuizQuestion(props) {
                                 
                                 required
                                 onChange={newVal => handleAlternativeChange(newVal, index)}
-                                //onChange={(e) => handleOptionChange(e)}
                                 id="standard-basic" label={"Svaralternativ (" + (index+ 1) + ")"}
                                 name="Options"
                                 variant="standard"
                                 value={questionInfo.Alternatives[index].Text}
-                            //value={questionInfo.Options}
                             />
                         </Grid>
 
