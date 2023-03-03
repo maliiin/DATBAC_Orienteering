@@ -1,5 +1,5 @@
 import { TextField, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
@@ -9,78 +9,97 @@ export default function QuizPage() {
 
     const params = useParams();
 
-    const [quizQuestionList, setQuizQuestionList] = useState("");
+    const [quizQuestionRender, setQuizQuestionRender] = useState("");
     const [currentQuizQuestion, setCurrentQuizQuestion] = useState("");
-    const [chosenAlternative, setChosenAlternative] = useState("");
-    const [currentQuizQuestionIndex, setCurrentQuizQuestionIndex] = useState(0);
 
-    const [trackInfo, setTrackInfo] = useState({
+    const chosenAlternative = useRef("");
+    const [quizQuestionIndex, setQuizQuestionIndex] = useState(0);
+    const [quizStatus, setQuizStatus] = useState("");
+
+    const [quizInfo, setQuizInfo] = useState({
         Id: params.quizId
     });
 
 
     useEffect(() => {
-        setTrackInfo(prevState => { return { ...prevState, Id: params.quizId } });
-        fetchQuiz();
+        setQuizInfo(prevState => { return { ...prevState, Id: params.quizId } });
+       // fetchQuizQuestion();
     }, []);
+
+
+    useEffect(() => {
+        fetchQuizQuestion();
+    }, [quizQuestionIndex]);
 
     useEffect(() => {
         showQuizQuestion();
-    }, [currentQuizQuestionIndex, quizQuestionList]);
+    }, [currentQuizQuestion, quizStatus]);
 
 
-    async function fetchQuiz() {
-        var url = "/api/quiz/getQuiz?quizId=" + trackInfo.Id;
-        var quiz = await fetch(url).then(res => res.json());
-        setQuizQuestionList(quiz.quizQuestions);
-    }
+    async function fetchQuizQuestion() {
+        var url = "/api/quiz/getNextQuizQuestion?quizId=" + quizInfo.Id + "&quizQuestionIndex=" + quizQuestionIndex.toString();
+        var quizQuestion = await fetch(url).then(res => res.json());
+        setCurrentQuizQuestion(quizQuestion);
+    };
 
     function handleChange(event) {
         console.log("endret radiovalg");
         console.log(event.target.value);
-        setChosenAlternative(event.target.value);
-    }
+        chosenAlternative.current = event.target.value;
+    };
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
-        if (currentQuizQuestionIndex + 1 < quizQuestionList.length) {
-            var newIndex = currentQuizQuestionIndex + 1;
-            setCurrentQuizQuestionIndex(newIndex);
+        var url = "/api/quiz/getSolution?quizId=" + quizInfo.Id + "&quizQuestionId=" + currentQuizQuestion.quizQuestionId;
+        var solution = await fetch(url).then(res => res.text());
+        if (chosenAlternative.current == solution) {
+            setQuizStatus(<p>Riktig svar</p>)
         }
         else {
-            console.log("Alle spørsmål besvart");
+            setQuizStatus(<p>Feil svar. Riktig svar var: {solution}</p>)
+        };
+
+        
+        if (currentQuizQuestion.endOfQuiz == true) {
+            setQuizQuestionRender(<p>Quiz ferdig</p>)
         }
-        console.log(currentQuizQuestionIndex);
-    }
+        else {
+            var newIndex = quizQuestionIndex + 1;
+            setQuizQuestionIndex(newIndex);
+        };
+    };
 
     function showQuizQuestion() {
-        if (quizQuestionList != "") {
-            if (typeof quizQuestionList[currentQuizQuestionIndex].alternative != 'undefined') {
-                var currentAlternatives = quizQuestionList[currentQuizQuestionIndex].alternative;
-                setCurrentQuizQuestion(
-                    <form onSubmit={handleSubmit}>
-                        <FormLabel id="question">{quizQuestionList[currentQuizQuestionIndex].question}</FormLabel>
-                        <RadioGroup
-                            aria-labelledby="question"
-                            name="radio-buttons-group"
-                            onChange={handleChange}
-                        >
-                            
-                            <QuizQuestionItem alternativeList={currentAlternatives}>
-                            </QuizQuestionItem>
+        if (typeof currentQuizQuestion.alternative != 'undefined') {
+            var currentAlternatives = currentQuizQuestion.alternative;
+            var radioButtons = currentAlternatives.map((alternative, index) =>
+                <FormControlLabel value={alternative.text} key={alternative.id + "-" + index} control={<Radio />} label={alternative.text} />
+            );
+        };
+            setQuizQuestionRender(
+                <form onSubmit={handleSubmit}>
+                    <FormLabel id="question">{currentQuizQuestion.question}</FormLabel>
+                    <RadioGroup
+                        aria-labelledby="question"
+                        name="radio-buttons-group"
+                        onChange={handleChange}
+                    >
 
-                        </RadioGroup>
-                        <Button type="submit" variant="contained">Besvar spørsmål</Button>
-                    </form>
-                );
-            }
-        }
-    }
+                        {radioButtons}
+
+                    </RadioGroup>
+                    <Button type="submit" variant="contained">Besvar spørsmål</Button>
+                </form>
+            );
+    };
 
 
 
-    return (<>
-        {currentQuizQuestion}
+
+
+return (<>
+    {quizQuestionRender}
+        {quizStatus}
         
         
     </>
