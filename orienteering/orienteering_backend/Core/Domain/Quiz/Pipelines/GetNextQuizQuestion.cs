@@ -37,7 +37,15 @@ public static class GetNextQuizQuestion
             }
             var quizQuestion = Quiz.QuizQuestions[request.quizQuestionIndex];
             var dtoElement = new NextQuizQuestionDto(false);
-            dtoElement.Alternative = quizQuestion.Alternatives;
+            var alternativeDtoList = new List<AlternativeDto>();
+            for (var i=0; i<quizQuestion.Alternatives.Count; i++)
+            {
+                var alternativeDto = new AlternativeDto();
+                alternativeDto.Id = quizQuestion.Alternatives[i].Id;
+                alternativeDto.Text = quizQuestion.Alternatives[i].Text;
+                alternativeDtoList.Add(alternativeDto);
+            }
+            dtoElement.Alternative = alternativeDtoList;
             dtoElement.QuizQuestionId = quizQuestion.Id;
             dtoElement.Question = quizQuestion.Question;
             // Sjekker om det er siste quizquestion i quiz

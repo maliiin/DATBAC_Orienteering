@@ -26,17 +26,6 @@ public static class GetSolution
         }
         public async Task<string> Handle(Request request, CancellationToken cancellationToken)
         {
-            // Fiks: kombiner quizalternative og quizcorrectalternative (include)
-            //var quizWithAlternatives = await _db.Quiz.Include(q => q.QuizQuestions)
-            //    .ThenInclude(a => a.Alternatives)
-            //    .Include(q => q.QuizQuestions)
-            //    .ThenInclude(a => a.CorrectAlternative)
-            //    .Where(q => q.Id == request.quizId)
-            //    .FirstOrDefaultAsync(cancellationToken);
-            //var quizWithAlternatives = await _db.Quiz
-            //    .Include(a => a.QuizQuestions).ThenInclude(b => b.Alternatives)
-            //    .Include(a => a.QuizQuestions).ThenInclude(b => b.CorrectAlternative)
-            //    .FirstOrDefaultAsync();
             var quiz = await _db.Quiz.Include(q => q.QuizQuestions).ThenInclude(a => a.Alternatives).Where(q => q.Id == request.quizId).FirstOrDefaultAsync(cancellationToken);
 
             if (quiz == null)
