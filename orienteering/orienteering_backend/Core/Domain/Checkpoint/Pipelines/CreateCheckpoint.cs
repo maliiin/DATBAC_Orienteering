@@ -30,8 +30,9 @@ public static class CreateCheckpoint
         }
         public async Task<Guid> Handle(Request request, CancellationToken cancellationToken)
         {
-
+            //create checkpoint
             var newCheckpoint = new Checkpoint(request.checkpointDto.Title, request.checkpointDto.GameId, request.checkpointDto.TrackId);
+
             if (request.checkpointDto.GameId == 0)
             {
                 //no game--> should be quiz

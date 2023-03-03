@@ -5,15 +5,13 @@ import Grid from '@mui/material/Grid';
 
 
 
-export default function AddQuizQuestion() {
+export default function AddQuizQuestion(props) {
     const params = useParams();
-    //const [quizId, setQuizId] = useState("";)
-    //const CheckpointId = params.checkpointId;
     console.log(params.checkpointId);
-    //fiks hardkodet quizid
+
     const [questionInfo, setQuestionInfo] = useState({
         Question: "",
-        QuizId: "",//"08db1019-cac8-4445-8a85-7195fce75e20",
+        QuizId: "",
         Alternatives: [{
             Id: 1,
             Text: ""
@@ -25,11 +23,11 @@ export default function AddQuizQuestion() {
 
     });
 
+    //amount of alternatives
     const [count, setCount] = useState(2);
 
-    //adds one more field for option
+    //adds one more field for alternative
     const handleAddAlternative = (event) => {
-        //event.PreventDefault();
 
         //update alternativeslist to contain one more element
         let newItems = questionInfo.Alternatives.slice();
@@ -62,6 +60,9 @@ export default function AddQuizQuestion() {
         console.log(response);
         //return false;
 
+        //update value to render quizquestions
+        props.setQuizChanged(props.quizChanged * -1);
+
     }
 
     const handleAlternativeChange = (event, i) => {
@@ -73,6 +74,17 @@ export default function AddQuizQuestion() {
 
         //update original list to include the updated value
         setQuestionInfo({ ...questionInfo, Alternatives: newItems });
+
+    }
+
+    const handleRemoveAlternative = (event) => {
+        //all exept last alternative
+        let shorterList = questionInfo.Alternatives.slice(0, -1);
+
+       
+        setQuestionInfo({ ...questionInfo, Alternatives: shorterList });
+        setCount(count -1);
+
 
     }
 
@@ -109,18 +121,43 @@ export default function AddQuizQuestion() {
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}>
 
-            <Grid container spacing={6}>
+            <Grid container spacing={2}>
 
-                <Grid item sx={4}>
-                    <Button variant="contained" onClick={handleAddAlternative}>Legg til alternativ</Button>
+                <Grid item sx={2}>
+                    <Button
+                        disabled={count <= 5 ? false : true}
+                        variant="contained"
+                        onClick={handleAddAlternative}>
+                        
+                        Legg til alternativ
+
+                    </Button>
                 </Grid>
 
-                <Grid item sx={4}>
-                    <Button type="submit" variant="contained">Legg til spørsmål</Button>
+                <Grid item sx={2}>
+                    <Button
+                        disabled={count >= 3 ? false : true}
+
+                        variant="contained"
+                        onClick={handleRemoveAlternative}>
+
+                        Fjern siste alternativ
+
+                    </Button>
+                </Grid>
+
+
+                <Grid item sx={2}>
+                    <Button
+                        type="submit"
+                        variant="contained">
+                        Legg til spørsmål
+                    </Button>
                 </Grid>
 
             </Grid>
-            <Grid container >
+
+            <Grid container spacing={3 } >
                 <Grid item sx={6 }>
                     <TextField
                         required
@@ -151,17 +188,15 @@ export default function AddQuizQuestion() {
 
             <>
                     {[...Array(count)].map((element, index) => (
-                        <Grid item sx={6 }>
+                        <Grid item sx={6} key={index + "-" + element}>
                             <TextField
-                                key={index + "-" + element}
+                                
                                 required
                                 onChange={newVal => handleAlternativeChange(newVal, index)}
-                                //onChange={(e) => handleOptionChange(e)}
                                 id="standard-basic" label={"Svaralternativ (" + (index+ 1) + ")"}
                                 name="Options"
                                 variant="standard"
                                 value={questionInfo.Alternatives[index].Text}
-                            //value={questionInfo.Options}
                             />
                         </Grid>
 
@@ -178,6 +213,3 @@ export default function AddQuizQuestion() {
 }
 
 
-//<>
-//    {[...Array(count)].map((element, index) => <p key={index}>heiheihei</p>)}
-//</>

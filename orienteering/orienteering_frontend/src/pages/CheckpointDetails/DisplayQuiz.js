@@ -11,32 +11,36 @@ import DisplayQuestion from "./DisplayQuestion";
 export default function DisplayQuiz(props) {
     const [quizQuestions, setQuizQuestions] = useState("");
 
+    const fetchQuiz = async () => {
+        const Quiz = await fetch("/api/quiz/getQuiz?quizId=" + props.quizId).then(res => res.json());
+        setQuizQuestions(Quiz.quizQuestions);
+        console.log(Quiz.quizQuestions);
+    }
+
     useEffect(() => {
-        const fetchQuiz = async () => {
-            const Quiz = await fetch("/api/quiz/getQuiz?quizId=" + props.quizId).then(res => res.json());
-            setQuizQuestions(Quiz.quizQuestions);
-            console.log(Quiz.quizQuestions);
-        }
-
         fetchQuiz();
-    },[])
-
+    }, [props.quizChanged])
 
     if (quizQuestions.length > 0) {
         return (<>
             {
-
-                //fix- må ha sjekk som sjekker om det finnes spørsmål, hvis
-                //ikke klikker den
-
                 quizQuestions.map((quizQuestion, index) =>
-                    <DisplayQuestion key={index + "-" + quizQuestion.quizQuestionId} questionInfo={quizQuestion} quizId={props.quizId}></DisplayQuestion>
+                    <DisplayQuestion
+                        quizChanged={props.quizChanged}
+                        setQuizChanged={props.setQuizChanged}
+                        key={index + "-" + quizQuestion.quizQuestionId}
+                        questionInfo={quizQuestion}
+                        quizId={props.quizId}>
+                    </DisplayQuestion>
                 )
             }
 
         </>
         );
     } else {
-        return <p>hehhehe</p>;
+        return <p>Her kommer spørsmålene du lager.</p>;
     }
 }
+
+//fiks reaktiv ved legging til av spørsmål.
+//som i de andre to filene.

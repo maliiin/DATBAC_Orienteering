@@ -10,28 +10,21 @@ import DisplayQuiz from "./DisplayQuiz";
 import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-
-//
-//import DropdownMenu from '../../components/DropdownMenu';
-
-
 //page
 //display all info of a single checkpoint
 
 export default function CheckpointDetails() {
-    //useAuthentication();
+
     const navigate = useNavigate();
+    //endre navn? fix. til autenticated ?
     const [render, setRender] = useState(false);
     const [hasQuiz, setHasQuiz] = useState(false);
     const [QuizId, setQuizId] = useState("");
-
-
+    const [quizChanged, setQuizChanged] = useState(1);
 
     const params = useParams();
     const checkpointId = params.checkpointId;
-    console.log(checkpointId);
 
-    //dette fungerer litt, men getCheckpoint returnerer checkpoint uten id
 
     useEffect(() => {
         //is authenticated and correct track?
@@ -45,9 +38,11 @@ export default function CheckpointDetails() {
                 navigate("/login");
                 return false;
             };
+
             const user = await response.json();
             const userId = user.id;
-            console.log(checkpointId);
+
+            //load checkpoint
             const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId).then(r => r.json());
 
             console.log(checkpoint.quizId);
@@ -56,21 +51,16 @@ export default function CheckpointDetails() {
 
 
             if (checkpoint.gameId == 0) {
+
                 //this checkpoint has quiz
                 setHasQuiz(true);
-                console.log(checkpoint.quizId);
                 setQuizId(checkpoint.quizId);
-
             };
 
+
+            //check that the signed in user owns the track
             const trackId = checkpoint.trackId;
-            console.log(trackId);
-
-            //få trackid fra dette checkpointet
-            //const trackId = params.trackId;
-
             const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
-
 
             const result = await fetch(getTrackUrl);
             const track = await result.json();
@@ -80,7 +70,6 @@ export default function CheckpointDetails() {
                 return false;
             }
             return true;
-
 
         };
 
@@ -97,13 +86,13 @@ export default function CheckpointDetails() {
                 
                 <Grid item xs={6}>
                     <h4>Oversikt over spørsmål til quiz</h4>
-                    <DisplayQuiz quizId={QuizId}></DisplayQuiz>
+                    <DisplayQuiz quizChanged={quizChanged} setQuizChanged={setQuizChanged} quizId={QuizId}></DisplayQuiz>
                 </Grid>
-                <Grid item xs={6}>
 
+                <Grid item xs={6}>
                     <h4>Legg til flere spørsmål her</h4>
-                    <AddQuizQuestion></AddQuizQuestion>
-                    </Grid>
+                    <AddQuizQuestion quizChanged={quizChanged} setQuizChanged={setQuizChanged} ></AddQuizQuestion>
+                </Grid>
             </Grid>
         </>);
 
