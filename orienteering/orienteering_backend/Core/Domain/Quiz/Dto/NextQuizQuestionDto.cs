@@ -8,7 +8,7 @@
         }
         public Guid QuizQuestionId { get; set; }
         public string? Question { get; set; }
-        public List<AlternativeDto>? Alternative { get; set; } = new();
+        public List<AlternativeDto>? Alternatives { get; set; } = new();
 
         public int? CorrectAlternative { get; set; }
         public bool EndOfQuiz { get; set; }

@@ -45,7 +45,7 @@ public static class GetNextQuizQuestion
                 alternativeDto.Text = quizQuestion.Alternatives[i].Text;
                 alternativeDtoList.Add(alternativeDto);
             }
-            dtoElement.Alternative = alternativeDtoList;
+            dtoElement.Alternatives = alternativeDtoList;
             dtoElement.QuizQuestionId = quizQuestion.Id;
             dtoElement.Question = quizQuestion.Question;
             // Sjekker om det er siste quizquestion i quiz

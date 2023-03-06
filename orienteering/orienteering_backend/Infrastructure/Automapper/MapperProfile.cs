@@ -12,17 +12,20 @@ namespace orienteering_backend.Infrastructure.Automapper
     {
         public MapperProfile()
         {
-            //Alternative
-            CreateMap<Alternative, AlternativeDto>().ReverseMap();
 
-            //Group
-            CreateMap<Group, GroupViewModel>().ReverseMap()
-                .ForMember(dest => dest.Description, src => src.Ignore())
-                .AfterMap((src, dest) =>
-                {
-                    dest.CreatedAt = DateTime.Now;
-                    dest.Description = dest.Name;
-                });
+            //Alternative
+            //CreateMap<Alternative, AlternativeDto>().ReverseMap();
+
+            ////Group
+            //CreateMap<Group, GroupViewModel>().ReverseMap()
+            //    .ForMember(dest => dest.Description, src => src.Ignore())
+            //    .AfterMap((src, dest) =>
+            //    {
+            //        dest.CreatedAt = DateTime.Now;
+            //        dest.Description = dest.Name;
+            //    });
+
+            //CreateMap<NextQuizQuestionDto, NextQuizQuestion>()
         }
     }
 
