@@ -1,4 +1,4 @@
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Grid } from '@mui/material';
 import React, { useState } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 
@@ -50,35 +50,53 @@ function Login() {
 
         return (
             <>
-                <form onSubmit={handleSubmit}>
-
-                    <TextField
-                        required
-                        onChange={(e) => handleChange(e)}
-                        id="standard-basic" label="Username"
-                        name="username"
-                        variant="standard"
-                        value={userInfo.username}
-                    />
-                    <br></br>
-
-                    <TextField
-                        required
-                        type="password"
-                        onChange={(e) => handleChange(e)}
-                        id="standard-basic" label="Password"
-                        variant="standard" value={userInfo.password}
-                        name="password"
-                    />
-
-                    <br></br>
 
 
-                    <Button variant="contained" type="submit">
-                        Logg inn
-                    </Button>
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{ minHeight: '50vh' }}
+                >
 
-                </form>
+                    <Grid item xs={3}>
+                        <form onSubmit={handleSubmit}>
+                            <h4>Logg inn</h4>
+
+                            <TextField
+                                required
+                                onChange={(e) => handleChange(e)}
+                                id="standard-basic" label="Username"
+                                name="username"
+                                variant="standard"
+                                value={userInfo.username}
+                            />
+                            <br></br>
+
+                            <TextField
+                                required
+                                type="password"
+                                onChange={(e) => handleChange(e)}
+                                id="standard-basic" label="Password"
+                                variant="standard" value={userInfo.password}
+                                name="password"
+                            />
+
+                            <br></br>
+                            <br></br>
+
+
+
+                            <Button variant="contained" type="submit">
+                                Logg inn
+                            </Button>
+
+                        </form>
+                    </Grid>
+
+                </Grid> 
             </>
         );
     }

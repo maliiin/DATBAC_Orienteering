@@ -42,11 +42,11 @@ export default function App() {
                     <Route path="track/:trackId" element={<TrackDetails />} />
                     <Route path="qrcodepage" element={<QRCodePage />} />
                     <Route path="unauthorized" element={<Unauthorized />} />
-                    <Route path="checkpoint/quiz/:quizId" element={<QuizPage />} />
                     <Route path="checkpoint/:checkpointId" element={<CheckpointRedirection />} />
-
-
                 </Route>
+
+                <Route path="checkpoint/quiz/:quizId" element={<QuizPage />} />
+
             </Routes>
             </BrowserRouter>
     )
