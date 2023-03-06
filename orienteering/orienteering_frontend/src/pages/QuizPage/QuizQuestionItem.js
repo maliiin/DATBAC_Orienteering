@@ -3,7 +3,8 @@ import { Radio, FormControl, FormLabel, RadioGroup, FormControlLabel, Select, Me
 import React, { useEffect, useState } from 'react';
 import QuizQuestionAlternative from './QuizQuestionAlternative'
 //Kilder: https://mui.com/material-ui/react-radio-button/ (17.02.2023)
-
+//fix ikke i bruk?
+//fiks
 
 export default function QuizQuestionItem(props) {
 

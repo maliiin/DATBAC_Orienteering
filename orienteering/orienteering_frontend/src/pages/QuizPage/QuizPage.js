@@ -1,18 +1,20 @@
 import { TextField, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import React, { useState, useRef } from "react";
-import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
-import QuizQuestionItem from './QuizQuestionItem';
 export default function QuizPage() {
     //kan være greit å få inn checkpointid slik at det senere blir mulig å registrere at noen har vært på checkpointet, lagre score osv...
+    const chosenAlternative = useRef("");
 
     const params = useParams();
 
     const [quizQuestionRender, setQuizQuestionRender] = useState("");
     const [currentQuizQuestion, setCurrentQuizQuestion] = useState("");
 
-    const chosenAlternative = useRef("");
+
+
+
+
     const [quizQuestionIndex, setQuizQuestionIndex] = useState(0);
     const [quizStatus, setQuizStatus] = useState("");
 
@@ -23,7 +25,7 @@ export default function QuizPage() {
 
     useEffect(() => {
         setQuizInfo(prevState => { return { ...prevState, Id: params.quizId } });
-       // fetchQuizQuestion();
+        // fetchQuizQuestion();
     }, []);
 
 
@@ -33,7 +35,7 @@ export default function QuizPage() {
 
     useEffect(() => {
         showQuizQuestion();
-    }, [currentQuizQuestion, quizStatus]);
+    }, [currentQuizQuestion]);
 
 
     async function fetchQuizQuestion() {
@@ -43,23 +45,39 @@ export default function QuizPage() {
     };
 
     function handleChange(event) {
+        event.preventDefault();
         console.log("endret radiovalg");
         console.log(event.target.value);
+
         chosenAlternative.current = event.target.value;
+
+
+        console.log(chosenAlternative.current);
+
     };
 
     async function handleSubmit(event) {
+        //console.log("her");
+
         event.preventDefault();
         var url = "/api/quiz/getSolution?quizId=" + quizInfo.Id + "&quizQuestionId=" + currentQuizQuestion.quizQuestionId;
         var solution = await fetch(url).then(res => res.text());
+
+        //if (chosenAlternative.current == solution) {
         if (chosenAlternative.current == solution) {
+
             setQuizStatus(<p>Riktig svar</p>)
         }
         else {
             setQuizStatus(<p>Feil svar. Riktig svar var: {solution}</p>)
         };
 
-        
+        //restart chosenAlternative
+        //chosenAlternative.current = "";
+        // console.log("her");
+
+
+
         if (currentQuizQuestion.endOfQuiz == true) {
             setQuizQuestionRender(<p>Quiz ferdig</p>)
         }
@@ -67,41 +85,54 @@ export default function QuizPage() {
             var newIndex = quizQuestionIndex + 1;
             setQuizQuestionIndex(newIndex);
         };
+
+
+
     };
 
     function showQuizQuestion() {
         if (typeof currentQuizQuestion.alternative != 'undefined') {
             var currentAlternatives = currentQuizQuestion.alternative;
             var radioButtons = currentAlternatives.map((alternative, index) =>
-                <FormControlLabel value={alternative.text} key={alternative.id + "-" + index} control={<Radio />} label={alternative.text} />
+                <FormControlLabel
+                    //checked={chosenAlternative.current == alternative.text}
+                    value={alternative.text}
+                    key={alternative.id + "-" + index}
+                    control={<Radio />}
+                    label={alternative.text}
+                />
             );
         };
-            setQuizQuestionRender(
-                <form onSubmit={handleSubmit}>
-                    <FormLabel id="question">{currentQuizQuestion.question}</FormLabel>
-                    <RadioGroup
-                        aria-labelledby="question"
-                        name="radio-buttons-group"
-                        onChange={handleChange}
-                    >
 
-                        {radioButtons}
 
-                    </RadioGroup>
-                    <Button type="submit" variant="contained">Besvar spørsmål</Button>
-                </form>
-            );
+        setQuizQuestionRender(
+            <form onSubmit={handleSubmit}>
+                <FormLabel id="question"><h3>{currentQuizQuestion.question}</h3></FormLabel>
+                <RadioGroup
+                    required={true}
+                    aria-labelledby="question"
+                    name="radio-buttons-group"
+                    onChange={handleChange}
+                    value={chosenAlternative.current}
+                >
+
+                    {radioButtons}
+
+                </RadioGroup>
+                <Button type="submit" variant="contained">Besvar spørsmål</Button>
+            </form>
+        );
     };
 
 
 
 
 
-return (<>
-    {quizQuestionRender}
+    return (<>
+        {quizQuestionRender}
         {quizStatus}
-        
-        
+
+
     </>
     );
 
