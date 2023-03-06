@@ -70,6 +70,7 @@ builder.Services.AddMediatR(typeof(Program));
 builder.Services.AddDbContext<OrienteeringContext>(
     options => options.UseMySql(connectionString: connectionString, serverVersion: version)
 );
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

@@ -25,7 +25,13 @@ namespace orienteering_backend.Infrastructure.Automapper
             //        dest.Description = dest.Name;
             //    });
 
-            //CreateMap<NextQuizQuestionDto, NextQuizQuestion>()
+            CreateMap<QuizQuestion, NextQuizQuestionDto>().ForMember(
+                    dest => dest.QuizQuestionId,
+                    opt => opt.MapFrom(src => $"{src.Id}")
+                );
+            CreateMap<Alternative, AlternativeDto>();
+
+
         }
     }
 
