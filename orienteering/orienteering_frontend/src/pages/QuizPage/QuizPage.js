@@ -33,7 +33,7 @@ export default function QuizPage() {
 
     useEffect(() => {
         showQuizQuestion();
-    }, [currentQuizQuestion, quizStatus]);
+    }, [currentQuizQuestion]);
 
 
     async function fetchQuizQuestion() {
