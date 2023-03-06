@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Outlet, Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core";
 
 function Layout() {
     const linkStyle = {
