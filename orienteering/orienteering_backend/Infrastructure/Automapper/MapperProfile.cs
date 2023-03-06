@@ -28,7 +28,13 @@ namespace orienteering_backend.Infrastructure.Automapper
             CreateMap<QuizQuestion, NextQuizQuestionDto>().ForMember(
                     dest => dest.QuizQuestionId,
                     opt => opt.MapFrom(src => $"{src.Id}")
+                )
+                .ForMember(dest => dest.CorrectAlternative, opt => opt.Ignore()
                 );
+            //CreateMap<NextQuizQuestionDto, QuizQuestion>().ForMember(
+            //        dest => dest.Id,
+            //        opt => opt.MapFrom(src => $"{src.QuizQuestionId}")
+            //    );
             CreateMap<Alternative, AlternativeDto>();
 
 
