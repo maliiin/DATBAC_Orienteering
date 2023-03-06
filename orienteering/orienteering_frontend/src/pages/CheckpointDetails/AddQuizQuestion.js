@@ -120,7 +120,8 @@ export default function AddQuizQuestion(props) {
             sx={{
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}>
-
+            <p>Velg hvilket alternativnummer som er riktig i 'Riktig alternativ'.</p>
+            <p>Svaralternativ (alternativnummer)</p>
             <Grid container spacing={2}>
 
                 <Grid item sx={2}>
@@ -176,7 +177,7 @@ export default function AddQuizQuestion(props) {
                         required
                         type='number'
                         onChange={(e) => handleChange(e)}
-                        id="standard-basic" label="CorrectAlternative"
+                        id="standard-basic" label="Riktig alternativ (nr)"
                         name="CorrectAlternative"
                         variant="standard"
                         value={questionInfo.CorrectAlternative}
