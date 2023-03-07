@@ -54,6 +54,7 @@ export default function QuizPage() {
 
         setCurrentAnswer(test);
         testAnswer = test;
+        console.log(currentAnswer);
 
         //console.log(chosenAlternative.current);
 
