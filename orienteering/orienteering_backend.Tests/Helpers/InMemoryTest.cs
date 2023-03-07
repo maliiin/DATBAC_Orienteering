@@ -65,7 +65,7 @@ public class InMemoryTest
 
     [Fact]
 
-    public async Task getSingleCheckpointTest()
+    public async Task GetSingleCheckpointTest()
     {
         //var inMemoryTest = new InMemoryTest();
         var _db = new OrienteeringContext(dbContextOptions, null);
@@ -81,7 +81,7 @@ public class InMemoryTest
         await _db.Checkpoints.AddAsync(checkpoint);
         await _db.SaveChangesAsync();
         var request = new GetSingleCheckpoint.Request(checkpoint.Id);
-        var handler = new GetSingleCheckpoint.Handler(_db);
+        var handler = new GetSingleCheckpoint.Handler(_db, _mapper);
         var returnedDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
         Assert.Equal(checkpointDto.Title, returnedDto.Title);
         Assert.Equal(checkpointDto.TrackId, returnedDto.TrackId);

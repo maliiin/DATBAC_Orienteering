@@ -69,7 +69,7 @@ function Registration() {
                 <TextField
                     required
                     onChange={(e) => handleChange(e)}
-                    id="standard-basic" label="Username"
+                    label="Username"
                     name="username"
                     variant="standard" value={userInfo.username}
 
@@ -80,7 +80,7 @@ function Registration() {
                     required
                     type="password"
                     onChange={(e) => handleChange(e)}
-                    id="standard-basic" label="Password"
+                    label="Password"
                     variant="standard" value={userInfo.password}
                     name="password"
                     inputProps={{ minLength: 6 }}
@@ -92,7 +92,6 @@ function Registration() {
                 <TextField
                     required
                     onChange={(e) => handleChange(e)}
-                    id="standard-basic"
                     label="Email"
                     variant="standard"
                     value={userInfo.email}

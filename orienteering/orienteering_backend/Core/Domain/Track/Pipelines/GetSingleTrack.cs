@@ -1,5 +1,7 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Infrastructure.Data;
 //Kilder: CampusEats lab fra dat240
@@ -20,7 +22,14 @@ public static class GetSingleTrack
     {
         private readonly OrienteeringContext _db;
 
-        public Handler(OrienteeringContext db) => _db = db ?? throw new ArgumentNullException(nameof(db));
+        private readonly IMapper _mapper;
+
+        public Handler(OrienteeringContext db, IMapper mapper)
+        {
+            _db = db ?? throw new ArgumentNullException(nameof(db));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(_mapper));
+
+        }
 
         public async Task<TrackDto> Handle(Request request, CancellationToken cancellationToken)
         // public async Task<List<Track>> Handle(Request request, CancellationToken cancellationToken)
@@ -35,8 +44,9 @@ public static class GetSingleTrack
             //                             .ToArrayAsync(cancellationToken);//ToListAsync();
             //Console.WriteLine($"lengde inni {tracks.Count}");
             if(track is null) { throw new NullReferenceException("track is null."); };
-            TrackDto trackDto = new(track.UserId, track.Name);
-            trackDto.TrackId = track.Id;
+            //TrackDto trackDto = new(track.UserId, track.Name);
+            //trackDto.TrackId = track.Id;
+            var trackDto = _mapper.Map<Track, TrackDto>(track);
             return trackDto;
         }
     }

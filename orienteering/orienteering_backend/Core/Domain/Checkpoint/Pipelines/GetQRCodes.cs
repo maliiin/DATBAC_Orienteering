@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Infrastructure.Data;
@@ -18,20 +19,18 @@ public static class GetQRCodes
     public class Handler : IRequestHandler<Request, List<CheckpointNameAndQRCodeDto>>
     {
         private readonly OrienteeringContext _db;
-        private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
 
-        //public Handler(OrienteeringContext db) => _db = db ?? throw new ArgumentNullException(nameof(db));
-        public Handler(OrienteeringContext db, IMediator mediator)
+        public Handler(OrienteeringContext db, IMapper mapper)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
-            _mediator = mediator;
+            _mapper = mapper;
         }
         public async Task<List<CheckpointNameAndQRCodeDto>> Handle(Request request, CancellationToken cancellationToken)
         {
 
-            //var track = await _db.Tracks.Include(t => t.CheckpointList).FirstOrDefaultAsync(t => t.Id == request.TrackId);
-            //var trackOwner = track.UserId;
+
             var checkpointList = await _db.Checkpoints.Where(c => c.TrackId == request.TrackId).ToListAsync();
             if (checkpointList == null)
             {
@@ -47,9 +46,10 @@ public static class GetQRCodes
             for (var i = 0; i < checkpointList.Count; i++)
             {
                 var checkpoint = checkpointList[i];
-                var dtoElement = new CheckpointNameAndQRCodeDto();
-                dtoElement.Id = checkpoint.Id;
-                dtoElement.QRCode = checkpoint.QRCode;
+                //var dtoElement = new CheckpointNameAndQRCodeDto();
+                //dtoElement.Id = checkpoint.Id;
+                //dtoElement.QRCode = checkpoint.QRCode;
+                var dtoElement = _mapper.Map<Checkpoint, CheckpointNameAndQRCodeDto>(checkpoint);
                 dtoList.Add(dtoElement);
             }
             return dtoList;

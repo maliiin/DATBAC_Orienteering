@@ -55,7 +55,7 @@ function Login() {
                     <TextField
                         required
                         onChange={(e) => handleChange(e)}
-                        id="standard-basic" label="Username"
+                        label="Username"
                         name="username"
                         variant="standard"
                         value={userInfo.username}
@@ -66,7 +66,7 @@ function Login() {
                         required
                         type="password"
                         onChange={(e) => handleChange(e)}
-                        id="standard-basic" label="Password"
+                        label="Password"
                         variant="standard" value={userInfo.password}
                         name="password"
                     />
