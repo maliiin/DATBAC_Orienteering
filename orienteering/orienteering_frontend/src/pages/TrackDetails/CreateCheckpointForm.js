@@ -53,12 +53,22 @@ export default function CreateCheckpointForm(props) {
         //update checkpointlist of parent
         props.updateCheckpointList();
 
+        //clear text field
+        setCheckpointInfo({
+            Title: "",
+            TrackId: "",
+            GameId: 1//endret fra 0
+        });
+
+        //clear choises
+
+
         return response;
 
 
     };
 
-
+    //fix- denne og changeGame funksjonen under kan slås sammen, de er like
     const changeTitle = (event) => {
         //update state
         setCheckpointInfo({ ...checkpointInfo, [event.target.name]: event.target.value });
@@ -85,6 +95,7 @@ export default function CreateCheckpointForm(props) {
     return (
         <>
             <h4>Legg til ny post</h4>
+            
             <Box onSubmit={handleSubmit} component="form">
                 <TextField
                     required
