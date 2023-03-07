@@ -51,7 +51,9 @@ public static class AddQuizQuestion
 
 
 
-            var quizQuestion = new QuizQuestion(request.inputCreateQuestionDto.Question, request.inputCreateQuestionDto.CorrectAlternative);
+            var quizQuestion = new QuizQuestion();
+            quizQuestion.Question = request.inputCreateQuestionDto.Question;
+            quizQuestion.CorrectAlternative = request.inputCreateQuestionDto.CorrectAlternative;
 
             List<Alternative> alternatives = new List<Alternative>();
             foreach (var dto in request.inputCreateQuestionDto.Alternatives)

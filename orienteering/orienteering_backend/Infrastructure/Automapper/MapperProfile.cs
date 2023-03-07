@@ -32,8 +32,8 @@ namespace orienteering_backend.Infrastructure.Automapper
                     dest => dest.QuizQuestionId,
                     opt => opt.MapFrom(src => $"{src.Id}")
                 )
-                .ForMember(dest => dest.CorrectAlternative, opt => opt.Ignore()
-                );
+                .ForMember(dest => dest.CorrectAlternative, opt => opt.Ignore())
+                .ForMember(dest => dest.Alternatives, opt => opt.MapFrom(src => src.Alternatives));
             CreateMap<QuizQuestion, QuizQuestionDto>().ForMember(
                     dest => dest.QuizQuestionId,
                     opt => opt.MapFrom(src => $"{src.Id}")
@@ -45,6 +45,7 @@ namespace orienteering_backend.Infrastructure.Automapper
             CreateMap<Quiz, QuizDto>()
                 .ForMember(dest => dest.QuizId,
                     opt => opt.MapFrom(src => $"{src.Id}"))
+                .ForMember(dest => dest.QuizQuestions, opt => opt.MapFrom(src => src.QuizQuestions))
                 .ForMember(dest => dest.QuizQuestions, opt => opt.MapFrom(src => src.QuizQuestions));
             CreateMap<Track, TrackDto>()
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Id))

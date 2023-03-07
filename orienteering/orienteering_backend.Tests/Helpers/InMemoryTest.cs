@@ -101,7 +101,9 @@ public class InMemoryTest
 
         var quizId = Guid.NewGuid();
         var quiz = new Quiz(quizId);
-        var quizQuestion = new QuizQuestion("sporsmol1", 1);
+        var quizQuestion = new QuizQuestion();
+        quizQuestion.Question = "sporsmol";
+        quizQuestion.CorrectAlternative = 1;
         var alt1 = new Alternative(1, "grøn");
         var alt2 = new Alternative(2, "rød");
         var alt3 = new Alternative(3, "blå");

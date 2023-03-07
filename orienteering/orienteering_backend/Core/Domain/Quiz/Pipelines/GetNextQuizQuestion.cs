@@ -40,7 +40,7 @@ public static class GetNextQuizQuestion
                 return new NextQuizQuestionDto();
             }
             var quizQuestion = Quiz.QuizQuestions[request.quizQuestionIndex];
-            var dtoElement = new NextQuizQuestionDto();
+            var nextQuizQuestion = new NextQuizQuestionDto();
             var alternativeDtoList = new List<AlternativeDto>();
             for (var i=0; i<quizQuestion.Alternatives.Count; i++)
             {
@@ -50,15 +50,16 @@ public static class GetNextQuizQuestion
                 //alternativeDto.Text = quizQuestion.Alternatives[i].Text;
                 alternativeDtoList.Add(alternativeDto);
             }
-            dtoElement.Alternatives = alternativeDtoList;
-            dtoElement.QuizQuestionId = quizQuestion.Id;
-            dtoElement.Question = quizQuestion.Question;
+            nextQuizQuestion.Alternatives = alternativeDtoList;
+            nextQuizQuestion.QuizQuestionId = quizQuestion.Id;
+            nextQuizQuestion.Question = quizQuestion.Question;
+            //var nextQuizQuestion = _mapper.Map<QuizQuestion, NextQuizQuestionDto>(quizQuestion);
             // Sjekker om det er siste quizquestion i quiz
             if ((request.quizQuestionIndex + 1) == Quiz.QuizQuestions.Count)
             {
-                dtoElement.EndOfQuiz = true;
+                nextQuizQuestion.EndOfQuiz = true;
             }
-            return dtoElement;
+            return nextQuizQuestion;
         }
     }
 

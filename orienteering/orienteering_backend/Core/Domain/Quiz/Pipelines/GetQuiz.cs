@@ -28,15 +28,16 @@ public static class GetQuiz
         }
         public async Task<QuizDto> Handle(Request request, CancellationToken cancellationToken)
         {
-            var Quiz = await _db.Quiz.Include(q => q.QuizQuestions).ThenInclude(a => a.Alternatives).FirstOrDefaultAsync(q => q.Id == request.QuizId, cancellationToken);
-            if (Quiz == null)
+            var quiz = await _db.Quiz.Include(q => q.QuizQuestions).ThenInclude(a => a.Alternatives).FirstOrDefaultAsync(q => q.Id == request.QuizId, cancellationToken);
+            if (quiz == null)
             {
                 throw new Exception("Quiz not found");
             }
+            //var quizDto = _mapper.Map<Quiz, QuizDto>(quiz);
             var dtoList = new List<QuizQuestionDto>();
-            for (var i = 0; i < Quiz.QuizQuestions.Count; i++)
+            for (var i = 0; i < quiz.QuizQuestions.Count; i++)
             {
-                var quizQuestion = Quiz.QuizQuestions[i];
+                var quizQuestion = quiz.QuizQuestions[i];
                 //var dtoElement = new QuizQuestionDto(quizQuestion.Question, quizQuestion.CorrectAlternative);
                 //dtoElement.Alternatives = quizQuestion.Alternatives;
                 //dtoElement.QuizQuestionId = quizQuestion.Id;
@@ -44,7 +45,7 @@ public static class GetQuiz
                 dtoList.Add(quizQuestionDto);
             }
             //var quizDto = _mapper.Map<Quiz, QuizDto>(Quiz);
-            var quizDto = new QuizDto(Quiz.Id, dtoList);
+            var quizDto = new QuizDto(quiz.Id, dtoList);
             return quizDto;
         }
     }
