@@ -14,7 +14,7 @@ export default function CreateCheckpointForm(props) {
     const [checkpointInfo, setCheckpointInfo] = useState({
         Title: "",
         TrackId: "",
-        GameId: 1//endret fra 0
+        GameId: 1
     });
 
 
@@ -36,7 +36,6 @@ export default function CreateCheckpointForm(props) {
             copiedCheckpoint.GameId = 0;
         }
 
-
         event.preventDefault();
 
         const requestOptions = {
@@ -53,19 +52,25 @@ export default function CreateCheckpointForm(props) {
         //update checkpointlist of parent
         props.updateCheckpointList();
 
-        //clear text field
+        //clear text field and game
         setCheckpointInfo({
+            ...checkpointInfo,
+            //dont update track id, its the same
             Title: "",
-            TrackId: "",
-            GameId: 1//endret fra 0
+            GameId: 1
         });
 
-        //clear choises
+        //clear choises FIX clear radio
 
 
         return response;
 
 
+    };
+
+    const handleChange = (event) => {
+        //update state
+        setCheckpointInfo({ ...checkpointInfo, [event.target.name]: event.target.value });
     };
 
     //fix- denne og changeGame funksjonen under kan slås sammen, de er like
@@ -99,13 +104,15 @@ export default function CreateCheckpointForm(props) {
             <Box onSubmit={handleSubmit} component="form">
                 <TextField
                     required
-                    onChange={(e) => changeTitle(e)}
+                    onChange={(e) => handleChange(e)}
                     id="standard-basic" label="Tittel"
                     name="Title"
                     variant="standard"
                     value={checkpointInfo.Title} />
 
                 <br></br>
+                <br></br>
+
 
                 <FormLabel id="radio-buttons-group">Velg aktivitet</FormLabel>
 
@@ -131,6 +138,7 @@ export default function CreateCheckpointForm(props) {
 
                 </RadioGroup>
 
+                <br></br>
 
                 <FormControl required={showForm ? true :false}>
                     <FormLabel style={showForm ? {} : { display: 'none' }} id="radio-buttons-group">Velg spill</FormLabel>
@@ -141,7 +149,7 @@ export default function CreateCheckpointForm(props) {
                         size="small"
                         labelId="select-label"
                         id="select"
-                        onChange={changeGame}
+                        onChange={(e) => handleChange(e)}
                         name="GameId"
                         value={checkpointInfo.GameId}
                         defaultValue={1}
