@@ -37,7 +37,7 @@ public static class GetSolution
             {
                 throw new Exception("QuizQuestion not found");
             }
-            if (quizQuestion.CorrectAlternative == null)
+            if (quizQuestion.CorrectAlternative == 0)
             {
                 throw new Exception("Correctalternative not set");
             }

@@ -13,6 +13,8 @@ using AutoMapper;
 using orienteering_backend.Infrastructure.Automapper;
 using orienteering_backend;
 using Newtonsoft.Json;
+using System.Text;
+using orienteering_backend.Core.Domain.Track;
 // Kilder: https://thecodeblogger.com/2021/07/07/in-memory-database-provider-for-testing-net-ef-core-app/ (17.02.2023)
 
 namespace orienteering_backend.Tests.Helpers;
@@ -64,6 +66,59 @@ public class InMemoryTest
     //}
 
     [Fact]
+    public async Task GetCheckpointForTracksTest()
+    {
+        var _db = new OrienteeringContext(dbContextOptions, null);
+        if (!_db.Database.IsInMemory())
+        {
+            _db.Database.Migrate();
+        }
+
+        var trackId = Guid.NewGuid();
+
+        var checkpoint1 = new Checkpoint("test1", 0, trackId);
+        var checkpoint2 = new Checkpoint("test2", 0, trackId);
+
+        await _db.Checkpoints.AddAsync(checkpoint1);
+        await _db.Checkpoints.AddAsync(checkpoint2);
+        await _db.SaveChangesAsync();
+        var request = new GetCheckpointsForTrack.Request(trackId);
+        var handler = new GetCheckpointsForTrack.Handler(_db, _mapper);
+        var returnedDtoList = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+        var checkpoint1Dto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint1);
+        var checkpoint2Dto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint2);
+        Assert.Equal(JsonConvert.SerializeObject(checkpoint1Dto), JsonConvert.SerializeObject(returnedDtoList[0]));
+        Assert.Equal(JsonConvert.SerializeObject(checkpoint2Dto), JsonConvert.SerializeObject(returnedDtoList[1]));
+    }
+
+    //[Fact]
+    //public async Task GetQRCodesTest()
+    //{
+    //    var _db = new OrienteeringContext(dbContextOptions, null);
+    //    if (!_db.Database.IsInMemory())
+    //    {
+    //        _db.Database.Migrate();
+    //    }
+
+    //    var trackId = Guid.NewGuid();
+
+    //    var checkpoint1 = new Checkpoint("test1", 0, trackId);
+    //    checkpoint1.QRCode = "dGVzdD" 
+    //    var checkpoint2 = new Checkpoint("test2", 0, trackId);
+
+    //    await _db.Checkpoints.AddAsync(checkpoint1);
+    //    await _db.Checkpoints.AddAsync(checkpoint2);
+    //    await _db.SaveChangesAsync();
+    //    var request = new GetCheckpointsForTrack.Request(trackId);
+    //    var handler = new GetCheckpointsForTrack.Handler(_db, _mapper);
+    //    var returnedDtoList = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+    //    var checkpoint1Dto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint1);
+    //    var checkpoint2Dto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint2);
+    //    Assert.Equal(JsonConvert.SerializeObject(checkpoint1Dto), JsonConvert.SerializeObject(returnedDtoList[0]));
+    //    Assert.Equal(JsonConvert.SerializeObject(checkpoint2Dto), JsonConvert.SerializeObject(returnedDtoList[1]));
+    //}
+
+    [Fact]
 
     public async Task GetSingleCheckpointTest()
     {
@@ -90,7 +145,40 @@ public class InMemoryTest
     }
 
     [Fact]
+    public async Task AddQuizQuestionTest()
+    {
+        var _db = new OrienteeringContext(dbContextOptions, null);
+        if (!_db.Database.IsInMemory())
+        {
+            _db.Database.Migrate();
+        }
 
+        var quizIdString = System.Guid.NewGuid().ToString();
+        var quizIdGuid = new Guid(quizIdString);
+        var quiz = new Quiz(quizIdGuid);
+        var quizQuestion = new QuizQuestion();
+        quizQuestion.Question = "question";
+        quizQuestion.CorrectAlternative = 1;
+        var alt1 = new Alternative(1, "green");
+        var alt2 = new Alternative(2, "red");
+        quizQuestion.Alternatives.Add(alt1);
+        quizQuestion.Alternatives.Add(alt2);
+        var alternativeDtoList = new List<AlternativeDto>();
+        alternativeDtoList.Add(_mapper.Map<Alternative, AlternativeDto>(alt1));
+        alternativeDtoList.Add(_mapper.Map<Alternative, AlternativeDto>(alt2));
+        await _db.Quiz.AddAsync(quiz);
+        await _db.SaveChangesAsync();
+        var inputCreateQuestionDto = new InputCreateQuestionDto(quizQuestion.Question, alternativeDtoList, quizQuestion.CorrectAlternative, quizIdString);
+        quiz.QuizQuestions.Add(quizQuestion);
+        var request = new AddQuizQuestion.Request(inputCreateQuestionDto);
+        var handler = new AddQuizQuestion.Handler(_db);
+        var result = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+        Assert.True(result);
+        var addedQuiz = await _db.Quiz.Include(a => a.QuizQuestions).ThenInclude(b => b.Alternatives).FirstOrDefaultAsync(q => q.Id == quizIdGuid);
+        Assert.Equal(JsonConvert.SerializeObject(quiz), JsonConvert.SerializeObject(addedQuiz));
+    }
+
+    [Fact]
     public async Task GetNextQuizQuestionTest()
     {
         var _db = new OrienteeringContext(dbContextOptions, null);
@@ -102,34 +190,100 @@ public class InMemoryTest
         var quizId = Guid.NewGuid();
         var quiz = new Quiz(quizId);
         var quizQuestion = new QuizQuestion();
-        quizQuestion.Question = "sporsmol";
+        quizQuestion.Question = "question";
         quizQuestion.CorrectAlternative = 1;
-        var alt1 = new Alternative(1, "grøn");
-        var alt2 = new Alternative(2, "rød");
-        var alt3 = new Alternative(3, "blå");
+        var alt1 = new Alternative(1, "green");
+        var alt2 = new Alternative(1, "red");
         quizQuestion.Alternatives.Add(alt1);
         quizQuestion.Alternatives.Add(alt2);
-        quizQuestion.Alternatives.Add(alt3);
-        quiz.AddQuizQuestion(quizQuestion);
+        quiz.QuizQuestions.Add(quizQuestion);
+
         await _db.Quiz.AddAsync(quiz);
         await _db.SaveChangesAsync();
         var request = new GetNextQuizQuestion.Request(quiz.Id, 0);
         var handler = new GetNextQuizQuestion.Handler(_db, _mapper);
         var returnedDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-        var nextQuizQuestion = _mapper.Map<QuizQuestion, NextQuizQuestionDto>(quizQuestion);
+        //var nextQuizQuestion = _mapper.Map<QuizQuestion, NextQuizQuestionDto>(quizQuestion);
+
+        var nextQuizQuestion = new NextQuizQuestionDto();
+        var alternativeDtoList = new List<AlternativeDto>();
+        var alternative1Dto = _mapper.Map<Alternative, AlternativeDto>(alt1);
+        var alternative2Dto = _mapper.Map<Alternative, AlternativeDto>(alt2);
+        alternativeDtoList.Add(alternative1Dto);
+        alternativeDtoList.Add(alternative2Dto);
+        nextQuizQuestion.Alternatives = alternativeDtoList;
+        nextQuizQuestion.QuizQuestionId = quizQuestion.Id;
+        nextQuizQuestion.Question = quizQuestion.Question;
+
         nextQuizQuestion.EndOfQuiz = true;
         Assert.Equal(JsonConvert.SerializeObject(returnedDto), JsonConvert.SerializeObject(nextQuizQuestion));
-
-
-
     }
 
     [Fact]
-
-    public async Task test1()
+    public async Task GetQuizTest()
     {
-        var a = 1;
-        var b = a; 
-        Assert.Equal(a, b);
+        var _db = new OrienteeringContext(dbContextOptions, null);
+        if (!_db.Database.IsInMemory())
+        {
+            _db.Database.Migrate();
+        }
+        var quizId = Guid.NewGuid();
+        var quiz = new Quiz(quizId);
+        var quizQuestion = new QuizQuestion();
+        quizQuestion.Question = "question";
+        quizQuestion.CorrectAlternative = 1;
+        var alt1 = new Alternative(1, "green");
+        var alt2 = new Alternative(2, "red");
+        quizQuestion.Alternatives.Add(alt1);
+        quizQuestion.Alternatives.Add(alt2);
+        quiz.QuizQuestions.Add(quizQuestion);
+        await _db.Quiz.AddAsync(quiz);
+        await _db.SaveChangesAsync();
+        var request = new GetQuiz.Request(quizId);
+        var handler = new GetQuiz.Handler(_db, _mapper);
+        var returnedQuizDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+        var quizQuestionDto = new QuizQuestionDto();
+        var alternativeDtoList = new List<AlternativeDto>();
+        alternativeDtoList.Add(_mapper.Map<Alternative, AlternativeDto>(alt1));
+        alternativeDtoList.Add(_mapper.Map<Alternative, AlternativeDto>(alt2));
+        quizQuestionDto.Alternatives = alternativeDtoList;
+        quizQuestionDto.QuizQuestionId = quizQuestion.Id;
+        quizQuestionDto.Question = quizQuestion.Question;
+        quizQuestionDto.CorrectAlternative = quizQuestion.CorrectAlternative;
+
+        var quizDto = new QuizDto(quizId, new List<QuizQuestionDto> { quizQuestionDto });
+
+        Assert.Equal(JsonConvert.SerializeObject(returnedQuizDto), JsonConvert.SerializeObject(quizDto));
     }
+
+    [Fact]
+    public async Task GetSolutionTest()
+    {
+        var _db = new OrienteeringContext(dbContextOptions, null);
+        if (!_db.Database.IsInMemory())
+        {
+            _db.Database.Migrate();
+        }
+        var quizId = Guid.NewGuid();
+        var quiz = new Quiz(quizId);
+        var quizQuestion = new QuizQuestion();
+        quizQuestion.Question = "question";
+        quizQuestion.CorrectAlternative = 1;
+        var alt1 = new Alternative(1, "green");
+        var alt2 = new Alternative(2, "red");
+        quizQuestion.Alternatives.Add(alt1);
+        quizQuestion.Alternatives.Add(alt2);
+        quiz.QuizQuestions.Add(quizQuestion);
+        await _db.Quiz.AddAsync(quiz);
+        await _db.SaveChangesAsync();
+        var request = new GetSolution.Request(quizId, quizQuestion.Id);
+        var handler = new GetSolution.Handler(_db);
+        var result = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+        Assert.Equal("green", result);
+    }
+
+    
+
 }
