@@ -5,28 +5,25 @@ import { useEffect } from "react";
 export default function QuizPage() {
     //kan være greit å få inn checkpointid slik at det senere blir mulig å registrere at noen har vært på checkpointet, lagre score osv...
     const chosenAlternative = useRef("");
-
     const params = useParams();
-
     const [quizQuestionRender, setQuizQuestionRender] = useState("");
     const [currentQuizQuestion, setCurrentQuizQuestion] = useState("");
-
-
-
-
-
+    //console.log("start av side");
     const [quizQuestionIndex, setQuizQuestionIndex] = useState(0);
     const [quizStatus, setQuizStatus] = useState("");
+    const [currentAnswer, setCurrentAnswer] = useState("hei");
 
     const [quizInfo, setQuizInfo] = useState({
         Id: params.quizId
     });
 
+    var testAnswer = "";
 
-    useEffect(() => {
-        setQuizInfo(prevState => { return { ...prevState, Id: params.quizId } });
-        // fetchQuizQuestion();
-    }, []);
+
+    //useEffect(() => {
+    //    setQuizInfo(prevState => { return { ...prevState, Id: params.quizId } });
+    //    // fetchQuizQuestion();
+    //}, []);
 
 
     useEffect(() => {
@@ -45,14 +42,20 @@ export default function QuizPage() {
     };
 
     function handleChange(event) {
-        event.preventDefault();
+        //event.preventDefault();
         console.log("endret radiovalg");
-        console.log(event.target.value);
-
+        //console.log(event.target.value);
+        console.log(currentAnswer);
         chosenAlternative.current = event.target.value;
+        
+        //setCurrentAnswer("hahhahaha");
+        const test = event.target.value;
+        console.log(""+test);
 
+        setCurrentAnswer(test);
+        testAnswer = test;
 
-        console.log(chosenAlternative.current);
+        //console.log(chosenAlternative.current);
 
     };
 
@@ -64,7 +67,7 @@ export default function QuizPage() {
         var solution = await fetch(url).then(res => res.text());
 
         //if (chosenAlternative.current == solution) {
-        if (chosenAlternative.current == solution) {
+        if (currentAnswer == solution) {
 
             setQuizStatus(<p>Riktig svar</p>)
         }
@@ -73,6 +76,9 @@ export default function QuizPage() {
         };
 
         //restart chosenAlternative
+
+        //setCurrentAnswer("");
+
         //chosenAlternative.current = "";
         // console.log("her");
 
@@ -98,8 +104,9 @@ export default function QuizPage() {
                     //checked={chosenAlternative.current == alternative.text}
                     value={alternative.text}
                     key={alternative.id + "-" + index}
-                    control={<Radio />}
-                    label={alternative.text}
+                    control={<Radio required={true} />}
+                    label={testAnswer == alternative.text ? 'lik' : 'ulik'}
+                    checked={testAnswer == alternative.text}
                 />
             );
         };
@@ -109,11 +116,11 @@ export default function QuizPage() {
             <form onSubmit={handleSubmit}>
                 <FormLabel id="question"><h3>{currentQuizQuestion.question}</h3></FormLabel>
                 <RadioGroup
-                    required={true}
                     aria-labelledby="question"
                     name="radio-buttons-group"
                     onChange={handleChange}
-                    value={chosenAlternative.current}
+                    //value={chosenAlternative.current}
+                    value={testAnswer}
                 >
 
                     {radioButtons}

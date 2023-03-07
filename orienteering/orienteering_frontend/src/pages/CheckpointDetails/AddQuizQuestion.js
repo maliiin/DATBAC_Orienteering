@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid';
 export default function AddQuizQuestion(props) {
     const params = useParams();
     console.log(params.checkpointId);
+    console.log("start add qqqqqq");
 
     const [questionInfo, setQuestionInfo] = useState({
         Question: "",

@@ -75,9 +75,6 @@ export default function CreateTrackForm(props) {
         </form>
     </>);
 }
-//videre:
-//lag onclik som redirecter til enTrack overview
-//lag side som displayer hver enkelt post
-//flytt ting i mappe
+
 
 

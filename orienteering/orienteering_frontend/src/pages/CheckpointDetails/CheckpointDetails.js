@@ -14,7 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 //display all info of a single checkpoint
 
 export default function CheckpointDetails() {
-
+    console.log("start av checkpoint page");
     const navigate = useNavigate();
     //endre navn? fix. til autenticated ?
     const [render, setRender] = useState(false);
