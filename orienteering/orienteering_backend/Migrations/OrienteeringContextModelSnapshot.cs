@@ -171,7 +171,7 @@ namespace orienteeringbackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Checkpoints");
+                    b.ToTable("Checkpoints", (string)null);
                 });
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Quiz.Alternative", b =>
@@ -194,7 +194,7 @@ namespace orienteeringbackend.Migrations
 
                     b.HasIndex("QuizQuestionId");
 
-                    b.ToTable("Alternative");
+                    b.ToTable("Alternative", (string)null);
                 });
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Quiz.Quiz", b =>
@@ -205,7 +205,7 @@ namespace orienteeringbackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Quiz");
+                    b.ToTable("Quiz", (string)null);
                 });
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Quiz.QuizQuestion", b =>
@@ -227,7 +227,7 @@ namespace orienteeringbackend.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("QuizQuestion");
+                    b.ToTable("QuizQuestion", (string)null);
                 });
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Track.Track", b =>
@@ -244,7 +244,7 @@ namespace orienteeringbackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tracks");
+                    b.ToTable("Tracks", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
