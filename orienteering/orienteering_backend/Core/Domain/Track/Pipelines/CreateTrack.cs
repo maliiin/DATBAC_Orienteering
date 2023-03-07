@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Infrastructure.Data;
@@ -16,11 +17,18 @@ public static class CreateTrack
     {
         private readonly OrienteeringContext _db;
 
-        public Handler(OrienteeringContext db) => _db = db ?? throw new ArgumentNullException(nameof(db));
+        private readonly IMapper _mapper;
+
+        public Handler(OrienteeringContext db, IMapper mapper)
+        {
+            _db = db ?? throw new ArgumentNullException(nameof(db));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(_mapper));
+
+        }
 
         public async Task<Guid> Handle(Request request, CancellationToken cancellationToken)
         {
-            var newTrack = new Track(request.trackDto.UserId, request.trackDto.TrackName);
+            var newTrack = _mapper.Map<TrackDto, Track>(request.trackDto);
             await _db.Tracks.AddAsync(newTrack, cancellationToken);
             await _db.SaveChangesAsync(cancellationToken);
             return newTrack.Id;

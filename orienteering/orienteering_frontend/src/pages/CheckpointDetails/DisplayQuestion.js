@@ -26,7 +26,7 @@ export default function DisplayQuestion(props) {
             <p>Svaralternativer:</p>
             
             {
-                props.questionInfo.alternative.map((alternative, index) =>
+                props.questionInfo.alternatives.map((alternative, index) =>
 
                     <p
                         key={index + "-" + alternative.text}

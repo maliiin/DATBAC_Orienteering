@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using orienteering_backend.Infrastructure.Data;
 
@@ -10,9 +11,11 @@ using orienteering_backend.Infrastructure.Data;
 namespace orienteeringbackend.Migrations
 {
     [DbContext(typeof(OrienteeringContext))]
-    partial class OrienteeringContextModelSnapshot : ModelSnapshot
+    [Migration("20230307100041_trackconstructorempty")]
+    partial class trackconstructorempty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,7 +174,7 @@ namespace orienteeringbackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Checkpoints", (string)null);
+                    b.ToTable("Checkpoints");
                 });
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Quiz.Alternative", b =>
@@ -194,7 +197,7 @@ namespace orienteeringbackend.Migrations
 
                     b.HasIndex("QuizQuestionId");
 
-                    b.ToTable("Alternative", (string)null);
+                    b.ToTable("Alternative");
                 });
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Quiz.Quiz", b =>
@@ -205,7 +208,7 @@ namespace orienteeringbackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Quiz", (string)null);
+                    b.ToTable("Quiz");
                 });
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Quiz.QuizQuestion", b =>
@@ -218,6 +221,7 @@ namespace orienteeringbackend.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Question")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<Guid?>("QuizId")
@@ -227,7 +231,7 @@ namespace orienteeringbackend.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("QuizQuestion", (string)null);
+                    b.ToTable("QuizQuestion");
                 });
 
             modelBuilder.Entity("orienteering_backend.Core.Domain.Track.Track", b =>
@@ -237,14 +241,15 @@ namespace orienteeringbackend.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tracks", (string)null);
+                    b.ToTable("Tracks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>

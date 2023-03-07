@@ -70,8 +70,8 @@ export default function QuizPage() {
     };
 
     function showQuizQuestion() {
-        if (typeof currentQuizQuestion.alternative != 'undefined') {
-            var currentAlternatives = currentQuizQuestion.alternative;
+        if (typeof currentQuizQuestion.alternatives != 'undefined') {
+            var currentAlternatives = currentQuizQuestion.alternatives;
             var radioButtons = currentAlternatives.map((alternative, index) =>
                 <FormControlLabel value={alternative.text} key={alternative.id + "-" + index} control={<Radio />} label={alternative.text} />
             );

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Infrastructure.Data;
 using orienteering_backend.Core.Domain.Quiz.Dto;
+using AutoMapper;
 //Kilder: CampusEats lab fra dat240
 // Kilder: https://github.com/dat240-2022/assignments/blob/main/Lab3/UiS.Dat240.Lab3/Core/Domain/Cart/Pipelines/AddItem.cs (07.02.2023)
 // Brukte samme struktur på pipelinen som i kilden
@@ -18,30 +19,33 @@ public static class GetQuiz
     public class Handler : IRequestHandler<Request, QuizDto>
     {
         private readonly OrienteeringContext _db;
-        private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-        public Handler(OrienteeringContext db, IMediator mediator)
+        public Handler(OrienteeringContext db, IMapper mapper)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
-            _mediator = mediator;
+            _mapper = mapper;
         }
         public async Task<QuizDto> Handle(Request request, CancellationToken cancellationToken)
         {
-            var Quiz = await _db.Quiz.Include(q => q.QuizQuestions).ThenInclude(a => a.Alternatives).FirstOrDefaultAsync(q => q.Id == request.QuizId, cancellationToken);
-            if (Quiz == null)
+            var quiz = await _db.Quiz.Include(q => q.QuizQuestions).ThenInclude(a => a.Alternatives).FirstOrDefaultAsync(q => q.Id == request.QuizId, cancellationToken);
+            if (quiz == null)
             {
                 throw new Exception("Quiz not found");
             }
+            //var quizDto = _mapper.Map<Quiz, QuizDto>(quiz);
             var dtoList = new List<QuizQuestionDto>();
-            for (var i = 0; i < Quiz.QuizQuestions.Count; i++)
+            for (var i = 0; i < quiz.QuizQuestions.Count; i++)
             {
-                var quizQuestion = Quiz.QuizQuestions[i];
-                var dtoElement = new QuizQuestionDto(quizQuestion.Question, quizQuestion.CorrectAlternative);
-                dtoElement.Alternative = quizQuestion.Alternatives;
-                dtoElement.QuizQuestionId = quizQuestion.Id;
-                dtoList.Add(dtoElement);
+                var quizQuestion = quiz.QuizQuestions[i];
+                //var dtoElement = new QuizQuestionDto(quizQuestion.Question, quizQuestion.CorrectAlternative);
+                //dtoElement.Alternatives = quizQuestion.Alternatives;
+                //dtoElement.QuizQuestionId = quizQuestion.Id;
+                var quizQuestionDto = _mapper.Map<QuizQuestion, QuizQuestionDto>(quizQuestion);
+                dtoList.Add(quizQuestionDto);
             }
-            var quizDto = new QuizDto(Quiz.Id, dtoList);
+            //var quizDto = _mapper.Map<Quiz, QuizDto>(Quiz);
+            var quizDto = new QuizDto(quiz.Id, dtoList);
             return quizDto;
         }
     }

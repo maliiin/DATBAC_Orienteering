@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Track;
@@ -16,13 +17,13 @@ namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines
         public class Handler : IRequestHandler<Request, List<CheckpointDto>>
         {
             private readonly OrienteeringContext _db;
-            private readonly IMediator _mediator;
+            private readonly IMapper _mapper;
 
 
-            public Handler(OrienteeringContext db, IMediator mediator)
+            public Handler(OrienteeringContext db, IMapper mapper)
             {
                 _db = db ?? throw new ArgumentNullException(nameof(db));
-                _mediator = mediator;
+                _mapper = mapper;
             }
             public async Task<List<CheckpointDto>> Handle(Request request, CancellationToken cancellationToken)
             {
@@ -36,9 +37,8 @@ namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines
                 for (var i = 0; i < checkpointList.Count; i++)
                 {
                     var checkpoint = checkpointList[i];
-                    var dtoElement = new CheckpointDto(checkpoint.Title, checkpoint.TrackId);
-                    dtoElement.Id = checkpoint.Id;
-                    checkpointDtoList.Add(dtoElement);
+                    var checkpointDto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint);
+                    checkpointDtoList.Add(checkpointDto);
                 }
                 return checkpointDtoList;
             }

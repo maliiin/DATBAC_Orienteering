@@ -2,13 +2,11 @@
 {
     public class QuizQuestion
     {
-        public QuizQuestion(string question, int correctAlternative) 
+        public QuizQuestion() 
         { 
-            Question= question;
-            CorrectAlternative= correctAlternative;
         }
         public Guid Id { get; set; }
-        public string Question { get; set; }
+        public string? Question { get; set; }
         public List<Alternative> Alternatives { get; set; } = new();
         public int CorrectAlternative { get; set; }
         

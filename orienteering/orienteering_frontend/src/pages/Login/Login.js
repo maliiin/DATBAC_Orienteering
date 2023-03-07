@@ -65,24 +65,24 @@ function Login() {
                         <form onSubmit={handleSubmit}>
                             <h4>Logg inn</h4>
 
-                            <TextField
-                                required
-                                onChange={(e) => handleChange(e)}
-                                id="standard-basic" label="Username"
-                                name="username"
-                                variant="standard"
-                                value={userInfo.username}
-                            />
-                            <br></br>
+                    <TextField
+                        required
+                        onChange={(e) => handleChange(e)}
+                        label="Username"
+                        name="username"
+                        variant="standard"
+                        value={userInfo.username}
+                    />
+                    <br></br>
 
-                            <TextField
-                                required
-                                type="password"
-                                onChange={(e) => handleChange(e)}
-                                id="standard-basic" label="Password"
-                                variant="standard" value={userInfo.password}
-                                name="password"
-                            />
+                    <TextField
+                        required
+                        type="password"
+                        onChange={(e) => handleChange(e)}
+                        label="Password"
+                        variant="standard" value={userInfo.password}
+                        name="password"
+                    />
 
                             <br></br>
                             <br></br>

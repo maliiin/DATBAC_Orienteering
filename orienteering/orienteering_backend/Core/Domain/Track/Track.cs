@@ -5,16 +5,14 @@ namespace orienteering_backend.Core.Domain.Track
 {
     public class Track
     {
-        public Track(Guid userId, string name)
+        public Track()
         {
-            UserId = userId;
-            Name = name;
         }
 
         public Guid Id { get; protected set; }
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
         //public List<Guid> CheckpointList { get; set; } = new();
 
         //public void AddCheckpoint(Guid checkpointId)

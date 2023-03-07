@@ -2,15 +2,12 @@
 {
     public class QuizQuestionDto
     {
-        public QuizQuestionDto(string question, int correctAlternative) {
-            Question = question;
-            CorrectAlternative = correctAlternative;
-
+        public QuizQuestionDto() {
         }
-        public Guid QuizQuestionId { get; set; }
-        public string Question { get; set; }
-        public List<Alternative> Alternative { get; set; } = new();
+        public Guid? QuizQuestionId { get; set; }
+        public string? Question { get; set; }
+        public List<AlternativeDto> Alternatives { get; set; } = new();
 
-        public int CorrectAlternative { get; set; }
+        public int CorrectAlternative { get; set; } 
     }
 }

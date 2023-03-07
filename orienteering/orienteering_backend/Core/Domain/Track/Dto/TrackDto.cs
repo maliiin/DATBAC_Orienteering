@@ -2,14 +2,12 @@
 {
     public class TrackDto
     {
-        public TrackDto(Guid userId, string trackName) { 
-            UserId= userId;
-            TrackName= trackName;
+        public TrackDto() { 
         }
 
         
-        public Guid UserId { get; set; }
-        public string TrackName { get; set; }
+        public Guid? UserId { get; set; }
+        public string? TrackName { get; set; }
 
         public Guid? TrackId { get; set; }
 
