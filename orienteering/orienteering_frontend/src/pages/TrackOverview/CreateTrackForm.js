@@ -45,8 +45,7 @@ export default function CreateTrackForm(props) {
         //if (response.status.su
 
         //clear form
-        setTrackInfo({
-            UserId: "",
+        setTrackInfo({...trackInfo,
             TrackName: ""
         });
         return response;
