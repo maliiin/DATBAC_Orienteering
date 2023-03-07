@@ -79,9 +79,6 @@ export default function TrackOverview() {
 
     useEffect(() => {
         if (userInfo.Id != "" && typeof (userInfo.Id) !== "undefined") {
-            console.log("load track--------------");
-            console.log(userInfo.Id);
-            //console.log("ved load track, user id er" + userInfo.Id);
             loadTrack();
         }
 
@@ -92,7 +89,6 @@ export default function TrackOverview() {
     }
     console.log(render);
     if (render == true) {
-        //if (verdi == true) {
 
         return (
             <>
@@ -107,7 +103,6 @@ export default function TrackOverview() {
                         <CreateTrackForm updateTracks={loadTrack} id={userInfo.Id}></CreateTrackForm>
                     </Grid>
                 </Grid>
-
 
             </>
         );
