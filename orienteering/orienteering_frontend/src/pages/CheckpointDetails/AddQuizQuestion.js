@@ -1,6 +1,6 @@
 import { TextField, FormGroup, Box, Button } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; 
+import { useParams } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 
 
@@ -18,13 +18,16 @@ export default function AddQuizQuestion(props) {
         }, {
             Id: 2,
             Text: ""
-            }],
-        CorrectAlternative: 2
+        }, {
+            Id: 3,
+            Text: ""
+        }],
+        CorrectAlternative: ""
 
     });
 
     //amount of alternatives
-    const [count, setCount] = useState(2);
+    const [count, setCount] = useState(3);
 
     //adds one more field for alternative
     const handleAddAlternative = (event) => {
@@ -63,6 +66,27 @@ export default function AddQuizQuestion(props) {
         //update value to render quizquestions
         props.setQuizChanged(props.quizChanged * -1);
 
+        //clear input field
+        setQuestionInfo({
+            Question: "",
+            QuizId: "",
+            Alternatives: [{
+                Id: 1,
+                Text: ""
+            }, {
+                Id: 2,
+                Text: ""
+            }, {
+                Id: 3,
+                Text: ""
+            }],
+            CorrectAlternative: 1
+
+        });
+        setCount(3);
+
+
+
     }
 
     const handleAlternativeChange = (event, i) => {
@@ -81,9 +105,9 @@ export default function AddQuizQuestion(props) {
         //all exept last alternative
         let shorterList = questionInfo.Alternatives.slice(0, -1);
 
-       
+
         setQuestionInfo({ ...questionInfo, Alternatives: shorterList });
-        setCount(count -1);
+        setCount(count - 1);
 
 
     }
@@ -107,14 +131,14 @@ export default function AddQuizQuestion(props) {
 
         GetQuizId();
 
-    },[]);
+    }, []);
 
 
 
     return (<>
 
         <Box
-            onSubmit={handleSubmit }
+            onSubmit={handleSubmit}
             //kilde. akuratt sx= er fra https://mui.com/material-ui/react-text-field/ 17.02
             component="form"
             sx={{
@@ -129,7 +153,7 @@ export default function AddQuizQuestion(props) {
                         disabled={count <= 5 ? false : true}
                         variant="contained"
                         onClick={handleAddAlternative}>
-                        
+
                         Legg til alternativ
 
                     </Button>
@@ -158,16 +182,18 @@ export default function AddQuizQuestion(props) {
 
             </Grid>
 
-            <Grid container spacing={3 } >
-                <Grid item sx={6 }>
+            <Grid container spacing={3} >
+                <Grid item sx={6}>
                     <TextField
+                       
                         required
                         onChange={(e) => handleChange(e)}
-                        id="standard-basic" label="Spørsmål"
+                        id="standard-basic" label="Sporsmal"
                         name="Question"
                         variant="standard"
                         value={questionInfo.Question}
-                        />
+
+                    />
                 </Grid>
 
 
@@ -187,14 +213,14 @@ export default function AddQuizQuestion(props) {
                 </Grid>
 
 
-            <>
+                <>
                     {[...Array(count)].map((element, index) => (
                         <Grid item sx={6} key={index + "-" + element}>
                             <TextField
-                                
+
                                 required
                                 onChange={newVal => handleAlternativeChange(newVal, index)}
-                                id="standard-basic" label={"Svaralternativ (" + (index+ 1) + ")"}
+                                id="standard-basic" label={"Svaralternativ (" + (index + 1) + ")"}
                                 name="Options"
                                 variant="standard"
                                 value={questionInfo.Alternatives[index].Text}
@@ -203,12 +229,12 @@ export default function AddQuizQuestion(props) {
 
                     ))
                     }
-                    
-            </>
+
+                </>
 
             </Grid>
 
-            </Box>
+        </Box>
 
     </>);
 }
