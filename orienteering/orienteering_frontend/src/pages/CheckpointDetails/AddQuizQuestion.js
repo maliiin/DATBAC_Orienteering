@@ -67,9 +67,8 @@ export default function AddQuizQuestion(props) {
         props.setQuizChanged(props.quizChanged * -1);
 
         //clear input field
-        setQuestionInfo({
+        setQuestionInfo({...questionInfo,
             Question: "",
-            QuizId: "",
             Alternatives: [{
                 Id: 1,
                 Text: ""
@@ -80,7 +79,7 @@ export default function AddQuizQuestion(props) {
                 Id: 3,
                 Text: ""
             }],
-            CorrectAlternative: 1
+            CorrectAlternative: ""
 
         });
         setCount(3);
