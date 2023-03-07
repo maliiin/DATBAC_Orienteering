@@ -1,6 +1,6 @@
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Grid } from '@mui/material';
 import React, { useState } from "react";
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 function Registration() {
@@ -14,7 +14,7 @@ function Registration() {
     });
 
     const handleChange = (event) => {
-       // console.log("change");
+        // console.log("change");
         //update state
         setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
     };
@@ -28,12 +28,10 @@ function Registration() {
         console.log(userInfo);
 
         const response = await addUserToDb();
-        
-        if (response.ok)
-        {
+
+        if (response.ok) {
             navigate("/login");
-        } else
-        {
+        } else {
             console.log("not ok");
         }
 
@@ -41,7 +39,7 @@ function Registration() {
         //setUserInfo({ name: "", email: "", phonenumber: "" });
     }
 
-    const addUserToDb=async ()=> {
+    const addUserToDb = async () => {
         console.log("user to be created");
         console.log(userInfo);
         const requestOptions = {
@@ -64,47 +62,66 @@ function Registration() {
 
     return (
         <>
-            <form onSubmit={handleSubmit}> 
-                
-                <TextField
-                    required
-                    onChange={(e) => handleChange(e)}
-                    label="Username"
-                    name="username"
-                    variant="standard" value={userInfo.username}
 
-                />
-                <br></br>
+            <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                style={{ minHeight: '50vh' }}
+            >
 
-                <TextField
-                    required
-                    type="password"
-                    onChange={(e) => handleChange(e)}
-                    label="Password"
-                    variant="standard" value={userInfo.password}
-                    name="password"
-                    inputProps={{ minLength: 6 }}
+                <Grid item xs={3}>
+                    <h4>Registrer deg</h4>
+                    <form onSubmit={handleSubmit}>
+
+                        <TextField
+                            required
+                            onChange={(e) => handleChange(e)}
+                            label="Username"
+                            name="username"
+                            variant="standard" value={userInfo.username}
+
+                        />
+                        <br></br>
+
+                        <TextField
+                            required
+                            type="password"
+                            onChange={(e) => handleChange(e)}
+                            label="Password"
+                            variant="standard" value={userInfo.password}
+                            name="password"
+                            inputProps={{ minLength: 6 }}
 
 
-                />
-                <br></br>
+                        />
+                        <br></br>
 
-                <TextField
-                    required
-                    onChange={(e) => handleChange(e)}
-                    label="Email"
-                    variant="standard"
-                    value={userInfo.email}
-                    name="email"
-                    type="email"
-                    
-                /><br></br>
+                        <TextField
+                            required
+                            onChange={(e) => handleChange(e)}
+                            label="Email"
+                            variant="standard"
+                            value={userInfo.email}
+                            name="email"
+                            type="email"
 
-                <Button variant="contained" type="submit">
-                    Lag bruker
-                </Button>
+                        />
+                        <br />
+                        <br />
 
-            </form>
+                   
+
+
+                        <Button variant="contained" type="submit">
+                            Lag bruker
+                        </Button>
+
+                    </form>
+                </Grid>
+            </Grid>
         </>
     );
 }

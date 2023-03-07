@@ -1,4 +1,4 @@
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Grid } from '@mui/material';
 import React, { useState } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 
@@ -50,7 +50,20 @@ function Login() {
 
         return (
             <>
-                <form onSubmit={handleSubmit}>
+
+
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{ minHeight: '50vh' }}
+                >
+
+                    <Grid item xs={3}>
+                        <form onSubmit={handleSubmit}>
+                            <h4>Logg inn</h4>
 
                     <TextField
                         required
@@ -71,14 +84,19 @@ function Login() {
                         name="password"
                     />
 
-                    <br></br>
+                            <br></br>
+                            <br></br>
 
 
-                    <Button variant="contained" type="submit">
-                        Logg inn
-                    </Button>
 
-                </form>
+                            <Button variant="contained" type="submit">
+                                Logg inn
+                            </Button>
+
+                        </form>
+                    </Grid>
+
+                </Grid> 
             </>
         );
     }
