@@ -33,7 +33,6 @@ export default function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />}>
-                    <Route index element={<Home />} />
                     <Route path="checkpointdetails/:checkpointId" element={<CheckpointDetails />} />
                     <Route path="login" element={<Login />} />
                     <Route path="*" element={<NoPage />} />
@@ -46,6 +45,8 @@ export default function App() {
                 </Route>
 
                 <Route path="checkpoint/quiz/:quizId" element={<QuizPage />} />
+                <Route index element={<Home />} />
+
 
             </Routes>
             </BrowserRouter>
