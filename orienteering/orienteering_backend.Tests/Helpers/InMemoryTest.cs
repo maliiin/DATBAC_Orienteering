@@ -1,20 +1,23 @@
 ﻿using MediatR;
+using System;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using orienteering_backend;
 using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Infrastructure.Data;
 using orienteering_backend.Core.Domain.Quiz;
 using orienteering_backend.Core.Domain.Quiz.Dto;
-using System;
 using orienteering_backend.Core.Domain.Quiz.Pipelines;
 using AutoMapper;
 using orienteering_backend.Infrastructure.Automapper;
-using orienteering_backend;
 using Newtonsoft.Json;
-using System.Text;
 using orienteering_backend.Core.Domain.Track;
+using orienteering_backend.Core.Domain.Track.Dto;
+using orienteering_backend.Core.Domain.Track.Pipelines;
+
 // Kilder: https://thecodeblogger.com/2021/07/07/in-memory-database-provider-for-testing-net-ef-core-app/ (17.02.2023)
 
 namespace orienteering_backend.Tests.Helpers;
@@ -45,6 +48,29 @@ public class InMemoryTest
     //[Fact]
 
     //public async Task CreateCheckpointTest()
+    //{
+    //    //var inMemoryTest = new InMemoryTest();
+    //    var _db = new OrienteeringContext(dbContextOptions, null);
+    //    if (!_db.Database.IsInMemory())
+    //    {
+    //        _db.Database.Migrate();
+    //    }
+
+
+    //    var trackId = new Guid();
+    //    Checkpoint checkpoint = new("test1", 0, trackId);
+    //    CheckpointDto checkpointDto = new("test1", trackId, 0);
+
+    //    var request = new CreateCheckpoint.Request(checkpointDto);
+    //    var handler = new CreateCheckpoint.Handler(_db);
+    //    var checkpointId = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+    //    var result = await _db.Checkpoints.FirstOrDefaultAsync(c => c.Id == checkpointId);
+    //    Assert.Equal(checkpoint, result);
+    //}
+
+    //[Fact]
+
+    //public async Task GenerateQRTest()
     //{
     //    //var inMemoryTest = new InMemoryTest();
     //    var _db = new OrienteeringContext(dbContextOptions, null);
@@ -284,6 +310,77 @@ public class InMemoryTest
         Assert.Equal("green", result);
     }
 
-    
+    [Fact]
+    public async Task CreateTrackTest()
+    {
+        var _db = new OrienteeringContext(dbContextOptions, null);
+        if (!_db.Database.IsInMemory())
+        {
+            _db.Database.Migrate();
+        }
+        var trackDto = new TrackDto();
+        trackDto.UserId = Guid.NewGuid();
+        trackDto.TrackName = "Test";
+        trackDto.TrackId = Guid.NewGuid();
+        var request = new CreateTrack.Request(trackDto);
+        var handler = new CreateTrack.Handler(_db, _mapper);
+        var result = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+        Assert.Equal(result, trackDto.TrackId);
+
+        var addedTrack = await _db.Tracks.FirstOrDefaultAsync(t => t.Id == trackDto.TrackId);
+        Assert.NotNull(addedTrack);
+        var addedTrackDto = _mapper.Map<Track, TrackDto>(addedTrack);
+        Assert.Equal(JsonConvert.SerializeObject(trackDto), JsonConvert.SerializeObject(addedTrackDto));
+    }
+
+    [Fact]
+    public async Task GetSingleTrackTest()
+    {
+        var _db = new OrienteeringContext(dbContextOptions, null);
+        if (!_db.Database.IsInMemory())
+        {
+            _db.Database.Migrate();
+        }
+        var track = new Track();
+        track.UserId = Guid.NewGuid();
+        track.Name = "Test";
+        await _db.Tracks.AddAsync(track);
+        await _db.SaveChangesAsync();
+        var request = new GetSingleTrack.Request(track.Id);
+        var handler = new GetSingleTrack.Handler(_db, _mapper);
+        var returnedTrackDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+        var trackDto = _mapper.Map<Track, TrackDto>(track);
+        Assert.Equal(JsonConvert.SerializeObject(trackDto), JsonConvert.SerializeObject(returnedTrackDto));
+    }
+
+    [Fact]
+    public async Task GetTracksTest()
+    {
+        var _db = new OrienteeringContext(dbContextOptions, null);
+        if (!_db.Database.IsInMemory())
+        {
+            _db.Database.Migrate();
+        }
+        var userId = Guid.NewGuid();
+        var track1 = new Track();
+        track1.UserId = userId;
+        track1.Name = "Test1";
+        var track2 = new Track();
+        track2.UserId = userId;
+        track2.Name = "Test2";
+        await _db.Tracks.AddAsync(track1);
+        await _db.Tracks.AddAsync(track2);
+        await _db.SaveChangesAsync();
+        var request = new GetTracks.Request(userId);
+        var handler = new GetTracks.Handler(_db, _mapper);
+        var returnedTrackDtoList = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+        var track1Dto = _mapper.Map<Track, TrackDto>(track1);
+        var track2Dto = _mapper.Map<Track, TrackDto>(track2);
+        var tracDtoList = new List<TrackDto> {track1Dto, track2Dto};
+        Assert.Equal(JsonConvert.SerializeObject(tracDtoList), JsonConvert.SerializeObject(returnedTrackDtoList));
+    }
+
+
+
 
 }
