@@ -5,6 +5,7 @@ import useExternalScript from "./useExternalScript.js";
 import ComponentWithScript from "../ComponentWithScript.js";
 import Test from "./test";
 import Login from "../Login/Login.js"
+import test from "./../../testscript"
 
 
 //var __html = require('./../../test.html');
@@ -16,15 +17,17 @@ import Login from "../Login/Login.js"
 
 
 function Home() {
-
-    const externalScript = "../../testscript.js";
-    const state = useExternalScript(externalScript);
+    test();
+    //window.test();
+    //const externalScript = "../../testscript.js";
+    //const state = useExternalScript(externalScript);
+    //<div>
+    //    {state === "loading" && <p>Loading...</p>}
+    //    {state === "ready" && <ComponentWithScript />}
+    //    hhh
+    //</div>
     return (
-        <div>
-            {state === "loading" && <p>Loading...</p>}
-            {state === "ready" && <ComponentWithScript />}
-            hhh
-        </div>
+        <p id="root1">home shhgdh</p>
     );
 
     //return (

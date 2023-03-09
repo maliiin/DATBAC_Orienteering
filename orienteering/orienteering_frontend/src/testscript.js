@@ -12,8 +12,13 @@ function drop(ev) {
     ev.target.appendChild(document.getElementById(data));
 }
 
-export function test() {
-    console.log("inni test!!!!!!!!!!!!");
+function testfunk() {
+    console.log("trykket!!!!!!!!!!!!");
 }
 
-console.log("dette kjører et script");
+function test() {
+    let hele = document.getElementById("root").addEventListener("touchstart", testfunk);
+
+    console.log("inni test!!!!!!!!!!!!");
+}
+export default test;

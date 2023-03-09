@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-//fiks kilde https://plainenglish.io/blog/how-to-load-a-dynamic-script-in-react-2940d30998dd 
+//fiks kilde https://plainenglish.io/blog/how-to-load-a-dynamic-script-in-react-2940d30998dd
 //08/03
+//hook som 
 export default function useExternalScript(url) {
     let [state, setState] = useState(url ? "loading" : "idle");
 
@@ -25,8 +26,7 @@ export default function useExternalScript(url) {
             document.body.appendChild(script);
             script.addEventListener("load", handleScript);
             script.addEventListener("error", handleScript);
-            //malin
-            console.log(script.test());
+            
         }
 
         script.addEventListener("load", handleScript);
