@@ -18,6 +18,13 @@ export default function FallingBoxesGame() {
 
 
     return (<>
+        <canvas
+            id="gameCanvas"
+            style={{
+                backgroundColor:"green"
+
+                } }
+        ></canvas>
         <div
             id="GameDiv"
             style={{
