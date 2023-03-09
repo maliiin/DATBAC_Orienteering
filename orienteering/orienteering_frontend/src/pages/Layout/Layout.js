@@ -43,6 +43,8 @@ function Layout() {
                     <Link to="/registration" style={linkStyle}>Registrer deg</Link>
 
                     <Link to="/trackoverview" style={linkStyle}>Vis loyper</Link>
+                    <Link to="/game" style={linkStyle}>Spill</Link>
+
 
 
                 </div>
