@@ -15,6 +15,8 @@ import QuizPage from "./pages/QuizPage/QuizPage";
 
 import QRCodePage from "./pages/QrCodePage/QRCodePage"
 import CheckpointRedirection from "./pages/CheckpointRedirection"
+import ChemistryGame from "./pages/Game/ChemistryGame";
+
 
 export default function App() {
     const authenticated = false;
@@ -46,6 +48,7 @@ export default function App() {
                 </Route>
 
                 <Route path="checkpoint/quiz/:quizId" element={<QuizPage />} />
+                <Route path="ChemistryGame" element={<ChemistryGame />} />
 
             </Routes>
             </BrowserRouter>
