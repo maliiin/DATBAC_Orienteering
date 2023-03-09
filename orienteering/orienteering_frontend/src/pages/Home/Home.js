@@ -5,6 +5,8 @@ import useExternalScript from "./useExternalScript.js";
 import ComponentWithScript from "../ComponentWithScript.js";
 import Test from "./test";
 import Login from "../Login/Login.js"
+
+//her lastes funksjon fra scriptet inn
 import test from "./../../testscript"
 
 
@@ -17,37 +19,16 @@ import test from "./../../testscript"
 
 
 function Home() {
+    //dette er en js funksjon
     test();
-    //window.test();
-    //const externalScript = "../../testscript.js";
-    //const state = useExternalScript(externalScript);
-    //<div>
-    //    {state === "loading" && <p>Loading...</p>}
-    //    {state === "ready" && <ComponentWithScript />}
-    //    hhh
-    //</div>
+
+
+
     return (
         <p id="root1">home shhgdh</p>
     );
 
-    //return (
-    //    <div dangerouslySetInnerHTML={template} />
 
-    //);
-    //let [htmlFileString, setHtmlFileString] = useState();
-
-    //async function fetchHtml() {
-    //    setHtmlFileString(await (await fetch(`../../test.html`)).text());
-    //}
-    //useEffect(() => {
-    //    fetchHtml();
-    //}, []);
-
-    //return (
-    //    <div className="App">
-    //        <div dangerouslySetInnerHTML={{ __html: htmlFileString }}></div>
-    //    </div>
-    //);
 
 
 }
