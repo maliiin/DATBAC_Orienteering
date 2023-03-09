@@ -1,5 +1,11 @@
-import FallingBoxes from "./FallingBoxes";
+import FallingBoxesGame from "./FallingBoxesGame";
 
 export default function GamePage() {
-    return <FallingBoxes></FallingBoxes>
+    return (
+        <>
+           
+                <FallingBoxesGame></FallingBoxesGame>
+
+        </>
+    );
 }
