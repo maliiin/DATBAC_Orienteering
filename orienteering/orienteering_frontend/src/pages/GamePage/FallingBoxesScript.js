@@ -4,9 +4,10 @@ var interact = require('interactjs')
 //global variables
 var fallingWidth = 30;
 var fallingHeigth = 30;
+const data = [["fang", true], ["ikke fang", false], ["fang11", true], ["ikke fang22", false], ["ta", true], ["ikke ta", false]]
 
 var BasketHeight, BasketWidth;
-const speed = 1;
+const speed = 3;
 
 //this is position of basket
 var positionBasket = {
@@ -23,25 +24,18 @@ function setup(basketWidth, basketHeight) {
 
     gameCanvas = document.getElementById("gameCanvas");
 
-    //create gameArea
-    console.log(gameCanvas)
-
     //setter "intern" størrelse
     gameCanvas.height = window.screen.height;
     gameCanvas.width = window.screen.width;
 
     gameArea = new GameArea(gameCanvas);
-    console.log(gameArea.canvas)
-    //console.log(gameCanvas.style.height);
-    //console.log(gameArea.canvas.height);
-    //console.log(BasketHeight);
 
     //set position of basket
     positionBasket = {
         x: 0,
         y: gameArea.canvas.height - BasketHeight,
     }
-    //console.log(positionBasket.y);
+
     //start game/initialize
     gameArea.start();
 
@@ -53,9 +47,10 @@ function setup(basketWidth, basketHeight) {
 
 //https://www.w3schools.com/graphics/tryit.asp?filename=trygame_default_gravity
 function GameArea(canvas) {
+    this.point = 0;
     this.canvas = canvas;
-    console.log(this.canvas.height)
-    console.log(this.canvas.width)
+    //console.log(this.canvas.height)
+    //console.log(this.canvas.width)
 
     //canvas: document.createElement("canvas"),
     this.start = function () {
@@ -85,9 +80,15 @@ function GameArea(canvas) {
     };
 }
 
-function FallingObject(x, y) {
+function FallingObject(x, y, values) {
+    console.log(values)
     this.pos_x = x;
     this.pos_y = y;
+    this.text = values[0];
+    this.collect = values[1];
+
+    console.log(this.text)
+    console.log(this.collect)
 
     this.width = fallingWidth;
     this.height = fallingHeigth;
@@ -114,24 +115,38 @@ function FallingObject(x, y) {
 
     //check if fallingObject hits the basket
     this.inBasket = function () {
-        console.log(this.pos_y);
+        //console.log(this.pos_y);
         //console.log(positionBasket.y);
 
-        if (this.pos_y+this.height >= positionBasket.y) {// && ((this.pos_x >= position.x && this.pos_x <= position.x + gameCanvas.canvas.height))){
-            console.log("kræsj!!!");
+        if ((this.pos_y + this.height >= positionBasket.y) &&
+            (this.pos_x + this.width >= positionBasket.x) &&
+            (this.pos_x <= positionBasket.x + gameArea.canvas.height)) {
+
+            if (this.collect) {
+                gameArea.point += 1;
+            }
+            return true;
+
         }
+        return false;
     }
 }
 
 function updateGameArea() {
-    gameArea.clear()
+    gameArea.clear();
+    //display score
+    gameArea.context.font = "30px Arial";
+    gameArea.context.strokeText("Poeng: " + gameArea.point, 50, 50);
 
     //display all falling elements
     for (var i = fallingObjects.length - 1; i >= 0; i--) {
         fallingObjects[i].moveElement();
-        let remove = fallingObjects[i].onGround();
 
+        //remove element 
+        let remove = fallingObjects[i].onGround() || fallingObjects[i].inBasket()
         if (remove) {
+
+            console.log("remove")
             //remove element from list
             let firstPart = fallingObjects.slice(0, i);
             let lastPart = fallingObjects.slice(i + 1);
@@ -142,7 +157,6 @@ function updateGameArea() {
         fallingObjects[i].inBasket();
     }
 }
-
 
 //this function makes basket able to move
 function moveBasket() {
@@ -177,7 +191,12 @@ function moveBasket() {
 function addFallingBox() {
     let max = gameArea.canvas.width - fallingWidth;
     let x = Math.floor(Math.random() * max);
-    let fallingBox = new FallingObject(x, 0);
+
+    let value = data[Math.floor(Math.random() * data.length)];
+
+
+    let fallingBox = new FallingObject(x, 0, value);
+
     //console.log(fallingBox);
     fallingObjects.push(fallingBox);
 }
