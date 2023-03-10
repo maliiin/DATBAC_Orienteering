@@ -16,9 +16,22 @@ export default function FallingBoxesGame() {
 
 
 
-
+    
     return (<>
-
+        <div id="container"
+            style={{
+                position: "relative"
+                } }
+        >
+            <canvas
+                id="gameCanvas"
+                style={{
+                    position:"absolute",
+                    width: "200px",
+                    height: "200px",
+                    backgroundColor: "green"
+                }}
+            ></canvas>
             <div
                 id="basket"
                 className="draggable"
@@ -26,7 +39,8 @@ export default function FallingBoxesGame() {
                     position: "absolute",
                     width: basketWidth + "px",
                     backgroundColor: "lightblue",
-                    bottom: "200px",
+                    //bottom: "10px",
+                    top:"50px",
                     height: "50px",
 
                 }}
@@ -36,6 +50,10 @@ export default function FallingBoxesGame() {
             >
                 Draggable Element
             </div>
+
+        </div>
+
+
      
     </>);
 }
