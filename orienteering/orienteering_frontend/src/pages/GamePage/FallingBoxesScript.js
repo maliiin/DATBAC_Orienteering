@@ -4,41 +4,63 @@ var interact = require('interactjs')
 //global variables
 var fallingWidth = 30;
 var fallingHeigth = 30;
-const speed = 3;
+
+var BasketHeight, BasketWidth;
+const speed = 1;
 
 //this is position of basket
-const position = { x: 0, y: 0 }
+var positionBasket = {
+    x: 0,
+    y: 0,
+}
 var gameCanvas, BasketWidth
 var fallingObjects = [];
-var gameArea=null
+var gameArea = null
 
-function setup(basketWidth) {
+function setup(basketWidth, basketHeight) {
     BasketWidth = basketWidth;
+    BasketHeight = basketHeight
 
     gameCanvas = document.getElementById("gameCanvas");
 
     //create gameArea
-    gameArea = new GameArea(gameCanvas);
+    console.log(gameCanvas)
+    //setter "intern" størrelse
+    gameCanvas.height = window.screen.height;
+    gameCanvas.width = window.screen.width;
 
+    gameArea = new GameArea(gameCanvas);
+    console.log(gameArea.canvas)
+    //console.log(gameCanvas.style.height);
+    //console.log(gameArea.canvas.height);
+    //console.log(BasketHeight);
+
+    //set position of basket
+    positionBasket = {
+        x: 0,
+        y: gameCanvas.style.height.replace("px", "") - BasketHeight,
+    }
+    //console.log(positionBasket.y);
     //start game/initialize
     gameArea.start();
 
     //make basket able to move
     moveBasket();
-    window.setInterval(addFallingBox, 2000);
+    addFallingBox();
+    //window.setInterval(addFallingBox, 2000);
 }
 
 //https://www.w3schools.com/graphics/tryit.asp?filename=trygame_default_gravity
 function GameArea(canvas) {
     this.canvas = canvas;
+    console.log(this.canvas.height)
+    console.log(this.canvas.width)
+
     //canvas: document.createElement("canvas"),
     this.start = function () {
         //fix, flytt noe av koden her til setup
 
-        //setup canvas
-        //dette skjer i react nå
-        //this.canvas.width = window.screen.availWidth - 50
-        //this.canvas.height = window.screen.availHeight - 500
+        //get context
         this.context = this.canvas.getContext("2d");
 
 
@@ -57,7 +79,7 @@ function GameArea(canvas) {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         //fix, trengs clear hvis vi har fill bg
         //bacground of canvas
-        this.context.fillStyle = "pink"
+        this.context.fillStyle = "green"
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height)
     };
 }
@@ -76,19 +98,14 @@ function FallingObject(x, y) {
     };
 
     this.drawElement = function () {
-        console.log(this.height)
         var ctx = gameArea.context;
         ctx.fillStyle = this.color;
         ctx.fillRect(this.pos_x, this.pos_y, this.width, this.height);
     };
 
     this.onGround = function () {
-        console.log(gameArea)
-        console.log(gameArea.canvas)
-        console.log(gameArea.canvas.height)
         var bottom = gameArea.canvas.height - this.height;
         if (this.pos_y >= bottom) {
-            console.log("hit bottom")
             return true;
         }
         return false;
@@ -96,6 +113,12 @@ function FallingObject(x, y) {
 
     //check if fallingObject hits the basket
     this.inBasket = function () {
+        console.log(this.pos_y);
+        //console.log(positionBasket.y);
+
+        if (this.pos_y >= positionBasket.y) {// && ((this.pos_x >= position.x && this.pos_x <= position.x + gameCanvas.canvas.height))){
+            console.log("kræsj!!!");
+        }
     }
 }
 
@@ -108,16 +131,14 @@ function updateGameArea() {
         let remove = fallingObjects[i].onGround();
 
         if (remove) {
-            console.log("remove element");
-            console.log(fallingObjects)
             //remove element from list
             let firstPart = fallingObjects.slice(0, i);
             let lastPart = fallingObjects.slice(i + 1);
             fallingObjects = firstPart.concat(lastPart);
-            console.log(fallingObjects)
             return;
         }
         fallingObjects[i].drawElement();
+        fallingObjects[i].inBasket();
     }
 }
 
@@ -130,14 +151,17 @@ function moveBasket() {
         //gir posisjonen
         listeners: {
             start(event) {
-                console.log("start   lll")
-                console.log(event.type, event.target)
+                //console.log(event.type, event.target)
             },
             move(event) {
-                position.x += event.dx
+                positionBasket.x += event.dx
+                //console.log(positionBasket.x);
+                //console.log(positionBasket.y);
 
                 event.target.style.transform =
-                    `translate(${position.x}px, ${position.y}px)`
+                    //`translate(${positionBasket.x}px, ${positionBasket.y}px)`
+                    `translate(${positionBasket.x}px, 0px)`
+
             },
         },
         modifiers: [
@@ -150,11 +174,10 @@ function moveBasket() {
 }
 
 function addFallingBox() {
-    console.log("added falling")
     let max = gameArea.canvas.width - fallingWidth;
     let x = Math.floor(Math.random() * max);
     let fallingBox = new FallingObject(x, 0);
-    console.log(fallingBox);
+    //console.log(fallingBox);
     fallingObjects.push(fallingBox);
 }
 

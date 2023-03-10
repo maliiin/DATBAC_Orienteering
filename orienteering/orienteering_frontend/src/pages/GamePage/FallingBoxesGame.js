@@ -11,13 +11,14 @@ export default function FallingBoxesGame() {
 
     useEffect(() => {
         //setup game in js
-        setup(basketWidth);
+        setup(basketWidth, basketHeight);
     }, []);
 
     return (<>
         <div id="container"
             style={{
                 position: "relative"
+               
             }}
         >
             <canvas
