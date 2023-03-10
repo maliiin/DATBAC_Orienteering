@@ -22,25 +22,27 @@ var GameArea = {
     //canvas: gameCanvas,
     canvas: document.createElement("canvas"),
     start: function () {
-
-        this.canvas.width = window.screen.availWidth-50
-        this.canvas.height = window.screen.availHeight-500
+        //fix, flytt noe av koden her til setup
+        //setup canvas
+        this.canvas.width = window.screen.availWidth - 50
+        this.canvas.height = window.screen.availHeight - 500
         this.context = this.canvas.getContext("2d");
 
+
+
+        //this.canvas.style.position="absolute"
+
+        //dont let whole screen scroll
         let rootDiv = document.getElementById("root");
         rootDiv.style.width = (window.screen.availWidth - 50) + "px"
         rootDiv.style.touchAction = "none"
         let body1 = document.getElementsByTagName("body")[0];
-        console.log(body1);
-        body1.style.touchAction="none"
+        body1.style.touchAction = "none"
 
 
-
-        //rootDiv.style.height = "600px";
-        //rootDiv.style.width = "600px";
-
-        console.log(rootDiv.style.top);
-        //rootDiv.appendChild(this.canvas)
+        //rootDiv.insertBefore(this.canvas, rootDiv.firstChild)
+       // rootDiv.appendChild(this.canvas)
+        //rootDiv.style.position="relative"
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.interval = setInterval(updateGameArea, 20);
 
@@ -48,6 +50,8 @@ var GameArea = {
     clear: function () {
         //clear whole canvas
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.context.fillStyle="pink"
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
 };
 
@@ -174,9 +178,9 @@ function moveBasket() {
         },
         modifiers: [
             interact.modifiers.restrictRect({
-                restriction:'parent'
-                })
-            ]
+                restriction: 'parent'
+            })
+        ]
     })
 }
 
