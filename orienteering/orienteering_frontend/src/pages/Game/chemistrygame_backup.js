@@ -21,7 +21,7 @@ function ChemistryGame() {
 
     useEffect(() => {
 
-        setup();
+        setup(correctMix);
         createSolutions();
     }, []);
     return (<>

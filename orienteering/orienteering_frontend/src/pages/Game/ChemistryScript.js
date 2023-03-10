@@ -1,48 +1,39 @@
 var interact = require("interactjs");
-const correctMix = ['sol2', 'sol3'];
+//const correctMix = ['sol2', 'sol3'];
+var correctMix;
+var submitted = false;
 
 
-
-function setup() {
+function setup(prop) {
     chemistry();
     document.getElementById("checkanswer").addEventListener("click", checkAnswer);
+    storeCorrectMix(prop);
+
 }
+export default setup;
 
 function checkAnswer() {
     const droppedSolutions = document.getElementsByClassName("dropped");
+    var boardPassed = true;
     for (let i = 0; i < droppedSolutions.length; i++) {
         if ((correctMix.includes(droppedSolutions[i].textContent.trim()) == false)) {
             console.log("feil svar");
+            boardPassed = false;
         }
     }
+    if (correctMix.length != droppedSolutions.length) {
+        boardPassed = false;
+    }
+    if (boardPassed) {
+        document.getElementById("nextboardbtn").style.display = "block";
+    }
+    submitted = true;
 }
 
-function testfunksjon() {
-    console.log("hei");
-    document.getElementById("div1").addEventListener("click", createSolutions);
+
+function storeCorrectMix(prop) {
+    correctMix = prop;
 }
-
-function skrivut() {
-    console.log("skriv ut funksjon");
-}
-
-
-
-function createSolutions() {
-    console.log("createsolutions function");
-    let solutionBoard = document.getElementById("solutionarea");
-    //let solutionBoard = document.createElement("canvas");
-    let ctx = solutionBoard.getContext("2d");
-    ctx.beginPath();
-    ctx.strokeStyle = "green";
-    ctx.fillstyle = "red";
-    
-    
-    ctx.strokeRect(0, 100, 50, 50)
-    ctx.fillRect(0, 100, 50, 50);
-    
-}
-export default setup;
 
 
 
@@ -94,6 +85,7 @@ function chemistry() {
             // remove the drop feedback style
             event.target.classList.remove('drop-target')
             event.relatedTarget.classList.remove('can-drop')
+            event.relatedTarget.classList.remove('dropped');
         },
         ondrop: function (event) {
             event.relatedTarget.classList.add('dropped');
@@ -116,11 +108,8 @@ function chemistry() {
                     endOnly: true
                 })
             ],
-            autoScroll: true,
+            autoScroll: false,
             // dragMoveListener from the dragging demo above
             listeners: { move: dragMoveListener }
         })
 }
-
-
-
