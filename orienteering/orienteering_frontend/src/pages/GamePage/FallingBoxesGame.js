@@ -3,12 +3,12 @@ import { useEffect } from "react";
 
 
 export default function FallingBoxesGame() {
-
+    const basketWidth = 200;
 
 
 
     useEffect(() => {
-        setup();
+        setup(basketWidth);
     }, []);
 
 
@@ -18,29 +18,14 @@ export default function FallingBoxesGame() {
 
 
     return (<>
-        <canvas
-            id="gameCanvas"
-            style={{
-                backgroundColor:"green"
 
-                } }
-        ></canvas>
-        <div
-            id="GameDiv"
-            style={{
-                width: "700px",
-                height: "500px",
-                backgroundColor: "red",
-
-
-            }}>heihe
             <div
                 id="basket"
                 className="draggable"
                 style={{
                     //position: "absolute",
                     bottom: "20px",
-                    width: "200px",
+                    width: basketWidth+"px",
                     backgroundColor: "lightblue",
                     bottom: "20px"
 
@@ -50,6 +35,5 @@ export default function FallingBoxesGame() {
             >
                 Draggable Element
             </div>
-        </div>
     </>);
 }

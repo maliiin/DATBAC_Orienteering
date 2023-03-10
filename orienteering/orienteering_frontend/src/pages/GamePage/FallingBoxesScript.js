@@ -1,41 +1,48 @@
-
+const fallingWidth = 30;
+const fallingHeigth = 30;
+const speed = 5;
+//this is position of basket
 const position = { x: 0, y: 0 }
 var interact = require('interactjs')
-var gameCanvas
+var gameCanvas, basketWidth
 
-function setup() {
-    console.log("setup")
-    GameDiv = document.getElementById("GameDiv");
-    gameCanvas = document.getElementById("gameCanvas")
-    console.log(gameCanvas)
-    console.log("hei");
+function setup(basketWidth) {
+    gameCanvas = document.getElementById("gameCanvas");
+    basketWidth = basketWidth;
+
     moveBasket();
     addFallingBox();
+    //dette skal være med
+    //window.setInterval(addFallingBox, 2000);
 }
 
 
 //https://www.w3schools.com/graphics/tryit.asp?filename=trygame_default_gravity
 var GameArea = {
     //canvas: gameCanvas,
-    canvas:document.createElement("canvas"),
+    canvas: document.createElement("canvas"),
     start: function () {
 
-
-        this.canvas.width = 480;
-        this.canvas.height = 270;
+        this.canvas.width = window.screen.availWidth-50
+        this.canvas.height = window.screen.availHeight-100
         this.context = this.canvas.getContext("2d");
 
+        let rootDiv = document.getElementById("root");
+        //rootDiv.style.height = "600px";
+        //rootDiv.style.width = "600px";
+
+        console.log(rootDiv.style.top);
+        //rootDiv.appendChild(this.canvas)
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.interval = setInterval(updateGameArea, 2000);
+        this.interval = setInterval(updateGameArea, 20);
 
-
-        
     },
     clear: function () {
+        //clear whole canvas
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        console.log("clear canvas")
     }
 };
+
 var fallingObjects = [];
 
 
@@ -43,61 +50,94 @@ GameArea.start();
 
 
 function FallingObject(x, y) {
-    //this.div1 = "";
     this.pos_x = x;
     this.pos_y = y;
 
-    //let div = document.createElement("div");
-    //div.style.width = "50px";
-    //div.style.height = "50px";
-    //div.style.backgroundColor = "blue";
-
-    //div.style.left = this.pos_x;
-    //div.style.top = this.pos_y;
-    this.width = 50
-    this.height=50
-
+    this.width = fallingWidth;
+    this.height = fallingHeigth;
 
     this.color = "black";
 
-    this.moveElement=function(){
-        this.pos_y += 10;
+    this.moveElement = function () {
+        this.pos_y += speed;
     };
-
 
     this.drawElement = function () {
         var ctx = GameArea.context;
         ctx.fillStyle = this.color;
         ctx.fillRect(this.pos_x, this.pos_y, this.width, this.height);
+    };
 
+    this.onGround = function () {
+        var bottom = GameArea.canvas.height - this.height;
+        if (this.pos_y >= bottom) {
+            console.log("hit bottom")
+            return true;
+        }
+        return false;
+    };
 
-        //console.log("movelelement");
-        //console.log(this.pos_y);
-        //this.pos_y += 50;
-        //this.div1.style.top = this.pos_y + "px";
-        //this.div1.innerHTML = "hei";
-        ////return "hei22";
+    //check if fallingObject hits the basket
+    this.inBasket = function () {
 
     }
 
-}
 
-var fallingObject=new FallingObject(150,50)
+
+
+}
 
 function updateGameArea() {
-    console.log("update area")
     GameArea.clear()
-    fallingObject.moveElement();
-    fallingObject.drawElement();
-    console.log(fallingObject)
-}
-//window.setInterval(updateGameArea, 1000);
+    //let i = 0;
+    //for (i in fallingObjects) {
+    //    console.log(i);
+    //    fallingObjects[i].moveElement();
+    //    fallingObjects[i].drawElement();
+    //    let remove = fallingObjects[i].onGround();
 
-let GameDiv = null;
+    //    if (remove) {
+    //        console.log("remove element");
+    //        console.log(fallingObjects)
+    //        //remove element from list
+    //        let firstPart = fallingObjects.slice(0, i);
+    //        let lastPart = fallingObjects.slice(i+1);
+    //        fallingObjects = firstPart.concat(lastPart);
+    //        console.log(fallingObjects)
+    //    }
+    //}
+
+    //display all falling elements
+    for (var i = fallingObjects.length - 1; i >= 0; i--) {
+        fallingObjects[i].moveElement();
+        let remove = fallingObjects[i].onGround();
+
+        if (remove) {
+            console.log("remove element");
+            console.log(fallingObjects)
+            //remove element from list
+            let firstPart = fallingObjects.slice(0, i);
+            let lastPart = fallingObjects.slice(i + 1);
+            fallingObjects = firstPart.concat(lastPart);
+            console.log(fallingObjects)
+            return;
+        }
+
+        fallingObjects[i].drawElement();
+
+    }
+
+
+
+}
+
+//fiks sjekk her. elementer blir ikke fjernet
+
+
 
 function controllPosition() {
     var basket = document.getElementById("basket");
-    console.log(basket.offsetLeft);
+    //console.log(basket.offsetLeft);
     //console.log(basket.position.dx);
 
 
@@ -119,37 +159,19 @@ function moveBasket() {
             },
             move(event) {
                 position.x += event.dx
-                //position.y += event.dy
-
 
                 event.target.style.transform =
                     `translate(${position.x}px, ${position.y}px)`
-
             },
-
         }
     })
 }
-//window.setInterval(addFallingBox, 200000);
 
 function addFallingBox() {
-    console.log("hei")
-    let fallingBox = new FallingObject(50, 50);
-    //make box fall
-    //window.setInterval((fallingBox) => { fallingBox.div1.style.top = fallingBox.pos_y },(fallingBox), 2000);
-    fallingBox.moveElement();
-    fallingBox.moveElement();
-    fallingBox.moveElement();
-    fallingBox.moveElement();
-    fallingBox.moveElement();
-
-    const textnode = document.createTextNode("Water");
-    let div = document.createElement("div")
-    div.style.width = "50px";
-    div.style.height = "50px";
-    div.style.backgroundColor = "blue";
-    GameDiv.appendChild(div);
-
+    let max = GameArea.canvas.width - fallingWidth;
+    let x = Math.floor(Math.random() * max);
+    let fallingBox = new FallingObject(x, 0);
+    fallingObjects.push(fallingBox);
 }
 
 export default setup;
