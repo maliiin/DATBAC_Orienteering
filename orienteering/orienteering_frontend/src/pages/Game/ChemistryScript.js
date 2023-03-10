@@ -25,7 +25,7 @@ function checkAnswer() {
         boardPassed = false;
     }
     if (boardPassed) {
-        document.getElementById("nextboardbtn").style.display = "block";
+        document.getElementById("nextboardbtn").style.display = "inline-block";
     }
     submitted = true;
 }

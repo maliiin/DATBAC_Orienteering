@@ -25,7 +25,7 @@ function ChemistryGame() {
         var solutions = (solutionList.map((solution, index) =>
             <div key={solution + "-" + index} className="drag-drop">
                 <img src={require("./chemistryGlass.png")} ></img>
-                <div>{solution}</div>
+                <div className="solutiontext">{solution}</div>
             </div>
         ))
         setSolutionDivs(solutions);
@@ -66,8 +66,7 @@ function ChemistryGame() {
         {solutionDivs}
 
         <div id="outer-dropzone" className="dropzone">
-            
-        </div>
+</div>
 
 
         <button id="checkanswer" className="gamebtn">Check</button>
