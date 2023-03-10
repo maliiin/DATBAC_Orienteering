@@ -24,10 +24,11 @@ var GameArea = {
     start: function () {
 
         this.canvas.width = window.screen.availWidth-50
-        this.canvas.height = window.screen.availHeight-100
+        this.canvas.height = window.screen.availHeight-500
         this.context = this.canvas.getContext("2d");
 
         let rootDiv = document.getElementById("root");
+        rootDiv.style.width = (window.screen.availWidth - 50)+"px"
         //rootDiv.style.height = "600px";
         //rootDiv.style.width = "600px";
 
@@ -163,7 +164,12 @@ function moveBasket() {
                 event.target.style.transform =
                     `translate(${position.x}px, ${position.y}px)`
             },
-        }
+        },
+        modifiers: [
+            interact.modifiers.restrictRect({
+                restriction:'parent'
+                })
+            ]
     })
 }
 

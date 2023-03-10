@@ -27,7 +27,7 @@ export default function FallingBoxesGame() {
                     bottom: "20px",
                     width: basketWidth+"px",
                     backgroundColor: "lightblue",
-                    bottom: "20px"
+                    bottom: "200px"
 
                 }}
 
