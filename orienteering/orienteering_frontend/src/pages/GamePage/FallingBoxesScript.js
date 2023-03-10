@@ -30,6 +30,8 @@ var GameArea = {
         let rootDiv = document.getElementById("root");
         rootDiv.style.width = (window.screen.availWidth - 50) + "px"
         rootDiv.style.touchAction = "none"
+        let body = document.getElementsByTagName("body");
+        body.style.touchAction="none"
 
 
 
