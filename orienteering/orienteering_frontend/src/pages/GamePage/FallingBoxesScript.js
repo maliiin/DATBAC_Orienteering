@@ -39,7 +39,7 @@ function setup(basketWidth, basketHeight) {
     //set position of basket
     positionBasket = {
         x: 0,
-        y: gameCanvas.style.height.replace("px", "") - BasketHeight,
+        y: gameArea.canvas.height - BasketHeight,
     }
     //console.log(positionBasket.y);
     //start game/initialize
@@ -117,7 +117,7 @@ function FallingObject(x, y) {
         console.log(this.pos_y);
         //console.log(positionBasket.y);
 
-        if (this.pos_y >= positionBasket.y) {// && ((this.pos_x >= position.x && this.pos_x <= position.x + gameCanvas.canvas.height))){
+        if (this.pos_y+this.height >= positionBasket.y) {// && ((this.pos_x >= position.x && this.pos_x <= position.x + gameCanvas.canvas.height))){
             console.log("kræsj!!!");
         }
     }
