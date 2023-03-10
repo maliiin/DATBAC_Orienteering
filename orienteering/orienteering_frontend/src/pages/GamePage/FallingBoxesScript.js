@@ -28,7 +28,11 @@ var GameArea = {
         this.context = this.canvas.getContext("2d");
 
         let rootDiv = document.getElementById("root");
-        rootDiv.style.width = (window.screen.availWidth - 50)+"px"
+        rootDiv.style.width = (window.screen.availWidth - 50) + "px"
+        rootDiv.style.touchAction = "none"
+
+
+
         //rootDiv.style.height = "600px";
         //rootDiv.style.width = "600px";
 

@@ -24,10 +24,10 @@ export default function FallingBoxesGame() {
                 className="draggable"
                 style={{
                     //position: "absolute",
-                    bottom: "20px",
                     width: basketWidth+"px",
                     backgroundColor: "lightblue",
-                    bottom: "200px"
+                    bottom: "200px",
+                    height: "50px",
 
                 }}
 
