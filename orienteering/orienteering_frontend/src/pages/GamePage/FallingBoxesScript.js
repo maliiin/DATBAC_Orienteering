@@ -25,6 +25,7 @@ function setup(basketWidth, basketHeight) {
 
     //create gameArea
     console.log(gameCanvas)
+
     //setter "intern" størrelse
     gameCanvas.height = window.screen.height;
     gameCanvas.width = window.screen.width;
