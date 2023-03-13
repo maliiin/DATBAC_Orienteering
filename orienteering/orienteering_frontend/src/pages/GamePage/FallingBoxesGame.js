@@ -3,8 +3,8 @@ import { useEffect } from "react";
 
 
 export default function FallingBoxesGame() {
-    const basketWidth = 200;
-    const basketHeight = 100;
+    const basketWidth = 100;
+    const basketHeight = 50;
 
     const canvasWidth = window.screen.availWidth;
     const canvasHeight = window.screen.availHeight;
