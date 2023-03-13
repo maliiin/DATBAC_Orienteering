@@ -21,10 +21,10 @@ var positionBasket = {
     x: 0,
     y: 0,
 }
-var gameCanvas, BasketWidth
+var gameCanvas, BasketWidth;
 var fallingObjects = [];
 var gameArea = null,
-    gameStatus = null
+    gameStatus = null;
 var fallingTimer = null;
 
 
@@ -57,7 +57,7 @@ function setup(basketWidth, basketHeight) {
 
     //add falling objects
     //addFallingBox();
-    fallingTimer=window.setInterval(addFallingBox, 2000);
+    fallingTimer = window.setInterval(addFallingBox, 2000);
 }
 
 function GameStatus() {
@@ -80,20 +80,18 @@ function GameStatus() {
     this.endGame = function () {
         //this ends the game
         clearTimeout(fallingTimer);
-        clearTimeout(gameArea.interval)
+        clearTimeout(gameArea.interval);
+        gameArea.clear()
+        gameArea.context.strokeText("Game over: " + gameStatus.points, 50, 200);
+
     }
 
 }
 
 //https://www.w3schools.com/graphics/tryit.asp?filename=trygame_default_gravity
 function GameArea(canvas) {
-    //fix-flytt til game
-    //this.point = 0;
     this.canvas = canvas;
-    //console.log(this.canvas.height)
-    //console.log(this.canvas.width)
 
-    //canvas: document.createElement("canvas"),
     this.start = function () {
         //fix, flytt noe av koden her til setup
 
@@ -128,7 +126,7 @@ function FallingObject(x, y, values) {
     this.text = values[0];
     this.collect = values[1];
 
-    console.log(this.text)
+    //console.log(this.text)
     console.log(this.collect)
 
     this.width = fallingWidth;
@@ -147,16 +145,15 @@ function FallingObject(x, y, values) {
     };
 
     this.onGround = function () {
-        //console.log("sjekk om bakjke")
         var bottom = gameArea.canvas.height - this.height;
         if (this.pos_y >= bottom) {
             console.log("bunn----------------")
             if (this.collect) {
-                console.log("skulle ha blitt tatt-->mister liv")
+                console.log("skulle fanges-->mister liv")
                 //should have collected this
                 gameStatus.looseLife();
             }
-            console.log("skulle ikke blitt tatt")
+            console.log("ikke ta denne")
             return true;
         }
         return false;
@@ -164,13 +161,6 @@ function FallingObject(x, y, values) {
 
     //check if fallingObject hits the basket
     this.inBasket = function () {
-        //console.log("sjakk om fanget")
-        //console.log(this.pos_y);
-        //console.log(positionBasket.y);
-
-        //console.log((this.pos_y + this.height >= positionBasket.y))
-        //console.log(this.pos_x + this.width >= positionBasket.x)
-        //console.log(this.pos_x <= positionBasket.x + BasketWidth)
 
         if ((this.pos_y + this.height >= positionBasket.y) &&
             (this.pos_x + this.width >= positionBasket.x) &&
@@ -191,12 +181,26 @@ function FallingObject(x, y, values) {
     }
 }
 
+//function displayGameOver() {
+//    gameArea.context.strokeText("Game over: " + gameStatus.points, 50, 200);
+
+//}
+
 function updateGameArea() {
     gameArea.clear();
+
+    //check is game is over kanskje flytt en opp? fix
+    //if (gameStatus.gameOver) {
+    //    gameArea.context.strokeText("Game over: " + gameStatus.points, 50, 200);
+    //    return
+    //}
 
     //display score
     gameArea.context.font = "30px Arial";
     gameArea.context.strokeText("Poeng: " + gameStatus.points, 50, 50);
+    gameArea.context.strokeText("liv: " + gameStatus.lives, 50, 200);
+
+
 
     //display all falling elements
     for (var i = fallingObjects.length - 1; i >= 0; i--) {
@@ -221,11 +225,7 @@ function updateGameArea() {
         }
     }
 
-    //check is game is over kanskje flytt en opp? fix
-    if (gameStatus.gameOver) {
-        gameArea.context.strokeText("Game over: " + gameStatus.points, 50, 200);
 
-    }
 }
 
 //this function makes basket able to move
