@@ -1,16 +1,24 @@
 var interact = require("interactjs");
 //const correctMix = ['sol2', 'sol3'];
 var correctMix;
-var submitted = false;
+var GameInitialized = false;
 
 
 function setup(prop) {
+    if (!GameInitialized) {
+        initGame();
+        GameInitialized = true;
+    }
     chemistry();
-    document.getElementById("checkanswer").addEventListener("click", checkAnswer);
-    storeCorrectMix(prop);
+    
+    correctMix = prop;
 
 }
 export default setup;
+
+function initGame() {
+    document.getElementById("checkanswer").addEventListener("click", checkAnswer);
+}
 
 function checkAnswer() {
     const droppedSolutions = document.getElementsByClassName("dropped");
@@ -27,14 +35,7 @@ function checkAnswer() {
     if (boardPassed) {
         document.getElementById("nextboardbtn").style.display = "inline-block";
     }
-    submitted = true;
 }
-
-
-function storeCorrectMix(prop) {
-    correctMix = prop;
-}
-
 
 
 /* The dragging code for '.draggable' from the demo above
