@@ -17,5 +17,6 @@ namespace orienteering_backend.Core.Domain.Checkpoint
         public int GameId { get; set; }
         public byte[]? QRCode { get; set; }
         public Guid TrackId { get; set; }
+        public int Order { get; set; }
     }
 }
