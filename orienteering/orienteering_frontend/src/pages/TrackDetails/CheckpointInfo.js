@@ -1,4 +1,4 @@
-import { React } from "react";
+import { React, useState } from "react";
 import { Button, Box, Grid } from '@mui/material';
 import { Link, redirect, useNavigate } from 'react-router-dom';
 
@@ -7,8 +7,9 @@ import { Link, redirect, useNavigate } from 'react-router-dom';
 export default function CheckpointInfo(props) {
 
     const navigate = useNavigate();
-
-
+    const [editing, setEditing] = useState(false);
+    //fix endre navn på dette
+    const [oldTitle, setOldTitle] = useState(props.checkpointInfo.title);
 
     //display spesific track
     const showCheckpoint = (event) => {
@@ -30,6 +31,31 @@ export default function CheckpointInfo(props) {
         console.log("delete")
     }
 
+    const shouldEdit = () => {
+        setEditing(true)
+    }
+
+    const stopEdit = async () => {
+        setEditing(false)
+        console.log("djjdj stop focus")
+
+        //post/put metode
+
+        const url = '/api/checkpoint/editCheckpointTitle?';
+        const parameter = 'checkpointTitle=' + oldTitle + "&checkpointId=" + props.checkpointInfo.id;
+        const response = await fetch(url + parameter, { method: 'PUT' });
+
+        props.updateCheckpointList()
+
+        console.log("delete")
+    }
+
+    const handleChange = (e) => {
+        console.log("endre");
+        setOldTitle(e.target.value);
+
+    }
+
     //{
     //    props.questionInfo.alternatives.map((alternative, index) =>
 
@@ -48,7 +74,24 @@ export default function CheckpointInfo(props) {
     return (<>
         <Box border="1px solid lightblue;" margin="2px;">
 
-            <p>Tittel: {props.checkpointInfo.title}</p>
+            <p style={{ display: "inline" }}>Tittel:</p>
+            {editing ?
+                <input
+                    style={{ display: "inline" }}
+                    type="text"
+                    value={oldTitle}
+                    onChange={handleChange}
+                    onBlur={stopEdit}
+                >
+                </input>
+
+                :
+
+                <span
+                    onDoubleClick={shouldEdit}
+                > {props.checkpointInfo.title}</span>
+            }
+
             <p>Type: {props.checkpointInfo.quizId == null ? "Spill" : "Quiz"}
 
             </p>

@@ -15,7 +15,7 @@ namespace orienteering_backend.Controllers
         public CheckpointController(IMediator Mediator)
         {
             _mediator = Mediator;
-        }   
+        }
 
 
         //create checkpoint
@@ -72,6 +72,25 @@ namespace orienteering_backend.Controllers
             }
 
         }
+
+        [HttpPut("editCheckpointTitle")]
+        public async Task<IActionResult> UpdateCheckpointTitle(string checkpointTitle, string checkpointId)
+        {
+            Guid CheckpointId = new Guid(checkpointId);
+
+            var changed = await _mediator.Send(new UpdateCheckpointTitle.Request(checkpointTitle, CheckpointId));
+            if (changed != null)
+            {
+                return Ok();
+
+            }
+            else
+            {
+                return Unauthorized("Could not find the checkpoint to edit");
+            }
+
+        }
+
 
     }
 }
