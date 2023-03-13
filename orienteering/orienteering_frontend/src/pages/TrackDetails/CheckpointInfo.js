@@ -44,6 +44,7 @@ export default function CheckpointInfo(props) {
         const url = '/api/checkpoint/editCheckpointTitle?';
         const parameter = 'checkpointTitle=' + oldTitle + "&checkpointId=" + props.checkpointInfo.id;
         const response = await fetch(url + parameter, { method: 'PUT' });
+        //fiks sjekk respons i error handling
 
         props.updateCheckpointList()
 

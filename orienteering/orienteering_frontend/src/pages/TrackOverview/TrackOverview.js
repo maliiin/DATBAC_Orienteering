@@ -47,7 +47,12 @@ export default function TrackOverview() {
         const data = await fetch("api/track/getTracks?userId=" + userInfo.Id).then(res => res.json());
 
         setList(data.map((trackElement, index) =>
-            <TrackInfo key={trackElement.id + "-" + index} trackInfo={trackElement}>
+            <TrackInfo
+                key={trackElement.id + "-" + index}
+                trackInfo={trackElement}
+                updateTrackList={ loadTrack}
+            >
+
             </TrackInfo>
         ));
     }
@@ -95,6 +100,7 @@ export default function TrackOverview() {
                 <Grid container spacing={3} margin="10px">
                     <Grid item xs={6}>
                         <h4>Liste over loypene dine</h4>
+                        <p>Dobbelklikk pa tittelen for a redigere tittelen.</p>
                         <div>{list}</div>
                     </Grid>
 

@@ -1,5 +1,5 @@
-import { React } from "react";
-import { Button } from '@mui/material';
+import { React, useState } from "react";
+import { Button, Box } from '@mui/material';
 import { Link, redirect, useNavigate } from 'react-router-dom';
 
 
@@ -9,6 +9,8 @@ export default function TrackInfo(props) {
     //props is props.Trackinfo (id, name, userid ...)
 
     const navigate = useNavigate();
+    const [editing, setEditing] = useState(false);
+    const [oldTitle, setOldTitle] = useState(props.trackInfo.trackName);
 
 
     //display spesific track
@@ -21,14 +23,71 @@ export default function TrackInfo(props) {
     }
 
 
+    const shouldEdit = () => {
+        setEditing(true)
+    }
+
+    const stopEdit = async () => {
+        setEditing(false)
+        console.log("djjdj stop focus")
+
+        //post/put metode
+
+        const url = '/api/track/updateTrackTitle?';
+        const parameter = "trackId=" + props.trackInfo.trackId+'&newTitle=' + oldTitle;
+        const response = await fetch(url + parameter, { method: 'PUT' });
+        //fiks sjekk respons i error handling
+
+        //update list of parent
+        props.updateTrackList()
+
+       
+
+    }
+
+    const handleChange = (e) => {
+        console.log("endre");
+        setOldTitle(e.target.value);
+
+    }
+
+    const deleteTrack = () => {
+        //fix implementer
+        console.log("not implemented")
+    }
+
 
 
 
     return (<>
-        <Button onClick={showTrack}>
-            <h6>
-                title {props.trackInfo.trackName} track-id: {props.trackInfo.trackId}
-            </h6>
-        </Button>
+
+
+        <Box border="1px solid lightblue;" margin="2px;">
+
+            <p style={{ display: "inline" }}>Tittel:</p>
+            {editing ?
+                <input
+                    style={{ display: "inline" }}
+                    type="text"
+                    value={oldTitle}
+                    onChange={handleChange}
+                    onBlur={stopEdit}
+                >
+                </input>
+                :
+                <span
+                    onDoubleClick={shouldEdit}
+                > {props.trackInfo.trackName}</span>
+            }
+            <br></br>
+
+            <Button onClick={showTrack}>vis detaljer</Button>
+            <Button onClick={deleteTrack}>Slett track</Button>
+
+        </Box>
+
+
+
+
     </>);
 }
