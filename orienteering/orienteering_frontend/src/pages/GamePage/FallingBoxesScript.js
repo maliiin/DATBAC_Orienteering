@@ -23,7 +23,7 @@ var positionBasket = {
 
 function setup(basketWidth, basketHeight) {
     //display and hide elements
-    //fix- her kunne klasser blitt brukt kanskje??
+    //fix- her kunne klasser istedenfor id blitt brukt kanskje??
     gameCanvas = document.getElementById("gameCanvas");
     gameCanvas.style.display = "block";
     var basket = document.getElementById("basket");
@@ -32,17 +32,10 @@ function setup(basketWidth, basketHeight) {
     gameInfo.style.display = "none";
 
 
-
-
-
-
-
     //get data from react
     BasketWidth = basketWidth;
     BasketHeight = basketHeight
 
-    //gameCanvas = document.getElementById("gameCanvas");
-    //console.log(gameCanvas)
 
     //setter "intern" størrelse av canvas
     gameCanvas.height = window.screen.height;
@@ -163,13 +156,10 @@ function FallingObject(x, y, values) {
     this.onGround = function () {
         var bottom = gameArea.canvas.height - this.height;
         if (this.pos_y >= bottom) {
-            console.log("bunn----------------")
             if (this.collect) {
-                console.log("skulle fanges-->mister liv")
                 //should have collected this
                 gameStatus.looseLife();
             }
-            console.log("ikke ta denne")
             return true;
         }
         return false;
@@ -181,7 +171,6 @@ function FallingObject(x, y, values) {
         if ((this.pos_y + this.height >= positionBasket.y) &&
             (this.pos_x + this.width >= positionBasket.x) &&
             (this.pos_x <= positionBasket.x + BasketWidth)) {
-            console.log("denne ble fanget")
 
             if (this.collect) {
                 gameStatus.points += 10;
@@ -219,7 +208,6 @@ function updateGameArea() {
         //remove element 
         if (remove) {
 
-            console.log("remove")
             //remove element from list
             let firstPart = fallingObjects.slice(0, i);
             let lastPart = fallingObjects.slice(i + 1);
@@ -248,8 +236,6 @@ function moveBasket() {
             },
             move(event) {
                 positionBasket.x += event.dx
-                //console.log(positionBasket.x);
-                //console.log(positionBasket.y);
 
                 event.target.style.transform =
                     //`translate(${positionBasket.x}px, ${positionBasket.y}px)`
