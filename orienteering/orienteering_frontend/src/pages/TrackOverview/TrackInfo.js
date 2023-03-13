@@ -51,9 +51,15 @@ export default function TrackInfo(props) {
 
     }
 
-    const deleteTrack = () => {
+    const deleteTrack = async() => {
         //fix implementer
-        console.log("not implemented")
+        const url = '/api/track/deleteTrack?';
+        const parameter = "trackId=" + props.trackInfo.trackId;
+        const response = await fetch(url + parameter, { method: 'DELETE' });
+        //fiks sjekk respons i error handling
+
+        //update list of parent
+        props.updateTrackList()
     }
 
 

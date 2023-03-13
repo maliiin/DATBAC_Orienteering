@@ -6,6 +6,7 @@ using orienteering_backend.Infrastructure.Data;
 using orienteering_backend.Core.Domain.Checkpoint.Events;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Routing.Matching;
 //Kilder: CampusEats lab fra dat240
 // Kilder: https://github.com/dat240-2022/assignments/blob/main/Lab3/UiS.Dat240.Lab3/Core/Domain/Cart/Pipelines/AddItem.cs (07.02.2023)
 // Brukte samme struktur på pipelinen som i kilden
@@ -42,7 +43,7 @@ public static class DeleteCheckpoint
                 return false; }
 
             _db.Checkpoints.Remove(checkpoint);
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(cancellationToken);
             Console.WriteLine("slettet\n\n\n");
             return true;
 

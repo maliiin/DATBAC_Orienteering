@@ -64,6 +64,17 @@ namespace orienteering_backend.Controllers
             Guid trackGuid = new Guid(trackId);
             bool response = await _mediator.Send(new UpdateTrackTitle.Request(trackGuid, newTitle));
             if(response) { return Ok(); }
+            else { return NotFound("could not find the track to update"); }
+
+        }
+
+
+        [HttpDelete("deleteTrack")]
+        public async Task<IActionResult> DeleteTrack(string trackId)
+        {
+            Guid trackGuid = new Guid(trackId);
+            bool response = await _mediator.Send(new DeleteTrack.Request(trackGuid));
+            if (response) { return Ok(); }
             else { return Unauthorized(); }
 
         }
