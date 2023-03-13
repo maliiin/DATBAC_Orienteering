@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { TextField, Button, Grid } from '@mui/material';
 
 
-
 export default function FallingBoxesGame() {
     const basketWidth = 100;
     const basketHeight = 50;
@@ -12,13 +11,12 @@ export default function FallingBoxesGame() {
     const canvasHeight = window.screen.availHeight;
 
     function directions() {
-        console.log("vei  1111111111111111111");
+        console.log("veibeskrivelse");
     }
 
-    useEffect(() => {
-        //setup game in js
+    function test() {
         setup(basketWidth, basketHeight);
-    }, []);
+    }
 
     return (<>
         <div id="container"
@@ -33,7 +31,8 @@ export default function FallingBoxesGame() {
                     position: "absolute",
                     width: canvasWidth + "px",
                     height: canvasHeight + "px",
-                    backgroundColor: "green"
+                    backgroundColor: "green",
+                    display: "none"
                 }}
             ></canvas>
 
@@ -48,6 +47,7 @@ export default function FallingBoxesGame() {
 
                     backgroundColor: "lightblue",
                     top: canvasHeight - basketHeight,
+                    display: "none"
                 }}
             >
 
@@ -58,8 +58,8 @@ export default function FallingBoxesGame() {
                     width: "200px",
                     display: "none",
                     position: "absolute",
-                    top: canvasHeight * 2 / 3+"px",
-                    left: canvasWidth - 200 + "px",
+                    top: canvasHeight * 2 / 3 + "px",
+                    left: canvasWidth/2-100 + "px",
                     backgroundColor: "white",
 
                 }}
@@ -67,6 +67,32 @@ export default function FallingBoxesGame() {
             >
                 veibeskrivelse
             </Button>
+
+            <div id="beforeGameDiv" style={{ margin: "10px" }}>
+                <h3>Primtallspill</h3>
+                <p >
+                    Spillet går ut på å fange primtallene som faller ned.
+                    Du har 3 liv. Start spillet ved å trykke på knappen under.
+                </p>
+                <br></br>
+                <br></br>
+
+                <Button
+                    id="startGame"
+                    style={{
+                        width: "200px",
+                        position: "absolute",
+                        //top: canvasHeight * 2 / 3 + "px",
+                        left: canvasWidth/2 - 100 + "px",
+                        backgroundColor: "white",
+
+                    }}
+
+                    onClick={test}
+                >
+                    Start spill
+                </Button></div>
+
 
 
 

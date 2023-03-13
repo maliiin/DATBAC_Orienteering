@@ -22,12 +22,27 @@ var positionBasket = {
 }
 
 function setup(basketWidth, basketHeight) {
-    console.log(Data)
+    //display and hide elements
+    //fix- her kunne klasser blitt brukt kanskje??
+    gameCanvas = document.getElementById("gameCanvas");
+    gameCanvas.style.display = "block";
+    var basket = document.getElementById("basket");
+    basket.style.display = "block";
+    var gameInfo = document.getElementById("beforeGameDiv");
+    gameInfo.style.display = "none";
+
+
+
+
+
+
+
     //get data from react
     BasketWidth = basketWidth;
     BasketHeight = basketHeight
 
-    gameCanvas = document.getElementById("gameCanvas");
+    //gameCanvas = document.getElementById("gameCanvas");
+    //console.log(gameCanvas)
 
     //setter "intern" størrelse av canvas
     gameCanvas.height = window.screen.height;
