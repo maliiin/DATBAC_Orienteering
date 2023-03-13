@@ -22,14 +22,12 @@ public static class DeleteCheckpoint
     public class Handler : IRequestHandler<Request, bool>
     {
         private readonly OrienteeringContext _db;
-        private readonly IMediator _mediator;
 
 
         //public Handler(OrienteeringContext db) => _db = db ?? throw new ArgumentNullException(nameof(db));
-        public Handler(OrienteeringContext db, IMediator mediator)
+        public Handler(OrienteeringContext db)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
-            _mediator = mediator;
         }
         public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
         {

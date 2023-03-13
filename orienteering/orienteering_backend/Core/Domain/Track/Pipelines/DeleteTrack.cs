@@ -17,12 +17,10 @@ public static class DeleteTrack
     {
         private readonly OrienteeringContext _db;
 
-        private readonly IMapper _mapper;
 
-        public Handler(OrienteeringContext db, IMapper mapper)
+        public Handler(OrienteeringContext db)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(_mapper));
 
         }
 
