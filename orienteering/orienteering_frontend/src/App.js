@@ -13,8 +13,12 @@ import TrackOverview from "./pages/TrackOverview/TrackOverview";
 import TrackDetails from "./pages/TrackDetails/TrackDetails";
 import QuizPage from "./pages/QuizPage/QuizPage";
 
-import QRCodePage from "./pages/QrCodePage/QRCodePage"
-import CheckpointRedirection from "./pages/CheckpointRedirection"
+import QRCodePage from "./pages/QrCodePage/QRCodePage";
+import CheckpointRedirection from "./pages/CheckpointRedirection";
+import FallingBoxesGame from "./pages/GamePage/FallingBoxesGame";
+import GamePage from "./pages/GamePage/GamePage";
+
+
 
 export default function App() {
     const authenticated = false;
@@ -46,6 +50,8 @@ export default function App() {
                 </Route>
 
                 <Route path="checkpoint/quiz/:quizId" element={<QuizPage />} />
+                <Route path="game" element={<GamePage />} />
+
 
             </Routes>
             </BrowserRouter>
