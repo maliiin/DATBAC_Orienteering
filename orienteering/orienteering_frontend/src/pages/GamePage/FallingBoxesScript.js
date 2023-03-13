@@ -1,34 +1,28 @@
 "use strict";
+import Data from "./Data.js";
+
 var interact = require('interactjs')
-
-//fiks til neste gang
-//la brukeren miste liv- ha 3
-//lag gameStatus klasse
-//når spill er slut vis score
-//ha info om spill
-
 
 //global variables
 var fallingWidth = 30;
 var fallingHeigth = 30;
-const data = [["ikke", true]];  //[["fang", true], ["ikke fang", false], ["fang11", true], ["ikke fang22", false], ["ta", true], ["ikke ta", false]];
 const totalLives = 3;
 var BasketHeight, BasketWidth;
 const speed = 3;
-
-//this is position of basket
-var positionBasket = {
-    x: 0,
-    y: 0,
-}
 var gameCanvas, BasketWidth;
 var fallingObjects = [];
 var gameArea = null,
     gameStatus = null;
 var fallingTimer = null;
 
+//this is position of basket
+var positionBasket = {
+    x: 0,
+    y: 0,
+}
 
 function setup(basketWidth, basketHeight) {
+    console.log(Data)
     //get data from react
     BasketWidth = basketWidth;
     BasketHeight = basketHeight
@@ -39,7 +33,7 @@ function setup(basketWidth, basketHeight) {
     gameCanvas.height = window.screen.height;
     gameCanvas.width = window.screen.width;
 
-    //create gamee area and game status objects
+    //create game area and game status objects
     gameArea = new GameArea(gameCanvas);
     gameStatus = new GameStatus();
 
@@ -56,7 +50,6 @@ function setup(basketWidth, basketHeight) {
     moveBasket();
 
     //add falling objects
-    //addFallingBox();
     fallingTimer = window.setInterval(addFallingBox, 2000);
 }
 
@@ -66,7 +59,6 @@ function GameStatus() {
     this.gameOver = false;
 
     this.looseLife = function () {
-        console.log("lose life")
         //only one life left-->game over
         if (this.lives <= 1) {
             this.gameOver = true;
@@ -78,11 +70,21 @@ function GameStatus() {
 
     }
     this.endGame = function () {
-        //this ends the game
+        //clear timers
         clearTimeout(fallingTimer);
         clearTimeout(gameArea.interval);
+
+        //display canvas
         gameArea.clear()
-        gameArea.context.strokeText("Game over: " + gameStatus.points, 50, 200);
+        gameArea.context.strokeText("Spill slutt, du fikk " + gameStatus.points + " poeng.", gameArea.canvas.width / 2, gameArea.canvas.height / 2);
+
+        //display button to next checkpoint directions
+        var directionButton = document.getElementById("directionsButton");
+        directionButton.style.display = "block";
+
+        //remove basket
+        var basket = document.getElementById("basket");
+        basket.style.display = "none";
 
     }
 
@@ -120,19 +122,13 @@ function GameArea(canvas) {
 }
 
 function FallingObject(x, y, values) {
-    console.log(values)
     this.pos_x = x;
     this.pos_y = y;
     this.text = values[0];
     this.collect = values[1];
-
-    //console.log(this.text)
-    console.log(this.collect)
-
     this.width = fallingWidth;
     this.height = fallingHeigth;
-
-    this.color = "black";
+    this.color = "white";
 
     this.moveElement = function () {
         this.pos_y += speed;
@@ -142,6 +138,11 @@ function FallingObject(x, y, values) {
         var ctx = gameArea.context;
         ctx.fillStyle = this.color;
         ctx.fillRect(this.pos_x, this.pos_y, this.width, this.height);
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        gameArea.context.font = "1rem Arial";
+        gameArea.context.fillText(this.text, this.pos_x + this.width / 2, this.pos_y + this.height / 2, this.width);
     };
 
     this.onGround = function () {
@@ -167,9 +168,8 @@ function FallingObject(x, y, values) {
             (this.pos_x <= positionBasket.x + BasketWidth)) {
             console.log("denne ble fanget")
 
-
             if (this.collect) {
-                gameStatus.points += 1;
+                gameStatus.points += 10;
             } else {
                 //lost a life
                 gameStatus.looseLife();
@@ -181,26 +181,19 @@ function FallingObject(x, y, values) {
     }
 }
 
-//function displayGameOver() {
-//    gameArea.context.strokeText("Game over: " + gameStatus.points, 50, 200);
-
-//}
-
 function updateGameArea() {
     gameArea.clear();
 
-    //check is game is over kanskje flytt en opp? fix
-    //if (gameStatus.gameOver) {
-    //    gameArea.context.strokeText("Game over: " + gameStatus.points, 50, 200);
-    //    return
-    //}
 
     //display score
-    gameArea.context.font = "30px Arial";
-    gameArea.context.strokeText("Poeng: " + gameStatus.points, 50, 50);
-    gameArea.context.strokeText("liv: " + gameStatus.lives, 50, 200);
+    gameArea.context.font = "1em Arial";
+    gameArea.context.fillStyle = "black";
+    gameArea.context.textAlign = "left";
+    gameArea.context.textBaseline = "middle";
+    gameArea.context.fillText("Poeng: " + gameStatus.points, 50, 50);
+    gameArea.context.textAlign = "rigth";
 
-
+    gameArea.context.fillText("liv: " + gameStatus.lives, gameArea.canvas.width-50,50);
 
     //display all falling elements
     for (var i = fallingObjects.length - 1; i >= 0; i--) {
@@ -262,7 +255,7 @@ function addFallingBox() {
     let maxX = gameArea.canvas.width - fallingWidth;
     let x = Math.floor(Math.random() * maxX);
 
-    let value = data[Math.floor(Math.random() * data.length)];
+    let value = Data[Math.floor(Math.random() * Data.length)];
 
     //fix
     let fallingBox = new FallingObject(x, 0, value);

@@ -1,5 +1,7 @@
 import setup from "./FallingBoxesScript";
 import { useEffect } from "react";
+import { TextField, Button, Grid } from '@mui/material';
+
 
 
 export default function FallingBoxesGame() {
@@ -8,6 +10,10 @@ export default function FallingBoxesGame() {
 
     const canvasWidth = window.screen.availWidth;
     const canvasHeight = window.screen.availHeight;
+
+    function directions() {
+        console.log("vei  1111111111111111111");
+    }
 
     useEffect(() => {
         //setup game in js
@@ -18,15 +24,15 @@ export default function FallingBoxesGame() {
         <div id="container"
             style={{
                 position: "relative"
-               
+
             }}
         >
             <canvas
                 id="gameCanvas"
                 style={{
                     position: "absolute",
-                    width: canvasWidth+"px",
-                    height: canvasHeight+"px",
+                    width: canvasWidth + "px",
+                    height: canvasHeight + "px",
                     backgroundColor: "green"
                 }}
             ></canvas>
@@ -41,11 +47,28 @@ export default function FallingBoxesGame() {
                     height: basketHeight + "px",
 
                     backgroundColor: "lightblue",
-                    top: canvasHeight-basketHeight,
+                    top: canvasHeight - basketHeight,
                 }}
             >
-         
+
             </div>
+            <Button
+                id="directionsButton"
+                style={{
+                    width: "200px",
+                    display: "none",
+                    position: "absolute",
+                    top: canvasHeight * 2 / 3+"px",
+                    left: canvasWidth - 200 + "px",
+                    backgroundColor: "white",
+
+                }}
+                onClick={directions}
+            >
+                veibeskrivelse
+            </Button>
+
+
 
         </div>
 
