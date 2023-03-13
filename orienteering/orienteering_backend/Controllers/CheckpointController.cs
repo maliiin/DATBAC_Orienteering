@@ -54,6 +54,24 @@ namespace orienteering_backend.Controllers
 
         }
 
+        [HttpDelete("removeCheckpoint")]
+
+        public async Task<IActionResult> DeleteCheckpoint(string checkpointId)
+        {
+            Console.WriteLine("prøver å slettw");
+            Guid CheckpointId = new Guid(checkpointId);
+            bool removed = await _mediator.Send(new DeleteCheckpoint.Request(CheckpointId));
+            if (removed)
+            {
+                return Ok();
+
+            }
+            else
+            {
+                return NotFound("Could not find the checkpoint to delete");
+            }
+
+        }
 
     }
 }
