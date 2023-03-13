@@ -2,16 +2,22 @@ var interact = require("interactjs");
 //const correctMix = ['sol2', 'sol3'];
 var correctMix;
 var GameInitialized = false;
+var score = 0;
+var hp = 3;
+var goToNextBoard = false;
+var lastBoard = false;
 
 
-function setup(prop) {
+function setup(inpCorrectMix, inpLastBoard = false) {
     if (!GameInitialized) {
         initGame();
         GameInitialized = true;
     }
     chemistry();
-    
-    correctMix = prop;
+
+    correctMix = inpCorrectMix;
+    lastBoard = inpLastBoard;
+    goToNextBoard = false;
 
 }
 export default setup;
@@ -21,19 +27,40 @@ function initGame() {
 }
 
 function checkAnswer() {
+    if (goToNextBoard) {
+        // Prevents user from continuing checking board when no more lifes (hp) left or correctMix has been submitted
+        return
+    }
     const droppedSolutions = document.getElementsByClassName("dropped");
     var boardPassed = true;
     for (let i = 0; i < droppedSolutions.length; i++) {
-        if ((correctMix.includes(droppedSolutions[i].textContent.trim()) == false)) {
-            console.log("feil svar");
+        if (correctMix.includes(droppedSolutions[i].textContent.trim()) == false) {
             boardPassed = false;
         }
+
     }
     if (correctMix.length != droppedSolutions.length) {
         boardPassed = false;
     }
     if (boardPassed) {
-        document.getElementById("nextboardbtn").style.display = "inline-block";
+        document.getElementById("scorediv").textContent = `Correct solutionmix`;
+    }
+    else {
+        hp -= 1;
+        document.getElementById("statusdiv").textContent = `Wrong solutionmix.  HP left: ${hp}`;
+    }
+    if (boardPassed || hp < 1) {
+        goToNextBoard = true;
+        score += hp;
+        hp = 3;
+        document.getElementById("statusdiv").textContent = `Score: ${score}`;
+
+        if (lastBoard) {
+            document.getElementById("navigationbtn").style.display = "inline-block";
+        }
+        else {
+            document.getElementById("nextboardbtn").style.display = "inline-block";
+        }
     }
 }
 

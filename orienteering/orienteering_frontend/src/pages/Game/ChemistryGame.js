@@ -9,13 +9,14 @@ var correctMix;
 function ChemistryGame() {
 
     var boardList = [
+    // Fix: legg inn virkelige solutions
         {
-            solutionList: ['sodshjgdfdsgfhadfagl1', 'sol2', 'sol3', 'sol4', 'sol5', 'asdfwa', 'asdawsd', 'gafsdad'],
+            solutionList: ['sodshjgdfdsgfhadfagl1', 'sol2', 'sol4', 'sol3', 'sol5', 'asdfwa', 'asdawsd', 'gafsdad'],
             correctMix: ['sol2', 'sol3']
         },
         {
-            solutionList: ['sohadfagl1', 'sol22', 'sol32', 'sol4', 'sol55', 'asdfwa', 'awsd', 'pqwrj'],
-            correctMix: ['sohadfagl', 'sol4']
+            solutionList: ['sohadfagl1', 'sol22', 'sol32', 'sol4', 'sol55', 'awsd', 'pqwrj', 'asdfwa'],
+            correctMix: ['sohadfagl1', 'sol4']
         }
     ]
     
@@ -29,8 +30,18 @@ function ChemistryGame() {
             </div>
         ))
         setSolutionDivs(solutions);
-        setup(correctMix);
+        if (boardList.length == nextBoardIndex + 1) {
+            setup(correctMix, true);
+        }
+        else {
+            setup(correctMix);
+
+        }
     }
+
+    function clearSolutions() {
+        setSolutionDivs("");
+}
 
 
     //function retryGame() {
@@ -50,33 +61,43 @@ function ChemistryGame() {
         document.getElementById("nextboardbtn").style.display = "none";
         solutionList = boardList[nextBoardIndex].solutionList;
         correctMix = boardList[nextBoardIndex].correctMix;
+        clearSolutions();
         createSolutions();
         nextBoardIndex += 1;
+    }
+
+    function navigateToCheckpoint() {
+        console.log("gamefinished");
+        //fix: implement navigate to next checkpoint
     }
 
 
     useEffect(() => {
         //document.getElementById("retrygamebtn").addEventListener("click", retryGame);
         document.getElementById("nextboardbtn").addEventListener("click", nextBoard);
+        document.getElementById("navigationbtn").addEventListener("click", navigateToCheckpoint);
         nextBoard();
     }, []);
-    return (<>
-        <div>
-        </div>
+
+
+return (
+        <>
+
         {solutionDivs}
 
         <div id="outer-dropzone" className="dropzone">
-</div>
+        </div>
 
-
+        
         <button id="checkanswer" className="gamebtn">Check</button>
         <button id="nextboardbtn" hidden className="gamebtn">Next board</button>
-       
+        <button id="navigationbtn" hidden className="gamebtn"> Navigate to next checkpointnt</button>
+
+        <div id="statusdiv"></div>
+        <div id="scorediv"></div>
+
+               
     </>);
-
-
-
-
 
 }
 
