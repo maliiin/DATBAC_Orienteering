@@ -69,7 +69,11 @@ export default function TrackDetails() {
         console.log(data[0]);
 
         setCheckpointList(data.map((checkpointElement, index) =>
-            <CheckpointInfo key={checkpointElement.id + "-" + index} checkpointInfo={checkpointElement}>
+            <CheckpointInfo
+                key={checkpointElement.id + "-" + index}
+                checkpointInfo={checkpointElement}
+                updateCheckpointList={loadCheckpoints}
+            >
             </CheckpointInfo>
         ));
     }

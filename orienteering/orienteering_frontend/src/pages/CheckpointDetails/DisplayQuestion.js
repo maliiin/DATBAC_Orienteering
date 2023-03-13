@@ -7,7 +7,7 @@ import { createSearchParams, useParams } from 'react-router-dom';
 
 
 export default function DisplayQuestion(props) {
-
+   
     const deleteQuestion = async () => {
         const url = '/api/quiz/deleteQuestion?';
         const parameter= 'questionId=' + props.questionInfo.quizQuestionId + '&quizId=' + props.quizId;

@@ -1,5 +1,3 @@
-import useAuthentication from "../../hooks/useAuthentication";
-import { TextField, Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { useState } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
@@ -7,8 +5,6 @@ import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import AddQuizQuestion from "./AddQuizQuestion";
 import DisplayQuiz from "./DisplayQuiz";
-import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 //page
 //display all info of a single checkpoint
@@ -98,8 +94,8 @@ export default function CheckpointDetails() {
 
     } else if(render) {
         return (<>
-            <h3>post id {params.checkpointId}</h3>
             <p> du har valgt spill</p>
+            <p></p>
         </>);
     };
 };
