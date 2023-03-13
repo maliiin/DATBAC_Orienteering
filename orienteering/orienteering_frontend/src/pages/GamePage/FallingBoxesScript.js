@@ -1,6 +1,5 @@
 "use strict";
 var interact = require('interactjs')
-//import { FallingObject } from "./FallingObjectClass.js";
 
 //fiks til neste gang
 //la brukeren miste liv- ha 3
@@ -13,8 +12,7 @@ var interact = require('interactjs')
 var fallingWidth = 30;
 var fallingHeigth = 30;
 const data = [["ikke", true]];  //[["fang", true], ["ikke fang", false], ["fang11", true], ["ikke fang22", false], ["ta", true], ["ikke ta", false]];
-//fix endre denne
-const totalLives = 1;
+const totalLives = 3;
 var BasketHeight, BasketWidth;
 const speed = 3;
 
@@ -27,6 +25,7 @@ var gameCanvas, BasketWidth
 var fallingObjects = [];
 var gameArea = null,
     gameStatus = null
+var fallingTimer = null;
 
 
 function setup(basketWidth, basketHeight) {
@@ -36,11 +35,11 @@ function setup(basketWidth, basketHeight) {
 
     gameCanvas = document.getElementById("gameCanvas");
 
-    //setter "intern" størrelse
+    //setter "intern" størrelse av canvas
     gameCanvas.height = window.screen.height;
     gameCanvas.width = window.screen.width;
 
-    //create gamee area and game status
+    //create gamee area and game status objects
     gameArea = new GameArea(gameCanvas);
     gameStatus = new GameStatus();
 
@@ -53,14 +52,12 @@ function setup(basketWidth, basketHeight) {
     //start game/initialize
     gameArea.start();
 
-
     //make basket able to move
     moveBasket();
 
-    //add fallingf objects
-    addFallingBox();
-
-    //window.setInterval(addFallingBox, 2000);
+    //add falling objects
+    //addFallingBox();
+    fallingTimer=window.setInterval(addFallingBox, 2000);
 }
 
 function GameStatus() {
@@ -72,19 +69,26 @@ function GameStatus() {
         console.log("lose life")
         //only one life left-->game over
         if (this.lives <= 1) {
-            this.gameOver = true
+            this.gameOver = true;
+            this.endGame();
             return;
         }
         //else lose a life
         this.lives--;
 
     }
+    this.endGame = function () {
+        //this ends the game
+        clearTimeout(fallingTimer);
+        clearTimeout(gameArea.interval)
+    }
+
 }
 
 //https://www.w3schools.com/graphics/tryit.asp?filename=trygame_default_gravity
 function GameArea(canvas) {
     //fix-flytt til game
-    this.point = 0;
+    //this.point = 0;
     this.canvas = canvas;
     //console.log(this.canvas.height)
     //console.log(this.canvas.width)
@@ -175,7 +179,7 @@ function FallingObject(x, y, values) {
 
 
             if (this.collect) {
-                gameArea.point += 1;
+                gameStatus.points += 1;
             } else {
                 //lost a life
                 gameStatus.looseLife();
@@ -192,7 +196,7 @@ function updateGameArea() {
 
     //display score
     gameArea.context.font = "30px Arial";
-    gameArea.context.strokeText("Poeng: " + gameArea.point, 50, 50);
+    gameArea.context.strokeText("Poeng: " + gameStatus.points, 50, 50);
 
     //display all falling elements
     for (var i = fallingObjects.length - 1; i >= 0; i--) {
@@ -219,7 +223,7 @@ function updateGameArea() {
 
     //check is game is over kanskje flytt en opp? fix
     if (gameStatus.gameOver) {
-        gameArea.context.strokeText("Game over: " + gameArea.point, 50, 200);
+        gameArea.context.strokeText("Game over: " + gameStatus.points, 50, 200);
 
     }
 }
