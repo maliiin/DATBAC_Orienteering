@@ -6,9 +6,14 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  //<React.StrictMode>
-  //  <App />
-  //</React.StrictMode>
+    //fix, ta tilbake strict 
+    //spillet laster inn 2 ganger ved strict mode
+
+    //<React.StrictMode>
+    //  <App />
+    //</React.StrictMode>
+
+
     <App />
 );
 

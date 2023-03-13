@@ -4,6 +4,7 @@
     "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.11.11",
     "bootstrap": "^5.2.3",
+    "interactjs": "^1.10.17",
     "react-bootstrap": "^2.7.2"
   }
 }

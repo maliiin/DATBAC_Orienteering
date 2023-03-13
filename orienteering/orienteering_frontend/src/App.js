@@ -13,6 +13,12 @@ import TrackOverview from "./pages/TrackOverview/TrackOverview";
 import TrackDetails from "./pages/TrackDetails/TrackDetails";
 import QuizPage from "./pages/QuizPage/QuizPage";
 
+import QRCodePage from "./pages/QrCodePage/QRCodePage";
+import CheckpointRedirection from "./pages/CheckpointRedirection";
+import FallingBoxesGame from "./pages/GamePage/FallingBoxesGame";
+import GamePage from "./pages/GamePage/GamePage";
+
+
 import QRCodePage from "./pages/QrCodePage/QRCodePage"
 import CheckpointRedirection from "./pages/CheckpointRedirection"
 import ChemistryGame from "./pages/Game/ChemistryGame";
@@ -48,6 +54,8 @@ export default function App() {
                 </Route>
 
                 <Route path="checkpoint/quiz/:quizId" element={<QuizPage />} />
+                <Route path="game" element={<GamePage />} />
+
                 <Route path="ChemistryGame" element={<ChemistryGame />} />
 
             </Routes>
