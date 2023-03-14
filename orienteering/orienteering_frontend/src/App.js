@@ -17,8 +17,9 @@ import QRCodePage from "./pages/QrCodePage/QRCodePage";
 import CheckpointRedirection from "./pages/CheckpointRedirection";
 import GamePage from "./pages/GamePage/GamePage";
 
-
 import ChemistryGame from "./pages/Game/ChemistryGame";
+
+import CheckpointNavigation from "./pages/CheckpointNavigation/CheckpointNavigation";
 
 
 export default function App() {
@@ -50,10 +51,11 @@ export default function App() {
                     <Route path="checkpoint/:checkpointId" element={<CheckpointRedirection />} />
                 </Route>
 
-                <Route path="checkpoint/quiz/:quizId" element={<QuizPage />} />
+                <Route path="checkpoint/quiz/:checkpointId" element={<QuizPage />} />
                 <Route path="game" element={<GamePage />} />
 
                 <Route path="ChemistryGame" element={<ChemistryGame />} />
+                <Route path="checkpointnavigation/:checkpointId" element={<CheckpointNavigation />} />
 
             </Routes>
             </BrowserRouter>

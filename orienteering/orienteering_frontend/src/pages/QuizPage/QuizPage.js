@@ -5,8 +5,8 @@ import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import QuizQuestionItem from './QuizQuestionItem';
 export default function QuizPage() {
-    //kan være greit å få inn checkpointid slik at det senere blir mulig å registrere at noen har vært på checkpointet, lagre score osv...
-
+    
+    const navigate = useNavigate();
     const params = useParams();
 
     const [quizQuestionRender, setQuizQuestionRender] = useState("");
@@ -17,24 +17,31 @@ export default function QuizPage() {
     const [quizStatus, setQuizStatus] = useState("");
 
     const [quizInfo, setQuizInfo] = useState({
-        Id: params.quizId
+        Id: ""
     });
 
 
     useEffect(() => {
-        setQuizInfo(prevState => { return { ...prevState, Id: params.quizId } });
+        setQuizId();
        // fetchQuizQuestion();
     }, []);
 
 
     useEffect(() => {
-        fetchQuizQuestion();
-    }, [quizQuestionIndex]);
+        if (quizInfo.Id != "") {
+            fetchQuizQuestion();
+        }
+    }, [quizQuestionIndex, quizInfo]);
 
     useEffect(() => {
         showQuizQuestion();
     }, [currentQuizQuestion]);
 
+    async function setQuizId() {
+        var url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
+        var checkpointDto = await fetch(url).then(res => res.json());
+        setQuizInfo(prevState => { return { ...prevState, Id: checkpointDto.quizId } });
+    }
 
     async function fetchQuizQuestion() {
         var url = "/api/quiz/getNextQuizQuestion?quizId=" + quizInfo.Id + "&quizQuestionIndex=" + quizQuestionIndex.toString();
@@ -47,6 +54,10 @@ export default function QuizPage() {
         console.log(event.target.value);
         chosenAlternative.current = event.target.value;
     };
+
+    function navigateToNextCheckpoint() {
+        navigate('/checkpointnavigation/' + params.checkpointId);
+    }
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -61,7 +72,13 @@ export default function QuizPage() {
 
         
         if (currentQuizQuestion.endOfQuiz == true) {
-            setQuizQuestionRender(<p>Quiz ferdig</p>)
+            setQuizQuestionRender(
+            <>
+                <p>Quiz ferdig</p>
+                <button onClick={navigateToNextCheckpoint}>Navigate to next checkpoint</button>
+            </>
+            )
+
         }
         else {
             var newIndex = quizQuestionIndex + 1;
