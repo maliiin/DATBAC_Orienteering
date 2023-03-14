@@ -18,8 +18,6 @@ import CheckpointRedirection from "./pages/CheckpointRedirection";
 import GamePage from "./pages/GamePage/GamePage";
 
 
-import QRCodePage from "./pages/QrCodePage/QRCodePage"
-import CheckpointRedirection from "./pages/CheckpointRedirection"
 import ChemistryGame from "./pages/Game/ChemistryGame";
 
 
