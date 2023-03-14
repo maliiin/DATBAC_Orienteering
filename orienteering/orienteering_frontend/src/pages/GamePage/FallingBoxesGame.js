@@ -52,21 +52,7 @@ export default function FallingBoxesGame() {
             >
 
             </div>
-            <Button
-                id="directionsButton"
-                style={{
-                    width: "200px",
-                    display: "none",
-                    position: "absolute",
-                    top: canvasHeight * 2 / 3 + "px",
-                    left: canvasWidth/2-100 + "px",
-                    backgroundColor: "white",
-
-                }}
-                onClick={directions}
-            >
-                veibeskrivelse
-            </Button>
+            
 
             <div id="beforeGameDiv" style={{ margin: "10px" }}>
                 <h3>Primtallspill</h3>

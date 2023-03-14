@@ -87,8 +87,8 @@ function GameStatus() {
         gameArea.context.strokeText("Spill slutt, du fikk " + gameStatus.points + " poeng.", gameArea.canvas.width / 2, gameArea.canvas.height / 2);
 
         //display button to next checkpoint directions
-        var directionButton = document.getElementById("directionsButton");
-        directionButton.style.display = "block";
+        var navigationButton = document.getElementById("navigationButton");
+        navigationButton.style.display = "block";
 
         //remove basket
         var basket = document.getElementById("basket");

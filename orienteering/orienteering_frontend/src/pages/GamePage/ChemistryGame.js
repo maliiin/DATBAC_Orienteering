@@ -75,7 +75,6 @@ function ChemistryGame() {
     useEffect(() => {
         //document.getElementById("retrygamebtn").addEventListener("click", retryGame);
         document.getElementById("nextboardbtn").addEventListener("click", nextBoard);
-        document.getElementById("navigationbtn").addEventListener("click", navigateToCheckpoint);
         nextBoard();
     }, []);
 
@@ -91,7 +90,6 @@ return (
         
         <button id="checkanswer" className="gamebtn">Check</button>
         <button id="nextboardbtn" hidden className="gamebtn">Next board</button>
-        <button id="navigationbtn" hidden className="gamebtn"> Navigate to next checkpointnt</button>
 
         <div id="statusdiv"></div>
         <div id="scorediv"></div>

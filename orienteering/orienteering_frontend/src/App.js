@@ -18,7 +18,7 @@ import CheckpointRedirection from "./pages/CheckpointRedirection";
 import FallingBoxesGame from "./pages/GamePage/FallingBoxesGame";
 import GamePage from "./pages/GamePage/GamePage";
 
-import ChemistryGame from "./pages/Game/ChemistryGame";
+import ChemistryGame from "./pages/GamePage/ChemistryGame";
 
 import CheckpointNavigation from "./pages/CheckpointNavigation/CheckpointNavigation";
 
@@ -53,7 +53,7 @@ export default function App() {
                 </Route>
 
                 <Route path="checkpoint/quiz/:checkpointId" element={<QuizPage />} />
-                <Route path="game" element={<GamePage />} />
+                <Route path="checkpoint/game/:checkpointId" element={<GamePage />} />
 
                 <Route path="ChemistryGame" element={<ChemistryGame />} />
                 <Route path="checkpointnavigation/:checkpointId" element={<CheckpointNavigation />} />
