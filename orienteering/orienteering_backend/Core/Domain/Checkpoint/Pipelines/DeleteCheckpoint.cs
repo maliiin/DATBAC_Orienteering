@@ -40,7 +40,6 @@ public static class DeleteCheckpoint
                 .Where(ch => ch.Id == request.checkpointId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-
             if (checkpoint==null) {
                 Console.WriteLine("finner ikke\n\n\n\n");
                 return false; }
@@ -49,21 +48,21 @@ public static class DeleteCheckpoint
 
             //delete
             _db.Checkpoints.Remove(checkpoint);
-            //await _db.SaveChangesAsync(cancellationToken);
 
-            //send event
-            await _mediator.Publish(new CheckpointDeleted(trackId));
-
-            //update order of all checkpoints where order was higher than the deleted
-            var checkpointList=await _db.Checkpoints
+            //get all checkpoints where order was higher than the deleted one
+            var checkpointList =await _db.Checkpoints
                 .Where(ch => ch.Order>checkpoint.Order)
-                .ToListAsync(cancellationToken);    
+                .ToListAsync(cancellationToken);
 
+            //update order of all those checkpoints 
             foreach (var singleCheckpoint in checkpointList) {
                 singleCheckpoint.Order -= 1;
             }
 
             await _db.SaveChangesAsync(cancellationToken);
+
+            //send event
+            await _mediator.Publish(new CheckpointDeleted(trackId));
 
             return true;
 
