@@ -22,6 +22,8 @@ public class CheckpointCreatedHandler : INotificationHandler<CheckpointCreated>
     }
     public async Task Handle(CheckpointCreated notification, CancellationToken cancellationToken)
     {
+        //fix-hva gjør denne koden?? hvorfor skjer ikke dette direkte i checkpoint domain?
+        //(er der det kommer fra!!)
         var checkpoint = await _db.Checkpoints.SingleOrDefaultAsync(c => c.Id == notification.CheckpointId);
         if (checkpoint == null)
         {

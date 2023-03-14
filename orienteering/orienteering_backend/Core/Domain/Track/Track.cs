@@ -13,12 +13,27 @@ namespace orienteering_backend.Core.Domain.Track
         public Guid? UserId { get; set; }
 
         public string? Name { get; set; }
+
+        public int NumCheckpoints { get; set; } = 0;
+
+
+
         //public List<Guid> CheckpointList { get; set; } = new();
 
-        //public void AddCheckpoint(Guid checkpointId)
-        //{
-        //        CheckpointList.Add(checkpointId);
-        //}
+        public void AddedCheckpoint()
+        {
+            NumCheckpoints++;
+        }
+
+        public bool RemovedCheckpoint() 
+        {
+            if(NumCheckpoints== 0)
+            {
+                return false;
+            }
+            NumCheckpoints--;
+            return true;
+        }
     }
 
 }

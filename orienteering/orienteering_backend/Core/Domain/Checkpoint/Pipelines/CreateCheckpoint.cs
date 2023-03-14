@@ -4,6 +4,7 @@ using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Infrastructure.Data;
 using orienteering_backend.Core.Domain.Checkpoint.Events;
+using orienteering_backend.Core.Domain.Track.Pipelines;
 //Kilder: CampusEats lab fra dat240
 // Kilder: https://github.com/dat240-2022/assignments/blob/main/Lab3/UiS.Dat240.Lab3/Core/Domain/Cart/Pipelines/AddItem.cs (07.02.2023)
 // Brukte samme struktur på pipelinen som i kilden
@@ -30,8 +31,15 @@ public static class CreateCheckpoint
         }
         public async Task<Guid> Handle(Request request, CancellationToken cancellationToken)
         {
+            //get track to get numCheckpoint-->
+            var trackDto=await _mediator.Send(new GetSingleTrack.Request(request.checkpointDto.TrackId));
+
             //create checkpoint
             var newCheckpoint = new Checkpoint(request.checkpointDto.Title, request.checkpointDto.GameId, request.checkpointDto.TrackId);
+            newCheckpoint.Order = trackDto.NumCheckpoints + 1;
+
+            Console.WriteLine(newCheckpoint.Order);
+
 
             if (request.checkpointDto.GameId == 0)
             {
@@ -43,7 +51,7 @@ public static class CreateCheckpoint
             await _db.SaveChangesAsync(cancellationToken);
 
             // publishing event 
-            await _mediator.Publish(new CheckpointCreated(newCheckpoint.Id));
+            await _mediator.Publish(new CheckpointCreated(newCheckpoint.Id, request.checkpointDto.TrackId));
 
             if (newCheckpoint.GameId == 0)
             {

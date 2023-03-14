@@ -22,16 +22,20 @@ public static class DeleteCheckpoint
     public class Handler : IRequestHandler<Request, bool>
     {
         private readonly OrienteeringContext _db;
+        private readonly IMediator _mediator;
+
 
 
         //public Handler(OrienteeringContext db) => _db = db ?? throw new ArgumentNullException(nameof(db));
-        public Handler(OrienteeringContext db)
+        public Handler(OrienteeringContext db, IMediator mediator)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
+            _mediator = mediator;
         }
         public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
         {
             //fix returtype
+            //get checkpoint to delete
             var checkpoint=await _db.Checkpoints
                 .Where(ch => ch.Id == request.checkpointId)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -40,9 +44,26 @@ public static class DeleteCheckpoint
                 Console.WriteLine("finner ikke\n\n\n\n");
                 return false; }
 
+            var trackId = checkpoint.TrackId;
+
+            //delete
             _db.Checkpoints.Remove(checkpoint);
+
+            //get all checkpoints where order was higher than the deleted one
+            var checkpointList =await _db.Checkpoints
+                .Where(ch => ch.Order>checkpoint.Order)
+                .ToListAsync(cancellationToken);
+
+            //update order of all those checkpoints 
+            foreach (var singleCheckpoint in checkpointList) {
+                singleCheckpoint.Order -= 1;
+            }
+
             await _db.SaveChangesAsync(cancellationToken);
-            Console.WriteLine("slettet\n\n\n");
+
+            //send event
+            await _mediator.Publish(new CheckpointDeleted(trackId));
+
             return true;
 
         }
