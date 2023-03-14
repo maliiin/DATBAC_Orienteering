@@ -43,7 +43,7 @@ public static class CreateCheckpoint
             await _db.SaveChangesAsync(cancellationToken);
 
             // publishing event 
-            await _mediator.Publish(new CheckpointCreated(newCheckpoint.Id));
+            await _mediator.Publish(new CheckpointCreated(newCheckpoint.Id, request.checkpointDto.TrackId));
 
             if (newCheckpoint.GameId == 0)
             {

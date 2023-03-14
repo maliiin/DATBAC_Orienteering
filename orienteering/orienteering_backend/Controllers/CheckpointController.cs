@@ -53,6 +53,8 @@ namespace orienteering_backend.Controllers
             return checkpoint;
 
         }
+        //sjekk om db order blir autoinkrementet av nytt checkpoint
+
 
         [HttpDelete("removeCheckpoint")]
 
