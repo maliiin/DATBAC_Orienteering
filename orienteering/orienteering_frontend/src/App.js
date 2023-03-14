@@ -19,6 +19,8 @@ import NavigationEditPage from "./pages/NavigationEditPage/NavigationEditPage";
 
 export default function App() {
     const authenticated = false;
+
+    //fix slett den under? ikke i bruk
     //fra https://stackoverflow.com/questions/40055439/check-if-logged-in-react-router-app-es6/40055744#40055744 13.feb.23
     function requireAuth(nextState, replace, next) {
         if (!authenticated) {
@@ -43,7 +45,7 @@ export default function App() {
                     <Route path="track/:trackId" element={<TrackDetails />} />
                     <Route path="qrcodepage" element={<QRCodePage />} />
                     <Route path="unauthorized" element={<Unauthorized />} />
-                    <Route path="navigation/:checkpointId" element={<NavigationEditPage />} />
+                    <Route path="navigationEdit/:checkpointId" element={<NavigationEditPage />} />
                     <Route path="checkpoint/:checkpointId" element={<CheckpointRedirection />} />
                 </Route>
 

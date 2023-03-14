@@ -24,7 +24,7 @@ export default function CheckpointInfo(props) {
     const showNavigation = (event) => {
         //fix- skal det være track/id/checkpoint/id??
 
-        const url = "/navigation/" + props.checkpointInfo.id;
+        const url = "/navigationEdit/" + props.checkpointInfo.id;
         console.log(url);
         navigate(url);
 
