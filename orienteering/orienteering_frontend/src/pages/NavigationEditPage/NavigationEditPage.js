@@ -1,7 +1,7 @@
 import { TextField, Button, Grid } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
-import AddImage  from "./AddImage";
+import AddImage  from "./Components/AddImage";
 
 
 export default function NavigationEditPage() {

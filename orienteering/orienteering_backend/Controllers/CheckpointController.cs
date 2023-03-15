@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
+using orienteering_backend.Core.Domain.Navigation.Dto;
 
 namespace orienteering_backend.Controllers
 {
@@ -9,13 +10,36 @@ namespace orienteering_backend.Controllers
     [Route("api/checkpoint")]
     public class CheckpointController : Controller
     {
-
         private readonly IMediator _mediator;
 
         public CheckpointController(IMediator Mediator)
         {
             _mediator = Mediator;
         }
+
+
+
+
+        [HttpPost("AddImage")]
+        public async Task<Guid> AddImage([FromForm]UploadImageDto test)
+        {
+            Console.WriteLine(test);
+            return new Guid();
+        }
+
+        [HttpGet("test")]
+        public ActionResult test(string formFile)
+        {
+            Console.WriteLine(formFile);
+            return Ok(formFile);
+
+        }
+
+
+
+
+
+        //FIX FLYTT DET IVER
 
 
         //create checkpoint
