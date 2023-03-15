@@ -15,7 +15,6 @@ import QuizPage from "./pages/QuizPage/QuizPage";
 
 import QRCodePage from "./pages/QrCodePage/QRCodePage";
 import CheckpointRedirection from "./pages/CheckpointRedirection";
-import FallingBoxesGame from "./pages/GamePage/FallingBoxesGame";
 import GamePage from "./pages/GamePage/GamePage";
 
 import ChemistryGame from "./pages/GamePage/ChemistryGame";

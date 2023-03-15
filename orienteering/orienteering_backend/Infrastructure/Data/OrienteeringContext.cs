@@ -26,7 +26,9 @@ public class OrienteeringContext : IdentityUserContext<IdentityUser>
         //calls IdentityUserContext’s own OnModelCreating implementation
         //so that it can set itself up properly
         base.OnModelCreating(modelBuilder);
-        
+
+       
+
     }
 
 
