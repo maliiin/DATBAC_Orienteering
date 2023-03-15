@@ -56,7 +56,7 @@ function checkAnswer() {
         document.getElementById("statusdiv").textContent = `Score: ${score}`;
 
         if (lastBoard) {
-            document.getElementById("navigationbtn").style.display = "inline-block";
+            document.getElementById("navigationButton").style.display = "block";
         }
         else {
             document.getElementById("nextboardbtn").style.display = "inline-block";

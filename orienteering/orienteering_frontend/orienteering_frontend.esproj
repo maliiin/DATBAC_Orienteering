@@ -16,6 +16,7 @@
     <Folder Include="src\pages\CheckpointDetails\" />
     <Folder Include="src\pages\CheckpointNavigation\" />
     <Folder Include="src\pages\NavigationEditPage\" />
+    <Folder Include="src\pages\Game\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptConfiguration Remove="src\pages\NewFolder1\**" />
