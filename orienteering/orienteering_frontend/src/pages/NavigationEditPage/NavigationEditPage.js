@@ -68,6 +68,7 @@ export default function NavigationEditPage() {
                 <Grid item xs={6}>
                     <h4>Add more images</h4>
                     <AddImage></AddImage>
+
                 </Grid>
             </Grid>
 
