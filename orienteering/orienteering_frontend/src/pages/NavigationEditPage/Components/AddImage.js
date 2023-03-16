@@ -4,8 +4,10 @@ import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
 
 export default function AddImage() {
     const [uploadedImage, setUploadedImage] = useState({
-        Image: ""
+        FormFile: ""
     });
+
+    const [testBilde, setTestBilde] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -21,22 +23,28 @@ export default function AddImage() {
 
 
         const formData = new FormData();
-        formData.append("formFile", uploadedImage);
-        formData.append("fileName", "hei");
+        formData.append("FormFile", uploadedImage);
+        formData.append("FileName", "hei");
+
+        const testData = {
+            FileName: "testnavn",
+            FormFile: uploadedImage
+        }
+
+        console.log(uploadedImage)
         const requestAlternatives = {
 
             method: 'POST',
-            //mode: 'cors',
+            mode: 'cors',
             headers: {
-
-
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
 
                 //fix linje under -sikkerhet
                 'Access-Control-Allow-Origin': '*',
             },
-            body: JSON.stringify(formData)
+            //body: JSON.stringify(testBilde)
+            body: testBilde
 
         };
 
@@ -92,17 +100,27 @@ export default function AddImage() {
         event.preventDefault();
         console.log(event.target.files[0])
         console.log(event.target.files[0])
-        var t = URL.createObjectURL(event.target.files[0])
-        console.log(t);
+        //var t = URL.createObjectURL(event.target.files[0])
+        //console.log(t);
 
+        //før
+        //setUploadedImage(prevState => {
+        //    return {
+        //        ...prevState, FormFile: event.target.files[0]
+        //    }
 
-        setUploadedImage(prevState => {
-            return {
-                ...prevState, Image: event.target.files[0]
-            }
+        //}
+        //);
 
-        }
-        );
+        //nå https://stackoverflow.com/questions/55205135/how-to-upload-image-from-react-to-asp-net-core-web-api
+        let form = new FormData();
+        form.append("FormFile", event.target.files[0]);
+        //form.append("FileName", event.target.files[0]);
+
+        setTestBilde({
+            FileName: "tetshjfnf",
+            FormFile: form
+        });
 
         //setUploadedImage({
         //    Image: "hajskk"

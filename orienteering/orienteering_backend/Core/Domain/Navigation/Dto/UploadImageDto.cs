@@ -2,7 +2,7 @@
 {
     public class UploadImageDto
     {
-        public string? fileName { get; set; }    
-        public IFormFile? Image { get; set; }
+        public string? FileName { get; set; }    
+        public IFormFile? FormFile { get; set; }
     }
 }

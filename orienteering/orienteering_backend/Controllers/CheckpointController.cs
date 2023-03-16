@@ -17,14 +17,40 @@ namespace orienteering_backend.Controllers
             _mediator = Mediator;
         }
 
-
-
+        //legg kode i kontrolleren
+        //får status 200 nå
+        //https://stackoverflow.com/questions/55205135/how-to-upload-image-from-react-to-asp-net-core-web-api
+        //https://sankhadip.medium.com/how-to-upload-files-in-net-core-web-api-and-react-36a8fbf5c9e8
 
         [HttpPost("AddImage")]
-        public async Task<Guid> AddImage([FromForm]UploadImageDto test)
+        public async Task<ActionResult> AddImage([FromForm] UploadImageDto file)
         {
-            Console.WriteLine(test);
-            return new Guid();
+            Console.WriteLine("nå her\n\n\n");
+            Console.WriteLine(file.FileName);
+            Console.WriteLine(file.FormFile);
+
+            var testnavn = file.FileName;
+            Console.WriteLine(testnavn);
+
+            //tru catch kilde https://sankhadip.medium.com/how-to-upload-files-in-net-core-web-api-and-react-36a8fbf5c9e8 16/03
+            try
+            {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "../wwwroot", file.FileName);
+
+                using (Stream stream = new FileStream(path, FileMode.Create))
+                {
+                    file.FormFile.CopyTo(stream);
+                }
+
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status402PaymentRequired);
+
+                //return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
         }
 
         [HttpGet("test")]
