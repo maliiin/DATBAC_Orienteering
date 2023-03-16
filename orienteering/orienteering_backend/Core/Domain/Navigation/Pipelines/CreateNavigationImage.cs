@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Infrastructure.Data;
 
 namespace orienteering_backend.Core.Domain.Navigation.Pipelines
 {
-    public class CreateNavigation
+    public class CreateNavigationImage
     {
 
         public record Request(
-            string path, Guid checkpointId) : IRequest<Guid>;
+            string path, Guid checkpointId) : IRequest<bool>;
 
 
         //fix ikke i bruk?
 
-        public class Handler : IRequestHandler<Request, Guid>
+        public class Handler : IRequestHandler<Request, bool>
         {
             private readonly OrienteeringContext _db;
 
@@ -27,14 +28,18 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
 
             }
 
-            public async Task<Guid> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                var navigation = new Navigation();
-                navigation.ToCheckpoint = request.checkpointId;
+                var navigation=await _db.Navigation.Where(n => n.ToCheckpoint == request.checkpointId).FirstOrDefaultAsync(cancellationToken);
+                if (navigation == null) { return false; }
 
-                await _db.Navigation.AddAsync(navigation, cancellationToken);
+                //fix order virker ikke
+                var navImage = new NavigationImage(request.path, navigation.NumImages+1);
+                
+                navigation.AddNavigationImage(navImage);
                 await _db.SaveChangesAsync(cancellationToken);
-                return navigation.Id;
+
+                return true;
 
             }
         }

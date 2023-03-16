@@ -7,6 +7,8 @@ export default function AddImage(props) {
         FormFile: "",
     });
 
+    const [testImg, setTestImg] = useState(null);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -18,7 +20,7 @@ export default function AddImage(props) {
         const send = {
             FormFile: formData,
             CheckpointId: props.CheckpointId
-            }
+        }
 
         const requestAlternatives = {
             method: 'POST',
@@ -42,30 +44,46 @@ export default function AddImage(props) {
     const handleChange = function (event) {
         event.preventDefault();
         setUploadedImage(event.target.files[0]);
-            
-   
-}
 
-//fix remove selected file on submit
-return (<>
 
-    <Box onSubmit={handleSubmit} component="form">
 
-        <input
-            //multiple
-            type="file"
-            id="image"
-            required
-            accept="image/*"
-            onChange={handleChange}
-        />
+
+    }
+
+    const getOneImg = async function () {
+        var img = await fetch("/api/navigation/GetNavigation?checkpointId=" + props.checkpointId).then(r=>r.json());
+        console.log(img);
+        setTestImg(img.ImageTest);
+    }
+
+    //fix remove selected file on submit
+    
+    
+    
+    return (<>
+        {testImg }
+        <img src={testImg}></img>
+        <Box onSubmit={handleSubmit} component="form">
+
+            <input
+                //multiple
+                type="file"
+                id="image"
+                required
+                accept="image/*"
+                onChange={handleChange}
+            />
+
+            <Button
+                type="submit"
+            >
+                Add Image
+            </Button>
+        </Box>
 
         <Button
-            type="submit"
-        >
-            Add Image
-        </Button>
-    </Box>
+            onClick={getOneImg}    >
+            få bilde    </Button>
 
-</>);
+    </>);
 }

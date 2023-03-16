@@ -20,5 +20,15 @@ namespace orienteering_backend.Core.Domain.Navigation
                 return Images.Count;
             }
         }
+
+        public void AddNavigationImage(NavigationImage image)
+        {
+            Images.Add(image);  
+        }
+
+        //public void RemoveNavigationImage(NavigationImage image)
+        //{
+            
+        //}
     }
 }

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Navigation.Dto;
+using orienteering_backend.Core.Domain.Navigation.Pipelines;
+using SixLabors.ImageSharp;
 
 namespace orienteering_backend.Controllers
 {
@@ -32,6 +34,7 @@ namespace orienteering_backend.Controllers
         {
 
             var checkpointId = HttpContext.Request.Form["checkpointId"];
+            Guid checkpointGuid = new(checkpointId);
 
             //string extension = Path.GetExtension(file.FileName);
             //Console.WriteLine(file);
@@ -53,16 +56,29 @@ namespace orienteering_backend.Controllers
                 file.CopyTo(memoryStream);
             }
 
-            //_mediator.Send(new AddNavigationImage.Request(path,checkpointId))
+            await _mediator.Send(new CreateNavigationImage.Request(path, checkpointGuid));
             
             return Ok();
         }
 
-        [HttpGet("test")]
-        public ActionResult test(string formFile)
+        [HttpGet("GetNavigation")]
+        public async Task<Object> GetNavigation(string checkpointId)
         {
-            Console.WriteLine(formFile);
-            return Ok(formFile);
+            Guid checkpointGuid = new(checkpointId);
+            var res=await _mediator.Send(new GetNavigation.Request(checkpointGuid));
+            return new Tull(res);
+            //return Ok();
         }
+    }
+
+
+    public class Tull
+    {
+        public Tull(Image img)
+        {
+            this.ImageTest = img;
+        }
+
+        public Image ImageTest { get; set; }
     }
 }
