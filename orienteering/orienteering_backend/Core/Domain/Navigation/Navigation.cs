@@ -13,5 +13,11 @@
 
         public Guid ToCheckpoint { get; set; }
         public List<NavigationImage> Images { get; set; } = new List<NavigationImage>();
+
+        public int NumImages { get
+            {
+                return Images.Count;
+            }
+        }
     }
 }

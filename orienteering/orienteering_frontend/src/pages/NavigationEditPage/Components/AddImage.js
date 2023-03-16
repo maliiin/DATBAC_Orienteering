@@ -28,7 +28,7 @@ export default function AddImage() {
 
         };
 
-        var response = await fetch('/api/checkpoint/AddImage', requestAlternatives);
+        var response = await fetch('/api/navigation/AddImage', requestAlternatives);
     }
 
     const handleChange = function (event) {
@@ -36,8 +36,9 @@ export default function AddImage() {
         setUploadedImage(event.target.files[0]);
     }
 
+    //fix remove selected file on submit
     return (<>
-
+        
         <Box onSubmit={handleSubmit} component="form">
 
             <input

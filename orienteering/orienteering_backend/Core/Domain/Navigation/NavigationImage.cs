@@ -2,12 +2,13 @@
 {
     public class NavigationImage
     {
-        public NavigationImage(byte[] image)
+        public NavigationImage(string imagePath)
         {
-            Image = image;
+            ImagePath = imagePath;
         }
 
         public Guid Id { get; set; }
-        public byte[] Image { get; set; }
+        public string ImagePath { get; set; }
+        public int Order { get; set; }
     }
 }
