@@ -1,13 +1,14 @@
-﻿namespace orienteering_backend.Core.Domain.Navigation
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace orienteering_backend.Core.Domain.Navigation
 {
     public class Navigation
     {
-        public Navigation(Guid toCheckpoint, List<NavigationImage> images)
-        {
-            ToCheckpoint = toCheckpoint;
-            Images = images;
-        }
-
+        //public Navigation(Guid toCheckpoint)
+        //{
+        //    ToCheckpoint = toCheckpoint;
+        //}
+        [Key]
         public Guid Id { get; set; }
         //public Guid FromCheckpoint { get; set; }
 

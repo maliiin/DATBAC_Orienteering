@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
@@ -11,6 +12,16 @@ namespace orienteering_backend.Controllers
 
     public class NavigationController : Controller
     {
+        private readonly IMediator _mediator;
+
+        public NavigationController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+
+
+
         //legg kode i kontrolleren
         //får status 200 nå
         //https://stackoverflow.com/questions/55205135/how-to-upload-image-from-react-to-asp-net-core-web-api
@@ -20,7 +31,7 @@ namespace orienteering_backend.Controllers
         public async Task<ActionResult> AddImage([FromForm] IFormFile file)
         {
 
-           var checkpointId= HttpContext.Request.Form["checkpointId"];
+            var checkpointId = HttpContext.Request.Form["checkpointId"];
 
             //string extension = Path.GetExtension(file.FileName);
             //Console.WriteLine(file);
@@ -36,12 +47,14 @@ namespace orienteering_backend.Controllers
             }
 
             //place image in correct place
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot",localPath, file.FileName);
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", localPath, file.FileName);
             using (var memoryStream = new FileStream(path, FileMode.Create))
             {
                 file.CopyTo(memoryStream);
             }
 
+            //_mediator.Send(new AddNavigationImage.Request(path,checkpointId))
+            
             return Ok();
         }
 
@@ -50,10 +63,6 @@ namespace orienteering_backend.Controllers
         {
             Console.WriteLine(formFile);
             return Ok(formFile);
-
         }
-
-
-
     }
 }
