@@ -23,33 +23,51 @@ namespace orienteering_backend.Controllers
         //https://sankhadip.medium.com/how-to-upload-files-in-net-core-web-api-and-react-36a8fbf5c9e8
 
         [HttpPost("AddImage")]
-        public async Task<ActionResult> AddImage([FromForm] UploadImageDto file)
+        public async Task<ActionResult> AddImage([FromForm] IFormFile file)
         {
-            Console.WriteLine("nå her\n\n\n");
-            Console.WriteLine(file.FileName);
-            Console.WriteLine(file.FormFile);
+            //Console.WriteLine("nå her\n\n\n");
+            //Console.WriteLine(file.FileName);
+            //Console.WriteLine(file.FormFile);
 
-            var testnavn = file.FileName;
-            Console.WriteLine(testnavn);
+            //var testnavn = file.FileName;
+            //Console.WriteLine(testnavn);
 
-            //tru catch kilde https://sankhadip.medium.com/how-to-upload-files-in-net-core-web-api-and-react-36a8fbf5c9e8 16/03
-            try
+
+
+            string extension = Path.GetExtension(file.FileName);
+            //read the file
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", file.FileName);
+            using (var memoryStream = new FileStream(path, FileMode.Create))
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "../wwwroot", file.FileName);
-
-                using (Stream stream = new FileStream(path, FileMode.Create))
-                {
-                    file.FormFile.CopyTo(stream);
-                }
-
-                return Ok();
+                file.CopyTo(memoryStream);
             }
-            catch
-            {
-                return StatusCode(StatusCodes.Status402PaymentRequired);
 
-                //return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            //denne virker alene
+            //using (var memoryStream = new MemoryStream())
+            //{
+            //    file.CopyTo(memoryStream);
+            //}
+
+
+            return Ok();
+            ////tru catch kilde https://sankhadip.medium.com/how-to-upload-files-in-net-core-web-api-and-react-36a8fbf5c9e8 16/03
+            //try
+            //{
+            //    string path = Path.Combine(Directory.GetCurrentDirectory(), "../wwwroot", file.FileName);
+
+            //    using (Stream stream = new FileStream(path, FileMode.Create))
+            //    {
+            //        file.FormFile.CopyTo(stream);
+            //    }
+
+            //    return Ok();
+            //}
+            //catch
+            //{
+            //    return StatusCode(StatusCodes.Status402PaymentRequired);
+
+            //    //return StatusCode(StatusCodes.Status500InternalServerError);
+            //}
 
         }
 
