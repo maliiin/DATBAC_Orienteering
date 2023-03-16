@@ -9,6 +9,9 @@ export default function NavigationEditPage() {
     const navigate = useNavigate();
     const params = useParams();
 
+    const cId = params.checkpointId;
+    console.log(cId);
+
     const [render, setRender] = useState(false);
 
 
@@ -67,7 +70,7 @@ export default function NavigationEditPage() {
 
                 <Grid item xs={6}>
                     <h4>Add more images</h4>
-                    <AddImage></AddImage>
+                    <AddImage checkpointId={cId}></AddImage>
 
                 </Grid>
             </Grid>

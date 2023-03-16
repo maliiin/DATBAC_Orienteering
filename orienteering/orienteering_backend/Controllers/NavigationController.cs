@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
+using orienteering_backend.Core.Domain.Navigation.Dto;
 
 namespace orienteering_backend.Controllers
 {
@@ -18,9 +19,24 @@ namespace orienteering_backend.Controllers
         [HttpPost("AddImage")]
         public async Task<ActionResult> AddImage([FromForm] IFormFile file)
         {
-            string extension = Path.GetExtension(file.FileName);
+
+           var checkpointId= HttpContext.Request.Form["checkpointId"];
+
+            //string extension = Path.GetExtension(file.FileName);
+            //Console.WriteLine(file);
+
             //read the file
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", file.FileName);
+            string localPath = $"{checkpointId}";
+            //wwwroot/checkpointId
+            string dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", localPath);
+            //create wwwroot/checkpointId dir if not exists
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+
+            //place image in correct place
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot",localPath, file.FileName);
             using (var memoryStream = new FileStream(path, FileMode.Create))
             {
                 file.CopyTo(memoryStream);

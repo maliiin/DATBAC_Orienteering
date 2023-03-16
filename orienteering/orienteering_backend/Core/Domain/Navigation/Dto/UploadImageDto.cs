@@ -2,7 +2,8 @@
 {
     public class UploadImageDto
     {
-        public string? FileName { get; set; }    
-        public IFormFile? FormFile { get; set; }
+        public IFormFile FormFile { get; set; }
+        public string CheckpointId { get; set; }
     }
+
 }

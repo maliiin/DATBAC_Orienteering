@@ -1,10 +1,10 @@
 import { TextField, Button, Grid, Box } from '@mui/material';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, props } from "react";
 import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
 
-export default function AddImage() {
+export default function AddImage(props) {
     const [uploadedImage, setUploadedImage] = useState({
-        FormFile: ""
+        FormFile: "",
     });
 
     const handleSubmit = async (event) => {
@@ -12,6 +12,13 @@ export default function AddImage() {
 
         const formData = new FormData();
         formData.append("file", uploadedImage);
+        formData.append("checkpointId", props.checkpointId);
+
+        console.log(props.checkpointId);
+        const send = {
+            FormFile: formData,
+            CheckpointId: props.CheckpointId
+            }
 
         const requestAlternatives = {
             method: 'POST',
@@ -25,6 +32,7 @@ export default function AddImage() {
             // },
             //body: JSON.stringify(testBilde)
             body: formData
+            //body: JSON.stringify(send)
 
         };
 
@@ -34,28 +42,30 @@ export default function AddImage() {
     const handleChange = function (event) {
         event.preventDefault();
         setUploadedImage(event.target.files[0]);
-    }
+            
+   
+}
 
-    //fix remove selected file on submit
-    return (<>
-        
-        <Box onSubmit={handleSubmit} component="form">
+//fix remove selected file on submit
+return (<>
 
-            <input
-                //multiple
-                type="file"
-                id="image"
-                required
-                accept="image/*"
-                onChange={handleChange}
-            />
+    <Box onSubmit={handleSubmit} component="form">
 
-            <Button
-                type="submit"
-            >
-                Add Image
-            </Button>
-        </Box>
+        <input
+            //multiple
+            type="file"
+            id="image"
+            required
+            accept="image/*"
+            onChange={handleChange}
+        />
 
-    </>);
+        <Button
+            type="submit"
+        >
+            Add Image
+        </Button>
+    </Box>
+
+</>);
 }
