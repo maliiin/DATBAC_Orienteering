@@ -25,7 +25,6 @@ export default function NavigationEditPage() {
 
         setImageList(Navigation.images.map((imageInfo, index) =>
             <>
-                <p>hh</p>
                 <DisplayImagesAdmin
                     imageInfo={imageInfo}
                     key={index+"-"+imageInfo.Order }
@@ -34,18 +33,6 @@ export default function NavigationEditPage() {
                 
             </>
         ));
-
-        //setTestBlob(await img.blob());
-        //console.log(img);
-        //setTestImg(img.ImageTest);
-
-        //console.log(img.imageTest)
-        //console.log(img)
-
-
-
-        //setImageList(<DisplayImagesAdmin image={img.imageTest}></DisplayImagesAdmin>
-
 
     }
 
@@ -107,7 +94,11 @@ export default function NavigationEditPage() {
 
                 <Grid item xs={6}>
                     <h4>Add more images</h4>
-                    <AddImage checkpointId={cId}></AddImage>
+                    <AddImage
+                        checkpointId={cId}
+                        updateImages={loadImages }
+                    >
+                    </AddImage>
 
                 </Grid>
             </Grid>

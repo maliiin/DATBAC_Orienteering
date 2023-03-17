@@ -47,17 +47,20 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                 foreach (NavigationImage navImage in navigation.Images)
                 {
                     byte[] imgByte;
+                    string fileType;
 
                     string path = navImage.ImagePath;
                     using (FileStream t = System.IO.File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
                         imgByte = System.IO.File.ReadAllBytes(path);
-
+                        fileType = System.IO.Path.GetExtension(path).Remove(0,1);
+                        
                     }
 
                     //convert to dto
                     NavigationImageDto imgDto = _mapper.Map<NavigationImage, NavigationImageDto>(navImage);
                     imgDto.ImageData = imgByte;
+                    imgDto.fileType= fileType;
                     imgDtoList.Add(imgDto);
 
                 }
