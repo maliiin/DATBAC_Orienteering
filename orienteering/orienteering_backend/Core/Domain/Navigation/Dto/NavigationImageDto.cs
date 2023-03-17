@@ -2,7 +2,13 @@
 {
     public class NavigationImageDto
     {
-        public string ImagePath { get; set; }
+        public NavigationImageDto(int order)
+        {
+            Order = order;
+        }
+
+        //fix går dette fint? ikke lik original
+        public byte[] ImageData { get; set; }
         public int Order { get; set; }
     }
 }

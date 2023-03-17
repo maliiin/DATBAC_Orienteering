@@ -4,11 +4,10 @@ namespace orienteering_backend.Core.Domain.Navigation
 {
     public class Navigation
     {
-        //public Navigation(Guid toCheckpoint)
-        //{
-        //    ToCheckpoint = toCheckpoint;
-        //}
-        [Key]
+        public Navigation(Guid toCheckpoint)
+        {
+            ToCheckpoint = toCheckpoint;
+        }
         public Guid Id { get; set; }
         //public Guid FromCheckpoint { get; set; }
 

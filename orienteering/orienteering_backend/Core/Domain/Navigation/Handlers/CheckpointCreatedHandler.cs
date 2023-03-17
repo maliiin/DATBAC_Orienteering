@@ -18,8 +18,7 @@ namespace orienteering_backend.Core.Domain.Navigation.Handlers
         }
         public async Task Handle(CheckpointCreated notification, CancellationToken cancellationToken)
         {
-            var navigation = new Navigation();
-            navigation.ToCheckpoint = notification.CheckpointId;
+            var navigation = new Navigation(notification.CheckpointId);
 
             await _db.Navigation.AddAsync(navigation, cancellationToken);
             await _db.SaveChangesAsync(cancellationToken);

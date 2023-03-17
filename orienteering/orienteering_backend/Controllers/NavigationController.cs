@@ -61,31 +61,34 @@ namespace orienteering_backend.Controllers
             return Ok();
         }
 
+
+
         [HttpGet("GetNavigation")]
         public async Task<Object> GetNavigation(string checkpointId)
         {
             //blob test
             //https://stackoverflow.com/questions/73026716/fetch-image-from-c-sharp-web-api
-            //Guid checkpointGuid = new(checkpointId);
-            //var res=await _mediator.Send(new GetNavigation.Request(checkpointGuid));
+            Guid checkpointGuid = new(checkpointId);
+            var res=await _mediator.Send(new GetNavigation.Request(checkpointGuid));
+            return res;
 
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "08db26c5-298c-4398-847c-7d9ad2136e02", "a bilde.png");
-            byte[] ret;
+            //string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "08db26c5-298c-4398-847c-7d9ad2136e02", "a bilde.png");
+            //byte[] ret;
 
-            //fix usikker på om fileshare
-            using (FileStream t = System.IO.File.Open(path, FileMode.Open, FileAccess.Read ,FileShare.Read))
-            {
-                ret= System.IO.File.ReadAllBytes(path);
+            ////fix usikker på om fileshare
+            //using (FileStream t = System.IO.File.Open(path, FileMode.Open, FileAccess.Read ,FileShare.Read))
+            //{
+            //    ret= System.IO.File.ReadAllBytes(path);
 
-            }
-            //https://stackoverflow.com/questions/26741191/ioexception-the-process-cannot-access-the-file-file-path-because-it-is-being
+            //}
+            ////https://stackoverflow.com/questions/26741191/ioexception-the-process-cannot-access-the-file-file-path-because-it-is-being
 
-            //return t;
-            //return new Tull(t);
-            //return Ok();
+            ////return t;
+            ////return new Tull(t);
+            ////return Ok();
 
-            //byte[] bytes = System.IO.File.ReadAllBytes(path);
-            return new Tull2(ret);
+            ////byte[] bytes = System.IO.File.ReadAllBytes(path);
+            //return new Tull2(ret);
 
 
 
