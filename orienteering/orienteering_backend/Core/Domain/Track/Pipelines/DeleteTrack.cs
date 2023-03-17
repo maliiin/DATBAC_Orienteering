@@ -32,8 +32,8 @@ public static class DeleteTrack
             if (track == null) { return false; }
              _db.Tracks.Remove(track);
             await _db.SaveChangesAsync(cancellationToken);
+            //fix- send ut event her sånn at checkpoints blir slettet og
             return true;
-
         }
     }
 
