@@ -62,7 +62,7 @@ public static class DeleteCheckpoint
             await _db.SaveChangesAsync(cancellationToken);
 
             //send event
-            await _mediator.Publish(new CheckpointDeleted(trackId));
+            await _mediator.Publish(new CheckpointDeleted(trackId, request.checkpointId));
 
             return true;
 

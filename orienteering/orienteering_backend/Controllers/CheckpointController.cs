@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
+using orienteering_backend.Core.Domain.Navigation.Dto;
 
 namespace orienteering_backend.Controllers
 {
@@ -9,14 +10,12 @@ namespace orienteering_backend.Controllers
     [Route("api/checkpoint")]
     public class CheckpointController : Controller
     {
-
         private readonly IMediator _mediator;
 
         public CheckpointController(IMediator Mediator)
         {
             _mediator = Mediator;
         }
-
 
         //create checkpoint
         //POST
