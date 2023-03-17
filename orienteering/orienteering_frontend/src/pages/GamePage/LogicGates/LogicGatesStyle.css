@@ -75,3 +75,15 @@
 div[class^='dropped'], div[class*=' dropped'] {
     background-color: yellow;
 }
+
+th, tr, td {
+    border: solid 1px gray;
+    font-size: 5vw;
+    padding: 1%;
+}
+
+table {
+    margin-top: 5%;
+    margin-left: 5%;
+    width: 30%;
+}

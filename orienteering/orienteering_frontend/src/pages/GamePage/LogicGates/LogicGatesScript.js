@@ -7,7 +7,16 @@ function setup() {
     document.getElementById("gamecontainer").style.width = window.screen.width + 'px';
     document.getElementById("task_background").style.width = window.screen.width + 'px';
     document.getElementById("task_background").style.position = 'relative';
-    document.getElementById("andgate").style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
+    var gateList = document.querySelectorAll(".logicgate");
+    for (let i = 0; i < gateList.length; i++) {
+        gateList[i].style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
+    }
+    
+    //gateList.foreach(gate => gate.style.width = Math.floor((window.screen.width / 100) * 15) + 'px')
+    //for (let i = 0; i < gateList.length; i++) {
+    //    gateList[i].style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
+    //}
+
 
     document.getElementById("dropzoneUpper").style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
     document.getElementById("dropzoneUpper").style.position = 'absolute';
@@ -18,10 +27,10 @@ function setup() {
     document.getElementById("dropzoneLower").style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
     document.getElementById("dropzoneLower").style.position = 'absolute';
     document.getElementById("dropzoneLower").style.left = Math.floor((window.screen.width / 100) * 60) + 'px';
-    document.getElementById("dropzoneLower").style.top = Math.floor(((document.getElementById("task_background").clientHeight) / 100) * 10) + 'px';
+    document.getElementById("dropzoneLower").style.top = Math.floor(((document.getElementById("task_background").clientHeight) / 100) * 20) + 'px';
     //document.getElementById("dropzoneLower").style.top = 20 + 'px';
 
-
+    
 
 }
 export default setup;

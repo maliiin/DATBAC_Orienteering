@@ -30,3 +30,5 @@ export default function QuizQuestionItem(props) {
     </>
 
 }
+
+// fix: denne og quizquestionalternative kan nok slettes siden de ikke blir brukt i quizpage
