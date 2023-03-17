@@ -30,7 +30,10 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                var navigation=await _db.Navigation.Where(n => n.ToCheckpoint == request.checkpointId).FirstOrDefaultAsync(cancellationToken);
+                var navigation=await _db.Navigation
+                    .Where(n => n.ToCheckpoint == request.checkpointId)
+                    .FirstOrDefaultAsync(cancellationToken);
+
                 if (navigation == null) { return false; }
 
                 //fix order virker ikke

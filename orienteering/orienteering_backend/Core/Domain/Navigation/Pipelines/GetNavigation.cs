@@ -33,19 +33,25 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
             public async Task<Image> Handle(Request request, CancellationToken cancellationToken)
             {
 
-                var navigation = await _db.Navigation
+                Navigation? navigation = await _db.Navigation
                     .Where(n => n.ToCheckpoint == request.checkpointId)
                     .Include(n=>n.Images)
                     .FirstOrDefaultAsync(cancellationToken);
 
-                //if (navigation == null) { return false; }
+                if (navigation == null) { throw new NullReferenceException("Navigation is null"); }
 
                 //fix dto
                 //NavigationDto navDto = new();
 
-                var testPath = navigation.Images[0].ImagePath;
-                Console.WriteLine(File.ReadAllBytesAsync(testPath, cancellationToken));
-                var img=Image.Load(testPath);
+                string testPath = navigation.Images[0].ImagePath;
+                Image img;
+                using(FileStream stream = System.IO.File.Open(testPath, FileMode.Open))
+                {
+                    Console.WriteLine(File.ReadAllBytesAsync(testPath, cancellationToken));
+                     img = Image.Load(testPath);
+
+                }
+
                 return img;
                 //return navigation;
 

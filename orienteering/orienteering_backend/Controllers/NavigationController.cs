@@ -57,28 +57,65 @@ namespace orienteering_backend.Controllers
             }
 
             await _mediator.Send(new CreateNavigationImage.Request(path, checkpointGuid));
-            
+
             return Ok();
         }
 
         [HttpGet("GetNavigation")]
         public async Task<Object> GetNavigation(string checkpointId)
         {
-            Guid checkpointGuid = new(checkpointId);
-            var res=await _mediator.Send(new GetNavigation.Request(checkpointGuid));
-            return new Tull(res);
+            //blob test
+            //https://stackoverflow.com/questions/73026716/fetch-image-from-c-sharp-web-api
+            //Guid checkpointGuid = new(checkpointId);
+            //var res=await _mediator.Send(new GetNavigation.Request(checkpointGuid));
+
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "08db26c5-298c-4398-847c-7d9ad2136e02", "a bilde.png");
+            byte[] ret;
+            //fix usikker på om fileshare
+            using (FileStream t = System.IO.File.Open(path, FileMode.Open, FileAccess.Read ,FileShare.Read))
+            {
+                ret= System.IO.File.ReadAllBytes(path);
+
+            }
+            //https://stackoverflow.com/questions/26741191/ioexception-the-process-cannot-access-the-file-file-path-because-it-is-being
+
+            //return t;
+            //return new Tull(t);
             //return Ok();
+
+            //byte[] bytes = System.IO.File.ReadAllBytes(path);
+            return new Tull2(ret);
+
+
+
         }
     }
 
 
-    public class Tull
+    //public class Tull
+    //{
+    //    public Tull(FileStream img)
+    //    {
+    //        ImageTest = img;
+    //    }
+
+    //    //public Image ImageTest { get; set; }
+    //    public FileStream ImageTest { get; set; }
+    //}
+
+
+
+    public class Tull2
     {
-        public Tull(Image img)
+        public Tull2(byte[] img)
         {
-            this.ImageTest = img;
+            ImageTest = img;
         }
 
-        public Image ImageTest { get; set; }
+        //public Image ImageTest { get; set; }
+        public byte[] ImageTest { get; set; }
     }
+
+
+
 }
