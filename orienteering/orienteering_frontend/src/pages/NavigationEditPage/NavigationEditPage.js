@@ -2,17 +2,38 @@ import { TextField, Button, Grid } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
 import AddImage  from "./Components/AddImage";
+import DisplayImagesAdmin from './Components/DisplayImagesAdmin';
 
 
 export default function NavigationEditPage() {
 
     const navigate = useNavigate();
     const params = useParams();
+    const [image, setImage] = useState("");
 
     const cId = params.checkpointId;
     console.log(cId);
 
     const [render, setRender] = useState(false);
+
+    const loadImages = async ()=>{
+        //var img = await fetch("/api/navigation/GetNavigation?checkpointId=" + props.checkpointId).then(r => r.json());
+
+        var img = await fetch("/api/navigation/GetNavigation?checkpointId=" + "fix denne tekst").then(r => r.json());
+        //setTestBlob(await img.blob());
+        //console.log(img);
+        //setTestImg(img.ImageTest);
+
+        console.log(img.imageTest)
+        console.log(img)
+
+
+
+        setImage(<DisplayImagesAdmin image={img.imageTest}></DisplayImagesAdmin>
+);
+
+
+    }
 
 
     useEffect(() => {
@@ -50,6 +71,7 @@ export default function NavigationEditPage() {
         };
 
         isAuthenticated().then(result => { setRender(result) });
+        loadImages();
 
     }, []);
 
@@ -66,6 +88,7 @@ export default function NavigationEditPage() {
 
                 <Grid item xs={6}>
                     <h4>Navigation overview </h4>
+                    {image }
                 </Grid>
 
                 <Grid item xs={6}>

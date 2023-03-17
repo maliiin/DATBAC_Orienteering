@@ -71,6 +71,7 @@ namespace orienteering_backend.Controllers
 
             string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "08db26c5-298c-4398-847c-7d9ad2136e02", "a bilde.png");
             byte[] ret;
+
             //fix usikker på om fileshare
             using (FileStream t = System.IO.File.Open(path, FileMode.Open, FileAccess.Read ,FileShare.Read))
             {
@@ -92,19 +93,10 @@ namespace orienteering_backend.Controllers
     }
 
 
-    //public class Tull
-    //{
-    //    public Tull(FileStream img)
-    //    {
-    //        ImageTest = img;
-    //    }
-
-    //    //public Image ImageTest { get; set; }
-    //    public FileStream ImageTest { get; set; }
-    //}
 
 
 
+    //fix slett
     public class Tull2
     {
         public Tull2(byte[] img)
