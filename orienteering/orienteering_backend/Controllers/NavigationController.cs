@@ -34,29 +34,14 @@ namespace orienteering_backend.Controllers
         {
 
             var checkpointId = HttpContext.Request.Form["checkpointId"];
+
             Guid checkpointGuid = new(checkpointId);
 
-            //string extension = Path.GetExtension(file.FileName);
-            //Console.WriteLine(file);
+          
 
-            //read the file
-            string localPath = $"{checkpointId}";
-            //wwwroot/checkpointId
-            string dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", localPath);
-            //create wwwroot/checkpointId dir if not exists
-            if (!Directory.Exists(dirPath))
-            {
-                Directory.CreateDirectory(dirPath);
-            }
+            
 
-            //place image in correct place
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", localPath, file.FileName);
-            using (var memoryStream = new FileStream(path, FileMode.Create))
-            {
-                file.CopyTo(memoryStream);
-            }
-
-            await _mediator.Send(new CreateNavigationImage.Request(path, checkpointGuid));
+            await _mediator.Send(new CreateNavigationImage.Request(checkpointGuid, file));
 
             return Ok();
         }
@@ -64,34 +49,11 @@ namespace orienteering_backend.Controllers
 
 
         [HttpGet("GetNavigation")]
-        public async Task<Object> GetNavigation(string checkpointId)
+        public async Task<NavigationDto> GetNavigation(string checkpointId)
         {
-            //blob test
-            //https://stackoverflow.com/questions/73026716/fetch-image-from-c-sharp-web-api
             Guid checkpointGuid = new(checkpointId);
-            var res=await _mediator.Send(new GetNavigation.Request(checkpointGuid));
-            return res;
-
-            //string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "08db26c5-298c-4398-847c-7d9ad2136e02", "a bilde.png");
-            //byte[] ret;
-
-            ////fix usikker på om fileshare
-            //using (FileStream t = System.IO.File.Open(path, FileMode.Open, FileAccess.Read ,FileShare.Read))
-            //{
-            //    ret= System.IO.File.ReadAllBytes(path);
-
-            //}
-            ////https://stackoverflow.com/questions/26741191/ioexception-the-process-cannot-access-the-file-file-path-because-it-is-being
-
-            ////return t;
-            ////return new Tull(t);
-            ////return Ok();
-
-            ////byte[] bytes = System.IO.File.ReadAllBytes(path);
-            //return new Tull2(ret);
-
-
-
+            NavigationDto navDto=await _mediator.Send(new GetNavigation.Request(checkpointGuid));
+            return navDto;
         }
     }
 
