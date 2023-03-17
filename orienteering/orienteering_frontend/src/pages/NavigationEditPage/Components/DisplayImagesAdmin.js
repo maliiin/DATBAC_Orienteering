@@ -13,7 +13,11 @@ export default function DisplayImagesAdmin(props) {
     return (
         <>
             <Box border="1px solid lightblue;" margin="2px;">
-                <img width={200} src={"data:image/" + props.imageInfo.fileType + ";base64," + props.imageInfo.imageData}></img>
+                <img
+                    width={200}
+                    src={"data:image/" + props.imageInfo.fileType + ";base64," + props.imageInfo.imageData}
+                >
+                </img>
 
                 <Button onClick={deleteImage}>Slett ikke implementert</Button>
 

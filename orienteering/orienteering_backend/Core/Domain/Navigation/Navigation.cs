@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 
 namespace orienteering_backend.Core.Domain.Navigation
 {
@@ -22,7 +23,7 @@ namespace orienteering_backend.Core.Domain.Navigation
 
         public void AddNavigationImage(NavigationImage image)
         {
-            Images.Add(image);  
+            Images.Add(image);
         }
 
         //public void RemoveNavigationImage(NavigationImage image)
