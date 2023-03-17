@@ -8,6 +8,10 @@
     height: 80px;
 }
 
+#dropzone1, #dropzone2 {
+    height: 100px;
+}
+
 .dropzone {
     background-color: #bfe4ff;
     border: dashed 4px transparent;
@@ -74,3 +78,6 @@
     font-size: 4vw;
 }
 
+div[class^='dropped'], div[class*=' dropped'] {
+    background-color: yellow;
+}

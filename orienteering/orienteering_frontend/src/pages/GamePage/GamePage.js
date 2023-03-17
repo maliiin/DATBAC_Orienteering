@@ -1,5 +1,5 @@
 import FallingBoxesGame from "./FallingBoxesGame";
-import ChemistryGame from "./ChemistryGame";
+import ChemistryGame from "./Chemistry/ChemistryGame";
 import { TextField, Button, Grid } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
