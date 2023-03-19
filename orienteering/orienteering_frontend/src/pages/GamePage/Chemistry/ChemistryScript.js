@@ -28,7 +28,7 @@ function initGame() {
 
 function checkAnswer() {
     if (goToNextBoard) {
-        // Prevents user from continuing checking board when no more lifes (hp) left or correctMix has been submitted
+        // Prevents user from checking board when no more lifes (hp) left or correctMix has been submitted
         return
     }
     const droppedSolutions = document.getElementsByClassName("dropped");

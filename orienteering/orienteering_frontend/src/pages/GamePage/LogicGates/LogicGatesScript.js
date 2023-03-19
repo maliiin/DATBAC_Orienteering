@@ -1,40 +1,85 @@
 var interact = require("interactjs");
+var GameInitialized = false;
+var score = 0;
+var hp = 3;
+var goToNextBoard = false;
+var lastBoard = false;
+var correctGates;
 
 
+function setup(inpCorrectGates, inpLastBoard = false) {
+    if (!GameInitialized) {
+        initDropzones();
+        document.getElementById("gamecontainer").style.width = window.screen.width + 'px';
+        document.getElementById("task_background").style.width = window.screen.width + 'px';
+        document.getElementById("task_background").style.position = 'relative';
 
-function setup() {
-    initDropzones();
-    document.getElementById("gamecontainer").style.width = window.screen.width + 'px';
-    document.getElementById("task_background").style.width = window.screen.width + 'px';
-    document.getElementById("task_background").style.position = 'relative';
+        document.getElementById("dropzoneUpper").style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
+        document.getElementById("dropzoneUpper").style.position = 'absolute';
+        document.getElementById("dropzoneUpper").style.left = Math.floor((window.screen.width / 100) * 20) + 'px';
+        document.getElementById("dropzoneUpper").style.top = Math.floor(((document.getElementById("task_background").clientHeight) / 100) * 10) + 'px';
+        //document.getElementById("dropzoneUpper").style.top = 5 + 'px';
+
+        document.getElementById("dropzoneLower").style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
+        document.getElementById("dropzoneLower").style.position = 'absolute';
+        document.getElementById("dropzoneLower").style.left = Math.floor((window.screen.width / 100) * 60) + 'px';
+        document.getElementById("dropzoneLower").style.top = Math.floor(((document.getElementById("task_background").clientHeight) / 100) * 20) + 'px';
+    //document.getElementById("dropzoneLower").style.top = 20 + 'px';
+        GameInitialized = true;
+    }
+    
+
     var gateList = document.querySelectorAll(".logicgate");
     for (let i = 0; i < gateList.length; i++) {
         gateList[i].style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
     }
-    
-    //gateList.foreach(gate => gate.style.width = Math.floor((window.screen.width / 100) * 15) + 'px')
-    //for (let i = 0; i < gateList.length; i++) {
-    //    gateList[i].style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
-    //}
 
-
-    document.getElementById("dropzoneUpper").style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
-    document.getElementById("dropzoneUpper").style.position = 'absolute';
-    document.getElementById("dropzoneUpper").style.left = Math.floor((window.screen.width / 100) * 20) + 'px';
-    document.getElementById("dropzoneUpper").style.top = Math.floor(((document.getElementById("task_background").clientHeight) / 100) * 10) + 'px';
-    //document.getElementById("dropzoneUpper").style.top = 5 + 'px';
-
-    document.getElementById("dropzoneLower").style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
-    document.getElementById("dropzoneLower").style.position = 'absolute';
-    document.getElementById("dropzoneLower").style.left = Math.floor((window.screen.width / 100) * 60) + 'px';
-    document.getElementById("dropzoneLower").style.top = Math.floor(((document.getElementById("task_background").clientHeight) / 100) * 20) + 'px';
-    //document.getElementById("dropzoneLower").style.top = 20 + 'px';
-
+    correctGates = inpCorrectGates;
+    lastBoard = inpLastBoard;
+    goToNextBoard = false;
+    document.getElementById("checkanswer").addEventListener("click", checkAnswer);
     
 
 }
 export default setup;
 
+function checkAnswer() {
+    if (goToNextBoard) {
+        // Prevents user from checking board when no more lifes (hp) left or correctMix has been submitted
+        return
+    }
+    const droppedGateUpper = document.getElementsByClassName("droppedUpper")[0];
+    const droppedGateLower = document.getElementsByClassName("droppedLower")[1];
+    var boardPassed = true;
+ 
+    if (droppedGateUpper.classList.contains(correctGates[0]) == false) {
+        boardPassed = false;
+    }
+    if (droppedGateLower.classList.contains(correctGates[1]) == false) {
+        boardPassed = false;
+    }
+    
+    if (boardPassed) {
+        document.getElementById("scorediv").textContent = `Correct gates`;
+    }
+    else {
+        hp -= 1;
+        document.getElementById("statusdiv").textContent = `Wrong gates.  HP left: ${hp}`;
+    }
+    if (boardPassed || hp < 1) {
+        goToNextBoard = true;
+        score += hp;
+        hp = 3;
+        document.getElementById("statusdiv").textContent = `Score: ${score}`;
+
+        if (lastBoard) {
+            document.getElementById("navigationButton").style.display = "block";
+        }
+        else {
+            document.getElementById("nextboardbtn").style.display = "inline-block";
+        }
+    }
+}
 
 
 /* The dragging code for '.draggable' from the demo above
@@ -103,10 +148,10 @@ function initDropzones() {
             // remove the drop feedback style
             event.target.classList.remove('drop-target')
             event.relatedTarget.classList.remove('can-drop')
-            event.relatedTarget.classList.remove('dropped1');
+            event.relatedTarget.classList.remove('droppedUpper');
         },
         ondrop: function (event) {
-            event.relatedTarget.classList.add('dropped1');
+            event.relatedTarget.classList.add('droppedUpper');
         }
     })
 
@@ -115,10 +160,10 @@ function initDropzones() {
             // remove the drop feedback style
             event.target.classList.remove('drop-target')
             event.relatedTarget.classList.remove('can-drop')
-            event.relatedTarget.classList.remove('dropped2');
+            event.relatedTarget.classList.remove('droppedLower');
         },
         ondrop: function (event) {
-            event.relatedTarget.classList.add('dropped2');
+            event.relatedTarget.classList.add('droppedLower');
         }
     })
 
@@ -130,7 +175,6 @@ function initDropzones() {
             inertia: true,
             modifiers: [
                 interact.modifiers.restrictRect({
-                    restriction: 'parent',
                     endOnly: true
                 })
             ],

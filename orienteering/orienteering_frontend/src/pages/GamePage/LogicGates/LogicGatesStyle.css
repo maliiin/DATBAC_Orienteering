@@ -38,6 +38,7 @@
     touch-action: none;
     transform: translate(0px, 0px);
     transition: background-color 0.3s;
+    margin-left: 2%;
 }
 
     .drag-drop.can-drop {
@@ -68,8 +69,10 @@
     margin: 4%;
 }
 
-.solutiontext {
+.readabletext {
     font-size: 4vw;
+    margin: 3%;
+
 }
 
 div[class^='dropped'], div[class*=' dropped'] {
@@ -86,4 +89,10 @@ table {
     margin-top: 5%;
     margin-left: 5%;
     width: 30%;
+}
+
+#gateContainer {
+    border: solid gray 3px;
+    margin-left: 5%;
+    margin-right: 5%;
 }
