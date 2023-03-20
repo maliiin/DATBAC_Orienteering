@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Navigation.Dto;
 using orienteering_backend.Core.Domain.Navigation.Pipelines;
 
@@ -40,6 +41,17 @@ namespace orienteering_backend.Controllers
             Guid checkpointGuid = new(checkpointId);
             NavigationDto navDto=await _mediator.Send(new GetNavigation.Request(checkpointGuid));
             return navDto;
+        }
+
+        [HttpGet("GetNextNavigation")]
+        public async Task<NavigationDto> GetNavigationForNextCheckpoint(string currentCheckpointId)
+        {
+            Guid currentCheckpointGuid = new Guid(currentCheckpointId);
+            var nextCheckpointId = await _mediator.Send(new GetNextCheckpoint.Request(currentCheckpointGuid));
+            var navDto = await _mediator.Send(new GetNavigation.Request(nextCheckpointId));
+
+            return navDto;
+
         }
     }
 

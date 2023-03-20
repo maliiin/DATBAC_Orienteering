@@ -15,9 +15,6 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
         public record Request(
             Guid checkpointId) : IRequest<NavigationDto>;
 
-
-        //fix ikke i bruk?
-
         public class Handler : IRequestHandler<Request, NavigationDto>
         {
             private readonly OrienteeringContext _db;
@@ -41,8 +38,6 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
 
                 if (navigation == null) { throw new NullReferenceException("Navigation is null"); }
 
-                //fix dto
-                //NavigationDto navDto = new();
                 List<NavigationImageDto> imgDtoList = new();
                 foreach (NavigationImage navImage in navigation.Images)
                 {
@@ -68,31 +63,6 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                 var navDto = _mapper.Map<Navigation, NavigationDto>(navigation);
                 navDto.Images= imgDtoList;
                 return navDto;
-
-
-                //string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "08db26c5-298c-4398-847c-7d9ad2136e02", "a bilde.png");
-                //byte[] ret;
-
-                ////fix usikker på om fileshare
-                //using (FileStream t = System.IO.File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-                //{
-                //    ret = System.IO.File.ReadAllBytes(path);
-
-                //}
-
-                //string testPath = navigation.Images[0].ImagePath;
-                //Image img;
-                //using (FileStream stream = System.IO.File.Open(testPath, FileMode.Open))
-                //{
-                //    Console.WriteLine(File.ReadAllBytesAsync(testPath, cancellationToken));
-                //    img = Image.Load(testPath);
-
-                //}
-
-                //return img;
-                ////return navigation;
-
-
 
             }
         }
