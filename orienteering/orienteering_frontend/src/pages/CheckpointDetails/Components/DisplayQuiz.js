@@ -1,4 +1,3 @@
-import useAuthentication from "../../hooks/useAuthentication";
 import { TextField, Button } from '@mui/material';
 import React, { useState } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';

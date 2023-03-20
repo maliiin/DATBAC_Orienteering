@@ -1,8 +1,8 @@
 import { Button } from '@mui/material';
 import { useState, useEffect } from "react";
-import TrackInfo from "./TrackInfo";
+import TrackInfo from "./Components/TrackInfo";
 import React from "react";
-import CreateTrackForm from "./CreateTrackForm";
+import CreateTrackForm from "./Components/CreateTrackForm";
 import { useNavigate } from 'react-router-dom';
 import { redirect } from "react-router-dom";
 import Grid from '@mui/material/Grid';

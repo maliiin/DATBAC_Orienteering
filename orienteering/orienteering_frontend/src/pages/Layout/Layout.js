@@ -36,13 +36,12 @@ function Layout() {
 
 
 
-                    <Link to="/" style={linkStyle} >Home</Link>
+                    <Link to="/" style={linkStyle}>Vis loyper</Link>
 
                     <Link to="/login" style={linkStyle}>Log in</Link>
 
                     <Link to="/registration" style={linkStyle}>Registrer deg</Link>
 
-                    <Link to="/trackoverview" style={linkStyle}>Vis loyper</Link>
 
 
 
