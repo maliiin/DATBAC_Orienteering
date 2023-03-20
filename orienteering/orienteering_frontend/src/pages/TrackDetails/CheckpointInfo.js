@@ -21,6 +21,15 @@ export default function CheckpointInfo(props) {
 
     }
 
+    const showNavigation = (event) => {
+        //fix- skal det være track/id/checkpoint/id??
+
+        const url = "/navigationEdit/" + props.checkpointInfo.id;
+        console.log(url);
+        navigate(url);
+
+    }
+
     const deleteCheckpoint = async () => {
         const url = '/api/checkpoint/removeCheckpoint?';
         const parameter = 'checkpointId=' + props.checkpointInfo.id;
@@ -101,6 +110,9 @@ export default function CheckpointInfo(props) {
             <Button onClick={showCheckpoint}>vis detaljer</Button>
 
             <Button onClick={deleteCheckpoint}>Slett post</Button>
+
+            <Button onClick={showNavigation}>Show navigation</Button>
+
 
         </Box>
 

@@ -42,6 +42,8 @@ public static class GenerateQR
                 }
             }
 
+
+
             string QrLink = "https://quickchart.io/qr?text=";
             QrLink = QrLink + url;
             using (WebClient webClient = new WebClient())

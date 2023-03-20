@@ -9,12 +9,12 @@ root.render(
     //fix, ta tilbake strict 
     //spillet laster inn 2 ganger ved strict mode
 
-    //<React.StrictMode>
-    //  <App />
-    //</React.StrictMode>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
 
 
-    <App />
+    //<App />
 );
 
 // If you want to start measuring performance in your app, pass a function
