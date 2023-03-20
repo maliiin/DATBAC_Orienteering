@@ -34,11 +34,11 @@ public static class GenerateQR
             {
                 if (checkpoint.QuizId == null)
                 {
-                    url += "game/" + checkpoint.GameId.ToString();
+                    url += "game/" + request.CheckpointId.ToString();
                 }
                 else
                 {
-                    url += "quiz/" + checkpoint.QuizId.ToString();
+                    url += "quiz/" + request.CheckpointId.ToString();
                 }
             }
 
