@@ -1,7 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout/Layout";
-import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import CheckpointDetails from "./pages/CheckpointDetails/CheckpointDetails";
 import Registration from "./pages/Registration/Registration";
@@ -11,7 +10,6 @@ import TrackOverview from "./pages/TrackOverview/TrackOverview";
 import TrackDetails from "./pages/TrackDetails/TrackDetails";
 import QuizPage from "./pages/QuizPage/QuizPage";
 import QRCodePage from "./pages/QrCodePage/QRCodePage";
-import CheckpointRedirection from "./pages/CheckpointRedirection";
 import GamePage from "./pages/GamePage/GamePage";
 
 import ChemistryGame from "./pages/GamePage/Chemistry/ChemistryGame";
@@ -41,25 +39,22 @@ export default function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />}>
-                    <Route index element={<Home />} />
-                    <Route path="checkpointdetails/:checkpointId" element={<CheckpointDetails />} />
-                    <Route path="login" element={<Login />} />
-                    <Route path="*" element={<NoPage />} />
-                    <Route path="registration" element={<Registration />} />
-                    <Route path="trackoverview" element={<TrackOverview />}  />
+                    <Route index element={<TrackOverview />} />
                     <Route path="track/:trackId" element={<TrackDetails />} />
-                    <Route path="qrcodepage" element={<QRCodePage />} />
-                    <Route path="unauthorized" element={<Unauthorized />} />
+                    <Route path="checkpointdetails/:checkpointId" element={<CheckpointDetails />} />
                     <Route path="navigationEdit/:checkpointId" element={<NavigationEditPage />} />
-                    <Route path="checkpoint/:checkpointId" element={<CheckpointRedirection />} />
+                    <Route path="qrcodepage" element={<QRCodePage />} />
+
+                    <Route path="login" element={<Login />} />
+                    <Route path="registration" element={<Registration />} />
+
+                    <Route path="*" element={<NoPage />} />
+                    <Route path="unauthorized" element={<Unauthorized />} />
                 </Route>
 
                 <Route path="checkpoint/quiz/:checkpointId" element={<QuizPage />} />
                 <Route path="checkpoint/game/:checkpointId" element={<GamePage />} />
-
-                <Route path="ChemistryGame" element={<ChemistryGame />} />
                 <Route path="checkpointnavigation/:checkpointId" element={<CheckpointNavigation />} />
-                <Route path="LogicGatesGame" element={<LogicGatesGame />} />
 
             </Routes>
             </BrowserRouter>
