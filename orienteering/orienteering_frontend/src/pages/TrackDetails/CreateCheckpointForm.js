@@ -135,15 +135,15 @@ export default function CreateCheckpointForm(props) {
                     >
 
                         <MenuItem value={1}>
-                            Spill11
+                            FallingBoxes
                         </MenuItem>
 
                         <MenuItem value={2} >
-                            Spill2
+                            Chemistry
                         </MenuItem>
 
                         <MenuItem value={3} >
-                            Spill3
+                            LogicGates
                         </MenuItem>
 
                     </Select>

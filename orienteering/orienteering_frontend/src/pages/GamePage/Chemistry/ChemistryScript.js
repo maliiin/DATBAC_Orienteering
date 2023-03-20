@@ -28,7 +28,7 @@ function initGame() {
 
 function checkAnswer() {
     if (goToNextBoard) {
-        // Prevents user from continuing checking board when no more lifes (hp) left or correctMix has been submitted
+        // Prevents user from checking board when no more lifes (hp) left or correctMix has been submitted
         return
     }
     const droppedSolutions = document.getElementsByClassName("dropped");
@@ -47,15 +47,17 @@ function checkAnswer() {
     }
     else {
         hp -= 1;
-        document.getElementById("statusdiv").textContent = `Wrong solutionmix.  HP left: ${hp}`;
+        document.getElementById("statusdiv").textContent = `Wrong solutionmix`;
+        document.getElementById("scorediv").textContent = `HP left: ${hp}`;
     }
     if (boardPassed || hp < 1) {
         goToNextBoard = true;
         score += hp;
         hp = 3;
-        document.getElementById("statusdiv").textContent = `Score: ${score}`;
+        document.getElementById("scorediv").textContent = `Score: ${score}`;
 
         if (lastBoard) {
+            document.getElementById("statusdiv").textContent = `Game finished`;
             document.getElementById("navigationButton").style.display = "block";
         }
         else {

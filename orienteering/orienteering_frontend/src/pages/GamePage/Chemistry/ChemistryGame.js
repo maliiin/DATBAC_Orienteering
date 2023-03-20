@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import setup from './ChemistryScript';
 import { Button} from '@mui/material';
-import "./style.css";
+import "./ChemistryStyle.css";
 import ChemistryData from "./ChemistryData";
 
 var nextBoardIndex = 0;
@@ -30,7 +30,7 @@ function ChemistryGame() {
 
     function createSolutions() {
         var solutions = (solutionList.map((solution, index) =>
-            <div key={solution + "-" + index} className="drag-drop">
+            <div key={solution + "-" + index + nextBoardIndex} className="drag-drop">
                 <img src={require("./chemistryGlass.png")} ></img>
                 <div className="solutiontext">{solution}</div>
             </div>
@@ -80,7 +80,7 @@ function ChemistryGame() {
 
     function showGameDescription() {
         setGameDescription(<>
-            <div style={{ margin: "5%" }}>
+            <div>
                 <h3>Chemistry game</h3>
                 <p >
                     Drag the solutions to the drop area which are needed to create the solution provided in the task.
@@ -89,14 +89,11 @@ function ChemistryGame() {
                     <br></br>
                     When checking answer and the correct solutions are in the drop area, the remaining hp are added to your score. 
                 </p>
-                <p>Click start game when you are ready</p>
                 <br></br>
                 <br></br>
 
                 <Button
-                    style={{                        
-                        backgroundColor: "white",
-                    }}
+                    style={{ fontSize: '4vw' }}
 
                     onClick={hideGameDescription}
                 >
@@ -106,11 +103,12 @@ function ChemistryGame() {
         </>
         )
         document.getElementById("gamecontainer").style.display = "none";
+        document.getElementById("descriptionContainer").style.display = "block";
     }
 
     function hideGameDescription() {
-        setGameDescription("");
         document.getElementById("gamecontainer").style.display = "block";
+        document.getElementById("descriptionContainer").style.display = "none";
         nextBoard();
     }
 
@@ -142,9 +140,7 @@ return (
             <div id="scorediv"></div>
         </div>
 
-        
-
-        {gameDescription}
+        <div id="descriptionContainer" className="readabletext">{gameDescription}</div>
     </>);
 
 }
