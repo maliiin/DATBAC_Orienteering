@@ -61,13 +61,14 @@ export default function CheckpointNavigation() {
 
 
         <Grid container spacing={2}
+            justifyContent="space-around"
             style={{
                 bottom: "10px",
                 position: "absolute"
             }}
 
         >
-                <Grid item xs={6}>
+                <Grid item xs={2}>
                     <Button
                         onClick={prevImage}
                         style={{
@@ -78,7 +79,7 @@ export default function CheckpointNavigation() {
                         forrige
                     </Button>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={2}>
                     <Button
                         onClick={nextImage}
                         style={{
@@ -92,8 +93,10 @@ export default function CheckpointNavigation() {
 
 
 
-            </Grid>
-
+        </Grid>
+        <br></br>
+        <input accept='image/*' id='icon-button-file' type='file' capture='environment'/>
+        <input type="file" id="cap" name="personalPhoto" accept="image/*" capture="camera" id="camera"/>
 
 
     </>
