@@ -4,7 +4,7 @@ var score = 0;
 var hp = 3;
 var goToNextBoard = false;
 var lastBoard = false;
-var correctGates;
+var correctGates = [];
 
 
 function setup(inpCorrectGates, inpLastBoard = false) {
@@ -49,8 +49,13 @@ function checkAnswer() {
         return
     }
     const droppedGateUpper = document.getElementsByClassName("droppedUpper")[0];
-    const droppedGateLower = document.getElementsByClassName("droppedLower")[1];
+    const droppedGateLower = document.getElementsByClassName("droppedLower")[0];
     var boardPassed = true;
+
+    if (droppedGateUpper == undefined || droppedGateLower == undefined) {
+        document.getElementById("statusdiv").textContent = `Some droparea missing a logic gate`;
+        return 
+    }
  
     if (droppedGateUpper.classList.contains(correctGates[0]) == false) {
         boardPassed = false;
@@ -175,6 +180,7 @@ function initDropzones() {
             inertia: true,
             modifiers: [
                 interact.modifiers.restrictRect({
+                    restriction: 'parent',
                     endOnly: true
                 })
             ],

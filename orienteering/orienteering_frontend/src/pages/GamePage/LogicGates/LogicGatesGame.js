@@ -15,7 +15,6 @@ export default function LogicGatesGame() {
 
     var gates = ["AndGate", "NandGate", "Inverter", "OrGate"];
     var nextBoardIndex = 0;
-    var correctGates;
 
     useEffect(() => {
         
@@ -28,7 +27,7 @@ export default function LogicGatesGame() {
     function createGates() {
         setGateDivs(
             gates.map((gate, index) =>
-                <img key={gate + "-" + index} className={'logicgate' + ' ' + gate} src={require(`./${gate}.png`)}></img>
+                <img key={gate + "-" + index + nextBoardIndex} className={'logicgate' + ' ' + gate} src={require(`./${gate}.png`)}></img>
             ));
 
     }
@@ -63,11 +62,17 @@ export default function LogicGatesGame() {
         setTableBody(tbody);
     }
 
+    function clearGateDivs() {
+        setGateDivs("");
+    }
+
     function nextBoard() {
         document.getElementById("nextboardbtn").style.display = "none";
+        clearGateDivs();
         createGates();
         createFunctionTable();
-        setup();
+        const correctGates = LogicGatesData[nextBoardIndex].gates;
+        setup(correctGates);
         nextBoardIndex += 1;
     }
 
@@ -101,6 +106,7 @@ export default function LogicGatesGame() {
     function hideGameDescription() {
         document.getElementById("gamecontainer").style.display = "block";
         document.getElementById("descriptionContainer").style.display = "none";
+        nextBoard();
     }
 
     useEffect(() => {
@@ -118,7 +124,7 @@ export default function LogicGatesGame() {
 
             <div id="dropzoneLower" className={'dropzone' + ' ' + 'dropzoneLower'}></div>
 
-            <div id="gateContainer">{gateDivs}</div>
+            {gateDivs}
 
             <table>
                 <thead>

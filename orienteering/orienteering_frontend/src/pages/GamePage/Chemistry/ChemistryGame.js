@@ -30,7 +30,7 @@ function ChemistryGame() {
 
     function createSolutions() {
         var solutions = (solutionList.map((solution, index) =>
-            <div key={solution + "-" + index} className="drag-drop">
+            <div key={solution + "-" + index + nextBoardIndex} className="drag-drop">
                 <img src={require("./chemistryGlass.png")} ></img>
                 <div className="solutiontext">{solution}</div>
             </div>
