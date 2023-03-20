@@ -1,4 +1,4 @@
-import FallingBoxesGame from "./FallingBoxesGame";
+import FallingBoxesGame from "./FallingBoxes/FallingBoxesGame";
 import ChemistryGame from "./Chemistry/ChemistryGame";
 import { TextField, Button, Grid } from '@mui/material';
 import React, { useState, useEffect } from "react";

@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
-import QuizQuestionItem from './QuizQuestionItem';
+import QuizQuestionItem from './Components/QuizQuestionItem';
 export default function QuizPage() {
     
     const navigate = useNavigate();
