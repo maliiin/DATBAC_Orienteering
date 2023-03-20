@@ -35,6 +35,7 @@ public static class DeleteCheckpoint
         public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
         {
             //fix returtype
+
             //get checkpoint to delete
             var checkpoint=await _db.Checkpoints
                 .Where(ch => ch.Id == request.checkpointId)
