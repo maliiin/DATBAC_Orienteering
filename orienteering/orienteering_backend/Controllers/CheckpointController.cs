@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Navigation.Dto;
@@ -91,6 +92,8 @@ namespace orienteering_backend.Controllers
             }
 
         }
+
+
 
 
     }

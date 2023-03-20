@@ -11,9 +11,7 @@ namespace orienteering_backend.Core.Domain.Track
 
         public Guid Id { get; protected set; }
         public Guid? UserId { get; set; }
-
         public string? Name { get; set; }
-
         public int NumCheckpoints { get; set; } = 0;
 
 
