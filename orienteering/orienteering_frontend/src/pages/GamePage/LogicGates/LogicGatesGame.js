@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { TextField, Button, Grid } from '@mui/material';
 import "./LogicGatesStyle.css";
 import LogicGatesData from "./LogicGatesData.js"
+import gateSizeUpdate from "./gateSizeUpdate.js"
 
 
 
@@ -72,7 +73,12 @@ export default function LogicGatesGame() {
         createGates();
         createFunctionTable();
         const correctGates = LogicGatesData[nextBoardIndex].gates;
-        setup(correctGates);
+        if (LogicGatesData.length == nextBoardIndex + 1) {
+            setup(correctGates, true);
+        }
+        else {
+            setup(correctGates);
+        }
         nextBoardIndex += 1;
     }
 
@@ -109,10 +115,21 @@ export default function LogicGatesGame() {
         nextBoard();
     }
 
+    function navigateToCheckpoint() {
+        console.log("gamefinished");
+        //fix: implement navigate to next checkpoint
+    }
+
     useEffect(() => {
         showGameDescription();
         document.getElementById("nextboardbtn").addEventListener("click", nextBoard);
     }, []);
+
+    useEffect(() => {
+        if (gateDivs != undefined || gateDivs != "") {
+            gateSizeUpdate();
+        }
+    }, [gateDivs]);
 
     return (<>
 

@@ -3,6 +3,7 @@ import ChemistryGame from "./Chemistry/ChemistryGame";
 import { TextField, Button, Grid } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
+import LogicGatesGame from "./LogicGates/LogicGatesGame";
 
 
 export default function GamePage() {
@@ -25,8 +26,11 @@ export default function GamePage() {
         if (checkpointDto.gameId == 1) {
             setChosenGame(<FallingBoxesGame></FallingBoxesGame>);
         }
-        else {
+        else if (checkpointDto.gameId == 2) {
             setChosenGame(<ChemistryGame></ChemistryGame>);
+        }
+        else {
+            setChosenGame(<LogicGatesGame></LogicGatesGame>);
         }
         
     }

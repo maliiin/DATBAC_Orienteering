@@ -25,19 +25,16 @@ function setup(inpCorrectGates, inpLastBoard = false) {
         document.getElementById("dropzoneLower").style.left = Math.floor((window.screen.width / 100) * 60) + 'px';
         document.getElementById("dropzoneLower").style.top = Math.floor(((document.getElementById("task_background").clientHeight) / 100) * 20) + 'px';
     //document.getElementById("dropzoneLower").style.top = 20 + 'px';
+        document.getElementById("checkanswer").addEventListener("click", checkAnswer);
         GameInitialized = true;
     }
     
 
-    var gateList = document.querySelectorAll(".logicgate");
-    for (let i = 0; i < gateList.length; i++) {
-        gateList[i].style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
-    }
 
     correctGates = inpCorrectGates;
     lastBoard = inpLastBoard;
     goToNextBoard = false;
-    document.getElementById("checkanswer").addEventListener("click", checkAnswer);
+    
     
 
 }
@@ -65,19 +62,21 @@ function checkAnswer() {
     }
     
     if (boardPassed) {
-        document.getElementById("scorediv").textContent = `Correct gates`;
+        document.getElementById("statusdiv").textContent = `Correct gates`;
     }
     else {
         hp -= 1;
-        document.getElementById("statusdiv").textContent = `Wrong gates.  HP left: ${hp}`;
+        document.getElementById("statusdiv").textContent = `Wrong gates`;
+        document.getElementById("scorediv").textContent = `HP left: ${hp}`;
     }
     if (boardPassed || hp < 1) {
         goToNextBoard = true;
         score += hp;
         hp = 3;
-        document.getElementById("statusdiv").textContent = `Score: ${score}`;
+        document.getElementById("scorediv").textContent = `Score: ${score}`;
 
         if (lastBoard) {
+            document.getElementById("statusdiv").textContent = `Game finished`;
             document.getElementById("navigationButton").style.display = "block";
         }
         else {
