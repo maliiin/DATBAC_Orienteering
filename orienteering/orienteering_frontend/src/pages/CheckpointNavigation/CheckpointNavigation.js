@@ -54,20 +54,19 @@ export default function CheckpointNavigation() {
 
     return (<>
 
-        <Grid container direction="column">
-            <Grid
-                item sx={12}
-                style={{
-                    outerHeight:"auto"
-                    } }
-            >
+   
                 {imagesList[current]}
 
-            </Grid>
 
 
 
-            <Grid container item spacing={2}>
+        <Grid container spacing={2}
+            style={{
+                bottom: "10px",
+                position: "absolute"
+            }}
+
+        >
                 <Grid item xs={6}>
                     <Button
                         onClick={prevImage}
@@ -94,7 +93,6 @@ export default function CheckpointNavigation() {
 
 
             </Grid>
-        </Grid>
 
 
 
