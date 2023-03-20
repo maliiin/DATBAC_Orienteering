@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
-import CheckpointInfo from './CheckpointInfo';
-import CreateCheckpointForm from './CreateCheckpointForm';
+import CheckpointInfo from './Components/CheckpointInfo';
+import CreateCheckpointForm from './Components/CreateCheckpointForm';
 import Grid from '@mui/material/Grid';
 
 //all details of single track, list of the checkpoints

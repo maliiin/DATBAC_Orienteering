@@ -13,8 +13,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\components\" />
-    <Folder Include="src\pages\CheckpointDetails\" />
-    <Folder Include="src\pages\Game\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptConfiguration Remove="src\pages\NewFolder1\**" />
@@ -27,5 +25,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="src\pages\NewFolder2\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="src\pages\Game\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\pages\Game\**" />
   </ItemGroup>
 </Project>

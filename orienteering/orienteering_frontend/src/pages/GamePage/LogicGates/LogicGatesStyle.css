@@ -1,16 +1,5 @@
 /*Kilder: https://interactjs.io/ (09.03.2022) */
 
-#outer-dropzone {
-    height: 30vh;
-}
-
-#inner-dropzone {
-    height: 80px;
-}
-
-#dropzoneUpper, #dropzoneLower {
-    height: 100px;
-}
 
 .dropzone {
     border: dashed 4px transparent;
