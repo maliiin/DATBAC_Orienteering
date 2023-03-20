@@ -15,12 +15,14 @@ function setup(inpCorrectGates, inpLastBoard = false) {
         document.getElementById("task_background").style.position = 'relative';
 
         document.getElementById("dropzoneUpper").style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
+        document.getElementById("dropzoneUpper").style.height = Math.floor((window.screen.width / 100) * 10) + 'px';
         document.getElementById("dropzoneUpper").style.position = 'absolute';
         document.getElementById("dropzoneUpper").style.left = Math.floor((window.screen.width / 100) * 20) + 'px';
         document.getElementById("dropzoneUpper").style.top = Math.floor(((document.getElementById("task_background").clientHeight) / 100) * 10) + 'px';
         //document.getElementById("dropzoneUpper").style.top = 5 + 'px';
 
         document.getElementById("dropzoneLower").style.width = Math.floor((window.screen.width / 100) * 15) + 'px';
+        document.getElementById("dropzoneLower").style.height = Math.floor((window.screen.width / 100) * 10) + 'px';
         document.getElementById("dropzoneLower").style.position = 'absolute';
         document.getElementById("dropzoneLower").style.left = Math.floor((window.screen.width / 100) * 60) + 'px';
         document.getElementById("dropzoneLower").style.top = Math.floor(((document.getElementById("task_background").clientHeight) / 100) * 20) + 'px';

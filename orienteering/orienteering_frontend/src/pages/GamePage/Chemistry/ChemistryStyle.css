@@ -4,13 +4,7 @@
     height: 30vh;
 }
 
-#inner-dropzone {
-    height: 80px;
-}
 
-#dropzone1, #dropzone2 {
-    height: 100px;
-}
 
 .dropzone {
     background-color: #bfe4ff;
@@ -36,8 +30,8 @@
     display: inline-block;
     min-width: 15%;
     max-width: 40%;
-    padding: 2em 0.5em;
-    margin: 2rem 0 0 2rem;
+    padding: 1em 0.5em;
+    margin: 2%;
     color: #fff;
     background-color: #29e;
     border: solid 2px #fff;
@@ -80,4 +74,12 @@
 
 div[class^='dropped'], div[class*=' dropped'] {
     background-color: yellow;
+}
+
+.chemistryGlassImage {
+    width: 100%;
+    height: 50px;
+    background-image: url(./chemistryGlass.png);
+    background-size: contain;
+    background-repeat: no-repeat;
 }

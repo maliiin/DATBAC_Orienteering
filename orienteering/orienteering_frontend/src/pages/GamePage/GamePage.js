@@ -36,7 +36,7 @@ export default function GamePage() {
     }
 
     function navigateToCheckpoint() {
-        console.log("naviger");
+        navigate("/checkpointnavigation/" + params.checkpointId);
     }
 
     
