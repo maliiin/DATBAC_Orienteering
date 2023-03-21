@@ -1,17 +1,14 @@
-﻿using MediatR;
+﻿
+using MediatR;
 using System;
 using orienteering_backend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint.Events;
 
-namespace orienteering_backend.Core.Domain.Track.Handlers;
+namespace orienteering_backend.Core.Domain.Quiz.Handlers;
 
 
-//oppgave- kall removed checkpoint på track så telleren minker
-
-//fix-heter 1 fordi den andre kanskje ikke trengs?
-//hvis ikke kan de slås sammen??
 public class CheckpointDeletedHandler : INotificationHandler<CheckpointDeleted>
 {
     private readonly OrienteeringContext _db;
@@ -22,28 +19,22 @@ public class CheckpointDeletedHandler : INotificationHandler<CheckpointDeleted>
         _mediator = mediator;
 
     }
+
+    //delete quiz because related checkpoint is deleted
     public async Task Handle(CheckpointDeleted notification, CancellationToken cancellationToken)
     {
-        //get track from db
-        var track = await _db.Tracks
-            .Where(t => t.Id == notification.TrackId)
+        var quiz = await _db.Quiz
+            .Where(q => q.Id == notification.QuizId)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (track != null) {
 
-            //checkpoint was added earlier
-            track.RemovedCheckpoint();
+        //if quiz is null, the checkpoint did not have quiz
+        //else delete the quiz
+        if (quiz != null)
+        {
+            _db.Quiz.Remove(quiz);  
             await _db.SaveChangesAsync(cancellationToken);
         }
-        //if track is null this event comes from track deleted, and nothing happens.
-
-
-
-        //fix-sjekk om rett- her er det ingen error handling. (og skal ikke være det heller?)
-        //dersom track er null kan det være fordi eventet sendes ut når track slettes
-
-
-
 
     }
 }

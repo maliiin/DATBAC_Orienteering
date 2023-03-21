@@ -29,7 +29,7 @@ public class CheckpointCreatedHandler : INotificationHandler<QuizCheckpointCreat
         _db.Quiz.Add(Quiz);
         await _db.SaveChangesAsync(cancellationToken);
 
-        //fix-brudd på ddd? ikke hent ut checkpoint fra db når du er i annet domain
+        //fix!!!-brudd på ddd? ikke hent ut checkpoint fra db når du er i annet domain
         //checkpoint is created
         var checkpoint = await _db.Checkpoints.SingleOrDefaultAsync(c => c.Id == notification.CheckpointId);
         if (checkpoint == null)

@@ -75,6 +75,7 @@ namespace orienteering_backend.Controllers
             Guid trackGuid = new Guid(trackId);
             bool response = await _mediator.Send(new DeleteTrack.Request(trackGuid));
             if (response) { return Ok(); }
+            //fix error her!!
             else { return Unauthorized(); }
 
         }

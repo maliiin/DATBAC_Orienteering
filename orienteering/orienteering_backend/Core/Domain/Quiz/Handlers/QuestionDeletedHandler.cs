@@ -21,6 +21,8 @@ public class QuestionDeletedHandler : INotificationHandler<QuizQuestionDeleted>
     }
     public async Task Handle(QuizQuestionDeleted notification, CancellationToken cancellationToken)
     {
+        //fix-dette bør kanskje være pipeline heller? så slipper vi at event og handler er i samme domain??
+
         Console.WriteLine("sletter question\n\n\n\n\n");
        
 
