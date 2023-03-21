@@ -7,6 +7,7 @@ import DisplayImagesUser from './Components/DisplayImagesUser';
 export default function CheckpointNavigation() {
     //kan være greit å få inn checkpointid slik at det senere blir mulig å registrere at noen har vært på checkpointet, lagre score osv...
     const [current, setCurrent] = useState(0);
+    const [trackFinished, setTrackFinished] = useState(false);
 
     const nextImage = () => {
         setCurrent(current + 1)
@@ -29,6 +30,16 @@ export default function CheckpointNavigation() {
         if (res.ok) {
             //fix-dersom endre rekkefølge på objekter, enten endre rekkefølge her eller display med rett order
             const nav = await res.json();
+            const sessionRes = await fetch("/api/session/checkTrackFinished?toCheckpoint=" + nav.toCheckpoint);
+            if (sessionRes.ok) {
+                if (sessionRes.json.TimeUsed == null) {
+                    setTrackFinished(true);
+                }
+            }
+            else {
+                //naviger til errorside
+            }
+
             setImagesList(nav.images.map((imageInfo, index) =>
                 <>
                     <DisplayImagesUser
@@ -45,29 +56,33 @@ export default function CheckpointNavigation() {
         //fix-naviger til errorside hvis ikke?
     }
 
+    function checkFinished() {
+
+    }
+
     useEffect(() => {
-        console.log(33)
+        checkFinished();
         getNavigation();
     }, []);
 
     //<DisplayImagesUser imageInfo={imagesList[current]}></DisplayImagesUser>
-
-    return (<>
-
-   
-                {imagesList[current]}
+    if (!trackFinished) {
+        return (<>
 
 
+            {imagesList[current]}
 
 
-        <Grid container spacing={2}
-            justifyContent="space-around"
-            style={{
-                bottom: "10px",
-                position: "absolute"
-            }}
 
-        >
+
+            <Grid container spacing={2}
+                justifyContent="space-around"
+                style={{
+                    bottom: "10px",
+                    position: "absolute"
+                }}
+
+            >
                 <Grid item xs={5}>
                     <Button
                         onClick={prevImage}
@@ -91,11 +106,21 @@ export default function CheckpointNavigation() {
                     </Button>
                 </Grid>
 
-        </Grid>
-        <br></br>
+            </Grid>
+            <br></br>
 
 
-    </>
-    );
+        </>
+        );
+    }
+
+    if (trackFinished) {
+        return (
+            <>
+                <p>Track finished</p>
+            </>
+            );
+    }
+    
 
 }
