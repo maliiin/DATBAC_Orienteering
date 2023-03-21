@@ -37,13 +37,15 @@ public static class DeleteCheckpoint
             //fix returtype
 
             //get checkpoint to delete
-            var checkpoint=await _db.Checkpoints
+            var checkpoint = await _db.Checkpoints
                 .Where(ch => ch.Id == request.checkpointId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (checkpoint==null) {
+            if (checkpoint == null)
+            {
                 Console.WriteLine("finner ikke\n\n\n\n");
-                return false; }
+                return false;
+            }
 
             var trackId = checkpoint.TrackId;
 
@@ -51,19 +53,20 @@ public static class DeleteCheckpoint
             _db.Checkpoints.Remove(checkpoint);
 
             //get all checkpoints where order was higher than the deleted one
-            var checkpointList =await _db.Checkpoints
-                .Where(ch => ch.Order>checkpoint.Order)
+            var checkpointList = await _db.Checkpoints
+                .Where(ch => ch.Order > checkpoint.Order)
                 .ToListAsync(cancellationToken);
 
             //update order of all those checkpoints 
-            foreach (var singleCheckpoint in checkpointList) {
+            foreach (var singleCheckpoint in checkpointList)
+            {
                 singleCheckpoint.Order -= 1;
             }
 
             await _db.SaveChangesAsync(cancellationToken);
 
             //send event
-            await _mediator.Publish(new CheckpointDeleted(trackId, request.checkpointId));
+            await _mediator.Publish(new CheckpointDeleted(trackId, request.checkpointId, checkpoint.QuizId));
 
             return true;
 

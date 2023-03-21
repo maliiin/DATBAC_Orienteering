@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Track.Dto;
+using orienteering_backend.Core.Domain.Track.Events;
 using orienteering_backend.Infrastructure.Data;
 //Kilder: CampusEats lab fra dat240
 
@@ -16,11 +17,13 @@ public static class DeleteTrack
     public class Handler : IRequestHandler<Request, bool>
     {
         private readonly OrienteeringContext _db;
+        private readonly IMediator _mediator;
 
 
-        public Handler(OrienteeringContext db)
+        public Handler(OrienteeringContext db, IMediator mediator)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
+            _mediator = mediator;
 
         }
 
@@ -30,12 +33,17 @@ public static class DeleteTrack
                 .Where(t => t.Id == request.trackId)
                 .FirstOrDefaultAsync(cancellationToken);
             if (track == null) { return false; }
+
+
+            var id = track.Id;
              _db.Tracks.Remove(track);
             await _db.SaveChangesAsync(cancellationToken);
-
+            
 
 
             //fix- send ut event her sånn at checkpoints blir slettet og
+            await _mediator.Publish(new TrackDeleted(id), cancellationToken);
+
             return true;
         }
     }
