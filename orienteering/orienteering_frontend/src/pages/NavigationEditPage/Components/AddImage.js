@@ -1,17 +1,13 @@
-import { TextField, Button, Grid, Box } from '@mui/material';
+import { TextField, Input, Button, Grid, Box } from '@mui/material';
 import React, { useState, useEffect, props } from "react";
 import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
+import Form from '../../../../../node_modules/react-bootstrap/esm/Form';
 
 export default function AddImage(props) {
     const [uploadedImage, setUploadedImage] = useState({
         FormFile: "",
     });
-
-    const [testImg, setTestImg] = useState(null);
-    const [testBlob, setTestBlob] = useState("");
-    const [testBytes, setTestBytes] = useState(null);
-
-
+    const [textDescription, setTextDescription] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -19,12 +15,7 @@ export default function AddImage(props) {
         const formData = new FormData();
         formData.append("file", uploadedImage);
         formData.append("checkpointId", props.checkpointId);
-
-        console.log(props.checkpointId);
-        const send = {
-            FormFile: formData,
-            CheckpointId: props.CheckpointId
-        }
+        formData.append("textDescription", textDescription);
 
         const requestAlternatives = {
             method: 'POST',
@@ -49,9 +40,16 @@ export default function AddImage(props) {
 
     }
 
-    const handleChange = function (event) {
+    const handleChangeImage = function (event) {
         event.preventDefault();
         setUploadedImage(event.target.files[0]);
+
+
+    }
+
+    const handleChangeText = function (event) {
+        setTextDescription(event.target.value);
+
     }
 
 
@@ -62,27 +60,38 @@ export default function AddImage(props) {
     return (
         <>
 
-        <img src={testImg}></img>
-        <Box onSubmit={handleSubmit} component="form">
+            <Box onSubmit={handleSubmit} component="form">
 
-            <input
-                //multiple
-                type="file"
-                id="image"
-                required
-                accept="image/*"
-                onChange={handleChange}
-            />
+                <input
+                    //multiple
+                    type="file"
+                    id="image"
+                    required
+                    accept="image/*"
+                    onChange={handleChangeImage}
+                //value={uploadedImage.FormFile }
+                />
+               
+                <br></br>
+                <TextField
+                    //fix-skal være required eller ikke
+                    required
+                    onChange={(e) => handleChangeText(e)}
+                    label="Description"
+                    name="TextDescription"
+                    variant="standard"
+                    value={textDescription}
+                >
+                </TextField>
                 <br></br>
                 <br></br>
+                <Button
+                    type="submit"
+                >
+                    Add Image
+                </Button>
+            </Box>
 
-            <Button
-                type="submit"
-            >
-                Add Image
-            </Button>
-        </Box>
 
-
-    </>);
+        </>);
 }

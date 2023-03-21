@@ -19,6 +19,8 @@ export default function DisplayImagesAdmin(props) {
                 >
                 </img>
 
+                <p>{props.imageInfo.textDescription}</p>
+
                 <Button onClick={deleteImage}>Slett ikke implementert</Button>
 
             </Box>
