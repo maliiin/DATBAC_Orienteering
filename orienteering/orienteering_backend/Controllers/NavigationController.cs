@@ -54,6 +54,28 @@ namespace orienteering_backend.Controllers
             return navDto;
 
         }
+
+
+        [HttpPut("editNavigationText")]
+        public async Task<IActionResult> UpdateNavigationDescription(string navigationId, string newText, string navigationImageId)
+        {
+            Guid NavigationId = new Guid(navigationId);
+            Guid NavigationImageId = new Guid(navigationImageId);
+
+
+            var changed = await _mediator.Send(new UpdateNavigationText.Request(NavigationId, newText, NavigationImageId));
+            if (changed)
+            {
+                return Ok();
+
+            }
+            else
+            {
+                //fix feilmelding
+                return Unauthorized("Could not find the navigation to edit");
+            }
+
+        }
     }
 
 }

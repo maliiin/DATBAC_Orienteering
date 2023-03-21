@@ -68,7 +68,7 @@ export default function CheckpointNavigation() {
             }}
 
         >
-                <Grid item xs={2}>
+                <Grid item xs={5}>
                     <Button
                         onClick={prevImage}
                         style={{
@@ -76,10 +76,10 @@ export default function CheckpointNavigation() {
                             display: current <= 0 ? "none" : "inline"
                         }}
                     >
-                        forrige
+                        Previous image
                     </Button>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={5}>
                     <Button
                         onClick={nextImage}
                         style={{
@@ -87,16 +87,12 @@ export default function CheckpointNavigation() {
                             //visibility: current >= imagesList.length - 1 ? "hidden" : "inline"
                         }}
                     >
-                        neste
+                        Next image
                     </Button>
                 </Grid>
 
-
-
         </Grid>
         <br></br>
-        <input accept='image/*' id='icon-button-file' type='file' capture='environment'/>
-        <input type="file" id="cap" name="personalPhoto" accept="image/*" capture="camera" id="camera"/>
 
 
     </>

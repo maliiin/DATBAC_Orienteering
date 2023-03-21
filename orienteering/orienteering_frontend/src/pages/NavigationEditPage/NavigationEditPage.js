@@ -21,13 +21,17 @@ export default function NavigationEditPage() {
         //var img = await fetch("/api/navigation/GetNavigation?checkpointId=" + props.checkpointId).then(r => r.json());
 
         var Navigation = await fetch("/api/navigation/GetNavigation?checkpointId=" + params.checkpointId).then(r => r.json());
+        console.log(Navigation.id);
+        console.log(Navigation.images[0]);
 
 
         setImageList(Navigation.images.map((imageInfo, index) =>
             <>
                 <DisplayImagesAdmin
                     imageInfo={imageInfo}
-                    key={index+"-"+imageInfo.Order }
+                    key={index + "-" + imageInfo.Order}
+                    navId={Navigation.id}
+                    updateImages={loadImages}
                 >
                 </DisplayImagesAdmin>
                 
@@ -89,6 +93,7 @@ export default function NavigationEditPage() {
 
                 <Grid item xs={6}>
                     <h4>Navigation overview </h4>
+                    <p>Doubletap description text to edit.</p>
                     {imageList }
                 </Grid>
 
