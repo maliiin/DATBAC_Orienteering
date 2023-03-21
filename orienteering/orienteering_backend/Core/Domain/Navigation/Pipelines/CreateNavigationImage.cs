@@ -10,7 +10,7 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
     public class CreateNavigationImage
     {
 
-        public record Request(Guid checkpointId, IFormFile file) : IRequest<bool>;
+        public record Request(Guid checkpointId, IFormFile file, string textDescription) : IRequest<bool>;
 
         public class Handler : IRequestHandler<Request, bool>
         {
@@ -27,11 +27,18 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-                string folder = $"{request.checkpointId}";
 
+                var navigation = await _db.Navigation
+                    .Where(n => n.ToCheckpoint == request.checkpointId)
+                    .Include(n => n.Images)
+                    .FirstOrDefaultAsync(cancellationToken);
+
+                if (navigation == null) { return false; }
+
+
+                string folder = $"{request.checkpointId}";
                 //wwwroot/checkpointId is the path
                 string dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder);
-
                 //create wwwroot/checkpointId dir if not exists
                 if (!Directory.Exists(dirPath))
                 {
@@ -47,16 +54,11 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                 }
 
 
-                var navigation=await _db.Navigation
-                    .Where(n => n.ToCheckpoint == request.checkpointId)
-                    .Include(n=>n.Images)
-                    .FirstOrDefaultAsync(cancellationToken);
-
-                if (navigation == null) { return false; }
+                
 
                
-                //fix order virker ikke
-                var navImage = new NavigationImage(path, navigation.NumImages+1);
+                //fix order virker ikke-tror det virker nå
+                var navImage = new NavigationImage(path, navigation.NumImages+1, request.textDescription);
                 
                 navigation.AddNavigationImage(navImage);
                 await _db.SaveChangesAsync(cancellationToken);

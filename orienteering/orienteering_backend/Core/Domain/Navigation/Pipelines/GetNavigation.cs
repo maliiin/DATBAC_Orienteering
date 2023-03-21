@@ -11,7 +11,6 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
 {
     public class GetNavigation
     {
-
         public record Request(
             Guid checkpointId) : IRequest<NavigationDto>;
 
