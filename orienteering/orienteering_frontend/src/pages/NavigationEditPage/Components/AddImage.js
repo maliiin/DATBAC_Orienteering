@@ -1,5 +1,5 @@
 import { TextField, Input, Button, Grid, Box } from '@mui/material';
-import React, { useState, useEffect, props } from "react";
+import React, { useState, useEffect, props, useRef } from "react";
 import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
 import Form from '../../../../../node_modules/react-bootstrap/esm/Form';
 
@@ -7,6 +7,7 @@ export default function AddImage(props) {
     const [uploadedImage, setUploadedImage] = useState({
         FormFile: "",
     });
+    const imageRef = useRef(null);
     const [textDescription, setTextDescription] = useState("");
 
     const handleSubmit = async (event) => {
@@ -14,6 +15,11 @@ export default function AddImage(props) {
 
         const formData = new FormData();
         formData.append("file", uploadedImage);
+        //console.log(imageRef.current.value)
+        //formData.append("file", {
+        //    FormFile: imageRef.current.value
+        //});
+
         formData.append("checkpointId", props.checkpointId);
         formData.append("textDescription", textDescription);
 
@@ -38,11 +44,17 @@ export default function AddImage(props) {
         //update parent
         props.updateImages();
 
+        //clear input 
+        setTextDescription("")
+        imageRef.current.value = null;
     }
 
     const handleChangeImage = function (event) {
         event.preventDefault();
         setUploadedImage(event.target.files[0]);
+
+        //imageRef.current.value = event.target.value[0];
+        //console.log(event.target.value)
 
 
     }
@@ -69,9 +81,10 @@ export default function AddImage(props) {
                     required
                     accept="image/*"
                     onChange={handleChangeImage}
+                    ref={imageRef}
                 //value={uploadedImage.FormFile }
                 />
-               
+
                 <br></br>
                 <TextField
                     //fix-skal være required eller ikke

@@ -21,8 +21,6 @@ export default function NavigationEditPage() {
         //var img = await fetch("/api/navigation/GetNavigation?checkpointId=" + props.checkpointId).then(r => r.json());
 
         var Navigation = await fetch("/api/navigation/GetNavigation?checkpointId=" + params.checkpointId).then(r => r.json());
-        console.log(Navigation.id);
-        console.log(Navigation.images[0]);
 
 
         setImageList(Navigation.images.map((imageInfo, index) =>

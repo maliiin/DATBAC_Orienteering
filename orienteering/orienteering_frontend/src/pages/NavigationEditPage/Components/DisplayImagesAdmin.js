@@ -45,7 +45,8 @@ export default function DisplayImagesAdmin(props) {
                     src={"data:image/" + props.imageInfo.fileType + ";base64," + props.imageInfo.imageData}
                 >
                 </img>
-
+                <br></br>
+                <br></br>
                 <p style={{ display: "inline" }}>Description:</p>
                 {editing ?
                     <input
