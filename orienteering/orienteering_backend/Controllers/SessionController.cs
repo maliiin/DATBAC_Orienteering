@@ -4,6 +4,8 @@ using MediatR;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using System.Web.Helpers;
+using orienteering_backend.Core.Domain.Quiz;
+using orienteering_backend.Core.Domain.Quiz.Pipelines;
 
 namespace orienteering_backend.Controllers;
 
@@ -34,7 +36,7 @@ public class SessionController : ControllerBase
    
 
     [HttpGet("checkTrackFinished")]
-    public TrackLoggingDto getStartCheckpoint(string toCheckpoint)
+    public TrackLoggingDto checkTrackFinished(string toCheckpoint)
     {
         if (HttpContext.Session.GetString("StartCheckpoint") == null)
         {

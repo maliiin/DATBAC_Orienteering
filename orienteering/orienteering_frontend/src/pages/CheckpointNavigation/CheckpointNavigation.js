@@ -32,7 +32,8 @@ export default function CheckpointNavigation() {
             const nav = await res.json();
             const sessionRes = await fetch("/api/session/checkTrackFinished?toCheckpoint=" + nav.toCheckpoint);
             if (sessionRes.ok) {
-                if (sessionRes.json.TimeUsed == null) {
+                var sessionInfo = await sessionRes.json();
+                if (sessionInfo.StartTime != null) {
                     setTrackFinished(true);
                 }
             }
