@@ -9,10 +9,10 @@ export default function NavigationEditPage() {
 
     const navigate = useNavigate();
     const params = useParams();
+
     const [imageList, setImageList] = useState("hei");
 
     const cId = params.checkpointId;
-    console.log(cId);
 
     const [render, setRender] = useState(false);
 
@@ -27,7 +27,9 @@ export default function NavigationEditPage() {
             <>
                 <DisplayImagesAdmin
                     imageInfo={imageInfo}
-                    key={index+"-"+imageInfo.Order }
+                    key={index + "-" + imageInfo.Order}
+                    navId={Navigation.id}
+                    updateImages={loadImages}
                 >
                 </DisplayImagesAdmin>
                 
@@ -89,13 +91,14 @@ export default function NavigationEditPage() {
 
                 <Grid item xs={6}>
                     <h4>Navigation overview </h4>
+                    <p>Doubletap description text to edit.</p>
                     {imageList }
                 </Grid>
 
                 <Grid item xs={6}>
                     <h4>Add more images</h4>
                     <AddImage
-                        checkpointId={cId}
+                        checkpointId={params.checkpointId}
                         updateImages={loadImages }
                     >
                     </AddImage>

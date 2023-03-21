@@ -1,30 +1,27 @@
-import { TextField, Button, Grid, Box } from '@mui/material';
-import React, { useState, useEffect, props } from "react";
+import { TextField, Input, Button, Grid, Box } from '@mui/material';
+import React, { useState, useEffect, props, useRef } from "react";
 import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
+import Form from '../../../../../node_modules/react-bootstrap/esm/Form';
 
 export default function AddImage(props) {
     const [uploadedImage, setUploadedImage] = useState({
         FormFile: "",
     });
-
-    const [testImg, setTestImg] = useState(null);
-    const [testBlob, setTestBlob] = useState("");
-    const [testBytes, setTestBytes] = useState(null);
-
-
+    const imageRef = useRef(null);
+    const [textDescription, setTextDescription] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         const formData = new FormData();
         formData.append("file", uploadedImage);
-        formData.append("checkpointId", props.checkpointId);
+        //console.log(imageRef.current.value)
+        //formData.append("file", {
+        //    FormFile: imageRef.current.value
+        //});
 
-        console.log(props.checkpointId);
-        const send = {
-            FormFile: formData,
-            CheckpointId: props.CheckpointId
-        }
+        formData.append("checkpointId", props.checkpointId);
+        formData.append("textDescription", textDescription);
 
         const requestAlternatives = {
             method: 'POST',
@@ -47,11 +44,24 @@ export default function AddImage(props) {
         //update parent
         props.updateImages();
 
+        //clear input 
+        setTextDescription("")
+        imageRef.current.value = null;
     }
 
-    const handleChange = function (event) {
+    const handleChangeImage = function (event) {
         event.preventDefault();
         setUploadedImage(event.target.files[0]);
+
+        //imageRef.current.value = event.target.value[0];
+        //console.log(event.target.value)
+
+
+    }
+
+    const handleChangeText = function (event) {
+        setTextDescription(event.target.value);
+
     }
 
 
@@ -62,27 +72,39 @@ export default function AddImage(props) {
     return (
         <>
 
-        <img src={testImg}></img>
-        <Box onSubmit={handleSubmit} component="form">
+            <Box onSubmit={handleSubmit} component="form">
 
-            <input
-                //multiple
-                type="file"
-                id="image"
-                required
-                accept="image/*"
-                onChange={handleChange}
-            />
+                <input
+                    //multiple
+                    type="file"
+                    id="image"
+                    required
+                    accept="image/*"
+                    onChange={handleChangeImage}
+                    ref={imageRef}
+                //value={uploadedImage.FormFile }
+                />
+
+                <br></br>
+                <TextField
+                    //fix-skal være required eller ikke
+                    required
+                    onChange={(e) => handleChangeText(e)}
+                    label="Description"
+                    name="TextDescription"
+                    variant="standard"
+                    value={textDescription}
+                >
+                </TextField>
                 <br></br>
                 <br></br>
+                <Button
+                    type="submit"
+                >
+                    Add Image
+                </Button>
+            </Box>
 
-            <Button
-                type="submit"
-            >
-                Add Image
-            </Button>
-        </Box>
 
-
-    </>);
+        </>);
 }

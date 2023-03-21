@@ -15,8 +15,13 @@ export default function DisplayImagesUser(props) {
                 }}
                 src={"data:image/" + props.imageInfo.fileType + ";base64," + props.imageInfo.imageData}
 
-            >
-            </img>
+            />
+            <p
+                style={{
+                    margin:"20px"
+
+                }}
+            >{props.imageInfo.textDescription}</p>
         </>);
 
 

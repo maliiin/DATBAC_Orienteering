@@ -9,6 +9,6 @@
 
         public Guid ToCheckpoint { get; set; }
         public List<NavigationImageDto> Images { get; set; } = new List<NavigationImageDto>();
-
+        public Guid Id { get; set; }
     }
 }

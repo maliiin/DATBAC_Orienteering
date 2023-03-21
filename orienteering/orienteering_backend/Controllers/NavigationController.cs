@@ -27,10 +27,11 @@ namespace orienteering_backend.Controllers
         public async Task<ActionResult> AddImage([FromForm] IFormFile file)
         {
             var checkpointId = HttpContext.Request.Form["checkpointId"];
+            var textDescription = HttpContext.Request.Form["textDescription"];
 
             Guid checkpointGuid = new(checkpointId);
 
-            await _mediator.Send(new CreateNavigationImage.Request(checkpointGuid, file));
+            await _mediator.Send(new CreateNavigationImage.Request(checkpointGuid, file, textDescription));
 
             return Ok();
         }
@@ -51,6 +52,28 @@ namespace orienteering_backend.Controllers
             var navDto = await _mediator.Send(new GetNavigation.Request(nextCheckpointId));
 
             return navDto;
+
+        }
+
+
+        [HttpPut("editNavigationText")]
+        public async Task<IActionResult> UpdateNavigationDescription(string navigationId, string newText, string navigationImageId)
+        {
+            Guid NavigationId = new Guid(navigationId);
+            Guid NavigationImageId = new Guid(navigationImageId);
+
+
+            var changed = await _mediator.Send(new UpdateNavigationText.Request(NavigationId, newText, NavigationImageId));
+            if (changed)
+            {
+                return Ok();
+
+            }
+            else
+            {
+                //fix feilmelding
+                return Unauthorized("Could not find the navigation to edit");
+            }
 
         }
     }

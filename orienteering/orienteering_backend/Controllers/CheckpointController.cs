@@ -88,6 +88,7 @@ namespace orienteering_backend.Controllers
             }
             else
             {
+                //fix feilmelding
                 return Unauthorized("Could not find the checkpoint to edit");
             }
 
