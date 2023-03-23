@@ -28,7 +28,8 @@ export default function FallingBoxesGame() {
                     position: "absolute",
                     width: canvasWidth + "px",
                     //height: canvasHeight + "px",
-                    height:"100vh",
+                    //height:"100vh",   //denne blir dekket av bunnmeny
+                    height:window.innerHeight,
                     backgroundColor: "green",
                     display: "none"
                 }}
