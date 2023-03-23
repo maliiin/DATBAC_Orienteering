@@ -10,9 +10,6 @@ export default function FallingBoxesGame() {
     const canvasWidth = window.screen.availWidth;
     const canvasHeight = window.screen.availHeight;
 
-    function directions() {
-        console.log("veibeskrivelse");
-    }
 
     function test() {
         setup(basketWidth, basketHeight);
@@ -30,7 +27,8 @@ export default function FallingBoxesGame() {
                 style={{
                     position: "absolute",
                     width: canvasWidth + "px",
-                    height: canvasHeight + "px",
+                    //height: canvasHeight + "px",
+                    height:"100vh",
                     backgroundColor: "green",
                     display: "none"
                 }}
