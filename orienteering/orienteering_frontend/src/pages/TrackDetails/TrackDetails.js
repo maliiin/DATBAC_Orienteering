@@ -95,14 +95,19 @@ export default function TrackDetails() {
         return (<>
             <Button onClick={showQrcodes}>Vis QR-koder</Button>
 
-            <Grid container spacing={3} margin="10px">
+            <Grid
+                container
+                spacing={3}
+                margin="10px"
+                direction={{ xs: "column-reverse", md: "row" }}
+            >
                 
-                <Grid item xs={6}>
+                <Grid item xs={10} md={6 }>
                     <h4>Her er en oversikt over alle postene til denne loypen</h4>
                     <div>{checkpointList}</div>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={10} md={4 }>
                     <CreateCheckpointForm updateCheckpointList={loadCheckpoints} trackId={trackInfo.Id}></CreateCheckpointForm>
                 </Grid>
 

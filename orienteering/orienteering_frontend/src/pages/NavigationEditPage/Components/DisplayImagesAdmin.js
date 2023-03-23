@@ -39,9 +39,19 @@ export default function DisplayImagesAdmin(props) {
 
     return (
         <>
-            <Box border="1px solid lightblue;" margin="2px;">
+            <Box
+                border="1px solid lightblue;"
+                margin="2px;"
+               
+                
+                style={{
+                    width: '80%',
+                    maxWidth:'400px'
+                    } }
+            >
                 <img
                     width={200}
+                    style={{ width:'100%' }}
                     src={"data:image/" + props.imageInfo.fileType + ";base64," + props.imageInfo.imageData}
                 >
                 </img>

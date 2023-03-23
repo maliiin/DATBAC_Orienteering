@@ -97,14 +97,19 @@ export default function TrackOverview() {
 
         return (
             <>
-                <Grid container spacing={3} margin="10px">
-                    <Grid item xs={6}>
+                <Grid container
+                    spacing={3}
+                    margin="10px"
+                    direction={{ xs: "column-reverse" , md:"row"}}
+                    
+                >
+                    <Grid item xs={10} md={6 }>
                         <h4>Liste over loypene dine</h4>
                         <p>Dobbelklikk pa tittelen for a redigere tittelen.</p>
                         <div>{list}</div>
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid item xs={10} md={6 }>
 
                         <CreateTrackForm updateTracks={loadTrack} id={userInfo.Id}></CreateTrackForm>
                     </Grid>
