@@ -45,7 +45,10 @@ export default function FallingBoxesGame() {
                     height: basketHeight + "px",
 
                     backgroundColor: "lightblue",
-                    top: canvasHeight - basketHeight,
+                    //top: canvasHeight - basketHeight,
+                    top: window.innerHeight - basketHeight,
+
+
                     display: "none"
                 }}
             >
