@@ -42,6 +42,7 @@ public class IdentityService :IIdentityService
     public async Task<UserSignIn> SignInUser(UserSignIn user)
     {
         var testuser = await _userManager.FindByNameAsync(user.UserName);
+        //fix eroor handling- sjekk at den over ikke er null
         var result = await _signInManager.PasswordSignInAsync(
             testuser,
             user.Password,

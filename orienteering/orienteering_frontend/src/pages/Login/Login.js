@@ -1,12 +1,15 @@
 import { TextField, Button, Grid } from '@mui/material';
 import React, { useState } from "react";
-import { Link, redirect, useNavigate } from 'react-router-dom';
+import { Link, redirect, useNavigate, useOutletContext } from 'react-router-dom';
 
 
 
 //dette er registrer, ikke login!!
 function Login() {
     const navigate = useNavigate();
+    const [isSignedIn, setIsSignedIn] = useOutletContext();
+    const [errorMsg, setErrorMsg] = useState("");
+
 
 
     const handleSubmit = async (event) => {
@@ -15,9 +18,10 @@ function Login() {
         const response = await SignInUser();
 
         if (response.ok) {
-            //fix dette bør byttes ut med 'admin' side (redigere poster)
+            setIsSignedIn(true);
             navigate("/");
         } else {
+            setErrorMsg("Incorrect username or password")
             console.log("not ok");
         }
 
@@ -34,7 +38,7 @@ function Login() {
         setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
     };
 
-    const SignInUser = async ()=> {
+    const SignInUser = async () => {
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -48,57 +52,62 @@ function Login() {
         return response;
     }
 
-        return (
-            <>
+    return (
+        <>
 
 
-                <Grid
-                    container
-                    spacing={0}
-                    direction="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={{ minHeight: '50vh' }}
-                >
+            <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                style={{ minHeight: '50vh' }}
+            >
 
-                    <Grid item xs={3}>
-                        <form onSubmit={handleSubmit}>
-                            <h4>Logg inn</h4>
+                <Grid item xs={4}>
+                    <form onSubmit={handleSubmit}>
+                        <h4>Logg inn</h4>
 
-                    <TextField
-                        required
-                        onChange={(e) => handleChange(e)}
-                        label="Username"
-                        name="username"
-                        variant="standard"
-                        value={userInfo.username}
-                    />
-                    <br></br>
+                        <TextField
+                            required
+                            onChange={(e) => handleChange(e)}
+                            label="Username"
+                            name="username"
+                            variant="standard"
+                            value={userInfo.username}
+                            error={errorMsg == "" ? false : true}
 
-                    <TextField
-                        required
-                        type="password"
-                        onChange={(e) => handleChange(e)}
-                        label="Password"
-                        variant="standard" value={userInfo.password}
-                        name="password"
-                    />
+                        />
+                        <br></br>
 
-                            <br></br>
-                            <br></br>
+                        <TextField
+                            required
+                            type="password"
+                            onChange={(e) => handleChange(e)}
+                            label="Password"
+                            variant="standard" value={userInfo.password}
+                            name="password"
+                            error={errorMsg == "" ? false : true}
+
+                        />
+                        <br></br>
+                        {errorMsg}
+
+                        <br></br>
 
 
 
-                            <Button variant="contained" type="submit">
-                                Logg inn
-                            </Button>
+                        <Button variant="contained" type="submit">
+                            Logg inn
+                        </Button>
 
-                        </form>
-                    </Grid>
+                    </form>
+                </Grid>
 
-                </Grid> 
-            </>
-        );
-    }
+            </Grid>
+        </>
+    );
+}
 
-    export default Login;
+export default Login;
