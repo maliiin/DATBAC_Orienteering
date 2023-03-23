@@ -103,7 +103,7 @@ export default function TrackDetails() {
             >
                 
                 <Grid item xs={10} md={6 }>
-                    <h4>Her er en oversikt over alle postene til denne loypen</h4>
+                    <h4>Checkpoints</h4>
                     <div>{checkpointList}</div>
                 </Grid>
 

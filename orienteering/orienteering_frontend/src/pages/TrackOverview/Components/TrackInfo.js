@@ -29,9 +29,7 @@ export default function TrackInfo(props) {
 
     const stopEdit = async () => {
         setEditing(false)
-        console.log("djjdj stop focus")
 
-        //post/put metode
 
         const url = '/api/track/updateTrackTitle?';
         const parameter = "trackId=" + props.trackInfo.trackId+'&newTitle=' + oldTitle;
@@ -40,8 +38,6 @@ export default function TrackInfo(props) {
 
         //update list of parent
         props.updateTrackList()
-
-       
 
     }
 
@@ -68,7 +64,7 @@ export default function TrackInfo(props) {
     return (<>
 
 
-        <Box border="1px solid lightblue;" margin="2px;">
+        <Box border="1px solid lightblue;" margin="2px;" style={{ width:'80%'}}>
 
             <p style={{ display: "inline" }}>Tittel:</p>
             {editing ?
