@@ -2,7 +2,7 @@
 export default [
     // Fix: legg inn virkelige solutions
     {
-        solutionList: ['sodshjgdfdsgfhadfagl1', 'sol2', 'sol4', 'sol3', 'sol5', 'asdfwa', 'asdawsd', 'gafsdad'],
+        solutionList: ['sodshjgdfd sgfhadfagl1', 'sol2', 'sol4', 'sol3', 'sol5', 'asdfwa', 'asdawsd', 'gafsdad'],
         correctMix: ['sol2', 'sol3'],
         taskText: "create a aslfns solution"
     },
