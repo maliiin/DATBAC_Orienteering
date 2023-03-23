@@ -35,7 +35,7 @@ export default function App() {
         }
         next();
     }
-    //fix slett rene spill pages
+    //fix slett rene spill pagesx3 stk
     return (
         <BrowserRouter>
             <Routes>
@@ -61,6 +61,8 @@ export default function App() {
 
 
                 <Route path="primtall" element={<FallingBoxesGame/> }/>
+                <Route path="kjemi" element={<ChemistryGame/> }/>
+                <Route path="elektro" element={<LogicGatesGame/> }/>
 
 
 
