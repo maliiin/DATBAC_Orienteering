@@ -91,7 +91,7 @@ function GameStatus() {
         var navigationButton = document.getElementById("navigationButton");
         navigationButton.style.display = "block";
         navigationButton.style.top = gameArea.canvas.height * 2 / 3 - 100 + "px";
-        navigationButton.style.left = gameArea.canvas.height / 2 - 100 + "px";
+        //navigationButton.style.left = gameArea.canvas.height / 2 - 100 + "px";
         //navigationButton.style = {top:'5px', left: '20px'}
 
 
