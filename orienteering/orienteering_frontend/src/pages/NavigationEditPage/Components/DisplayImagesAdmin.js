@@ -68,9 +68,10 @@ export default function DisplayImagesAdmin(props) {
                         onDoubleClick={shouldEdit}
                     > {props.imageInfo.textDescription}</span>
                 }
+                <br></br>
+                <br></br>
 
-
-                <Button onClick={deleteImage}>Slett ikke implementert</Button>
+                <Button onClick={deleteImage}>Delete image</Button>
 
             </Box>
 
