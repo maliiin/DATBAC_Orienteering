@@ -1,24 +1,25 @@
 import setup from "./LogicGatesScript";
 import { useEffect, useState } from "react";
-import { TextField, Button, Grid } from '@mui/material';
+import { Button } from '@mui/material';
 import "./LogicGatesStyle.css";
 import LogicGatesData from "./LogicGatesData.js"
 import gateSizeUpdate from "./gateSizeUpdate.js"
 
-
-
 export default function LogicGatesGame() {
 
-    const [tableBody, setTableBody] = useState("");
+    const [tableA, setTableA] = useState("");
+    const [tableB, setTableB] = useState("");
+    const [tableC, setTableC] = useState("");
+    const [tableOut, setTableOut] = useState("");
+
     const [gateDivs, setGateDivs] = useState("");
     const [gameDescription, setGameDescription] = useState("");
-
 
     var gates = ["AndGate", "NandGate", "Inverter", "OrGate", "AndGate", "NandGate", "Inverter", "OrGate"];
     var nextBoardIndex = 0;
 
     useEffect(() => {
-        
+
         createFunctionTable();
         createGates();
         setup();
@@ -28,9 +29,13 @@ export default function LogicGatesGame() {
     function createGates() {
         setGateDivs(
             gates.map((gate, index) =>
-                <img key={gate + "-" + index + nextBoardIndex} className={'logicgate' + ' ' + gate} src={require(`./${gate}.png`)}></img>
+                <img
+                    key={gate + "-" + index + nextBoardIndex}
+                    className={'logicgate' + ' ' + gate}
+                    src={require(`./${gate}.png`)}
+                >
+                </img>
             ));
-
     }
 
     function createFunctionTable() {
@@ -47,20 +52,37 @@ export default function LogicGatesGame() {
 
         //    tbody.appendChild(tr);
         //});
-        var tbody = (data.map((row, index) => {
+        //var tbody = (data.map((row, index) => {
+        //    return (
+        //        <tr key={row + "-" + index}>
+        //            {
+        //                row.map((column, index) => {
+        //                    return (<td key={column + "-" + index}>{column}</td>)
+        //                })
+
+        //            }
+        //        </tr>
+        //    )
+        //}
+        //));
+
+        var tbody = (data.map((column, index) => {
             return (
-                <tr key={row + "-" + index}>
+                <>
                     {
-                        row.map((column, index) => {
-                            return (<td key={column + "-" + index}>{column}</td>)
+                        column.map((row, index) => {
+                            return (<td key={row + "-" + index}>{row}</td>)
                         })
 
                     }
-                </tr>
+                </>
             )
         }
         ));
-        setTableBody(tbody);
+        setTableA(tbody[0])
+        setTableB(tbody[1])
+        setTableC(tbody[2])
+        setTableOut(tbody[3])
     }
 
     function clearGateDivs() {
@@ -97,7 +119,7 @@ export default function LogicGatesGame() {
                 <br></br>
 
                 <Button
-                    style={{ fontSize: '4vw'}}
+                    style={{ fontSize: '4vw' }}
                     onClick={hideGameDescription}
                 >
                     Start game
@@ -114,11 +136,8 @@ export default function LogicGatesGame() {
         document.getElementById("descriptionContainer").style.display = "none";
         nextBoard();
     }
-
-    function navigateToCheckpoint() {
-        console.log("gamefinished");
-        //fix: implement navigate to next checkpoint
-    }
+    //fix- to useeffect som tar inn []-disse kan slås sammen?
+    //og samle use effect på samme sted i koden
 
     useEffect(() => {
         showGameDescription();
@@ -133,9 +152,13 @@ export default function LogicGatesGame() {
 
     return (<>
 
-        <div id="gamecontainer">
-            <img id="task_background" src={require("./task1_background.png")}
-            ></img>
+        <div
+            id="gamecontainer"
+            style={{
+                height: window.innerHeight,
+            }}
+        >
+            <img id="task_background" src={require("./task1_background.png")}></img>
 
             <div id="dropzoneUpper" className={'dropzone' + ' ' + 'dropzoneUpper'}></div>
 
@@ -143,16 +166,31 @@ export default function LogicGatesGame() {
 
             {gateDivs}
 
+
+
             <table>
-                <thead>
+                <tbody>
                     <tr>
                         <th>A</th>
-                        <th>B</th>
-                        <th>C</th>
-                        <th>Out</th>
+                        {tableA}
                     </tr>
-                </thead>
-                <tbody>{tableBody}</tbody>
+                        
+
+                    <tr>
+                        <th>B</th>
+                        {tableB}
+                    </tr>
+
+                    <tr>
+                        <th>C</th>
+                        {tableC}
+                    </tr>
+
+                    <tr>
+                        <th>Out</th>
+                        {tableOut}
+                    </tr>
+                </tbody>
 
             </table>
 
@@ -162,8 +200,6 @@ export default function LogicGatesGame() {
             <div id="statusdiv"></div>
             <div id="scorediv"></div>
         </div>
-
-        
 
         <div id="descriptionContainer" className="readabletext"> {gameDescription}</div>
 
