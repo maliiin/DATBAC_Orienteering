@@ -36,6 +36,20 @@ namespace orienteering_backend.Controllers
             return Ok();
         }
 
+        [HttpDelete("DeleteImage")]
+        public async Task<ActionResult> DeleteImage(string navigationId,string imageId)
+        {
+            
+
+            Guid imageGuid = new(imageId);
+            Guid navigationGuid = new(navigationId);
+
+            await _mediator.Send(new NavigationDeleteImage.Request(imageGuid, navigationGuid));
+
+            return Ok();
+        }
+
+
         [HttpGet("GetNavigation")]
         public async Task<NavigationDto> GetNavigation(string checkpointId)
         {
