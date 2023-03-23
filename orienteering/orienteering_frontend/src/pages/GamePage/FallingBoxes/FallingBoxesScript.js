@@ -83,13 +83,16 @@ function GameStatus() {
         clearTimeout(fallingTimer);
         clearTimeout(gameArea.interval);
 
-        //display canvas
+        //display score
         gameArea.clear()
         gameArea.context.strokeText("Spill slutt, du fikk " + gameStatus.points + " poeng.", gameArea.canvas.width / 2, gameArea.canvas.height / 2);
 
         //display button to next checkpoint directions
         var navigationButton = document.getElementById("navigationButton");
         navigationButton.style.display = "block";
+        navigationButton.style.top = GameArea.canvas.height * 2 / 3 - 100 + "px";
+        navigationButton.style.left = GameArea.canvas.height / 2  - 100 + "px";
+
 
         //remove basket
         var basket = document.getElementById("basket");

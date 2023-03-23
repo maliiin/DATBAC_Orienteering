@@ -158,6 +158,8 @@ export default function LogicGatesGame() {
                 height: window.innerHeight,
             }}
         >
+
+
             <img id="task_background" src={require("./task1_background.png")}></img>
 
             <div id="dropzoneUpper" className={'dropzone' + ' ' + 'dropzoneUpper'}></div>
@@ -166,42 +168,39 @@ export default function LogicGatesGame() {
 
             {gateDivs}
 
-
-
             <table>
                 <tbody>
                     <tr>
                         <th>A</th>
                         {tableA}
                     </tr>
-                        
-
                     <tr>
                         <th>B</th>
                         {tableB}
                     </tr>
-
                     <tr>
                         <th>C</th>
                         {tableC}
                     </tr>
-
                     <tr>
                         <th>Out</th>
                         {tableOut}
                     </tr>
                 </tbody>
-
             </table>
 
             <button id="checkanswer" className="gamebtn">Check</button>
             <button id="nextboardbtn" hidden className="gamebtn">Next board</button>
+            <br></br>
+            <p id="scorediv"></p>
+            <p id="statusdiv"></p>
 
-            <div id="statusdiv"></div>
-            <div id="scorediv"></div>
         </div>
 
         <div id="descriptionContainer" className="readabletext"> {gameDescription}</div>
 
     </>);
 }
+
+            //<span id="scorediv"></span>
+            //<span id="statusdiv"></span>

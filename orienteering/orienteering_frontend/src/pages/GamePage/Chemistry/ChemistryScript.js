@@ -1,12 +1,10 @@
 var interact = require("interactjs");
-//const correctMix = ['sol2', 'sol3'];
 var correctMix;
 var GameInitialized = false;
 var score = 0;
 var hp = 3;
 var goToNextBoard = false;
 var lastBoard = false;
-
 
 function setup(inpCorrectMix, inpLastBoard = false) {
     if (!GameInitialized) {
