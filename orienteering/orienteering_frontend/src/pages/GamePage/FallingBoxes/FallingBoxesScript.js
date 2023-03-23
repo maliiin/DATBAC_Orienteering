@@ -38,7 +38,8 @@ function setup(basketWidth, basketHeight) {
 
 
     //setter "intern" størrelse av canvas
-    gameCanvas.height = window.screen.availHeight;
+    //gameCanvas.height = window.screen.availHeight;
+    gameCanvas.height = window.innerHeight;
     gameCanvas.width = window.screen.availWidth;
 
     //create game area and game status objects
