@@ -26,10 +26,15 @@ export default function QuizPage() {
 
     useEffect(() => {
         getQuizId();
+
+       // fetchQuizQuestion();
+        checkSession();
     }, []);
 
     useEffect(() => {
-        displayRadio();
+        if (currentQuizQuestion != "") {
+            displayRadio();
+        }
     }, [currentQuizQuestion]);
 
     useEffect(() => {
@@ -37,6 +42,11 @@ export default function QuizPage() {
             getQuizQuestion();
         }
     }, [quizQuestionIndex, quizId]);
+
+    async function checkSession() {
+        const url = "/api/session/setStartCheckpoint?checkpointId=" + params.checkpointId;
+        await fetch(url);
+    }
 
     //gets the quizId for this checkpoint
     async function getQuizId() {
