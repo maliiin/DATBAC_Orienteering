@@ -1,6 +1,6 @@
 import { TextField, FormGroup, Box, Button } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 
 
@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid';
 export default function AddQuizQuestion(props) {
     const params = useParams();
     console.log(params.checkpointId);
+    const navigate = useNavigate();
 
     const [questionInfo, setQuestionInfo] = useState({
         Question: "",
@@ -60,7 +61,9 @@ export default function AddQuizQuestion(props) {
         };
 
         var response = await fetch('/api/quiz/addQuizQuestion', requestAlternatives);
-        console.log(response);
+        if (!response.status.ok) {
+            navigate("/errorpage");
+        }
         //return false;
 
         //update value to render quizquestions
@@ -122,7 +125,11 @@ export default function AddQuizQuestion(props) {
 
         //load quiz id
         const GetQuizId = async () => {
-            const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId).then(res => res.json());
+            const response = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId);
+            if (!response.status.ok) {
+                navigate("/errorpage");
+            }
+            var checkpoint = await response.json();
             setQuestionInfo({ ...questionInfo, QuizId: checkpoint.quizId });
             console.log(checkpoint);
 

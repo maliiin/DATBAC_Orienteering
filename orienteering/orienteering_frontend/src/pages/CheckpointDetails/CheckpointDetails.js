@@ -5,6 +5,7 @@ import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import AddQuizQuestion from "./Components/AddQuizQuestion";
 import DisplayQuiz from "./Components/DisplayQuiz";
+import { Check } from '../../../../node_modules/@mui/icons-material/index';
 
 //page
 //display all info of a single checkpoint
@@ -39,8 +40,11 @@ export default function CheckpointDetails() {
             const userId = user.id;
 
             //load checkpoint
-            const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId).then(r => r.json());
-
+            const checkpointresponse = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId);
+            if (!checkpointresponse.status.ok) {
+                navigate("/errorpage");
+            }
+            var checkpoint = await checkpointresponse.json();
             console.log(checkpoint.quizId);
             console.log(typeof (checkpoint.quizId));
             console.log(checkpoint.gameId);
@@ -59,6 +63,9 @@ export default function CheckpointDetails() {
             const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
 
             const result = await fetch(getTrackUrl);
+            if (!result.status.ok) {
+                navigate("/errorpage");
+            }
             const track = await result.json();
 
             if (userId != track.userId) {
