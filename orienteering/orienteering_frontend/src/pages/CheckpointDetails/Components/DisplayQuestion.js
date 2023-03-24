@@ -20,7 +20,7 @@ export default function DisplayQuestion(props) {
     }
 
     return (
-        <Box border="1px solid lightblue;" margin="2px;">
+        <Box border="1px solid lightblue;" margin="2px;" style={{width:'80%'} }>
 
             <p>Sporsmal: {props.questionInfo.question}</p>
             <p>Svaralternativer:</p>

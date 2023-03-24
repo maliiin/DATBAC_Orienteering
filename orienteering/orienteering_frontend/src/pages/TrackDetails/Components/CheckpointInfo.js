@@ -82,7 +82,7 @@ export default function CheckpointInfo(props) {
 
     //return <Button onClick={showCheckpoint}><h6>id: {props.CheckpointInfo.id} userId: {props.CheckpointInfo.userId} trackId: {props.CheckpointInfo.trackId}</h6></Button>;
     return (<>
-        <Box border="1px solid lightblue;" margin="2px;">
+        <Box border="1px solid lightblue;" margin="2px;" style={{ width: '80%' }}>
 
             <p style={{ display: "inline" }}>Tittel:</p>
             {editing ?

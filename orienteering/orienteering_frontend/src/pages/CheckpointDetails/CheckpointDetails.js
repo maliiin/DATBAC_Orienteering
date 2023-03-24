@@ -78,15 +78,21 @@ export default function CheckpointDetails() {
     if (render && hasQuiz) {
 
         return (<>
-            <Grid container spacing={3} margin="10px">
+            <Grid
+                container
+                spacing={3}
+                margin="10px"
+                direction={{ xs: "column-reverse", md: "row" }}
+
+            >
                 
-                <Grid item xs={6}>
-                    <h4>Oversikt over spørsmål til quiz</h4>
+                <Grid item xs={10} md={6 }>
+                    <h4>Questions</h4>
                     <DisplayQuiz quizChanged={quizChanged} setQuizChanged={setQuizChanged} quizId={QuizId}></DisplayQuiz>
                 </Grid>
 
-                <Grid item xs={6}>
-                    <h4>Legg til flere spørsmål her</h4>
+                <Grid item xs={10} md={6 }>
+                    <h4>Add more questions here</h4>
                     <AddQuizQuestion quizChanged={quizChanged} setQuizChanged={setQuizChanged} ></AddQuizQuestion>
                 </Grid>
             </Grid>
