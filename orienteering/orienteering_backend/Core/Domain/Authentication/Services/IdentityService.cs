@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-
+using System.Web;
 
 namespace orienteering_backend.Core.Domain.Authentication.Services;
 
@@ -7,16 +7,21 @@ public class IdentityService :IIdentityService
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     public IdentityService(
         UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+        SignInManager<IdentityUser> signInManager,
+        IHttpContextAccessor httpContextAccessor)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<UserRegistration> CreateUser(UserRegistration user)
     {
+       
+
         //fix endre denne (input?) user til createUser?, ikke bryt ddd 
 
         var result = await _userManager.CreateAsync(
@@ -61,6 +66,22 @@ public class IdentityService :IIdentityService
     {
         await _signInManager.SignOutAsync();
         return;
+    }
+
+    public  Guid? GetCurrentUserId()
+    {
+        HttpContext context = _httpContextAccessor.HttpContext;
+
+        //gir userid, men exeption om ingen er logget inn
+        //var p = HttpContext.User.Claims.First().Value;
+
+        //gir userid, men er null om ingen er logget inn (klikker hvis du kjører .value når ingen er logget inn (null.value))            
+        var id = context.User.Claims.FirstOrDefault();
+        if (id == null) { return null; }
+
+        return new Guid(id.Value);
+        //System.Security.Claims.Claim id = HttpContext.User.Claims.FirstOrDefault();
+
     }
 }
 

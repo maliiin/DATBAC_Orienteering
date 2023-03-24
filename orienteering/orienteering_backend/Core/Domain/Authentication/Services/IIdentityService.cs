@@ -7,9 +7,7 @@ namespace orienteering_backend.Core.Domain.Authentication.Services
     {
         public Task<UserRegistration> CreateUser(UserRegistration user);
         public Task<UserSignIn> SignInUser(UserSignIn user);
-
         public Task SignOutUser();
-
-
+        public Guid? GetCurrentUserId();
     }
 }

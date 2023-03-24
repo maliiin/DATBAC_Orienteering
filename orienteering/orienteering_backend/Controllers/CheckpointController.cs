@@ -1,10 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using orienteering_backend.Core.Domain.Checkpoint;
+using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
-using orienteering_backend.Core.Domain.Navigation.Dto;
-using System.Web.Mvc;
 
 namespace orienteering_backend.Controllers
 {
@@ -13,24 +11,32 @@ namespace orienteering_backend.Controllers
     public class CheckpointController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly IIdentityService _identityService;
 
-        public CheckpointController(IMediator Mediator)
+        public CheckpointController(IMediator Mediator, IIdentityService identityService)
         {
             _mediator = Mediator;
+            _identityService = identityService;
         }
 
-        [Authorize]
         [HttpPost("createCheckpoint")]
-        public async Task<Guid> CreateCheckpoint(CheckpointDto checkpointDto)
+        public async Task<ActionResult> CreateCheckpoint(CheckpointDto checkpointDto)
         {
-            //fiks objekt her i parameter
+            var userId = _identityService.GetCurrentUserId();
+            if (userId == null) { return Unauthorized(); }
+            //fiks objekt her i parameter (tror ok?)
+            try
+            {
+                var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(checkpointDto, (Guid)userId));
+                return Ok(newCheckPointId);
+            }
+            catch
+            {
+                return Unauthorized();
+            }
 
-            var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(checkpointDto));
-
-            return newCheckPointId;
         }
 
-        [Authorize]
 
         [HttpGet("getCheckpoints")]
         //get all checkpoints that belongs to a track
@@ -43,7 +49,6 @@ namespace orienteering_backend.Controllers
 
         }
 
-        [Authorize]
         [HttpGet("getCheckpoint")]
         public async Task<CheckpointDto> GetSingleCheckpoint(string checkpointId)
         {
@@ -56,7 +61,6 @@ namespace orienteering_backend.Controllers
         }
         //sjekk om db order blir autoinkrementet av nytt checkpoint
 
-        [Authorize]
         [HttpDelete("removeCheckpoint")]
         public async Task<IActionResult> DeleteCheckpoint(string checkpointId)
         {
@@ -75,7 +79,6 @@ namespace orienteering_backend.Controllers
 
         }
         
-        [Authorize]
         [HttpPut("editCheckpointTitle")]
         public async Task<IActionResult> UpdateCheckpointTitle(string checkpointTitle, string checkpointId)
         {
@@ -90,7 +93,7 @@ namespace orienteering_backend.Controllers
             else
             {
                 //fix feilmelding
-                return Unauthorized("Could not find the checkpoint to edit");
+                return NotFound("Could not find the checkpoint to edit");
             }
         }
     }
