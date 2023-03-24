@@ -18,6 +18,7 @@ import CheckpointNavigation from "./pages/CheckpointNavigation/CheckpointNavigat
 import NavigationEditPage from "./pages/NavigationEditPage/NavigationEditPage";
 
 import LogicGatesGame from "./pages/GamePage/LogicGates/LogicGatesGame";
+import QuizPage2 from "./pages/QuizPage/QuizPage2";
 
 
 export default function App() {
@@ -55,7 +56,7 @@ export default function App() {
                 <Route path="checkpoint/quiz/:checkpointId" element={<QuizPage />} />
                 <Route path="checkpoint/game/:checkpointId" element={<GamePage />} />
                 <Route path="checkpointnavigation/:checkpointId" element={<CheckpointNavigation />} />
-
+                <Route path="testQuiz" element={<QuizPage2></QuizPage2> }/>
             </Routes>
             </BrowserRouter>
     )
