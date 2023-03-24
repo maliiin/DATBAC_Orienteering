@@ -1,7 +1,6 @@
 import { TextField, Input, Button, Grid, Box } from '@mui/material';
 import React, { useState, useEffect, props, useRef } from "react";
 import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
-import Form from '../../../../../node_modules/react-bootstrap/esm/Form';
 
 export default function AddImage(props) {
     const [uploadedImage, setUploadedImage] = useState({

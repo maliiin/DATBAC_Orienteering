@@ -8,8 +8,12 @@ export default function DisplayImagesAdmin(props) {
     const [oldText, setOldText] = useState(props.imageInfo.textDescription);
 
 
-    const deleteImage = () => {
-        console.log("not implemented yet");
+    const deleteImage =async () => {
+        const url = "/api/navigation/DeleteImage?navigationId=" + props.navId + "&imageId=" + props.imageInfo.id;
+        await fetch(url, { method: 'DELETE' });
+
+        //update images in parent
+        props.updateImages();
     }
 
     const shouldEdit = () => {
@@ -64,9 +68,10 @@ export default function DisplayImagesAdmin(props) {
                         onDoubleClick={shouldEdit}
                     > {props.imageInfo.textDescription}</span>
                 }
+                <br></br>
+                <br></br>
 
-
-                <Button onClick={deleteImage}>Slett ikke implementert</Button>
+                <Button onClick={deleteImage}>Delete image</Button>
 
             </Box>
 
