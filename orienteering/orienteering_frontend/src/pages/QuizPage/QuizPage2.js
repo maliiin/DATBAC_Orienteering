@@ -11,27 +11,25 @@ export default function QuizPage2() {
 
     //what the user answers
     const [guess, setGuess] = useState("");
+
+    //alternatives to guess
     const [radios, setRadios] = useState("");
 
     const [quizId, setQuizId] = useState("");
     const [quizQuestionIndex, setQuizQuestionIndex] = useState(0);
 
     //this is one question
-    const [currentQuizQuestion, setCurrentQuizQuestion] = useState({
-        alternatives: [0, 1]
-    });
+    const [currentQuizQuestion, setCurrentQuizQuestion] = useState("");
 
     const [endOfQuiz, setEndOfQuiz] = useState(false);
     const [quizStatus, setQuizStatus] = useState(false);
 
     useEffect(() => {
         getQuizId();
-        // fetchQuizQuestion();
     }, []);
 
     useEffect(() => {
         displayRadio();
-        // fetchQuizQuestion();
     }, [currentQuizQuestion]);
 
     useEffect(() => {
@@ -47,15 +45,12 @@ export default function QuizPage2() {
         setQuizId(checkpoint.quizId);
     }
 
-
     //gets the current quiz Question
     async function getQuizQuestion() {
         var url = "/api/quiz/getNextQuizQuestion?quizId=" + quizId + "&quizQuestionIndex=" + quizQuestionIndex.toString();
         var quizQuestion = await fetch(url).then(res => res.json());
         setCurrentQuizQuestion(quizQuestion);
     };
-
-
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -70,8 +65,6 @@ export default function QuizPage2() {
         } else {
             setQuizStatus(<p>Wrong answer. Riktig svar var: {solution}</p>)
         }
-
-
 
         //check if end of quiz or not
         if (currentQuizQuestion.endOfQuiz == true) {
@@ -96,12 +89,12 @@ export default function QuizPage2() {
                     label={alternative.text}
                     control={<Radio required={true} />}
                     defaultChecked={guess == alternative.text}
+                //style={{backgroundColor:"blue"} }
                 //checked={guess == alternative.text}
 
                 >
                 </FormControlLabel>
             )
-
         })
         setRadios(t)
     }
@@ -126,20 +119,26 @@ export default function QuizPage2() {
             direction="column"
             alignItems="center"
             justifyContent="center"
+
             style={{
                 minHeight: '50vh',
-
             }}
         >
             <Grid
                 item
                 sx={10}
+                style={{
+                    width: '80%'
+                }}
             >
 
 
                 <Box
                     onSubmit={handleSubmit}
                     component="form"
+                    style={{
+                        display: endOfQuiz ? "none" : "block"
+                    }}
 
                 >
                     <FormLabel
@@ -149,6 +148,7 @@ export default function QuizPage2() {
                     </FormLabel>
 
                     <RadioGroup
+
                         value={guess}
                         aria-labelledby="radio-buttons-group"
                         name="radio-buttons-group"
@@ -165,26 +165,26 @@ export default function QuizPage2() {
                     >
                         Check answer
                     </Button>
-                    <button
-                        onClick={navigateToNextCheckpoint}
-                        style={{
-                            display: endOfQuiz ? "block" : "none"
-
-                            ,
-                        }}
-                    >
-                        Navigate to next checkpoint
-
-                    </button>
 
 
-                    {quizStatus}
+
+
+
+
                 </Box>
+                {quizStatus}
+
+                <div style={{
+                    display: endOfQuiz ? "block" : "none"
+                }}>
+
+                    <p>End of quiz</p>
+
+                    <Button onClick={navigateToNextCheckpoint}>
+                        Navigate to next checkpoint
+                    </Button>
+                </div>
             </Grid>
-
-
-
         </Grid>
-
     </>);
 }
