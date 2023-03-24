@@ -32,8 +32,8 @@ public class SessionController : ControllerBase
         return CheckpointId;
     }
 
-   
-   
+
+
 
     [HttpGet("checkTrackFinished")]
     public TrackLoggingDto checkTrackFinished(string toCheckpoint)
@@ -66,11 +66,19 @@ public class SessionController : ControllerBase
                 trackLoggingDto.StartCheckpointId = new Guid(startCheckpoint);
                 return trackLoggingDto;
             }
-            
-            
-            
-        }
 
-        
+
+
+        }
     }
+
+    [HttpGet("clearFinishedTrack")]
+    public void clearSessionDetails()
+    {
+        HttpContext.Session.Remove("StartCheckpoint");
+        HttpContext.Session.Remove("StartTime");
+    }
+
+
+
 }
