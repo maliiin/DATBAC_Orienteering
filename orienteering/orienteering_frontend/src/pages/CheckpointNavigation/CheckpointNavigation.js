@@ -20,6 +20,7 @@ export default function CheckpointNavigation() {
     const params = useParams();
 
     const [imagesList, setImagesList] = useState(["h", "hh"]);
+    const [totalTime, setTotalTime] = useState("");
 
     const currentCheckpointId = params.checkpointId;
 
@@ -33,8 +34,9 @@ export default function CheckpointNavigation() {
             const sessionRes = await fetch("/api/session/checkTrackFinished?toCheckpoint=" + nav.toCheckpoint);
             if (sessionRes.ok) {
                 var sessionInfo = await sessionRes.json();
-                if (sessionInfo.StartTime != null) {
+                if (sessionInfo.timeUsed != null) {
                     setTrackFinished(true);
+                    setTotalTime(sessionInfo.timeUsed);
                 }
             }
             else {
@@ -119,6 +121,7 @@ export default function CheckpointNavigation() {
         return (
             <>
                 <p>Track finished</p>
+                <p>Total time used: {totalTime} minutes</p>
             </>
             );
     }

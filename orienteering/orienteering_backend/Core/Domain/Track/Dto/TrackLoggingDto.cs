@@ -8,6 +8,6 @@
 
         public Guid? StartCheckpointId { get; set; }
 
-        public DateTime? TimeUsed { get; set; }
+        public string? TimeUsed { get; set; }
     }
 }

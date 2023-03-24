@@ -50,8 +50,14 @@ public class SessionController : ControllerBase
                 var trackLoggingDto = new TrackLoggingDto();
                 trackLoggingDto.StartCheckpointId = new Guid(startCheckpoint);
                 var startTimeString = HttpContext.Session.GetString("StartTime");
+                if (startTimeString == null)
+                {
+                    throw new Exception("Startime not set");
+                }
                 var startTime = DateTime.Parse(startTimeString);
-                trackLoggingDto.TimeUsed = startTime;
+                var timeNow = DateTime.Now;
+                var timeUsed = Math.Floor(timeNow.Subtract(startTime).TotalMinutes).ToString();
+                trackLoggingDto.TimeUsed = timeUsed;
                 return trackLoggingDto;
             }
             else
