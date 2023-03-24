@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout/Layout";
+import LayoutSignedIn from "./pages/Layout/LayoutSignedIn";
 import Login from "./pages/Login/Login";
 import CheckpointDetails from "./pages/CheckpointDetails/CheckpointDetails";
 import Registration from "./pages/Registration/Registration";
@@ -18,6 +19,7 @@ import CheckpointNavigation from "./pages/CheckpointNavigation/CheckpointNavigat
 import NavigationEditPage from "./pages/NavigationEditPage/NavigationEditPage";
 
 import LogicGatesGame from "./pages/GamePage/LogicGates/LogicGatesGame";
+import FallingBoxesGame from "./pages/GamePage/FallingBoxes/FallingBoxesGame";
 import QuizPage2 from "./pages/QuizPage/QuizPage2";
 
 
@@ -35,7 +37,7 @@ export default function App() {
         }
         next();
     }
-
+    //fix slett rene spill pagesx3 stk
     return (
         <BrowserRouter>
             <Routes>
@@ -53,9 +55,25 @@ export default function App() {
                     <Route path="unauthorized" element={<Unauthorized />} />
                 </Route>
 
+                    
+
+
                 <Route path="checkpoint/quiz/:checkpointId" element={<QuizPage />} />
                 <Route path="checkpoint/game/:checkpointId" element={<GamePage />} />
                 <Route path="checkpointnavigation/:checkpointId" element={<CheckpointNavigation />} />
+
+
+
+
+                <Route path="primtall" element={<FallingBoxesGame/> }/>
+                <Route path="kjemi" element={<ChemistryGame/> }/>
+                <Route path="elektro" element={<LogicGatesGame/> }/>
+
+
+
+
+
+
                 <Route path="testQuiz/:checkpointId" element={<QuizPage2></QuizPage2> }/>
             </Routes>
             </BrowserRouter>

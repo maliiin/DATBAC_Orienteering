@@ -87,15 +87,20 @@ export default function NavigationEditPage() {
     if (render == true) {
         return (<>
 
-            <Grid container spacing={3} margin="10px">
+            <Grid
+                container
+                spacing={3}
+                margin="10px"
+                direction={{ xs: "column-reverse", md: "row" }}
+            >
 
-                <Grid item xs={6}>
+                <Grid item xs={10} md={6 }>
                     <h4>Navigation overview </h4>
                     <p>Doubletap description text to edit.</p>
                     {imageList }
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={10} md={6 }>
                     <h4>Add more images</h4>
                     <AddImage
                         checkpointId={params.checkpointId}
