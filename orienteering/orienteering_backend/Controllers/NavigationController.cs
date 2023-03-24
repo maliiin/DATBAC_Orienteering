@@ -30,8 +30,18 @@ namespace orienteering_backend.Controllers
             var textDescription = HttpContext.Request.Form["textDescription"];
 
             Guid checkpointGuid = new(checkpointId);
-
+            
             await _mediator.Send(new CreateNavigationImage.Request(checkpointGuid, file, textDescription));
+            return Ok();
+        }
+
+        [HttpDelete("DeleteImage")]
+        public async Task<ActionResult> DeleteImage(string navigationId,string imageId)
+        {
+            Guid imageGuid = new(imageId);
+            Guid navigationGuid = new(navigationId);
+
+            await _mediator.Send(new NavigationDeleteImage.Request(imageGuid, navigationGuid));
 
             return Ok();
         }
@@ -52,9 +62,7 @@ namespace orienteering_backend.Controllers
             var navDto = await _mediator.Send(new GetNavigation.Request(nextCheckpointId));
 
             return navDto;
-
         }
-
 
         [HttpPut("editNavigationText")]
         public async Task<IActionResult> UpdateNavigationDescription(string navigationId, string newText, string navigationImageId)
@@ -62,20 +70,16 @@ namespace orienteering_backend.Controllers
             Guid NavigationId = new Guid(navigationId);
             Guid NavigationImageId = new Guid(navigationImageId);
 
-
             var changed = await _mediator.Send(new UpdateNavigationText.Request(NavigationId, newText, NavigationImageId));
             if (changed)
             {
                 return Ok();
-
             }
             else
             {
                 //fix feilmelding
                 return Unauthorized("Could not find the navigation to edit");
             }
-
         }
     }
-
 }

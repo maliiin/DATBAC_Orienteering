@@ -15,7 +15,9 @@ namespace orienteering_backend.Core.Domain.Navigation
         public Guid ToCheckpoint { get; set; }
         public List<NavigationImage> Images { get; set; } = new List<NavigationImage>();
 
-        public int NumImages { get
+        public int NumImages
+        {
+            get
             {
                 return Images.Count;
             }
@@ -26,9 +28,23 @@ namespace orienteering_backend.Core.Domain.Navigation
             Images.Add(image);
         }
 
-        //public void RemoveNavigationImage(NavigationImage image)
-        //{
-            
-        //}
+        public bool RemoveNavigationImage(NavigationImage image)
+        {
+
+            var result= Images.Remove(image);
+            if (result)
+            {
+                foreach(var navImage in Images)
+                {
+                    if (navImage.Order > image.Order)
+                    {
+                        navImage.Order--;
+                    }
+                }
+            }
+            return result;
+
+
+        }
     }
 }

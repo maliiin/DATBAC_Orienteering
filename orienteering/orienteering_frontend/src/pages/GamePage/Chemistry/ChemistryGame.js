@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import setup from './ChemistryScript';
-import { Button} from '@mui/material';
+import { Button } from '@mui/material';
 import "./ChemistryStyle.css";
 import ChemistryData from "./ChemistryData";
 
@@ -23,16 +23,18 @@ function ChemistryGame() {
     //        taskText: "create a ljkgaf solution"
     //    }
     //]
-    
+
     const [solutionDivs, setSolutionDivs] = useState("");
     const [taskText, setTaskText] = useState("");
     const [gameDescription, setGameDescription] = useState("");
 
     function createSolutions() {
         var solutions = (solutionList.map((solution, index) =>
-            <div key={solution + "-" + index + nextBoardIndex} className="drag-drop">
+            <div
+                key={solution + "-" + index + nextBoardIndex}
+                className="drag-drop"
+            >
                 <div className="chemistryGlassImage"></div>
-                
                 <div className="solutiontext">{solution}</div>
             </div>
         ))
@@ -42,13 +44,12 @@ function ChemistryGame() {
         }
         else {
             setup(correctMix);
-
         }
     }
 
     function clearSolutions() {
         setSolutionDivs("");
-}
+    }
 
 
     //function retryGame() {
@@ -74,11 +75,6 @@ function ChemistryGame() {
         nextBoardIndex += 1;
     }
 
-    function navigateToCheckpoint() {
-        console.log("gamefinished");
-        //fix: implement navigate to next checkpoint
-    }
-
     function showGameDescription() {
         setGameDescription(<>
             <div>
@@ -86,9 +82,9 @@ function ChemistryGame() {
                 <p >
                     Drag the solutions to the drop area which are needed to create the solution provided in the task.
                     <br></br>
-                    You got 3 Hp for each task. For each check with wrong solutions, you loose 1 hp. 
+                    You got 3 Hp for each task. For each check with wrong solutions, you loose 1 hp.
                     <br></br>
-                    When checking answer and the correct solutions are in the drop area, the remaining hp are added to your score. 
+                    When checking answer and the correct solutions are in the drop area, the remaining hp are added to your score.
                 </p>
                 <br></br>
                 <br></br>
@@ -100,7 +96,7 @@ function ChemistryGame() {
                 >
                     Start game
                 </Button></div>
-            
+
         </>
         )
         document.getElementById("gamecontainer").style.display = "none";
@@ -118,31 +114,32 @@ function ChemistryGame() {
         //document.getElementById("retrygamebtn").addEventListener("click", retryGame);
         document.getElementById("nextboardbtn").addEventListener("click", nextBoard);
         showGameDescription();
-        
+
     }, []);
 
 
 
 
-return (
+    return (
         <>
-        <div id="gamecontainer">
-            {solutionDivs}
+            <div id="gamecontainer">
+                <h4 className="solutiontext">Task: {taskText}</h4>
 
-            <div id="outer-dropzone" className="dropzone">
+                {solutionDivs}
+
+                <div id="outer-dropzone" className="dropzone">
+                </div>
+
+
+                <button id="checkanswer" className="gamebtn">Check</button>
+                <button id="nextboardbtn" hidden className="gamebtn">Next board</button>
+
+                <div id="statusdiv"></div>
+                <div id="scorediv"></div>
             </div>
 
-            <div className="solutiontext">Task: {taskText}</div>
-
-            <button id="checkanswer" className="gamebtn">Check</button>
-            <button id="nextboardbtn" hidden className="gamebtn">Next board</button>
-
-            <div id="statusdiv"></div>
-            <div id="scorediv"></div>
-        </div>
-
-        <div id="descriptionContainer" className="readabletext">{gameDescription}</div>
-    </>);
+            <div id="descriptionContainer" className="readabletext">{gameDescription}</div>
+        </>);
 
 }
 

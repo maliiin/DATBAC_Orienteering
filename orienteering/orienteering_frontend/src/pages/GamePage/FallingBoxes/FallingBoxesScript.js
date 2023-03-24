@@ -38,7 +38,8 @@ function setup(basketWidth, basketHeight) {
 
 
     //setter "intern" størrelse av canvas
-    gameCanvas.height = window.screen.availHeight;
+    //gameCanvas.height = window.screen.availHeight;
+    gameCanvas.height = window.innerHeight;
     gameCanvas.width = window.screen.availWidth;
 
     //create game area and game status objects
@@ -82,13 +83,17 @@ function GameStatus() {
         clearTimeout(fallingTimer);
         clearTimeout(gameArea.interval);
 
-        //display canvas
+        //display score
         gameArea.clear()
         gameArea.context.strokeText("Spill slutt, du fikk " + gameStatus.points + " poeng.", gameArea.canvas.width / 2, gameArea.canvas.height / 2);
 
         //display button to next checkpoint directions
         var navigationButton = document.getElementById("navigationButton");
         navigationButton.style.display = "block";
+        navigationButton.style.top = gameArea.canvas.height * 1 / 4 - 100 + "px";
+        navigationButton.style.left = 20 + "px";
+        //navigationButton.style = {top:'5px', left: '20px'}
+
 
         //remove basket
         var basket = document.getElementById("basket");

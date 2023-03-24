@@ -63,7 +63,7 @@ export default function GamePage() {
                 }}
                 onClick={navigateToCheckpoint}
             >
-                veibeskrivelse
+                Navigate to next checkpoint
             </Button>
             
 

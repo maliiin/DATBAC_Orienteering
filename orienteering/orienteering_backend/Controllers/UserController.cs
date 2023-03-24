@@ -44,6 +44,7 @@ namespace orienteering_backend.Controllers
         [HttpPost("createuser")]
         public async Task<ActionResult<UserRegistration>> CreateUser(UserRegistration user)
         {
+            //fix-hva gjør modelstate? bør dette være flere steder??
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -105,7 +106,7 @@ namespace orienteering_backend.Controllers
 
         
 
-
+        //fix-denne skal slettes? brukes ikke
         // GET: api/User/username
         [HttpGet]
         //testing authorization/authentication

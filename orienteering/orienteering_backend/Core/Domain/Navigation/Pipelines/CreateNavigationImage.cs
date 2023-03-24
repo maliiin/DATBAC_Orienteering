@@ -27,46 +27,51 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
 
             public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
             {
-
+                //get navigation
                 var navigation = await _db.Navigation
                     .Where(n => n.ToCheckpoint == request.checkpointId)
                     .Include(n => n.Images)
                     .FirstOrDefaultAsync(cancellationToken);
 
+                //fix er dette rett eller bør den lage hvis den ikke finnes?
+                //den skal finnes fra før
                 if (navigation == null) { return false; }
 
-
+                //wwwroot/checkpointId is the folder
                 string folder = $"{request.checkpointId}";
-                //wwwroot/checkpointId is the path
                 string dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder);
-                //create wwwroot/checkpointId dir if not exists
+
+                //create dir if not exists
                 if (!Directory.Exists(dirPath))
                 {
                     Directory.CreateDirectory(dirPath);
                 }
 
+                //this is the filename->dont have duplicate filenames
+                var randomGuid = Guid.NewGuid();
+
+
                 //place image in correct place in file system
                 //fix-ikke bruk filnavn-kan være duplisert!!
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder, request.file.FileName);
+                string path = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    folder,
+                    randomGuid.ToString() + Path.GetExtension(request.file.FileName)
+                );
+
                 using (var memoryStream = new FileStream(path, FileMode.Create))
                 {
                     request.file.CopyTo(memoryStream);
                 }
 
+                var navImage = new NavigationImage(path, navigation.NumImages + 1, request.textDescription);
 
-                
-
-               
-                //fix order virker ikke-tror det virker nå
-                var navImage = new NavigationImage(path, navigation.NumImages+1, request.textDescription);
-                
                 navigation.AddNavigationImage(navImage);
                 await _db.SaveChangesAsync(cancellationToken);
 
                 return true;
-
             }
         }
-
     }
 }
