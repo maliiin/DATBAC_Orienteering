@@ -56,7 +56,7 @@ export default function App() {
                 <Route path="checkpoint/quiz/:checkpointId" element={<QuizPage />} />
                 <Route path="checkpoint/game/:checkpointId" element={<GamePage />} />
                 <Route path="checkpointnavigation/:checkpointId" element={<CheckpointNavigation />} />
-                <Route path="testQuiz" element={<QuizPage2></QuizPage2> }/>
+                <Route path="testQuiz/:checkpointId" element={<QuizPage2></QuizPage2> }/>
             </Routes>
             </BrowserRouter>
     )
