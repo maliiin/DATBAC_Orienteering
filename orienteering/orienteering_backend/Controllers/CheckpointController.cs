@@ -4,6 +4,7 @@ using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Navigation.Dto;
+using System.Web.Mvc;
 
 namespace orienteering_backend.Controllers
 {
@@ -18,8 +19,7 @@ namespace orienteering_backend.Controllers
             _mediator = Mediator;
         }
 
-        //create checkpoint
-        //POST
+        [Authorize]
         [HttpPost("createCheckpoint")]
         public async Task<Guid> CreateCheckpoint(CheckpointDto checkpointDto)
         {
@@ -30,6 +30,7 @@ namespace orienteering_backend.Controllers
             return newCheckPointId;
         }
 
+        [Authorize]
 
         [HttpGet("getCheckpoints")]
         //get all checkpoints that belongs to a track
@@ -42,7 +43,7 @@ namespace orienteering_backend.Controllers
 
         }
 
-
+        [Authorize]
         [HttpGet("getCheckpoint")]
         public async Task<CheckpointDto> GetSingleCheckpoint(string checkpointId)
         {
@@ -55,9 +56,8 @@ namespace orienteering_backend.Controllers
         }
         //sjekk om db order blir autoinkrementet av nytt checkpoint
 
-
+        [Authorize]
         [HttpDelete("removeCheckpoint")]
-
         public async Task<IActionResult> DeleteCheckpoint(string checkpointId)
         {
             Console.WriteLine("prøver å slettw");
@@ -74,7 +74,8 @@ namespace orienteering_backend.Controllers
             }
 
         }
-
+        
+        [Authorize]
         [HttpPut("editCheckpointTitle")]
         public async Task<IActionResult> UpdateCheckpointTitle(string checkpointTitle, string checkpointId)
         {
@@ -91,11 +92,6 @@ namespace orienteering_backend.Controllers
                 //fix feilmelding
                 return Unauthorized("Could not find the checkpoint to edit");
             }
-
         }
-
-
-
-
     }
 }
