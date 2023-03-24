@@ -20,7 +20,6 @@ import NavigationEditPage from "./pages/NavigationEditPage/NavigationEditPage";
 
 import LogicGatesGame from "./pages/GamePage/LogicGates/LogicGatesGame";
 import FallingBoxesGame from "./pages/GamePage/FallingBoxes/FallingBoxesGame";
-import QuizPage2 from "./pages/QuizPage/QuizPage2";
 
 
 export default function App() {
@@ -74,7 +73,6 @@ export default function App() {
 
 
 
-                <Route path="testQuiz/:checkpointId" element={<QuizPage2></QuizPage2> }/>
             </Routes>
             </BrowserRouter>
     )
