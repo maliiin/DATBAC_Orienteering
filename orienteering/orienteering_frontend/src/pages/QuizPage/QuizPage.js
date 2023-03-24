@@ -1,189 +1,190 @@
-import { TextField,Box, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import { TextField, Grid, Box, Button, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import React, { useState, useRef } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
+
 export default function QuizPage() {
 
     const navigate = useNavigate();
     const params = useParams();
 
-    const [quizQuestionRender, setQuizQuestionRender] = useState("");
+    //what the user answers
+    const [guess, setGuess] = useState("");
 
-    //the current quiz question
+    //alternatives to guess
+    const [radios, setRadios] = useState("");
+
+    const [quizId, setQuizId] = useState("");
+    const [quizQuestionIndex, setQuizQuestionIndex] = useState(0);
+
+    //this is one question
     const [currentQuizQuestion, setCurrentQuizQuestion] = useState("");
 
-    const chosenAlternative = useRef("");
-    const [quizQuestionIndex, setQuizQuestionIndex] = useState(0);
-    const [quizStatus, setQuizStatus] = useState("");
-
     const [endOfQuiz, setEndOfQuiz] = useState(false);
-
-    //answer
-    const [activity, setActivity] = useState("");
-
-
-
-    const [quizInfo, setQuizInfo] = useState({
-        Id: ""
-    });
-
+    const [quizStatus, setQuizStatus] = useState(false);
 
     useEffect(() => {
-        setQuizId();
-        // fetchQuizQuestion();
+        getQuizId();
     }, []);
 
-
     useEffect(() => {
-        if (quizInfo.Id != "") {
-            fetchQuizQuestion();
-        }
-    }, [quizQuestionIndex, quizInfo]);
-
-    useEffect(() => {
-        showQuizQuestion();
+        displayRadio();
     }, [currentQuizQuestion]);
 
-
+    useEffect(() => {
+        if (quizId != "") {
+            getQuizQuestion();
+        }
+    }, [quizQuestionIndex, quizId]);
 
     //gets the quizId for this checkpoint
-    async function setQuizId() {
+    async function getQuizId() {
         var url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
-        var checkpointDto = await fetch(url).then(res => res.json());
-        setQuizInfo(prevState => { return { ...prevState, Id: checkpointDto.quizId } });
+        var checkpoint = await fetch(url).then(res => res.json());
+        setQuizId(checkpoint.quizId);
     }
 
     //gets the current quiz Question
-    async function fetchQuizQuestion() {
-        var url = "/api/quiz/getNextQuizQuestion?quizId=" + quizInfo.Id + "&quizQuestionIndex=" + quizQuestionIndex.toString();
+    async function getQuizQuestion() {
+        var url = "/api/quiz/getNextQuizQuestion?quizId=" + quizId + "&quizQuestionIndex=" + quizQuestionIndex.toString();
         var quizQuestion = await fetch(url).then(res => res.json());
         setCurrentQuizQuestion(quizQuestion);
     };
-
-
-    function handleChange(event) {
-        console.log("endret radiovalg");
-        console.log(event.target.value);
-        chosenAlternative.current = event.target.value;
-    };
-
-
-    const changeActivity = (event) => {
-
-        setActivity(event.target.value);
-    };
-
-    function navigateToNextCheckpoint() {
-        navigate('/checkpointnavigation/' + params.checkpointId);
-    }
 
     async function handleSubmit(event) {
         event.preventDefault();
 
         //get correct answer from backend
-        var url = "/api/quiz/getSolution?quizId=" + quizInfo.Id + "&quizQuestionId=" + currentQuizQuestion.quizQuestionId;
+        var url = "/api/quiz/getSolution?quizId=" + quizId + "&quizQuestionId=" + currentQuizQuestion.quizQuestionId;
         var solution = await fetch(url).then(res => res.text());
 
-        //if (chosenAlternative.current == solution) {
-        //    setQuizStatus(<p>Riktig svar</p>)
-        //}
-        //else {
-        //    setQuizStatus(<p>Feil svar. Riktig svar var: {solution}</p>)
-        //};
-
+        //check if answer is correct
+        if (solution == guess) {
+            setQuizStatus(<p>Correct answer</p>)
+        } else {
+            setQuizStatus(<p>Wrong answer. Riktig svar var: {solution}</p>)
+        }
 
         //check if end of quiz or not
         if (currentQuizQuestion.endOfQuiz == true) {
-            console.log("her")
             setEndOfQuiz(true);
-            //slett det under
-            //setQuizQuestionRender(
-            //    <>
-            //        <p>Quiz ferdig</p>
-            //        <button onClick={navigateToNextCheckpoint}>Navhghghghigate to next checkpoint</button>
-            //    </>
-            //)
-
         }
         else {
+            //increase index
             var newIndex = quizQuestionIndex + 1;
             setQuizQuestionIndex(newIndex);
         };
+
+        //reset answer
+        setGuess("")
     };
 
-    function showQuizQuestion() {
-        if (typeof currentQuizQuestion.alternatives != 'undefined') {
-            var currentAlternatives = currentQuizQuestion.alternatives;
-            var radioButtons = currentQuizQuestion.alternatives.map((alternative, index) =>
+    async function displayRadio() {
+        var t = currentQuizQuestion.alternatives.map((alternative, index) => {
+            return (
                 <FormControlLabel
+                    key={alternative.text + "-" + index}
                     value={alternative.text}
-                    key={alternative.id + "-" + index}
-                    control={<Radio />}
                     label={alternative.text}
-                    checked={activity == alternative.text}
+                    control={<Radio required={true} />}
+                    defaultChecked={guess == alternative.text}
+                //style={{backgroundColor:"blue"} }
+                //checked={guess == alternative.text}
 
-                />
-            );
-        };
-        setQuizQuestionRender(
-            <Box onSubmit={handleSubmit} component="form">
-                <FormLabel id="question">{currentQuizQuestion.question}</FormLabel>
- 
-
-
-
-                <RadioGroup
-                    value={activity}
-                    aria-labelledby="radio-buttons-group"
-                    name="radio-buttons-group"
-                    row
-                    onChange={(e) => changeActivity(e)}
                 >
+                </FormControlLabel>
+            )
+        })
+        setRadios(t)
+    }
 
-                    <FormControlLabel
-                        value="spill"
-                        label="Spill"
-                        control={<Radio required={true} />}
-                        checked={activity == "spill"}
-                    />
+    //sends user to navigation page
+    function navigateToNextCheckpoint() {
+        navigate('/checkpointnavigation/' + params.checkpointId);
+    }
 
-                    <FormControlLabel
-                        value="quiz"
-                        control={<Radio required={true} />}
-                        label="Quiz"
-                        checked={activity == "quiz"}
-                    />
 
-                </RadioGroup>
-                <Button type="submit" variant="contained">Besvar spørsmål</Button>
-            </Box>
-        );
+    const changeGuess = (event) => {
+        setGuess(event.target.value);
     };
-
-
 
 
 
     return (<>
-        {quizQuestionRender}
-        {quizStatus}
 
-        {activity }
-        <button
-            onClick={navigateToNextCheckpoint}
+        <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+
             style={{
-                display: endOfQuiz ? "block" : "none"
-
-                ,
+                minHeight: '50vh',
             }}
         >
-            Navigate to next checkpoint
+            <Grid
+                item
+                sx={10}
+                style={{
+                    width: '80%'
+                }}
+            >
 
-        </button>
+
+                <Box
+                    onSubmit={handleSubmit}
+                    component="form"
+                    style={{
+                        display: endOfQuiz ? "none" : "block"
+                    }}
+
+                >
+                    <FormLabel
+                        id="question"
+                    >
+                        {currentQuizQuestion.question}
+                    </FormLabel>
+
+                    <RadioGroup
+
+                        value={guess}
+                        aria-labelledby="radio-buttons-group"
+                        name="radio-buttons-group"
+                        label="hei"
+                        onChange={(e) => changeGuess(e)}
+                    >
+                        {radios}
+
+                    </RadioGroup>
+
+                    <Button
+                        type="submit"
+                        variant="contained"
+                    >
+                        Check answer
+                    </Button>
 
 
-    </>
-    );
 
+
+
+
+                </Box>
+                {quizStatus}
+
+                <div style={{
+                    display: endOfQuiz ? "block" : "none"
+                }}>
+
+                    <p>End of quiz</p>
+
+                    <Button onClick={navigateToNextCheckpoint}>
+                        Navigate to next checkpoint
+                    </Button>
+                </div>
+            </Grid>
+        </Grid>
+    </>);
 }
