@@ -24,6 +24,7 @@ export default function QuizPage2() {
     });
 
     const [endOfQuiz, setEndOfQuiz] = useState(false);
+    const [quizStatus, setQuizStatus] = useState(false);
 
     useEffect(() => {
         getQuizId();
@@ -54,6 +55,38 @@ export default function QuizPage2() {
         var url = "/api/quiz/getNextQuizQuestion?quizId=" + quizId + "&quizQuestionIndex=" + quizQuestionIndex.toString();
         var quizQuestion = await fetch(url).then(res => res.json());
         setCurrentQuizQuestion(quizQuestion);
+    };
+
+
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+
+        //get correct answer from backend
+        var url = "/api/quiz/getSolution?quizId=" + quizId + "&quizQuestionId=" + currentQuizQuestion.quizQuestionId;
+        var solution = await fetch(url).then(res => res.text());
+
+        //check if answer is correct
+        if (solution == guess) {
+            setQuizStatus(<p>Correct answer</p>)
+        } else {
+            setQuizStatus(<p>Wrong answer. Riktig svar var: {solution}</p>)
+        }
+
+
+
+        //check if end of quiz or not
+        if (currentQuizQuestion.endOfQuiz == true) {
+            setEndOfQuiz(true);
+        }
+        else {
+            //increase index
+            var newIndex = quizQuestionIndex + 1;
+            setQuizQuestionIndex(newIndex);
+        };
+
+        //reset answer
+        setGuess("")
     };
 
     async function displayRadio() {
@@ -89,9 +122,7 @@ export default function QuizPage2() {
         setGuess(event.target.value);
     };
 
-    async function handleSubmit(event) {
-        console.log("not implemented")
-    }
+
 
     return (<>
         <Box onSubmit={handleSubmit} component="form">
@@ -113,7 +144,7 @@ export default function QuizPage2() {
             <Button type="submit" variant="contained">Besvar spørsmål</Button>
 
 
-            {guess}
+            {quizStatus}
         </Box>
 
     </>);
