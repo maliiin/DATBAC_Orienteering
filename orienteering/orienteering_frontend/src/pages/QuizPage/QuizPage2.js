@@ -1,10 +1,8 @@
-
-import { TextField, Box, Button, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import { TextField, Grid, Box, Button, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import React, { useState, useRef } from "react";
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
-
 
 export default function QuizPage2() {
 
@@ -98,7 +96,7 @@ export default function QuizPage2() {
                     label={alternative.text}
                     control={<Radio required={true} />}
                     defaultChecked={guess == alternative.text}
-                    //checked={guess == alternative.text}
+                //checked={guess == alternative.text}
 
                 >
                 </FormControlLabel>
@@ -115,37 +113,78 @@ export default function QuizPage2() {
 
 
     const changeGuess = (event) => {
-        console.log(event.target.value)
-        console.log(event)
-        console.log(event.target)
-        event.target.checked = 'true'
         setGuess(event.target.value);
     };
 
 
 
     return (<>
-        <Box onSubmit={handleSubmit} component="form">
-            <RadioGroup
-                value={guess}
-                aria-labelledby="radio-buttons-group"
-                name="radio-buttons-group"
 
-                onChange={(e) => changeGuess(e)}
+        <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            style={{
+                minHeight: '50vh',
+
+            }}
+        >
+            <Grid
+                item
+                sx={10}
             >
 
 
+                <Box
+                    onSubmit={handleSubmit}
+                    component="form"
+
+                >
+                    <FormLabel
+                        id="question"
+                    >
+                        {currentQuizQuestion.question}
+                    </FormLabel>
+
+                    <RadioGroup
+                        value={guess}
+                        aria-labelledby="radio-buttons-group"
+                        name="radio-buttons-group"
+                        label="hei"
+                        onChange={(e) => changeGuess(e)}
+                    >
+                        {radios}
+
+                    </RadioGroup>
+
+                    <Button
+                        type="submit"
+                        variant="contained"
+                    >
+                        Check answer
+                    </Button>
+                    <button
+                        onClick={navigateToNextCheckpoint}
+                        style={{
+                            display: endOfQuiz ? "block" : "none"
+
+                            ,
+                        }}
+                    >
+                        Navigate to next checkpoint
+
+                    </button>
+
+
+                    {quizStatus}
+                </Box>
+            </Grid>
 
 
 
-                {radios}
-
-            </RadioGroup>
-            <Button type="submit" variant="contained">Besvar spørsmål</Button>
-
-
-            {quizStatus}
-        </Box>
+        </Grid>
 
     </>);
 }
