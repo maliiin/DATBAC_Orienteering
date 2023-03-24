@@ -42,7 +42,7 @@ export default function CheckpointNavigation() {
         if (sessionInfo.timeUsed != null) {
             setTrackFinished(true);
             setTotalTime(sessionInfo.timeUsed);
-            await fetch("/api/session/clear");
+            await fetch("/api/session/clearFinishedTrack");
         }
 
             setImagesList(nav.images.map((imageInfo, index) =>
@@ -61,12 +61,9 @@ export default function CheckpointNavigation() {
         //fix-naviger til errorside hvis ikke?
 
 
-    function checkFinished() {
 
-    }
 
     useEffect(() => {
-        checkFinished();
         getNavigation();
     }, []);
 
@@ -118,6 +115,7 @@ export default function CheckpointNavigation() {
         </>
         );
     }
+
 
     if (trackFinished) {
         return (

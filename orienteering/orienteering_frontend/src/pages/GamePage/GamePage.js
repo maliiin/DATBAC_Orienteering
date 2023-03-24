@@ -17,8 +17,14 @@ export default function GamePage() {
 
 
     useEffect(() => {
+        checkSession();
         setGame();
     }, []);
+
+    async function checkSession() {
+        const url = "/api/session/setStartCheckpoint?checkpointId=" + params.checkpointId;
+        await fetch(url);
+    }
 
     async function setGame() {
         const url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;

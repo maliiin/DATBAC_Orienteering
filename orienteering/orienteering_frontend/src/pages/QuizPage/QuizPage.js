@@ -24,6 +24,7 @@ export default function QuizPage() {
     useEffect(() => {
         setQuizId();
        // fetchQuizQuestion();
+        checkSession();
     }, []);
 
 
@@ -36,6 +37,11 @@ export default function QuizPage() {
     useEffect(() => {
         showQuizQuestion();
     }, [currentQuizQuestion]);
+
+    async function checkSession() {
+        const url = "/api/session/setStartCheckpoint?checkpointId=" + params.checkpointId;
+        await fetch(url);
+    }
 
     async function setQuizId() {
         var url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
