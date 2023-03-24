@@ -61,9 +61,7 @@ export default function AddQuizQuestion(props) {
         };
 
         var response = await fetch('/api/quiz/addQuizQuestion', requestAlternatives);
-        if (!response.status.ok) {
-            navigate("/errorpage");
-        }
+        // Fix: errorhandling her ??
         //return false;
 
         //update value to render quizquestions
@@ -125,11 +123,7 @@ export default function AddQuizQuestion(props) {
 
         //load quiz id
         const GetQuizId = async () => {
-            const response = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId);
-            if (!response.status.ok) {
-                navigate("/errorpage");
-            }
-            var checkpoint = await response.json();
+            const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId).then(res => res.json());
             setQuestionInfo({ ...questionInfo, QuizId: checkpoint.quizId });
             console.log(checkpoint);
 

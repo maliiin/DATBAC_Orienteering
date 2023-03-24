@@ -9,14 +9,9 @@ import DisplayQuestion from "./DisplayQuestion";
 
 export default function DisplayQuiz(props) {
     const [quizQuestions, setQuizQuestions] = useState("");
-    const navigate = useNavigate();
 
     const fetchQuiz = async () => {
-        const response = await fetch("/api/quiz/getQuiz?quizId=" + props.quizId);
-        if (!response.status.ok) {
-            navigate("/errorpage");
-        }
-        const Quiz = await response.json();
+        const Quiz = await fetch("/api/quiz/getQuiz?quizId=" + props.quizId).then(res => res.json());
         setQuizQuestions(Quiz.quizQuestions);
         console.log(Quiz.quizQuestions);
     }

@@ -40,11 +40,7 @@ export default function CheckpointDetails() {
             const userId = user.id;
 
             //load checkpoint
-            const checkpointresponse = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId);
-            if (!checkpointresponse.status.ok) {
-                navigate("/errorpage");
-            }
-            var checkpoint = await checkpointresponse.json();
+            const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId).then(res => res.json());
             console.log(checkpoint.quizId);
             console.log(typeof (checkpoint.quizId));
             console.log(checkpoint.gameId);
@@ -62,11 +58,7 @@ export default function CheckpointDetails() {
             const trackId = checkpoint.trackId;
             const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
 
-            const result = await fetch(getTrackUrl);
-            if (!result.status.ok) {
-                navigate("/errorpage");
-            }
-            const track = await result.json();
+            const track = await fetch(getTrackUrl).then(res => res.json());
 
             if (userId != track.userId) {
                 navigate("/unauthorized");

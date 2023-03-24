@@ -45,7 +45,11 @@ export default function QuizPage() {
 
     async function setQuizId() {
         var url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
-        var checkpointDto = await fetch(url).then(res => res.json());
+        var response = await fetch(url);
+        if (!response.ok) {
+            navigate("/errorpage");
+        }
+        var checkpointDto = await response.json();
         setQuizInfo(prevState => { return { ...prevState, Id: checkpointDto.quizId } });
     }
 

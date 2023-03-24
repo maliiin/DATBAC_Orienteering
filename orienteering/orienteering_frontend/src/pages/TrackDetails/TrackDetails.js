@@ -47,6 +47,9 @@ export default function TrackDetails() {
             const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
 
             const result = await fetch(getTrackUrl);
+            if (!result.ok) {
+                navigate("/errorpage");
+            }
             const track = await result.json();
 
             if (userId != track.userId) {

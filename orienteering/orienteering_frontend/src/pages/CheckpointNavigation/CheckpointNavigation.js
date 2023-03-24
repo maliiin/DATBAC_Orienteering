@@ -28,17 +28,13 @@ export default function CheckpointNavigation() {
     const getNavigation = async () => {
 
         const navUrl = "/api/Navigation/GetNextNavigation?currentCheckpointId=" + currentCheckpointId;
-        const res = await fetch(navUrl);
-        if (!res.ok) {
-            navigate("/errorpage");
+        const response = await fetch(navUrl);
+        if (!response.ok) {
+            navigate("/errorpage")
         }
+        var nav = response.json();
             //fix-dersom endre rekkefølge på objekter, enten endre rekkefølge her eller display med rett order
-        const nav = await res.json();
-        const sessionRes = await fetch("/api/session/checkTrackFinished?toCheckpoint=" + nav.toCheckpoint);
-        if (!sessionRes.ok) {
-            navigate("/errorpage");
-        }
-        var sessionInfo = await sessionRes.json();
+        const sessionInfo = await fetch("/api/session/checkTrackFinished?toCheckpoint=" + nav.toCheckpoint).then(res => res.json());
         if (sessionInfo.timeUsed != null) {
             setTrackFinished(true);
             setTotalTime(sessionInfo.timeUsed);
