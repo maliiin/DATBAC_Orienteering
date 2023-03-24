@@ -40,12 +40,17 @@ namespace orienteering_backend.Controllers
 
         [HttpGet("getCheckpoints")]
         //get all checkpoints that belongs to a track
-        public async Task<List<CheckpointDto>> GetCheckpointsOfTrack(string trackId)
+        public async Task<ActionResult<List<CheckpointDto>>> GetCheckpointsOfTrack(string trackId)
         {
+            //check that signed in
+            var userId = _identityService.GetCurrentUserId();
+            if (userId == null) { return Unauthorized(); }
 
             Guid trackGuid = new Guid(trackId);
             var checkpoints = await _mediator.Send(new GetCheckpointsForTrack.Request(trackGuid));
-            return checkpoints;
+            //var checkpoints = await _mediator.Send(new GetCheckpointsForTrack.Request(trackGuid, (Guid)userId);
+            
+            return Ok(checkpoints);
 
         }
 
