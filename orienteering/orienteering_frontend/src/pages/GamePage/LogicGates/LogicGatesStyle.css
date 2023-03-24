@@ -28,6 +28,7 @@
     transform: translate(0px, 0px);
     transition: background-color 0.3s;
     margin-left: 2%;
+    margin: 0.5em
 }
 
     .drag-drop.can-drop {
@@ -77,6 +78,7 @@ th, tr, td {
 table {
     margin-top: 5%;
     margin-left: 5%;
-    width: 30%;
+    width: 80%;
+    border: '1px solid black'
 }
 

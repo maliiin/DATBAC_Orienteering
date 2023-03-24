@@ -19,6 +19,7 @@ import CheckpointNavigation from "./pages/CheckpointNavigation/CheckpointNavigat
 import NavigationEditPage from "./pages/NavigationEditPage/NavigationEditPage";
 
 import LogicGatesGame from "./pages/GamePage/LogicGates/LogicGatesGame";
+import FallingBoxesGame from "./pages/GamePage/FallingBoxes/FallingBoxesGame";
 
 
 export default function App() {
@@ -35,7 +36,7 @@ export default function App() {
         }
         next();
     }
-
+    //fix slett rene spill pagesx3 stk
     return (
         <BrowserRouter>
             <Routes>
@@ -59,6 +60,18 @@ export default function App() {
                 <Route path="checkpoint/quiz/:checkpointId" element={<QuizPage />} />
                 <Route path="checkpoint/game/:checkpointId" element={<GamePage />} />
                 <Route path="checkpointnavigation/:checkpointId" element={<CheckpointNavigation />} />
+
+
+
+
+                <Route path="primtall" element={<FallingBoxesGame/> }/>
+                <Route path="kjemi" element={<ChemistryGame/> }/>
+                <Route path="elektro" element={<LogicGatesGame/> }/>
+
+
+
+
+
 
             </Routes>
             </BrowserRouter>

@@ -47,6 +47,7 @@ public static class DeleteCheckpoint
                 return false;
             }
 
+
             var trackId = checkpoint.TrackId;
 
             //delete
