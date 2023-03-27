@@ -44,7 +44,11 @@ export default function TrackOverview() {
     };
 
     const loadTrack = async () => {
-        const data = await fetch("api/track/getTracks?userId=" + userInfo.Id).then(res => res.json());
+        const response = await fetch("api/track/getTracks?userId=" + userInfo.Id);
+        if (!response.ok) {
+            navigate("/errorpage");
+        }
+        const data = await response.json();
 
         setList(data.map((trackElement, index) =>
             <TrackInfo

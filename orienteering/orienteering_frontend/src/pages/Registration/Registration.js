@@ -53,7 +53,7 @@ function Registration() {
 
         };
 
-        var response = await fetch('/api/user/createuser', requestOptions);
+        const response = await fetch('/api/user/createuser', requestOptions);
         return response;
     }
 

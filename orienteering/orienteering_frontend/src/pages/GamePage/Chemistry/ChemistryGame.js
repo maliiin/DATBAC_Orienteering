@@ -29,7 +29,7 @@ function ChemistryGame() {
     const [gameDescription, setGameDescription] = useState("");
 
     function createSolutions() {
-        var solutions = (solutionList.map((solution, index) =>
+        const solutions = (solutionList.map((solution, index) =>
             <div
                 key={solution + "-" + index + nextBoardIndex}
                 className="drag-drop"

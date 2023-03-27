@@ -15,7 +15,7 @@ export default function LogicGatesGame() {
     const [gateDivs, setGateDivs] = useState("");
     const [gameDescription, setGameDescription] = useState("");
 
-    var gates = ["AndGate", "NandGate", "Inverter", "OrGate", "AndGate", "NandGate", "Inverter", "OrGate"];
+    const gates = ["AndGate", "NandGate", "Inverter", "OrGate", "AndGate", "NandGate", "Inverter", "OrGate"];
     var nextBoardIndex = 0;
 
     useEffect(() => {

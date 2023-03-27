@@ -48,17 +48,19 @@ export default function QuizPage() {
         await fetch(url);
     }
 
-    //gets the quizId for this checkpoint
     async function getQuizId() {
-        var url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
-        var checkpoint = await fetch(url).then(res => res.json());
-        setQuizId(checkpoint.quizId);
+        const url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
+        const response = await fetch(url);
+        if (!response.ok) {
+            navigate("/errorpage");
+        }
+        const checkpointDto = await response.json();
+        setQuizId(checkpointDto.quizId);
     }
 
-    //gets the current quiz Question
     async function getQuizQuestion() {
-        var url = "/api/quiz/getNextQuizQuestion?quizId=" + quizId + "&quizQuestionIndex=" + quizQuestionIndex.toString();
-        var quizQuestion = await fetch(url).then(res => res.json());
+        const url = "/api/quiz/getNextQuizQuestion?quizId=" + quizId + "&quizQuestionIndex=" + quizQuestionIndex.toString();
+        const quizQuestion = await fetch(url).then(res => res.json());
         setCurrentQuizQuestion(quizQuestion);
     };
 
@@ -81,8 +83,7 @@ export default function QuizPage() {
             setEndOfQuiz(true);
         }
         else {
-            //increase index
-            var newIndex = quizQuestionIndex + 1;
+            const newIndex = quizQuestionIndex + 1;
             setQuizQuestionIndex(newIndex);
         };
 

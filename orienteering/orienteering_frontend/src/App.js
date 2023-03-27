@@ -6,6 +6,7 @@ import Login from "./pages/Login/Login";
 import CheckpointDetails from "./pages/CheckpointDetails/CheckpointDetails";
 import Registration from "./pages/Registration/Registration";
 import NoPage from "./pages/NoPage";
+import ErrorPage from "./pages/ErrorPage";
 import Unauthorized from "./pages/Unauthorized/Unauthorized";
 import TrackOverview from "./pages/TrackOverview/TrackOverview";
 import TrackDetails from "./pages/TrackDetails/TrackDetails";
@@ -51,6 +52,7 @@ export default function App() {
                     <Route path="registration" element={<Registration />} />
 
                     <Route path="*" element={<NoPage />} />
+                    <Route path="errorpage" element={<ErrorPage />} />
                     <Route path="unauthorized" element={<Unauthorized />} />
                 </Route>
 

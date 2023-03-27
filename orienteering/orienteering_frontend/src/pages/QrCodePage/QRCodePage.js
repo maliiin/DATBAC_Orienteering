@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import QRContainer from './Components/QRContainer';
 import { Button, Box, Grid } from '@mui/material';
 
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function QRCodePage() {
-    const [CheckpointList, setCheckpointList] = useState("");
     const [ListeItems, setListItems] = useState("");
     const location = useLocation();
+    const navigate = useNavigate();
 
     const fetchCheckpoints = async () => {
         console.log("start");
@@ -23,6 +23,9 @@ function QRCodePage() {
         //console.log("hei");
         //const data = await fetch(url).then(response => response.json());
         const response = await fetch(url);
+        if (!response.ok) {
+            navigate("/errorpage");
+        }
         const data = await response.json();
 
         //const data = await response.json();

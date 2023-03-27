@@ -8,6 +8,7 @@ export default function CheckpointNavigation() {
     //kan være greit å få inn checkpointid slik at det senere blir mulig å registrere at noen har vært på checkpointet, lagre score osv...
     const [current, setCurrent] = useState(0);
     const [trackFinished, setTrackFinished] = useState(false);
+    const navigate = useNavigate();
 
     const nextImage = () => {
         setCurrent(current + 1)
@@ -27,22 +28,18 @@ export default function CheckpointNavigation() {
     const getNavigation = async () => {
 
         const navUrl = "/api/Navigation/GetNextNavigation?currentCheckpointId=" + currentCheckpointId;
-        const res = await fetch(navUrl);
-        if (res.ok) {
+        var response = await fetch(navUrl);
+        if (!response.ok) {
+            navigate("/errorpage")
+        }
+        var nav = await response.json();
             //fix-dersom endre rekkefølge på objekter, enten endre rekkefølge her eller display med rett order
-            const nav = await res.json();
-            const sessionRes = await fetch("/api/session/checkTrackFinished?toCheckpoint=" + nav.toCheckpoint);
-            if (sessionRes.ok) {
-                var sessionInfo = await sessionRes.json();
-                if (sessionInfo.timeUsed != null) {
-                    setTrackFinished(true);
-                    setTotalTime(sessionInfo.timeUsed);
-                    await fetch("/api/session/clearFinishedTrack");
-                }
-            }
-            else {
-                //naviger til errorside
-            }
+        const sessionInfo = await fetch("/api/session/checkTrackFinished?toCheckpoint=" + nav.toCheckpoint).then(res => res.json());
+        if (sessionInfo.timeUsed != null) {
+            setTrackFinished(true);
+            setTotalTime(sessionInfo.timeUsed);
+            await fetch("/api/session/clearFinishedTrack");
+        }
 
             setImagesList(nav.images.map((imageInfo, index) =>
                 <>
@@ -58,14 +55,11 @@ export default function CheckpointNavigation() {
             ));
         }
         //fix-naviger til errorside hvis ikke?
-    }
 
-    function checkFinished() {
 
-    }
+
 
     useEffect(() => {
-        checkFinished();
         getNavigation();
     }, []);
 
@@ -117,6 +111,7 @@ export default function CheckpointNavigation() {
         </>
         );
     }
+
 
     if (trackFinished) {
         return (
