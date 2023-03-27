@@ -13,6 +13,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\components\" />
+    <Folder Include="src\pages\GamePage\Chemistry\" />
+    <Folder Include="src\pages\GamePage\FallingBoxes\" />
+    <Folder Include="src\pages\GamePage\LogicGates\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptConfiguration Remove="src\pages\NewFolder1\**" />

@@ -1,4 +1,4 @@
-import setup from "./FallingBoxesScript";
+import setup from "../Scripts/FallingBoxesScript";
 import { useEffect } from "react";
 import { TextField, Button, Grid } from '@mui/material';
 

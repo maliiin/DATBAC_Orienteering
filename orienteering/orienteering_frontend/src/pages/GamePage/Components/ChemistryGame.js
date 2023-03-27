@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import setup from './ChemistryScript';
+import setup from '../Scripts/ChemistryScript';
 import { Button } from '@mui/material';
-import "./ChemistryStyle.css";
-import ChemistryData from "./ChemistryData";
+import "../Assets/Chemistry/ChemistryStyle.css";
+import ChemistryData from "../Data/ChemistryData";
 
 var nextBoardIndex = 0;
 var solutionList;

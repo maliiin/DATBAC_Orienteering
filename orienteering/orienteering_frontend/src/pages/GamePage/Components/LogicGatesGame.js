@@ -1,9 +1,9 @@
-import setup from "./LogicGatesScript";
+import setup from "../Scripts/LogicGatesScript";
 import { useEffect, useState } from "react";
 import { Button } from '@mui/material';
-import "./LogicGatesStyle.css";
-import LogicGatesData from "./LogicGatesData.js"
-import gateSizeUpdate from "./gateSizeUpdate.js"
+import "../Assets/LogicGates/LogicGatesStyle.css";
+import LogicGatesData from "../Data/LogicGatesData.js"
+import LogicGateSizeUpdate from "../Components/LogicGateSizeUpdate";
 
 export default function LogicGatesGame() {
 
@@ -32,7 +32,7 @@ export default function LogicGatesGame() {
                 <img
                     key={gate + "-" + index + nextBoardIndex}
                     className={'logicgate' + ' ' + gate}
-                    src={require(`./${gate}.png`)}
+                    src={require(`../Assets/LogicGates/${gate}.png`)}
                 >
                 </img>
             ));
@@ -146,7 +146,7 @@ export default function LogicGatesGame() {
 
     useEffect(() => {
         if (gateDivs != undefined || gateDivs != "") {
-            gateSizeUpdate();
+            LogicGateSizeUpdate();
         }
     }, [gateDivs]);
 
@@ -160,7 +160,7 @@ export default function LogicGatesGame() {
         >
 
 
-            <img id="task_background" src={require("./task1_background.png")}></img>
+            <img id="task_background" src={require("../Assets/LogicGates/task1_background.png")}></img>
 
             <div id="dropzoneUpper" className={'dropzone' + ' ' + 'dropzoneUpper'}></div>
 
