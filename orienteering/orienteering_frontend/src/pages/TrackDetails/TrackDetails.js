@@ -68,7 +68,7 @@ export default function TrackDetails() {
     //get all checkpoints for this id
     const loadCheckpoints = async () => {
         const url = "/api/checkpoint/getCheckpoints?trackId=" + params.trackId;
-        var data = await fetch(url).then(res => res.json());
+        const data = await fetch(url).then(res => res.json());
         console.log(data[0]);
 
         setCheckpointList(data.map((checkpointElement, index) =>

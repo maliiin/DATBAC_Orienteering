@@ -44,18 +44,18 @@ export default function QuizPage() {
     }
 
     async function setQuizId() {
-        var url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
-        var response = await fetch(url);
+        const url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
+        const response = await fetch(url);
         if (!response.ok) {
             navigate("/errorpage");
         }
-        var checkpointDto = await response.json();
+        const checkpointDto = await response.json();
         setQuizInfo(prevState => { return { ...prevState, Id: checkpointDto.quizId } });
     }
 
     async function fetchQuizQuestion() {
-        var url = "/api/quiz/getNextQuizQuestion?quizId=" + quizInfo.Id + "&quizQuestionIndex=" + quizQuestionIndex.toString();
-        var quizQuestion = await fetch(url).then(res => res.json());
+        const url = "/api/quiz/getNextQuizQuestion?quizId=" + quizInfo.Id + "&quizQuestionIndex=" + quizQuestionIndex.toString();
+        const quizQuestion = await fetch(url).then(res => res.json());
         setCurrentQuizQuestion(quizQuestion);
     };
 
@@ -71,8 +71,8 @@ export default function QuizPage() {
 
     async function handleSubmit(event) {
         event.preventDefault();
-        var url = "/api/quiz/getSolution?quizId=" + quizInfo.Id + "&quizQuestionId=" + currentQuizQuestion.quizQuestionId;
-        var solution = await fetch(url).then(res => res.text());
+        const url = "/api/quiz/getSolution?quizId=" + quizInfo.Id + "&quizQuestionId=" + currentQuizQuestion.quizQuestionId;
+        const solution = await fetch(url).then(res => res.text());
         if (chosenAlternative.current == solution) {
             setQuizStatus(<p>Riktig svar</p>)
         }
@@ -91,14 +91,14 @@ export default function QuizPage() {
 
         }
         else {
-            var newIndex = quizQuestionIndex + 1;
+            const newIndex = quizQuestionIndex + 1;
             setQuizQuestionIndex(newIndex);
         };
     };
 
     function showQuizQuestion() {
         if (typeof currentQuizQuestion.alternatives != 'undefined') {
-            var currentAlternatives = currentQuizQuestion.alternatives;
+            const currentAlternatives = currentQuizQuestion.alternatives;
             var radioButtons = currentAlternatives.map((alternative, index) =>
                 <FormControlLabel value={alternative.text} key={alternative.id + "-" + index} control={<Radio />} label={alternative.text} />
             );
