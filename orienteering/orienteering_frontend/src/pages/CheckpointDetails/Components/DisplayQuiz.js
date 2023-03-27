@@ -37,7 +37,7 @@ export default function DisplayQuiz(props) {
         </>
         );
     } else {
-        return <p>Her kommer spørsmålene du lager.</p>;
+        return <p>Here comes the quiestions you make</p>;
     }
 }
 

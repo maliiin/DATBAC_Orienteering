@@ -108,8 +108,8 @@ export default function TrackOverview() {
                     
                 >
                     <Grid item xs={10} md={6 }>
-                        <h4>Liste over loypene dine</h4>
-                        <p>Dobbelklikk pa tittelen for a redigere tittelen.</p>
+                        <h4>List of all your tracks</h4>
+                        <p>Double-click title to edit</p>
                         <div>{list}</div>
                     </Grid>
 

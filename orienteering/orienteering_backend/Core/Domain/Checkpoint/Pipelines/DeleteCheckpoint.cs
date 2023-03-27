@@ -43,7 +43,6 @@ public static class DeleteCheckpoint
 
             if (checkpoint == null)
             {
-                Console.WriteLine("finner ikke\n\n\n\n");
                 return false;
             }
 

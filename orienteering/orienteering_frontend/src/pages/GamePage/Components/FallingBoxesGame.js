@@ -57,10 +57,10 @@ export default function FallingBoxesGame() {
             
 
             <div id="beforeGameDiv" style={{ margin: "10px" }}>
-                <h3>Primtallspill</h3>
+                <h3>Prime number Game</h3>
                 <p >
-                    Spillet går ut på å fange primtallene som faller ned.
-                    Du har 3 liv. Start spillet ved å trykke på knappen under.
+                    Catch the falling prime numbers. Catching a non-prime number results in losing 1 HP, so does not catching a prime number. 
+                    You got 3 HP. Start the game by clicking the button below. 
                 </p>
                 <br></br>
                 <br></br>
@@ -78,7 +78,7 @@ export default function FallingBoxesGame() {
 
                     onClick={test}
                 >
-                    Start spill
+                    Start Game
                 </Button></div>
 
 

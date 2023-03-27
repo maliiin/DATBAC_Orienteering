@@ -99,7 +99,7 @@ export default function CheckpointDetails() {
 
     } else if(render) {
         return (<>
-            <p> du har valgt spill</p>
+            <p> You have chosen game</p>
             <p></p>
         </>);
     };

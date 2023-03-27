@@ -22,8 +22,8 @@ export default function DisplayQuestion(props) {
     return (
         <Box border="1px solid lightblue;" margin="2px;" style={{width:'80%'} }>
 
-            <p>Sporsmal: {props.questionInfo.question}</p>
-            <p>Svaralternativer:</p>
+            <p>Question: {props.questionInfo.question}</p>
+            <p>Alternatives:</p>
             
             {
                 props.questionInfo.alternatives.map((alternative, index) =>
@@ -38,7 +38,7 @@ export default function DisplayQuestion(props) {
                     </p>                
                 )
             }
-            <Button onClick={deleteQuestion }>Slett spørsmål</Button>
+            <Button onClick={deleteQuestion }>Delete question</Button>
             
         </Box>
     );

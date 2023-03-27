@@ -64,19 +64,19 @@ export default function CreateTrackForm(props) {
 
 
     return (<>
-        <h4>Legg til ny loype</h4>
+        <h4>Add new track</h4>
         <form onSubmit={handleSubmit}>
 
             <TextField
                 required
                 onChange={(e) => handleChange(e)}
-                id="standard-basic" label="Tittel"
+                id="standard-basic" label="Title"
                 name="TrackName"
                 variant="standard"
                 value={trackInfo.TrackName}
             />
             <br></br>
-            <Button type="submit">Lag løype</Button>
+            <Button type="submit">Create track</Button>
         </form>
     </>);
 }
