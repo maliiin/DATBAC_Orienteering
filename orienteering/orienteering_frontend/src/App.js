@@ -14,13 +14,13 @@ import QuizPage from "./pages/QuizPage/QuizPage";
 import QRCodePage from "./pages/QrCodePage/QRCodePage";
 import GamePage from "./pages/GamePage/GamePage";
 
-import ChemistryGame from "./pages/GamePage/Chemistry/ChemistryGame";
+import ChemistryGame from "./pages/GamePage/Components/ChemistryGame";
 
 import CheckpointNavigation from "./pages/CheckpointNavigation/CheckpointNavigation";
 import NavigationEditPage from "./pages/NavigationEditPage/NavigationEditPage";
 
-import LogicGatesGame from "./pages/GamePage/LogicGates/LogicGatesGame";
-import FallingBoxesGame from "./pages/GamePage/FallingBoxes/FallingBoxesGame";
+import LogicGatesGame from "./pages/GamePage/Components/LogicGatesGame";
+import FallingBoxesGame from "./pages/GamePage/Components/FallingBoxesGame";
 
 
 export default function App() {

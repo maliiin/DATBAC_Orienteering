@@ -1,9 +1,9 @@
-import FallingBoxesGame from "./FallingBoxes/FallingBoxesGame";
-import ChemistryGame from "./Chemistry/ChemistryGame";
+import FallingBoxesGame from "./Components/FallingBoxesGame";
+import ChemistryGame from "./Components/ChemistryGame";
 import { TextField, Button, Grid } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import LogicGatesGame from "./LogicGates/LogicGatesGame";
+import LogicGatesGame from "./Components/LogicGatesGame";
 
 
 export default function GamePage() {

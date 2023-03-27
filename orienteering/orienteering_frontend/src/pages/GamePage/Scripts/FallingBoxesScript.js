@@ -1,5 +1,5 @@
 "use strict";
-import Data from "./Data.js";
+import Data from "../Data/FallingBoxesData";
 
 var interact = require('interactjs')
 
