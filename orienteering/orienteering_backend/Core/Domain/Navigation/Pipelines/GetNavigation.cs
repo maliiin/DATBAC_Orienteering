@@ -1,11 +1,16 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using orienteering_backend.Core.Domain.Authentication.Services;
+using orienteering_backend.Core.Domain.Checkpoint.Dto;
+using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Navigation.Dto;
 using orienteering_backend.Core.Domain.Track.Dto;
+using orienteering_backend.Core.Domain.Track.Pipelines;
 using orienteering_backend.Infrastructure.Data;
 //using SixLabors.ImageSharp;
 using System.Collections.Generic;
+using System.Security.Authentication;
 
 namespace orienteering_backend.Core.Domain.Navigation.Pipelines
 {
@@ -17,18 +22,25 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
         public class Handler : IRequestHandler<Request, NavigationDto>
         {
             private readonly OrienteeringContext _db;
-
             private readonly IMapper _mapper;
+            private readonly IIdentityService _identityService;
+            private readonly IMediator _mediator;
 
-            public Handler(OrienteeringContext db, IMapper mapper)
+            public Handler(OrienteeringContext db, IMapper mapper, IIdentityService identityService, IMediator mediator)
             {
                 _db = db ?? throw new ArgumentNullException(nameof(db));
-                _mapper = mapper ?? throw new ArgumentNullException(nameof(_mapper));
-
+                _mapper = mapper;
+                _identityService = identityService;
+                _mediator = mediator;
             }
 
             public async Task<NavigationDto> Handle(Request request, CancellationToken cancellationToken)
             {
+                //check that signed in
+                var userId = _identityService.GetCurrentUserId();
+                if (userId == null) { throw new AuthenticationException("user not signed in"); }
+ 
+
                 //get nav from db
                 Navigation? navigation = await _db.Navigation
                     .Where(n => n.ToCheckpoint == request.checkpointId)
@@ -36,6 +48,13 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (navigation == null) { throw new NullReferenceException("Navigation is null"); }
+
+                //check that user is allowed to access this navigation
+                CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(navigation.ToCheckpoint));
+                TrackUserIdDto track = await _mediator.Send(new GetTrackUser.Request(checkpoint.TrackId));
+                if (userId != track.UserId) { throw new AuthenticationException(); }
+
+
 
                 List<NavigationImageDto> imgDtoList = new();
                 foreach (NavigationImage navImage in navigation.Images)
