@@ -1,6 +1,6 @@
 import { TextField, FormGroup, Box, Button } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 
 
@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid';
 export default function AddQuizQuestion(props) {
     const params = useParams();
     console.log(params.checkpointId);
+    const navigate = useNavigate();
 
     const [questionInfo, setQuestionInfo] = useState({
         Question: "",
@@ -60,7 +61,7 @@ export default function AddQuizQuestion(props) {
         };
 
         var response = await fetch('/api/quiz/addQuizQuestion', requestAlternatives);
-        console.log(response);
+        // Fix: errorhandling her ??
         //return false;
 
         //update value to render quizquestions
@@ -143,8 +144,8 @@ export default function AddQuizQuestion(props) {
             sx={{
                 '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}>
-            <p>Velg hvilket alternativnummer som er riktig i 'Riktig alternativ'.</p>
-            <p>Svaralternativ (alternativnummer)</p>
+            <p>Choose which alternative which should be correct in 'Correct Alternative'.</p>
+            <p>Alternative (nr)</p>
             <Grid container spacing={2}>
 
                 <Grid item sx={2}>
@@ -153,7 +154,7 @@ export default function AddQuizQuestion(props) {
                         variant="contained"
                         onClick={handleAddAlternative}>
 
-                        Legg til alternativ
+                        Add alternative
 
                     </Button>
                 </Grid>
@@ -165,7 +166,7 @@ export default function AddQuizQuestion(props) {
                         variant="contained"
                         onClick={handleRemoveAlternative}>
 
-                        Fjern siste alternativ
+                        Remove last alternative
 
                     </Button>
                 </Grid>
@@ -175,7 +176,7 @@ export default function AddQuizQuestion(props) {
                     <Button
                         type="submit"
                         variant="contained">
-                        Legg til spørsmål
+                        add question
                     </Button>
                 </Grid>
 
@@ -187,7 +188,7 @@ export default function AddQuizQuestion(props) {
                        
                         required
                         onChange={(e) => handleChange(e)}
-                        id="standard-basic" label="Sporsmal"
+                        id="standard-basic" label="Question"
                         name="Question"
                         variant="standard"
                         value={questionInfo.Question}
@@ -202,7 +203,7 @@ export default function AddQuizQuestion(props) {
                         required
                         type='number'
                         onChange={(e) => handleChange(e)}
-                        id="standard-basic" label="Riktig alternativ (nr)"
+                        id="standard-basic" label="Correct alternative (nr)"
                         name="CorrectAlternative"
                         variant="standard"
                         value={questionInfo.CorrectAlternative}
@@ -219,7 +220,7 @@ export default function AddQuizQuestion(props) {
 
                                 required
                                 onChange={newVal => handleAlternativeChange(newVal, index)}
-                                id="standard-basic" label={"Svaralternativ (" + (index + 1) + ")"}
+                                id="standard-basic" label={"Alternative (" + (index + 1) + ")"}
                                 name="Options"
                                 variant="standard"
                                 value={questionInfo.Alternatives[index].Text}

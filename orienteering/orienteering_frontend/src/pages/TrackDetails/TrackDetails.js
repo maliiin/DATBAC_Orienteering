@@ -47,6 +47,9 @@ export default function TrackDetails() {
             const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
 
             const result = await fetch(getTrackUrl);
+            if (!result.ok) {
+                navigate("/errorpage");
+            }
             const track = await result.json();
 
             if (userId != track.userId) {
@@ -65,7 +68,7 @@ export default function TrackDetails() {
     //get all checkpoints for this id
     const loadCheckpoints = async () => {
         const url = "/api/checkpoint/getCheckpoints?trackId=" + params.trackId;
-        var data = await fetch(url).then(res => res.json());
+        const data = await fetch(url).then(res => res.json());
         console.log(data[0]);
 
         setCheckpointList(data.map((checkpointElement, index) =>
@@ -93,7 +96,7 @@ export default function TrackDetails() {
 
     if (render == true) {
         return (<>
-            <Button onClick={showQrcodes}>Vis QR-koder</Button>
+            <Button onClick={showQrcodes}>Show QR-codes</Button>
 
             <Grid
                 container

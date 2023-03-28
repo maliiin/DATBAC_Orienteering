@@ -1,5 +1,5 @@
 "use strict";
-import Data from "./Data.js";
+import Data from "../Data/FallingBoxesData";
 
 var interact = require('interactjs')
 
@@ -85,7 +85,7 @@ function GameStatus() {
 
         //display score
         gameArea.clear()
-        gameArea.context.strokeText("Spill slutt, du fikk " + gameStatus.points + " poeng.", gameArea.canvas.width / 2, gameArea.canvas.height / 2);
+        gameArea.context.strokeText("Game finished. Your score: " + gameStatus.points, gameArea.canvas.width / 2, gameArea.canvas.height / 2);
 
         //display button to next checkpoint directions
         var navigationButton = document.getElementById("navigationButton");
@@ -199,10 +199,10 @@ function updateGameArea() {
     gameArea.context.fillStyle = "black";
     gameArea.context.textAlign = "left";
     gameArea.context.textBaseline = "middle";
-    gameArea.context.fillText("Poeng: " + gameStatus.points, 50, 50);
+    gameArea.context.fillText("Score: " + gameStatus.points, 50, 50);
     gameArea.context.textAlign = "rigth";
 
-    gameArea.context.fillText("liv: " + gameStatus.lives, gameArea.canvas.width-50,50);
+    gameArea.context.fillText("HP: " + gameStatus.lives, gameArea.canvas.width-50,50);
 
     //display all falling elements
     for (var i = fallingObjects.length - 1; i >= 0; i--) {

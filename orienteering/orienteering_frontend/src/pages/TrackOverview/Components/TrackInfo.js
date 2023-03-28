@@ -66,7 +66,7 @@ export default function TrackInfo(props) {
 
         <Box border="1px solid lightblue;" margin="2px;" style={{ width:'80%'}}>
 
-            <p style={{ display: "inline" }}>Tittel:</p>
+            <p style={{ display: "inline" }}>Title:</p>
             {editing ?
                 <input
                     style={{ display: "inline" }}
@@ -83,8 +83,8 @@ export default function TrackInfo(props) {
             }
             <br></br>
 
-            <Button onClick={showTrack}>vis detaljer</Button>
-            <Button onClick={deleteTrack}>Slett track</Button>
+            <Button onClick={showTrack}>Show details</Button>
+            <Button onClick={deleteTrack}>Delete track</Button>
 
         </Box>
 

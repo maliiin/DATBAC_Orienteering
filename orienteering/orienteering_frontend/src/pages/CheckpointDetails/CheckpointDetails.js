@@ -5,6 +5,7 @@ import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import AddQuizQuestion from "./Components/AddQuizQuestion";
 import DisplayQuiz from "./Components/DisplayQuiz";
+import { Check } from '../../../../node_modules/@mui/icons-material/index';
 
 //page
 //display all info of a single checkpoint
@@ -39,8 +40,7 @@ export default function CheckpointDetails() {
             const userId = user.id;
 
             //load checkpoint
-            const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId).then(r => r.json());
-
+            const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId).then(res => res.json());
             console.log(checkpoint.quizId);
             console.log(typeof (checkpoint.quizId));
             console.log(checkpoint.gameId);
@@ -58,8 +58,7 @@ export default function CheckpointDetails() {
             const trackId = checkpoint.trackId;
             const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
 
-            const result = await fetch(getTrackUrl);
-            const track = await result.json();
+            const track = await fetch(getTrackUrl).then(res => res.json());
 
             if (userId != track.userId) {
                 navigate("/unauthorized");
@@ -100,7 +99,7 @@ export default function CheckpointDetails() {
 
     } else if(render) {
         return (<>
-            <p> du har valgt spill</p>
+            <p> You have chosen game</p>
             <p></p>
         </>);
     };
