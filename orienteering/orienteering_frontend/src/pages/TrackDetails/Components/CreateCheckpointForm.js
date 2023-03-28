@@ -70,13 +70,13 @@ export default function CreateCheckpointForm(props) {
 
     return (
         <>
-            <h4>Legg til ny post</h4>
+            <h4>Add new checkpoint</h4>
 
             <Box onSubmit={handleSubmit} component="form">
                 <TextField
                     required
                     onChange={(e) => handleChange(e)}
-                    id="standard-basic" label="Tittel"
+                    id="standard-basic" label="Title"
                     name="Title"
                     variant="standard"
                     value={checkpointInfo.Title} />
@@ -85,7 +85,7 @@ export default function CreateCheckpointForm(props) {
                 <br></br>
 
 
-                <FormLabel id="radio-buttons-group">Velg aktivitet</FormLabel>
+                <FormLabel id="radio-buttons-group">Choose activity</FormLabel>
 
                 <RadioGroup
                     value={activity}
@@ -97,7 +97,7 @@ export default function CreateCheckpointForm(props) {
 
                     <FormControlLabel
                         value="spill"
-                        label="Spill"
+                        label="Game"
                         control={<Radio required={true} />}
                         checked={activity == "spill"}
                     />
@@ -119,7 +119,7 @@ export default function CreateCheckpointForm(props) {
                         style={activity == "spill" ? {} : { display: 'none' }}
                         id="radio-buttons-group"
                     >
-                        Velg spill
+                        Choose game
                     </FormLabel>
 
                     <Select
@@ -151,7 +151,7 @@ export default function CreateCheckpointForm(props) {
 
                 <br></br>
 
-                <Button type="submit">Lag post</Button>
+                <Button type="submit">Create checkpoint</Button>
             </Box>
         </>);
 }

@@ -96,7 +96,7 @@ export default function TrackDetails() {
 
     if (render == true) {
         return (<>
-            <Button onClick={showQrcodes}>Vis QR-koder</Button>
+            <Button onClick={showQrcodes}>Show QR-codes</Button>
 
             <Grid
                 container

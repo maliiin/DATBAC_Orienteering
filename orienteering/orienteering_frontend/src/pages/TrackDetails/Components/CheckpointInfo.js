@@ -84,7 +84,7 @@ export default function CheckpointInfo(props) {
     return (<>
         <Box border="1px solid lightblue;" margin="2px;" style={{ width: '80%' }}>
 
-            <p style={{ display: "inline" }}>Tittel:</p>
+            <p style={{ display: "inline" }}>Title:</p>
             {editing ?
                 <input
                     style={{ display: "inline" }}
@@ -102,14 +102,14 @@ export default function CheckpointInfo(props) {
                 > {props.checkpointInfo.title}</span>
             }
 
-            <p>Type: {props.checkpointInfo.quizId == null ? "Spill" : "Quiz"}
+            <p>Type: {props.checkpointInfo.quizId == null ? "Game" : "Quiz"}
 
             </p>
 
 
-            <Button onClick={showCheckpoint}>vis detaljer</Button>
+            <Button onClick={showCheckpoint}>Show details</Button>
 
-            <Button onClick={deleteCheckpoint}>Slett post</Button>
+            <Button onClick={deleteCheckpoint}>Delete checkpoint</Button>
 
             <Button onClick={showNavigation}>Show navigation</Button>
 

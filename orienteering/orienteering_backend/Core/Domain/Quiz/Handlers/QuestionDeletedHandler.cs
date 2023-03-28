@@ -23,7 +23,6 @@ public class QuestionDeletedHandler : INotificationHandler<QuizQuestionDeleted>
     {
         //fix-dette bør kanskje være pipeline heller? så slipper vi at event og handler er i samme domain??
 
-        Console.WriteLine("sletter question\n\n\n\n\n");
        
 
         var quiz = await _db.Quiz

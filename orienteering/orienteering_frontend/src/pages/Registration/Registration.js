@@ -73,7 +73,7 @@ function Registration() {
             >
 
                 <Grid item xs={3}>
-                    <h4>Registrer deg</h4>
+                    <h4>Sign up</h4>
                     <form onSubmit={handleSubmit}>
 
                         <TextField
@@ -116,7 +116,7 @@ function Registration() {
 
 
                         <Button variant="contained" type="submit">
-                            Lag bruker
+                            Create user
                         </Button>
 
                     </form>

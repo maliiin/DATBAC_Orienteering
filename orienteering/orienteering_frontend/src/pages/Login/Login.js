@@ -67,7 +67,7 @@ function Login() {
 
                 <Grid item xs={4}>
                     <form onSubmit={handleSubmit}>
-                        <h4>Logg inn</h4>
+                        <h4>Log in</h4>
 
                         <TextField
                             required
@@ -99,7 +99,7 @@ function Login() {
 
 
                         <Button variant="contained" type="submit">
-                            Logg inn
+                            Log in
                         </Button>
 
                     </form>
