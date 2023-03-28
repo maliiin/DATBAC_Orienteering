@@ -5,7 +5,6 @@ import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import AddQuizQuestion from "./Components/AddQuizQuestion";
 import DisplayQuiz from "./Components/DisplayQuiz";
-import { Check } from '../../../../node_modules/@mui/icons-material/index';
 
 //page
 //display all info of a single checkpoint

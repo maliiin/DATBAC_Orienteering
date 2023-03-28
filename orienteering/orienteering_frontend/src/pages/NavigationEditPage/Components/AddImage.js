@@ -39,6 +39,7 @@ export default function AddImage(props) {
         };
 
         var response = await fetch('/api/navigation/AddImage', requestAlternatives);
+ 
 
         //update parent
         props.updateImages();
@@ -97,12 +98,14 @@ export default function AddImage(props) {
                 </TextField>
                 <br></br>
                 <br></br>
+                <p>If the image won't be uploaded, try to downscale the image</p>
                 <Button
                     type="submit"
                 >
                     Add Image
                 </Button>
             </Box>
+
 
 
         </>);
