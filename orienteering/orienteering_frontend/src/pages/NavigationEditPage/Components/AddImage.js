@@ -40,12 +40,7 @@ export default function AddImage(props) {
         };
 
         var response = await fetch('/api/navigation/AddImage', requestAlternatives);
-        if (!response.ok) {
-            setUploadStatus("Image too large. Try to downscale image before uploading");
-        }
-        else {
-            setUploadStatus("");
-        }
+ 
 
         //update parent
         props.updateImages();
@@ -104,6 +99,7 @@ export default function AddImage(props) {
                 </TextField>
                 <br></br>
                 <br></br>
+                <p>If the image won't be uploaded, try to downscale the image</p>
                 <Button
                     type="submit"
                 >
@@ -111,7 +107,6 @@ export default function AddImage(props) {
                 </Button>
             </Box>
 
-            {uploadStatus}
 
 
         </>);
