@@ -110,22 +110,24 @@ namespace orienteering_backend.Controllers
 
         }
 
+        //fix-skal dette være put eller patch???
         [HttpPut("editCheckpointTitle")]
         public async Task<IActionResult> UpdateCheckpointTitle(string checkpointTitle, string checkpointId)
         {
             Guid CheckpointId = new Guid(checkpointId);
 
-            var changed = await _mediator.Send(new UpdateCheckpointTitle.Request(checkpointTitle, CheckpointId));
-            if (changed != null)
+            try
             {
+                var changed = await _mediator.Send(new UpdateCheckpointTitle.Request(checkpointTitle, CheckpointId));
                 return Ok();
+            }
+            catch
+            {
+                return NotFound("Could not find the checkpoint to edit");
 
             }
-            else
-            {
-                //fix feilmelding
-                return NotFound("Could not find the checkpoint to edit");
-            }
+
+
         }
     }
 }
