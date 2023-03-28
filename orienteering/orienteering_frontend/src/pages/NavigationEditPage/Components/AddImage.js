@@ -8,6 +8,7 @@ export default function AddImage(props) {
     });
     const imageRef = useRef(null);
     const [textDescription, setTextDescription] = useState("");
+    const [uploadStatus, setUploadStatus] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -39,6 +40,12 @@ export default function AddImage(props) {
         };
 
         var response = await fetch('/api/navigation/AddImage', requestAlternatives);
+        if (!response.ok) {
+            setUploadStatus("Image too large. Try to downscale image before uploading");
+        }
+        else {
+            setUploadStatus("");
+        }
 
         //update parent
         props.updateImages();
@@ -103,6 +110,8 @@ export default function AddImage(props) {
                     Add Image
                 </Button>
             </Box>
+
+            {uploadStatus}
 
 
         </>);

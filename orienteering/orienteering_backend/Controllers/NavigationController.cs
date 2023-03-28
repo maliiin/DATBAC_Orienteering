@@ -26,14 +26,10 @@ namespace orienteering_backend.Controllers
         [HttpPost("AddImage")]
         public async Task<ActionResult> AddImage([FromForm] IFormFile file)
         {
-            Console.WriteLine("kommer til controlleren");
             var checkpointId = HttpContext.Request.Form["checkpointId"];
             var textDescription = HttpContext.Request.Form["textDescription"];
 
             Guid checkpointGuid = new(checkpointId);
-            Console.WriteLine("her e filen:");
-            Console.WriteLine(file.FileName);
-            
             await _mediator.Send(new CreateNavigationImage.Request(checkpointGuid, file, textDescription));
             return Ok();
         }
