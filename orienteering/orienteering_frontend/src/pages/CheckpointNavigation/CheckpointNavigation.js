@@ -38,7 +38,6 @@ export default function CheckpointNavigation() {
         if (sessionInfo.timeUsed != null) {
             setTrackFinished(true);
             setTotalTime(sessionInfo.timeUsed);
-            await fetch("/api/session/clearFinishedTrack");
         }
 
             setImagesList(nav.images.map((imageInfo, index) =>
