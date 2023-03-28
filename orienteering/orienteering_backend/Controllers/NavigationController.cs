@@ -30,6 +30,8 @@ namespace orienteering_backend.Controllers
             var textDescription = HttpContext.Request.Form["textDescription"];
 
             Guid checkpointGuid = new(checkpointId);
+            Console.WriteLine("her e filen:");
+            Console.WriteLine(file.FileName);
             
             await _mediator.Send(new CreateNavigationImage.Request(checkpointGuid, file, textDescription));
             return Ok();

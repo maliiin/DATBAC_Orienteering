@@ -26,6 +26,8 @@ namespace orienteering_backend.Core.Domain.Navigation
         public void AddNavigationImage(NavigationImage image)
         {
             Images.Add(image);
+            Console.WriteLine("her er bildet i addnavigation");
+            Console.WriteLine(image.TextDescription);
         }
 
         public bool RemoveNavigationImage(NavigationImage image)
