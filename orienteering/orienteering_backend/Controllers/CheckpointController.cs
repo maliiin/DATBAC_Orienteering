@@ -20,14 +20,12 @@ namespace orienteering_backend.Controllers
             _identityService = identityService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("createCheckpoint")]
         public async Task<ActionResult> CreateCheckpoint(CheckpointDto checkpointDto)
         {
-            Console.WriteLine("nå sjekkes autentisering");
             var userId = _identityService.GetCurrentUserId();
             if (userId == null) { return Unauthorized(); }
-            Console.WriteLine(userId);
 
             //fiks objekt her i parameter (tror ok?)
             try
@@ -51,22 +49,39 @@ namespace orienteering_backend.Controllers
             var userId = _identityService.GetCurrentUserId();
             if (userId == null) { return Unauthorized(); }
 
-            Guid trackGuid = new Guid(trackId);
-            var checkpoints = await _mediator.Send(new GetCheckpointsForTrack.Request(trackGuid));
-            //var checkpoints = await _mediator.Send(new GetCheckpointsForTrack.Request(trackGuid, (Guid)userId);
-            
-            return Ok(checkpoints);
+            try
+            {
+                Guid trackGuid = new Guid(trackId);
+                var checkpoints = await _mediator.Send(new GetCheckpointsForTrack.Request(trackGuid, (Guid)userId));
+                return Ok(checkpoints);
+
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+
+
+
 
         }
 
         [HttpGet("getCheckpoint")]
-        public async Task<CheckpointDto> GetSingleCheckpoint(string checkpointId)
+        public async Task<ActionResult<CheckpointDto>> GetSingleCheckpoint(string checkpointId)
         {
 
             Guid CheckpointId = new Guid(checkpointId);
-            CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(CheckpointId));
 
-            return checkpoint;
+            try
+            {
+                CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(CheckpointId));
+                return checkpoint;
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+
 
         }
         //sjekk om db order blir autoinkrementet av nytt checkpoint
@@ -88,7 +103,7 @@ namespace orienteering_backend.Controllers
             }
 
         }
-        
+
         [HttpPut("editCheckpointTitle")]
         public async Task<IActionResult> UpdateCheckpointTitle(string checkpointTitle, string checkpointId)
         {

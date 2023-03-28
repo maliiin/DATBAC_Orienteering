@@ -81,17 +81,17 @@ namespace orienteering_backend.Controllers
 
             //gir userid, men er null om ingen er logget inn (klikker hvis du kjører .value når ingen er logget inn (null.value))            
             var id = HttpContext.User.Claims.FirstOrDefault();
-            Console.WriteLine($"is authenticated?? {userIsAuthenticated}");
+            //Console.WriteLine($"is authenticated?? {userIsAuthenticated}");
 
             if (id is null) 
             { 
-                Console.WriteLine("no user is signed in");
+                //Console.WriteLine("no user is signed in");
                 return NotFound();
 
             }
             else             
             {
-                Console.WriteLine($"value of id? {id.Value}");
+                //Console.WriteLine($"value of id? {id.Value}");
                 //return id.Value;
                 //fiks fix returtypen her, bør lage eget objekt, ikke sende identity user!!
                 var user1 = new IdentityUser();

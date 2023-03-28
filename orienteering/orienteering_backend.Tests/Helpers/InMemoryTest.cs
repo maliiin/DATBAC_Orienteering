@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Track.Pipelines;
+using orienteering_backend.Core.Domain.Authentication.Services;
 
 // Kilder: https://thecodeblogger.com/2021/07/07/in-memory-database-provider-for-testing-net-ef-core-app/ (17.02.2023)
 
@@ -26,6 +27,8 @@ public class InMemoryTest
     public readonly DbContextOptions<OrienteeringContext> dbContextOptions;
 
     private static IMapper _mapper;
+    private readonly IMediator _mediator;
+    private static IMapper _mapper2;
     public InMemoryTest()
     {
         // Build DbContextOptions
@@ -42,6 +45,13 @@ public class InMemoryTest
             });
             IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
+        }
+
+        if (_mediator is null)
+        {
+            var test = new MediatRServiceConfiguration();
+            IMediator med = (IMediator)test;
+            _mediator = med;
         }
     }
 
@@ -91,6 +101,9 @@ public class InMemoryTest
     //    Assert.Equal(checkpoint, result);
     //}
 
+
+
+
     [Fact]
     public async Task GetCheckpointForTracksTest()
     {
@@ -109,7 +122,7 @@ public class InMemoryTest
         await _db.Checkpoints.AddAsync(checkpoint2);
         await _db.SaveChangesAsync();
         var request = new GetCheckpointsForTrack.Request(trackId);
-        var handler = new GetCheckpointsForTrack.Handler(_db, _mapper);
+        var handler = new GetCheckpointsForTrack.Handler(_db, _mapper, _mediator);
         var returnedDtoList = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
         var checkpoint1Dto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint1);
         var checkpoint2Dto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint2);
@@ -162,7 +175,7 @@ public class InMemoryTest
         await _db.Checkpoints.AddAsync(checkpoint);
         await _db.SaveChangesAsync();
         var request = new GetSingleCheckpoint.Request(checkpoint.Id);
-        var handler = new GetSingleCheckpoint.Handler(_db, _mapper);
+        var handler = new GetSingleCheckpoint.Handler(_db, _mediator, _mapper);
         var returnedDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
         Assert.Equal(checkpointDto.Title, returnedDto.Title);
         Assert.Equal(checkpointDto.TrackId, returnedDto.TrackId);
@@ -376,9 +389,23 @@ public class InMemoryTest
         var returnedTrackDtoList = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
         var track1Dto = _mapper.Map<Track, TrackDto>(track1);
         var track2Dto = _mapper.Map<Track, TrackDto>(track2);
-        var tracDtoList = new List<TrackDto> {track1Dto, track2Dto};
+        var tracDtoList = new List<TrackDto> { track1Dto, track2Dto };
         Assert.Equal(JsonConvert.SerializeObject(tracDtoList), JsonConvert.SerializeObject(returnedTrackDtoList));
     }
+
+
+
+    //[Fact]
+    //public void MediatorServiceTest()
+    //{
+
+    //    //Arrange
+    //    var mediator = new Mock<IMediator>();
+    //    //using var scope = factory.Server.Services.CreateScope();
+    //    //var identityService = scope.ServiceProvider.GetService<IIdentityService>();
+
+    //    //Assert.NotNull(identityService);
+    //}
 
 
 }
