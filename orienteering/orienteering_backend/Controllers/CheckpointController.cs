@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
@@ -19,11 +20,15 @@ namespace orienteering_backend.Controllers
             _identityService = identityService;
         }
 
+        [Authorize]
         [HttpPost("createCheckpoint")]
         public async Task<ActionResult> CreateCheckpoint(CheckpointDto checkpointDto)
         {
+            Console.WriteLine("nå sjekkes autentisering");
             var userId = _identityService.GetCurrentUserId();
             if (userId == null) { return Unauthorized(); }
+            Console.WriteLine(userId);
+
             //fiks objekt her i parameter (tror ok?)
             try
             {

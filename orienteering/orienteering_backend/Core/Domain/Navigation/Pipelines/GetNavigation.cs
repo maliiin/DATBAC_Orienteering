@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Navigation.Dto;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Infrastructure.Data;
-using SixLabors.ImageSharp;
+//using SixLabors.ImageSharp;
 using System.Collections.Generic;
 
 namespace orienteering_backend.Core.Domain.Navigation.Pipelines

@@ -11,9 +11,9 @@ using Microsoft.VisualBasic;
 //using static System.Net.Mime.MediaTypeNames;
 using System.Security.Authentication;
 //Lisens: https://github.com/SixLabors/ImageSharp/blob/main/LICENSE (31.01.2023)
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
+//using SixLabors.ImageSharp;
+//using SixLabors.ImageSharp.PixelFormats;
+//using SixLabors.ImageSharp.Processing;
 using System.Collections;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.AspNetCore.Mvc;
