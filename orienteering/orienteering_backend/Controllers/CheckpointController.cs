@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
+using System.Security.Authentication;
 
 namespace orienteering_backend.Controllers
 {
@@ -89,18 +90,23 @@ namespace orienteering_backend.Controllers
         [HttpDelete("removeCheckpoint")]
         public async Task<IActionResult> DeleteCheckpoint(string checkpointId)
         {
-            Console.WriteLine("prøver å slettw");
             Guid CheckpointId = new Guid(checkpointId);
-            bool removed = await _mediator.Send(new DeleteCheckpoint.Request(CheckpointId));
-            if (removed)
-            {
-                return Ok();
 
+            try
+            {
+                bool removed = await _mediator.Send(new DeleteCheckpoint.Request(CheckpointId));
+                return Ok();
             }
-            else
+            catch (AuthenticationException ex)
+            {
+                return Unauthorized();
+            }
+            catch
             {
                 return NotFound("Could not find the checkpoint to delete");
             }
+
+
 
         }
 

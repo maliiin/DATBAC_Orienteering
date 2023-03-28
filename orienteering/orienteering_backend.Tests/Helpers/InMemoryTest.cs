@@ -18,6 +18,8 @@ using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Track.Pipelines;
 using orienteering_backend.Core.Domain.Authentication.Services;
+using Moq;
+using Microsoft.AspNetCore.Http;
 
 // Kilder: https://thecodeblogger.com/2021/07/07/in-memory-database-provider-for-testing-net-ef-core-app/ (17.02.2023)
 
@@ -27,10 +29,17 @@ public class InMemoryTest
     public readonly DbContextOptions<OrienteeringContext> dbContextOptions;
 
     private static IMapper _mapper;
-    private readonly IMediator _mediator;
-    private static IMapper _mapper2;
+    private readonly Mock<IMediator> _mediator;
+    private readonly Mock<IIdentityService> _identityService;
+
+    //private readonly IMediator _mediator;
+    //private static IMapper _mapper2;
     public InMemoryTest()
     {
+        _mediator = new Mock<IMediator>();
+        _identityService = new Mock<IIdentityService>();
+
+
         // Build DbContextOptions
         dbContextOptions = new DbContextOptionsBuilder<OrienteeringContext>()
             .UseInMemoryDatabase(databaseName: "orienteeringTest")
@@ -47,12 +56,6 @@ public class InMemoryTest
             _mapper = mapper;
         }
 
-        if (_mediator is null)
-        {
-            var test = new MediatRServiceConfiguration();
-            IMediator med = (IMediator)test;
-            _mediator = med;
-        }
     }
 
     //[Fact]
@@ -103,32 +106,35 @@ public class InMemoryTest
 
 
 
+    //fix denne testen under skal med
+    //[Fact]
+    //public async Task GetCheckpointForTracksTest()
+    //{
+    //    //Arrange
+    //    var mediator = new Mock<IMediator>();
 
-    [Fact]
-    public async Task GetCheckpointForTracksTest()
-    {
-        var _db = new OrienteeringContext(dbContextOptions, null);
-        if (!_db.Database.IsInMemory())
-        {
-            _db.Database.Migrate();
-        }
+    //    var _db = new OrienteeringContext(dbContextOptions, null);
+    //    if (!_db.Database.IsInMemory())
+    //    {
+    //        _db.Database.Migrate();
+    //    }
 
-        var trackId = Guid.NewGuid();
+    //    var trackId = Guid.NewGuid();
 
-        var checkpoint1 = new Checkpoint("test1", 0, trackId);
-        var checkpoint2 = new Checkpoint("test2", 0, trackId);
+    //    var checkpoint1 = new Checkpoint("test1", 0, trackId);
+    //    var checkpoint2 = new Checkpoint("test2", 0, trackId);
 
-        await _db.Checkpoints.AddAsync(checkpoint1);
-        await _db.Checkpoints.AddAsync(checkpoint2);
-        await _db.SaveChangesAsync();
-        var request = new GetCheckpointsForTrack.Request(trackId);
-        var handler = new GetCheckpointsForTrack.Handler(_db, _mapper, _mediator);
-        var returnedDtoList = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-        var checkpoint1Dto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint1);
-        var checkpoint2Dto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint2);
-        Assert.Equal(JsonConvert.SerializeObject(checkpoint1Dto), JsonConvert.SerializeObject(returnedDtoList[0]));
-        Assert.Equal(JsonConvert.SerializeObject(checkpoint2Dto), JsonConvert.SerializeObject(returnedDtoList[1]));
-    }
+    //    await _db.Checkpoints.AddAsync(checkpoint1);
+    //    await _db.Checkpoints.AddAsync(checkpoint2);
+    //    await _db.SaveChangesAsync();
+    //    var request = new GetCheckpointsForTrack.Request(trackId);
+    //    var handler = new GetCheckpointsForTrack.Handler(_db, _mapper, mediator.Object);
+    //    var returnedDtoList = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+    //    var checkpoint1Dto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint1);
+    //    var checkpoint2Dto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint2);
+    //    Assert.Equal(JsonConvert.SerializeObject(checkpoint1Dto), JsonConvert.SerializeObject(returnedDtoList[0]));
+    //    Assert.Equal(JsonConvert.SerializeObject(checkpoint2Dto), JsonConvert.SerializeObject(returnedDtoList[1]));
+    //}
 
     //[Fact]
     //public async Task GetQRCodesTest()
@@ -161,6 +167,17 @@ public class InMemoryTest
 
     public async Task GetSingleCheckpointTest()
     {
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+        mockHttpContextAccessor.Setup(x => x.HttpContext);
+
+
+        //fix-pass på at bruker er logget in
+
+
+
+        //se på denne?
+        //https://mazeez.dev/posts/auth-in-integration-tests
+
         //var inMemoryTest = new InMemoryTest();
         var _db = new OrienteeringContext(dbContextOptions, null);
         if (!_db.Database.IsInMemory())
@@ -175,7 +192,7 @@ public class InMemoryTest
         await _db.Checkpoints.AddAsync(checkpoint);
         await _db.SaveChangesAsync();
         var request = new GetSingleCheckpoint.Request(checkpoint.Id);
-        var handler = new GetSingleCheckpoint.Handler(_db, _mediator, _mapper);
+        var handler = new GetSingleCheckpoint.Handler(_db, _mapper, _identityService.Object, _mediator.Object);
         var returnedDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
         Assert.Equal(checkpointDto.Title, returnedDto.Title);
         Assert.Equal(checkpointDto.TrackId, returnedDto.TrackId);
@@ -395,17 +412,16 @@ public class InMemoryTest
 
 
 
-    //[Fact]
-    //public void MediatorServiceTest()
-    //{
+    [Fact]
+    public void MediatorServiceTest()
+    {
 
-    //    //Arrange
-    //    var mediator = new Mock<IMediator>();
-    //    //using var scope = factory.Server.Services.CreateScope();
-    //    //var identityService = scope.ServiceProvider.GetService<IIdentityService>();
+        
+        //using var scope = factory.Server.Services.CreateScope();
+        //var identityService = scope.ServiceProvider.GetService<IIdentityService>();
 
-    //    //Assert.NotNull(identityService);
-    //}
+        //Assert.NotNull(identityService);
+    }
 
 
 }

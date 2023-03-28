@@ -40,7 +40,7 @@ public static class GetSingleCheckpoint
         {
             //check that signed in
             var userId = _identityService.GetCurrentUserId();
-            if (userId == null) { throw new AuthenticationException(); }
+            if (userId == null) { throw new AuthenticationException("user not signed in"); }
 
 
             var checkpoint = await _db.Checkpoints
