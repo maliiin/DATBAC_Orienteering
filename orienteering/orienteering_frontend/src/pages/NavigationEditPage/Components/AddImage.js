@@ -8,7 +8,6 @@ export default function AddImage(props) {
     });
     const imageRef = useRef(null);
     const [textDescription, setTextDescription] = useState("");
-    const [uploadStatus, setUploadStatus] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
