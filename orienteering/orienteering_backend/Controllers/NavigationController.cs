@@ -26,6 +26,7 @@ namespace orienteering_backend.Controllers
         [HttpPost("AddImage")]
         public async Task<ActionResult> AddImage([FromForm] IFormFile file)
         {
+            Console.WriteLine("kommer til controlleren");
             var checkpointId = HttpContext.Request.Form["checkpointId"];
             var textDescription = HttpContext.Request.Form["textDescription"];
 
