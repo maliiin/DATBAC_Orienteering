@@ -24,42 +24,65 @@ namespace orienteering_backend.Controllers
         {
             _mediator = Mediator;
         }
-        //bør userGuid sendes inn fra frontend? eller skal backend hente userId fra seg selv fra den som er logget inn?
+        //fix/se på -bør userGuid sendes inn fra frontend? eller skal backend hente userId fra seg selv fra den som er logget inn?
 
         [HttpGet("getQuiz")]
-        public async Task<QuizDto> GetQuiz(string quizId)
+        public async Task<ActionResult<QuizDto>> GetQuiz(string quizId)
         {
             var QuizId = new Guid(quizId);
-            var quizDto = await _mediator.Send(new GetQuiz.Request(QuizId));
-            return quizDto;
+
+            try
+            {
+                var quizDto = await _mediator.Send(new GetQuiz.Request(QuizId));
+                return quizDto;
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+
         }
 
         [HttpPost("addQuizQuestion")]
         public async Task<ActionResult> AddQuizQuestion(InputCreateQuestionDto inputQuizQuestions)
         {
+            try
+            {
+                //fix-sjekk status eller returner error hvis feil
+                var status = await _mediator.Send(new AddQuizQuestion.Request(inputQuizQuestions));
+                //fiks returtypen her!!!
 
-            var status = await _mediator.Send(new AddQuizQuestion.Request(inputQuizQuestions));
-            Console.WriteLine(status);
-            if (!status) {
-                //fiks retur type
+                return Created("Added quiz question.", null);
+
+            }
+            catch
+            {
                 return Unauthorized("something went wrong creating quiz question");
-                //return NotFound("Could not add Quiz question"); 
-            };
-            //fiks returtypen her!!!
-            return Created("Added quiz question.", null);
+
+            }
+            
         }
 
         [HttpDelete("deleteQuestion")]
-        public async Task DeleteQuestion(string questionId, string quizId)
+        public async Task<ActionResult> DeleteQuestion(string questionId, string quizId)
         {
-            Console.WriteLine("\n\n\n\nn\n\n delete!!!");
             //fix er dette ok navn på event?? det har jo ikke blitt slettet enda
-            Guid questionGuid=new Guid(questionId);
+            Guid questionGuid = new Guid(questionId);
             Guid quizGuid = new Guid(quizId);
 
-            //fix sjekk at det er rett bruker som er logget inn for dette
+            ////fix sjekk at det er rett bruker som er logget inn for dette
+            //før event i samme domain-nå pipeline
+            //await _mediator.Publish(new QuizQuestionDeleted(quizGuid, questionGuid));
 
-            await _mediator.Publish(new QuizQuestionDeleted(quizGuid, questionGuid));
+            try
+            {
+                await _mediator.Send(new DeleteQuizQuestion.Request(questionGuid, quizGuid));
+                return Ok();
+            }
+            catch
+            {
+                return Unauthorized();
+            }
 
         }
         [HttpGet("getNextQuizQuestion")]

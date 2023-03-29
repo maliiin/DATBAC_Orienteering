@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using orienteering_backend.Core.Domain.Authentication.Services;
+using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Infrastructure.Data;
@@ -10,41 +12,46 @@ using orienteering_backend.Infrastructure.Data;
 
 namespace orienteering_backend.Core.Domain.Track.Pipelines;
 
-public static class GetTrackUserByCheckpoint
+public static class GetTrackUserByQuiz
 {
     public record Request(
-        Guid trackId) : IRequest<TrackUserIdDto>;
-    //Guid UserId) : IRequest<List<Track>>;
+        Guid quizId) : IRequest<TrackUserIdDto>;
 
 
     public class Handler : IRequestHandler<Request, TrackUserIdDto>
-    //public class Handler : IRequestHandler<Request, List<Track>>
     {
         private readonly OrienteeringContext _db;
-
         private readonly IMapper _mapper;
+        private readonly IIdentityService _identityService;
+        private readonly IMediator _mediator;
 
-        public Handler(OrienteeringContext db, IMapper mapper)
+        public Handler(OrienteeringContext db, IMapper mapper, IIdentityService identityService, IMediator mediator)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(_mapper));
-
+            _mapper = mapper;
+            _identityService = identityService;
+            _mediator = mediator;
         }
 
+        //return TrackUserIdDto from quizId
         public async Task<TrackUserIdDto> Handle(Request request, CancellationToken cancellationToken)
-        {
+        { 
+            //get trackid
+            var trackId=await _mediator.Send(new GetTrackIdForQuiz.Request(request.quizId));
+
+            //get track
             var track = await _db.Tracks
-                .Where(t => t.Id == request.trackId)
-                .FirstOrDefaultAsync();
+                .Where(t => t.Id == trackId)
+                .FirstOrDefaultAsync(cancellationToken);
 
             //fix error hvis null
             if (track == null) { return null; }
 
+            //fix-bør dette heller kun returnere guid til user istedenfor trackide også?
+            //isåfall gjelder dette for alle stedene man bruker trackuserIdDto
             //create dto
             TrackUserIdDto trackDto = _mapper.Map<TrackUserIdDto>(track);
-
             return trackDto;
         }
     }
-
 }

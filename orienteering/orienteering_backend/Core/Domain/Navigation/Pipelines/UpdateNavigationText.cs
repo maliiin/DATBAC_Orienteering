@@ -45,9 +45,14 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                     .FirstOrDefaultAsync(cancellationToken);
                 if (navigation == null) { return false; }
 
+
+                //fix-bør disse to under slås sammen til en eller ikke?
+                //tror den GetTrackUser kanskje kan slås om til den andre
+
                 //check that user is allowed to access this navigation
                 CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(navigation.ToCheckpoint));
                 TrackUserIdDto track = await _mediator.Send(new GetTrackUser.Request(checkpoint.TrackId));
+
                 if (userId != track.UserId) { throw new AuthenticationException(); }
 
                 foreach (var navImage in navigation.Images)
@@ -60,19 +65,6 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                 }
                 await _db.SaveChangesAsync(cancellationToken);
                 return true;
-
-                //navigation
-
-                ////get checkpoint
-                //var checkpoint = await _db.Checkpoints
-                //    .Where(ch => ch.Id == request.checkpointId)
-                //    .FirstOrDefaultAsync(cancellationToken);
-
-                //if (checkpoint == null) { return null; };
-
-                //checkpoint.Title = request.checkpointTitle;
-                //await _db.SaveChangesAsync(cancellationToken);
-                //return checkpoint;
             }
         }
 

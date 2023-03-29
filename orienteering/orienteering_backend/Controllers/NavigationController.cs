@@ -65,11 +65,20 @@ namespace orienteering_backend.Controllers
 
 
         [HttpGet("GetNavigation")]
-        public async Task<NavigationDto> GetNavigation(string checkpointId)
+        public async Task<ActionResult<NavigationDto>> GetNavigation(string checkpointId)
         {
             Guid checkpointGuid = new(checkpointId);
-            NavigationDto navDto = await _mediator.Send(new GetNavigation.Request(checkpointGuid));
-            return navDto;
+
+            try
+            {
+                NavigationDto navDto = await _mediator.Send(new GetNavigation.Request(checkpointGuid));
+                return navDto;
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+            
         }
 
 
