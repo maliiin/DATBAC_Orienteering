@@ -58,6 +58,8 @@ public class SessionController : ControllerBase
                 var timeNow = DateTime.Now;
                 var timeUsed = Math.Floor(timeNow.Subtract(startTime).TotalMinutes).ToString();
                 trackLoggingDto.TimeUsed = timeUsed;
+                HttpContext.Session.Remove("StartCheckpoint");
+                HttpContext.Session.Remove("StartTime");
                 return trackLoggingDto;
             }
             else
@@ -72,12 +74,7 @@ public class SessionController : ControllerBase
         }
     }
 
-    [HttpGet("clearFinishedTrack")]
-    public void clearSessionDetails()
-    {
-        HttpContext.Session.Remove("StartCheckpoint");
-        HttpContext.Session.Remove("StartTime");
-    }
+
 
 
 
