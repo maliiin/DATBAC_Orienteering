@@ -42,9 +42,9 @@ export default function TrackOverview() {
 
         setUserInfo(prevState => { return { ...prevState, Id: data.id } });
     };
-
+    //fiks-trenger vi brukerid i det helet tatt
     const loadTrack = async () => {
-        const response = await fetch("api/track/getTracks?userId=" + userInfo.Id);
+        const response = await fetch("api/track/getTracks");
         if (!response.ok) {
             navigate("/errorpage");
         }

@@ -27,44 +27,76 @@ namespace orienteering_backend.Controllers
 
         //greate new track
         //POST
-       // [Authorize]
+        // [Authorize]
         [HttpPost("createTrack")]
-        public async Task<Guid> CreateTrack(TrackDto trackDto)
+        public async Task<ActionResult> CreateTrack(CreateTrackDto trackDto)
         {
-            var newTrackId = await _mediator.Send(new CreateTrack.Request(trackDto));
-            return newTrackId;
+            //tar ikke in userid lenger, det skal backend hente inn selv
+            //fiks det i pipelinen
+            //sjekk at det virker etterpå
+            try
+            {
+                var newTrackId = await _mediator.Send(new CreateTrack.Request(trackDto));
+                return Ok();
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+
         }
 
-        
+
         //list of all tracks of a user
         [HttpGet("getTracks")]
-        public async Task<List<TrackDto>> GetTracksByUserId(string userId)
+        public async Task<ActionResult<List<TrackDto>>> GetTracksByUserId()
         {
-            var UserId =  new Guid(userId);
-            var tracks = await _mediator.Send(new GetTracks.Request(UserId));
-            return tracks;
+            try
+            {
+                var tracks = await _mediator.Send(new GetTracks.Request());
+                return Ok(tracks);
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+
         }
 
 
         [HttpGet("getTrack")]
-        public async Task<TrackDto> GetSingleTrack(string trackId)
+        public async Task<ActionResult<TrackDto>> GetSingleTrack(string trackId)
         {
+            try
+            {
+                Guid trackGuid = new Guid(trackId);
+                TrackDto trackDto = await _mediator.Send(new GetSingleTrack.Request(trackGuid));
+                return trackDto;
+            }
+            catch
+            {
+                return Unauthorized();
+            }
 
-            Guid trackGuid = new Guid(trackId);
-            TrackDto trackDto = await _mediator.Send(new GetSingleTrack.Request(trackGuid));
-
-            return trackDto;
 
         }
 
+        //fiks-sjekk metode put eller patch
         [HttpPut("updateTrackTitle")]
         public async Task<IActionResult> UpdateTrackTitle(string trackId, string newTitle)
         {
-
             Guid trackGuid = new Guid(trackId);
-            bool response = await _mediator.Send(new UpdateTrackTitle.Request(trackGuid, newTitle));
-            if(response) { return Ok(); }
-            else { return NotFound("could not find the track to update"); }
+            try
+            {
+                bool response = await _mediator.Send(new UpdateTrackTitle.Request(trackGuid, newTitle));
+                //fiks sjekk respons
+                if (response) { return Ok(); }
+                else { return NotFound("could not find the track to update"); }
+            }
+            catch
+            {
+                return Unauthorized();
+            }
 
         }
 
@@ -73,10 +105,13 @@ namespace orienteering_backend.Controllers
         public async Task<IActionResult> DeleteTrack(string trackId)
         {
             Guid trackGuid = new Guid(trackId);
-            bool response = await _mediator.Send(new DeleteTrack.Request(trackGuid));
-            if (response) { return Ok(); }
-            //fix error her!!
-            else { return Unauthorized(); }
+            try
+            {
+                //fiks sjekk respons
+                bool response = await _mediator.Send(new DeleteTrack.Request(trackGuid));
+                return Ok();
+            }
+            catch { return Unauthorized(); }
 
         }
 

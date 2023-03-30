@@ -85,6 +85,8 @@ namespace orienteering_backend.Controllers
             }
 
         }
+
+        //ikke sikret pga trenger ikke å logge inn
         [HttpGet("getNextQuizQuestion")]
         public async Task<NextQuizQuestionDto> GetNextQuizQuestion(string quizId, string quizQuestionIndex)
         {
@@ -94,6 +96,8 @@ namespace orienteering_backend.Controllers
             return nextQuizQuestionDto;
         }
 
+
+        //ikke sikret pga trenger ikke å logge inn
         [HttpGet("getSolution")]
         public async Task<string> getSolution(string quizId, string quizQuestionId)
         {

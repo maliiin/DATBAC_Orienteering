@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Infrastructure.Data;
+using System.Security.Authentication;
 //Kilder: CampusEats lab fra dat240
 // Kilder: https://github.com/dat240-2022/assignments/blob/main/Lab3/UiS.Dat240.Lab3/Core/Domain/Cart/Pipelines/AddItem.cs (07.02.2023)
 // Brukte samme struktur på pipelinen som i kilden
@@ -14,38 +16,38 @@ public static class GetSingleTrack
 {
     public record Request(
         Guid trackId) : IRequest<TrackDto>;
-    //Guid UserId) : IRequest<List<Track>>;
 
 
     public class Handler : IRequestHandler<Request, TrackDto>
-    //public class Handler : IRequestHandler<Request, List<Track>>
     {
         private readonly OrienteeringContext _db;
-
         private readonly IMapper _mapper;
+        private readonly IIdentityService _identityService;
+        private readonly IMediator _mediator;
 
-        public Handler(OrienteeringContext db, IMapper mapper)
+        public Handler(OrienteeringContext db, IMapper mapper, IIdentityService identityService, IMediator mediator)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(_mapper));
-
+            _mapper = mapper;
+            _identityService = identityService;
+            _mediator = mediator;
         }
 
         public async Task<TrackDto> Handle(Request request, CancellationToken cancellationToken)
-        // public async Task<List<Track>> Handle(Request request, CancellationToken cancellationToken)
         {
+            //check that signed in
+            var userId = _identityService.GetCurrentUserId();
+            if (userId == null) { throw new AuthenticationException("user not signed in"); }
+
             var track = await _db.Tracks
                 .Where(t => t.Id == request.trackId)
                 .FirstOrDefaultAsync();
+            if (track == null) { throw new NullReferenceException("this track dont exist"); }
 
-            //var tracks = await _db.Tracks
-            //                             .Where(t => t.UserId == request.UserId)
-            //                             .Include(t => t.CheckpointList)
-            //                             .ToArrayAsync(cancellationToken);//ToListAsync();
-            //Console.WriteLine($"lengde inni {tracks.Count}");
-            if(track is null) { throw new NullReferenceException("track is null."); };
-            //TrackDto trackDto = new(track.UserId, track.Name);
-            //trackDto.TrackId = track.Id;
+            //check that user is allowed to access track
+            if (userId != track.UserId) { throw new AuthenticationException("user not allowed to access this"); }
+            
+            //create dto
             var trackDto = _mapper.Map<Track, TrackDto>(track);
             return trackDto;
         }

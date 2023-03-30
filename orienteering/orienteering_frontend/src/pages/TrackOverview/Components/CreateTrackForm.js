@@ -8,15 +8,17 @@ import { Link, redirect, useNavigate } from 'react-router-dom';
 export default function CreateTrackForm(props) {
     //props is props.Trackinfo (id, name, userid ...)
     const [trackInfo, setTrackInfo] = useState({
-        UserId: "",
+        //UserId: "",
         TrackName: ""
     });
 
     const navigate = useNavigate();
 
     //set userId from props
+    //fiks tror ikke dette trengs
+    //trenger heller ikke sende inn userId??
     useEffect(() => {
-        setTrackInfo(prevState => { return { ...prevState, UserId: props.id } });
+        //setTrackInfo(prevState => { return { ...prevState, UserId: props.id } });
         console.log("gjort")
         console.log(props.id)
     }, [props.id]); 
@@ -45,9 +47,11 @@ export default function CreateTrackForm(props) {
         //if (response.status.su
 
         //clear form
-        setTrackInfo({...trackInfo,
+        setTrackInfo({
             TrackName: ""
         });
+
+
         return response;
 
 
@@ -55,7 +59,7 @@ export default function CreateTrackForm(props) {
 
     const handleChange = (event) => {
         //update state
-        setTrackInfo({ ...trackInfo, [event.target.name]: event.target.value });
+        setTrackInfo({ TrackInfo: event.target.value });
     };
 
 
@@ -80,9 +84,6 @@ export default function CreateTrackForm(props) {
         </form>
     </>);
 }
-//videre:
-//lag onclik som redirecter til enTrack overview
-//lag side som displayer hver enkelt post
-//flytt ting i mappe
+
 
 
