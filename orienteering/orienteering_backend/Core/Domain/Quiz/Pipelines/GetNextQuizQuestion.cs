@@ -53,6 +53,7 @@ public static class GetNextQuizQuestion
             nextQuizQuestion.Alternatives = alternativeDtoList;
             nextQuizQuestion.QuizQuestionId = quizQuestion.Id;
             nextQuizQuestion.Question = quizQuestion.Question;
+            nextQuizQuestion.CorrectAlternative = quizQuestion.CorrectAlternative;
             //var nextQuizQuestion = _mapper.Map<QuizQuestion, NextQuizQuestionDto>(quizQuestion);
             // Sjekker om det er siste quizquestion i quiz
             if ((request.quizQuestionIndex + 1) == Quiz.QuizQuestions.Count)

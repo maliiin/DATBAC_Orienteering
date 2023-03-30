@@ -21,7 +21,7 @@ export default function DisplayImagesUser(props) {
                     margin:"20px"
 
                 }}
-            >{props.imageInfo.textDescription}</p>
+            >{props.imageInfo.textDescription} you should now be close to the next chceckpoint. Open your camera and scan the qrcode. </p>
         </>);
 
 
