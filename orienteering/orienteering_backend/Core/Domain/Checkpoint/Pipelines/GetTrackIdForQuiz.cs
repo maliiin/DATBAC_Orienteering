@@ -44,7 +44,7 @@ public static class GetTrackIdForQuiz
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (checkpoint is null) { throw new NullReferenceException("the checkpoint cannot be found"); };
-            return checkpoint.Id;
+            return checkpoint.TrackId;
         }
     }
 

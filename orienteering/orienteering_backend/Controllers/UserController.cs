@@ -68,6 +68,7 @@ namespace orienteering_backend.Controllers
         }
 
 
+        //fiks-er denne nødvendig å ha? nå kan dette skje i en service heller
         [HttpGet]
         [Route("GetSignedInUserId")]
         public ActionResult<object> GetSignedInUserId()
@@ -106,25 +107,25 @@ namespace orienteering_backend.Controllers
 
         
 
-        //fix-denne skal slettes? brukes ikke
-        // GET: api/User/username
-        [HttpGet]
-        //testing authorization/authentication
-        [Authorize]
-        [Route("{username}")]
+        ////fix-denne skal slettes? brukes ikke
+        //// GET: api/User/username
+        //[HttpGet]
+        ////testing authorization/authentication
+        //[Authorize]
+        //[Route("{username}")]
         
-        public async Task<ActionResult<UserRegistration>> GetUser(string username)
-        {
-            IdentityUser user = await _userManager.FindByNameAsync(username);
+        //public async Task<ActionResult<UserRegistration>> GetUser(string username)
+        //{
+        //    IdentityUser user = await _userManager.FindByNameAsync(username);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return Ok(user);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(user);
 
-            //return CreatedAtAction("GetUser", new { username = user.UserName }, user);
-        }
+        //    //return CreatedAtAction("GetUser", new { username = user.UserName }, user);
+        //}
 
     }
 }

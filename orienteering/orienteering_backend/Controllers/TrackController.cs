@@ -112,7 +112,6 @@ namespace orienteering_backend.Controllers
                 return Ok();
             }
             catch { return Unauthorized(); }
-
         }
 
     }

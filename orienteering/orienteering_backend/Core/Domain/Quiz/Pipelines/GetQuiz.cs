@@ -37,16 +37,16 @@ public static class GetQuiz
         public async Task<QuizDto> Handle(Request request, CancellationToken cancellationToken)
         {
             //check that signed in
-            var userId = _identityService.GetCurrentUserId();
-            if (userId == null) { throw new AuthenticationException("user not signed in"); }
+            //var userId = _identityService.GetCurrentUserId();
+            //if (userId == null) { throw new AuthenticationException("user not signed in"); }
 
             //check that user is allowed to access this quiz
-            var trackUser = await _mediator.Send(new GetTrackUserByQuiz.Request(request.QuizId));
-            if (trackUser.UserId != userId)
-            {
-                //the user that owns the track is not the one signed in
-                throw new AuthenticationException("the quiz is not owned by that user");
-            }
+            //var trackUser = await _mediator.Send(new GetTrackUserByQuiz.Request(request.QuizId));
+            //if (trackUser.UserId != userId)
+            //{
+            //    //the user that owns the track is not the one signed in
+            //    throw new AuthenticationException("the quiz is not owned by that user");
+            //}
 
             //get quiz
             var quiz = await _db.Quiz

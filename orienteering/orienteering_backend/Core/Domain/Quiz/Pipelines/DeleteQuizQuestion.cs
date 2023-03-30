@@ -16,12 +16,12 @@ public static class DeleteQuizQuestion
 {
     public record Request(
         Guid quizQuestionId, Guid quizId
-        );
+        ):IRequest<bool>;
 
 
     //fix- se på denne-har ingen returtype
     //hvis ok bør vi se på de andre som heller ikke trenger å returnere noe
-    public class Handler : IRequest
+    public class Handler : IRequestHandler<Request, bool>
     {
         private readonly OrienteeringContext _db;
         private readonly IMapper _mapper;
@@ -36,7 +36,7 @@ public static class DeleteQuizQuestion
             _mediator = mediator;
         }
 
-        public async Task Handle(Request request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
         {
 
             //check that signed in
@@ -53,17 +53,20 @@ public static class DeleteQuizQuestion
 
             var quiz = await _db.Quiz
                .Where(q => q.Id == request.quizId)
+               .Include(q=>q.QuizQuestions)
                .FirstOrDefaultAsync(cancellationToken);
+
 
 
             //if quiz is null, the checkpoint did not have quiz
             //else delete the quiz
             if (quiz != null)
             {
-                _db.Quiz.Remove(quiz);
+                quiz.RemoveQuizQuestion(request.quizQuestionId);
                 await _db.SaveChangesAsync(cancellationToken);
             }
             //fix ingenting skjer hvis quiz er null??
+            return true;
         }
     }
 }

@@ -61,6 +61,9 @@ namespace orienteering_backend.Infrastructure.Automapper
             CreateMap<NavigationClass, NavigationDto>()
                 .ConstructUsing(src => new NavigationDto(src.ToCheckpoint));
             CreateMap<Track, TrackUserIdDto>();
+            CreateMap<CreateTrackDto, Track>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.TrackName));
+
 
         }
     }

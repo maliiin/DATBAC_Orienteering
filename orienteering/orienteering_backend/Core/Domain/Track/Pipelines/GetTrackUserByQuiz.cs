@@ -36,7 +36,7 @@ public static class GetTrackUserByQuiz
         //return TrackUserIdDto from quizId
         public async Task<TrackUserIdDto> Handle(Request request, CancellationToken cancellationToken)
         { 
-            //get trackid
+            //get trackid from checkpoint domain
             var trackId=await _mediator.Send(new GetTrackIdForQuiz.Request(request.quizId));
 
             //get track

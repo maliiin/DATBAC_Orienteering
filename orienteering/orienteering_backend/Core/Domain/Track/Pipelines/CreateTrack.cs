@@ -37,6 +37,7 @@ public static class CreateTrack
             if (userId == null) { throw new AuthenticationException("user not signed in"); }
 
             var newTrack = _mapper.Map<CreateTrackDto, Track>(request.trackDto);
+            Console.WriteLine(newTrack.Name);
             newTrack.UserId = userId;
 
             await _db.Tracks.AddAsync(newTrack, cancellationToken);

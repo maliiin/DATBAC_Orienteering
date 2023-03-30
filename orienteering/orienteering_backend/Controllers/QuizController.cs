@@ -81,7 +81,7 @@ namespace orienteering_backend.Controllers
             }
             catch
             {
-                return Unauthorized();
+                return Unauthorized("not able to delete question");
             }
 
         }
