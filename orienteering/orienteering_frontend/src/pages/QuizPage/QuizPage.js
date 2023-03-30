@@ -15,7 +15,7 @@ export default function QuizPage() {
     //alternatives to guess
     const [radios, setRadios] = useState("");
 
-    const [quizId, setQuizId] = useState("");
+    const [quiz, setQuiz] = useState("");
     const [quizQuestionIndex, setQuizQuestionIndex] = useState(0);
 
     //this is one question
@@ -25,7 +25,7 @@ export default function QuizPage() {
     const [quizStatus, setQuizStatus] = useState(false);
 
     useEffect(() => {
-        getQuizId();
+        getQuiz();
 
        // fetchQuizQuestion();
         checkSession();
@@ -38,29 +38,35 @@ export default function QuizPage() {
     }, [currentQuizQuestion]);
 
     useEffect(() => {
-        if (quizId != "") {
+        if (quiz != "") {
             getQuizQuestion();
         }
-    }, [quizQuestionIndex, quizId]);
+    }, [quizQuestionIndex, quiz]);
 
     async function checkSession() {
         const url = "/api/session/setStartCheckpoint?checkpointId=" + params.checkpointId;
         await fetch(url);
     }
 
-    async function getQuizId() {
+    async function getQuiz() {
         const url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
         const response = await fetch(url);
         if (!response.ok) {
             navigate("/errorpage");
         }
         const checkpointDto = await response.json();
-        setQuizId(checkpointDto.quizId);
+        const quizUrl = "/api/quiz/getQuiz?quizId=" + checkpointDto.quizId;
+        const quizResponse = await fetch(quizUrl);
+        if (!quizResponse.ok) {
+            navigate("/errorpage");
+        }
+        const fetchedQuiz = await quizResponse.json(); 
+        setQuiz(fetchedQuiz);
     }
 
     async function getQuizQuestion() {
-        const url = "/api/quiz/getNextQuizQuestion?quizId=" + quizId + "&quizQuestionIndex=" + quizQuestionIndex.toString();
-        const quizQuestion = await fetch(url).then(res => res.json());
+        //const url = "/api/quiz/getNextQuizQuestion?quizId=" + quizId + "&quizQuestionIndex=" + quizQuestionIndex.toString();
+        const quizQuestion = quiz.quizQuestions[quizQuestionIndex];
         setCurrentQuizQuestion(quizQuestion);
     };
 
@@ -74,13 +80,16 @@ export default function QuizPage() {
 
         //check if answer is correct
         if (solution == guess) {
-            setQuizStatus(<p>Correct answer</p>)
+            setQuizStatus(<>
+                <p>Correct answer</p>
+            </>
+                )
         } else {
-            setQuizStatus(<p>Wrong answer. Riktig svar var: {solution}</p>)
+            setQuizStatus(<p>Wrong answer. Correct answer is: {solution}</p>)
         }
 
         //check if end of quiz or not
-        if (currentQuizQuestion.endOfQuiz == true) {
+        if (quiz.quizQuestions.length == quizQuestionIndex + 1) {
             setEndOfQuiz(true);
         }
         else {
