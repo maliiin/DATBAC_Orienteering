@@ -21,7 +21,7 @@ export default function DisplayImagesUser(props) {
                     margin:"20px"
 
                 }}
-            >{props.imageInfo.textDescription}</p>
+            >{props.imageInfo.textDescription} </p>
         </>);
 
 

@@ -5,7 +5,6 @@ import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import AddQuizQuestion from "./Components/AddQuizQuestion";
 import DisplayQuiz from "./Components/DisplayQuiz";
-import { Check } from '../../../../node_modules/@mui/icons-material/index';
 
 //page
 //display all info of a single checkpoint
@@ -17,6 +16,7 @@ export default function CheckpointDetails() {
     const [hasQuiz, setHasQuiz] = useState(false);
     const [QuizId, setQuizId] = useState("");
     const [quizChanged, setQuizChanged] = useState(1);
+    const [gameType, setGameType] = useState("");
 
     const params = useParams();
     const checkpointId = params.checkpointId;
@@ -26,6 +26,12 @@ export default function CheckpointDetails() {
         //fiks naviger- naviger om feil status
         //https://auth0.com/blog/forbidden-unauthorized-http-status-codes/ 
         
+    const games = { 1: "Fallingboxes", 2: "Chemistry", 3: "LogicGates" };
+
+
+    useEffect(() => {
+        //is authenticated and correct track?
+        const isAuthenticated = async () => {
 
         console.log(response.status);
         const checkpoint = await response.json();
@@ -70,7 +76,7 @@ export default function CheckpointDetails() {
 
     } else {
         return (<>
-            <p> You have chosen game</p>
+            <p> The game you have chosen for this checkpoint: {gameType}</p>
             <p></p>
         </>);
     };

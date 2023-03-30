@@ -39,6 +39,7 @@ export default function AddImage(props) {
         };
 
         var response = await fetch('/api/navigation/AddImage', requestAlternatives);
+ 
 
         //update parent
         props.updateImages();
@@ -71,8 +72,12 @@ export default function AddImage(props) {
     return (
         <>
 
-            <Box onSubmit={handleSubmit} component="form">
+            <Box onSubmit={handleSubmit} component="form" style={{ width: "80%" }}>
+                <p>Upload images showing the path from previous checkpoint to this checkpoint</p>
+                <p>For the first checkpoint, the "previous" checkpoint will be the one created last</p>
+                <p>The navigation will show the images in the order which they are added</p>
 
+                <h4>Add more images</h4>
                 <input
                     //multiple
                     type="file"
@@ -93,6 +98,7 @@ export default function AddImage(props) {
                     name="TextDescription"
                     variant="standard"
                     value={textDescription}
+                    inputProps={{ maxLength: 80 }}
                 >
                 </TextField>
                 <br></br>
@@ -102,7 +108,9 @@ export default function AddImage(props) {
                 >
                     Add Image
                 </Button>
+                <p>If the image won't be uploaded, try to downscale the image</p>
             </Box>
+
 
 
         </>);

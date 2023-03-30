@@ -38,7 +38,6 @@ export default function CheckpointNavigation() {
         if (sessionInfo.timeUsed != null) {
             setTrackFinished(true);
             setTotalTime(sessionInfo.timeUsed);
-            await fetch("/api/session/clearFinishedTrack");
         }
 
             setImagesList(nav.images.map((imageInfo, index) =>
@@ -101,6 +100,15 @@ export default function CheckpointNavigation() {
                         }}
                     >
                         Next image
+                    </Button>
+                    <Button
+                        disabled
+                        style={{
+                            display: current >= imagesList.length - 1 ?   "inline":"none"
+                            //visibility: current >= imagesList.length - 1 ? "hidden" : "inline"
+                        }}
+                    >
+                        Scan QR code
                     </Button>
                 </Grid>
 
