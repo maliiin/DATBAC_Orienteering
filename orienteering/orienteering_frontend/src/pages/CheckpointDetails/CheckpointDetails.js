@@ -13,8 +13,7 @@ import { Check } from '../../../../node_modules/@mui/icons-material/index';
 export default function CheckpointDetails() {
 
     const navigate = useNavigate();
-    //endre navn? fix. til autenticated ?
-    const [render, setRender] = useState(false);
+    //const [render, setRender] = useState(false);
     const [hasQuiz, setHasQuiz] = useState(false);
     const [QuizId, setQuizId] = useState("");
     const [quizChanged, setQuizChanged] = useState(1);
@@ -22,59 +21,31 @@ export default function CheckpointDetails() {
     const params = useParams();
     const checkpointId = params.checkpointId;
 
+    const loadCheckpoint = async () => {
+        const response = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId);
+        //fiks naviger- naviger om feil status
+        //https://auth0.com/blog/forbidden-unauthorized-http-status-codes/ 
+        
+
+        console.log(response.status);
+        const checkpoint = await response.json();
+
+        if (checkpoint.gameId == 0) {
+
+            //this checkpoint has quiz
+            setHasQuiz(true);
+            setQuizId(checkpoint.quizId);
+        };
+    }
+
+    
 
     useEffect(() => {
-        //is authenticated and correct track?
-        const isAuthenticated = async () => {
-
-            const checkUserUrl = "/api/user/getSignedInUserId";
-            const response = await fetch(checkUserUrl);
-
-            if (!response.ok) {
-                //not signed in, redirect to login
-                navigate("/login");
-                return false;
-            };
-
-            const user = await response.json();
-            const userId = user.id;
-
-            //load checkpoint
-            const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId).then(res => res.json());
-            console.log(checkpoint.quizId);
-            console.log(typeof (checkpoint.quizId));
-            console.log(checkpoint.gameId);
+        loadCheckpoint();
+    })
 
 
-            if (checkpoint.gameId == 0) {
-
-                //this checkpoint has quiz
-                setHasQuiz(true);
-                setQuizId(checkpoint.quizId);
-            };
-
-
-            //check that the signed in user owns the track
-            const trackId = checkpoint.trackId;
-            const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
-
-            const track = await fetch(getTrackUrl).then(res => res.json());
-
-            if (userId != track.userId) {
-                navigate("/unauthorized");
-                return false;
-            }
-            return true;
-
-        };
-
-        isAuthenticated().then(result => { setRender(result) });
-
-    }, []);
-
-
-    console.log(hasQuiz);
-    if (render && hasQuiz) {
+    if (hasQuiz) {
 
         return (<>
             <Grid
@@ -84,20 +55,20 @@ export default function CheckpointDetails() {
                 direction={{ xs: "column-reverse", md: "row" }}
 
             >
-                
-                <Grid item xs={10} md={6 }>
+
+                <Grid item xs={10} md={6}>
                     <h4>Questions</h4>
                     <DisplayQuiz quizChanged={quizChanged} setQuizChanged={setQuizChanged} quizId={QuizId}></DisplayQuiz>
                 </Grid>
 
-                <Grid item xs={10} md={6 }>
+                <Grid item xs={10} md={6}>
                     <h4>Add more questions here</h4>
                     <AddQuizQuestion quizChanged={quizChanged} setQuizChanged={setQuizChanged} ></AddQuizQuestion>
                 </Grid>
             </Grid>
         </>);
 
-    } else if(render) {
+    } else {
         return (<>
             <p> You have chosen game</p>
             <p></p>
@@ -105,4 +76,53 @@ export default function CheckpointDetails() {
     };
 };
 
+//fix slett dette
+//useEffect(() => {
+    //    //is authenticated and correct track?
+    //    const isAuthenticated = async () => {
 
+    //        //const checkUserUrl = "/api/user/getSignedInUserId";
+    //        //const response = await fetch(checkUserUrl);
+
+    //        //if (!response.ok) {
+    //        //    //not signed in, redirect to login
+    //        //    navigate("/login");
+    //        //    return false;
+    //        //};
+
+    //        //const user = await response.json();
+    //        //const userId = user.id;
+
+    //        //load checkpoint
+    //        const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId).then(res => res.json());
+    //        //console.log(checkpoint.quizId);
+    //        //console.log(typeof (checkpoint.quizId));
+    //        //console.log(checkpoint.gameId);
+
+
+    //        if (checkpoint.gameId == 0) {
+
+    //            //this checkpoint has quiz
+    //            setHasQuiz(true);
+    //            setQuizId(checkpoint.quizId);
+    //        };
+
+
+    //        ////check that the signed in user owns the track
+    //        //const trackId = checkpoint.trackId;
+    //        //const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
+
+    //        //const track = await fetch(getTrackUrl).then(res => res.json());
+
+    //        //if (userId != track.userId) {
+    //        //    navigate("/unauthorized");
+    //        //    return false;
+    //        //}
+    //        //return true;
+
+    //    };
+
+    //    //isAuthenticated().then(result => { setRender(result) });
+    //    loadCheckpoint();
+
+    //}, []);

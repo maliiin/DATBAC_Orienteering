@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 
 export default function AddQuizQuestion(props) {
     const params = useParams();
-    console.log(params.checkpointId);
+    //console.log(params.checkpointId);
     const navigate = useNavigate();
 
     const [questionInfo, setQuestionInfo] = useState({
@@ -125,7 +125,7 @@ export default function AddQuizQuestion(props) {
         const GetQuizId = async () => {
             const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId).then(res => res.json());
             setQuestionInfo({ ...questionInfo, QuizId: checkpoint.quizId });
-            console.log(checkpoint);
+            //console.log(checkpoint);
 
         }
 

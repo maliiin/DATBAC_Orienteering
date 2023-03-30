@@ -17,19 +17,19 @@ export default function CreateTrackForm(props) {
     //set userId from props
     //fiks tror ikke dette trengs
     //trenger heller ikke sende inn userId??
-    useEffect(() => {
-        //setTrackInfo(prevState => { return { ...prevState, UserId: props.id } });
-        console.log("gjort")
-        console.log(props.id)
-    }, [props.id]); 
+    //useEffect(() => {
+    //    //setTrackInfo(prevState => { return { ...prevState, UserId: props.id } });
+    //    console.log("gjort")
+    //    console.log(props.id)
+    //}, [props.id]); 
 
     //display spesific track
     const handleSubmit = async (event) => {
         
-        setTrackInfo(prevState => { return { ...prevState, UserId: props.id } });
+        //setTrackInfo(prevState => { return { ...prevState, UserId: props.id } });
 
-        console.log(trackInfo.id)
-        console.log(props.id)
+        //console.log(trackInfo.id)
+       // console.log(props.id)
         event.preventDefault();
 
         const requestOptions = {
@@ -59,7 +59,7 @@ export default function CreateTrackForm(props) {
 
     const handleChange = (event) => {
         //update state
-        setTrackInfo({ TrackInfo: event.target.value });
+        setTrackInfo({ TrackName: event.target.value });
     };
 
 

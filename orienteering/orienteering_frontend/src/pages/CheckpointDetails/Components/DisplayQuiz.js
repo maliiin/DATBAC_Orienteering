@@ -13,7 +13,7 @@ export default function DisplayQuiz(props) {
     const fetchQuiz = async () => {
         const Quiz = await fetch("/api/quiz/getQuiz?quizId=" + props.quizId).then(res => res.json());
         setQuizQuestions(Quiz.quizQuestions);
-        console.log(Quiz.quizQuestions);
+        //console.log(Quiz.quizQuestions);
     }
 
     useEffect(() => {

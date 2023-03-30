@@ -72,7 +72,7 @@ export default function TrackOverview() {
                 navigate("/login");
                 return false;
             } else {
-                console.log("user is signed in");
+                //console.log("user is signed in");
                 return true;
             };
 
@@ -93,10 +93,8 @@ export default function TrackOverview() {
 
     }, [userInfo.Id]);
 
-    const test = () => {
-        console.log("dette er test");
-    }
-    console.log(render);
+    
+    //console.log(render);
     if (render == true) {
 
         return (
