@@ -69,6 +69,7 @@ export default function DisplayImagesAdmin(props) {
                         value={oldText}
                         onChange={handleChange}
                         onBlur={stopEdit}
+                        maxLength={80}
                     >
                     </input>
 

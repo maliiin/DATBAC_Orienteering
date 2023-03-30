@@ -68,8 +68,9 @@ export default function QuizPage() {
         event.preventDefault();
 
         //get correct answer from backend
-        var url = "/api/quiz/getSolution?quizId=" + quizId + "&quizQuestionId=" + currentQuizQuestion.quizQuestionId;
-        var solution = await fetch(url).then(res => res.text());
+        //var url = "/api/quiz/getSolution?quizId=" + quizId + "&quizQuestionId=" + currentQuizQuestion.quizQuestionId;
+        //Fix: Fjern getsolution pipeline
+        var solution = currentQuizQuestion.alternatives[currentQuizQuestion.correctAlternative - 1].text;
 
         //check if answer is correct
         if (solution == guess) {

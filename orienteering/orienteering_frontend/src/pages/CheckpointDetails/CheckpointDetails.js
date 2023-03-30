@@ -17,9 +17,12 @@ export default function CheckpointDetails() {
     const [hasQuiz, setHasQuiz] = useState(false);
     const [QuizId, setQuizId] = useState("");
     const [quizChanged, setQuizChanged] = useState(1);
+    const [gameType, setGameType] = useState("");
 
     const params = useParams();
     const checkpointId = params.checkpointId;
+
+    const games = { 1: "Fallingboxes", 2: "Chemistry", 3: "LogicGates" };
 
 
     useEffect(() => {
@@ -40,9 +43,7 @@ export default function CheckpointDetails() {
 
             //load checkpoint
             const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId).then(res => res.json());
-            console.log(checkpoint.quizId);
-            console.log(typeof (checkpoint.quizId));
-            console.log(checkpoint.gameId);
+            
 
 
             if (checkpoint.gameId == 0) {
@@ -50,8 +51,10 @@ export default function CheckpointDetails() {
                 //this checkpoint has quiz
                 setHasQuiz(true);
                 setQuizId(checkpoint.quizId);
-            };
-
+            }
+            else {
+                setGameType(games[checkpoint.gameId]);
+            }
 
             //check that the signed in user owns the track
             const trackId = checkpoint.trackId;
@@ -98,7 +101,7 @@ export default function CheckpointDetails() {
 
     } else if(render) {
         return (<>
-            <p> You have chosen game</p>
+            <p> The game you have chosen for this checkpoint: {gameType}</p>
             <p></p>
         </>);
     };
