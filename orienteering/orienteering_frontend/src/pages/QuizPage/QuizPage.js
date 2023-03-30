@@ -38,8 +38,9 @@ export default function QuizPage() {
     }, [currentQuizQuestion]);
 
     useEffect(() => {
+        // 
         if (quiz != "") {
-            getQuizQuestion();
+            nextQuizQuestion();
         }
     }, [quizQuestionIndex, quiz]);
 
@@ -64,7 +65,7 @@ export default function QuizPage() {
         setQuiz(fetchedQuiz);
     }
 
-    async function getQuizQuestion() {
+    async function nextQuizQuestion() {
         //const url = "/api/quiz/getNextQuizQuestion?quizId=" + quizId + "&quizQuestionIndex=" + quizQuestionIndex.toString();
         const quizQuestion = quiz.quizQuestions[quizQuestionIndex];
         setCurrentQuizQuestion(quizQuestion);
