@@ -102,7 +102,6 @@ export default function NavigationEditPage() {
                 </Grid>
 
                 <Grid item xs={10} md={6 }>
-                    <h4>Add more images</h4>
                     <AddImage
                         checkpointId={params.checkpointId}
                         updateImages={loadImages }
