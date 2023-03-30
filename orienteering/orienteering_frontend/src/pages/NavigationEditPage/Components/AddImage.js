@@ -98,6 +98,7 @@ export default function AddImage(props) {
                     name="TextDescription"
                     variant="standard"
                     value={textDescription}
+                    inputProps={{ maxLength: 80 }}
                 >
                 </TextField>
                 <br></br>
