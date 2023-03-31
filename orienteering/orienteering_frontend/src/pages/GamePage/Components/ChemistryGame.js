@@ -131,7 +131,7 @@ function ChemistryGame() {
                 </div>
 
 
-                <button id="checkanswer" className="gamebtn">Check</button>
+                <button id="checkanswer" className="gamebtn">Mix</button>
                 <button id="nextboardbtn" hidden className="gamebtn">Next board</button>
 
                 <div id="statusdiv"></div>
