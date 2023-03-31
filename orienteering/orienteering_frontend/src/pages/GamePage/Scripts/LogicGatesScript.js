@@ -71,20 +71,38 @@ function checkAnswer() {
         document.getElementById("statusdiv").textContent = `Wrong gates`;
         document.getElementById("scorediv").textContent = `HP left: ${hp}`;
     }
-    if (boardPassed || hp < 1) {
+    if (boardPassed || hp < 1)
+        {
         goToNextBoard = true;
         score += hp;
         hp = 3;
         document.getElementById("scorediv").textContent = `Score: ${score}`;
 
-        if (lastBoard) {
-            document.getElementById("statusdiv").textContent = `Game finished`;
+        if (lastBoard)
+            {
+            document.getElementById("gamecontainer").style.display = "none";
+            document.getElementById("descriptionContainer").style.whiteSpace = "pre";
+            const newLine = "\r\n";
+            if (boardPassed)
+                {
+                document.getElementById("descriptionContainer").textContent = "Correct gates" + newLine + "Game finished" + newLine + `Total score: ${score}`;
+                }
+            else
+            {
+                document.getElementById("descriptionContainer").textContent = "Wrong gates" + newLine + "Game finished" + newLine + `Total score: ${score}`;
+                
+
+                }
             document.getElementById("navigationButton").style.display = "block";
-        }
-        else {
+            document.getElementById("descriptionContainer").style.display = "block";
+
+            
+            }
+        else
+            {
             document.getElementById("nextboardbtn").style.display = "inline-block";
+            }
         }
-    }
 }
 
 
