@@ -600,7 +600,7 @@ public class InMemoryTest
 
     [Fact]
     //denne testen fungere
-    public async Task GivenUserWhenCreateTrackThenCreate()
+    public async Task GivenUser_WhenCreateTrack_ThenCreate()
     {
         //ARRANGE
         var db = new OrienteeringContext(dbContextOptions, null);
@@ -631,7 +631,7 @@ public class InMemoryTest
     }
 
     [Fact]
-    public async Task GivenNoUserWhenCreateTrackThenFail()
+    public async Task GivenNoUser_WhenCreateTrack_ThenFail()
     {
         //ARRANGE
         var db = new OrienteeringContext(dbContextOptions, null);
@@ -658,25 +658,38 @@ public class InMemoryTest
     }
 
 
-    //[Fact]
-    //public async Task GetSingleTrackTest()
-    //{
-    //    var _db = new OrienteeringContext(dbContextOptions, null);
-    //    if (!_db.Database.IsInMemory())
-    //    {
-    //        _db.Database.Migrate();
-    //    }
-    //    var track = new Track();
-    //    track.UserId = Guid.NewGuid();
-    //    track.Name = "Test";
-    //    await _db.Tracks.AddAsync(track);
-    //    await _db.SaveChangesAsync();
-    //    var request = new GetSingleTrack.Request(track.Id);
-    //    var handler = new GetSingleTrack.Handler(_db, _mapper.Object, _identityService.Object);
-    //    var returnedTrackDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-    //    var trackDto = _mapper.Object.Map<Track, TrackDto>(track);
-    //    Assert.Equal(JsonConvert.SerializeObject(trackDto), JsonConvert.SerializeObject(returnedTrackDto));
-    //}
+    [Fact]
+    public async Task GivenUser_WhenAskForTrack_ThenReturnTrack()
+    {
+        //ARRANGE
+        var _db = new OrienteeringContext(dbContextOptions, null);
+        if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
+        var userId = Guid.NewGuid();
+
+        var track = new Track();
+        track.UserId = userId;
+        track.Name = "Test";
+        await _db.Tracks.AddAsync(track);
+        await _db.SaveChangesAsync();
+
+        var excpectedTrackDto = new TrackDto();
+        excpectedTrackDto.TrackName = "Test";
+
+        var mapper = new Mock<IMapper>();
+        mapper.Setup(x => x.Map<Track, TrackDto>(track)).Returns(excpectedTrackDto);
+
+        var identityService = new Mock<IIdentityService>();
+        identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
+
+        var request = new GetSingleTrack.Request(track.Id);
+        var handler = new GetSingleTrack.Handler(_db, mapper.Object, identityService.Object);
+
+        //ACT
+        var returnedTrackDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+        //ASSERT
+        Assert.Equal(JsonConvert.SerializeObject(excpectedTrackDto), JsonConvert.SerializeObject(returnedTrackDto));
+    }
 
     //[Fact]
     //public async Task GetTracksTest()
