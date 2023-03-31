@@ -82,9 +82,9 @@ function ChemistryGame() {
                 <p >
                     Drag the solutions to the drop area which are needed to create the solution provided in the task.
                     <br></br>
-                    You got 3 Hp for each task. For each check with wrong solutions, you loose 1 hp.
+                    You got 3 Hp for each task. For each mixing with wrong solutions, you loose 1 hp.
                     <br></br>
-                    When checking answer and the correct solutions are in the drop area, the remaining hp are added to your score.
+                    When mixing solutions and the correct solutions are in the drop area, the remaining hp are added to your score.
                 </p>
                 <br></br>
                 <br></br>
