@@ -53,4 +53,9 @@
   <ItemGroup>
     <None Remove="src\components\**" />
   </ItemGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties package_1json__JsonSchema="https://json.schemastore.org/pattern.json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

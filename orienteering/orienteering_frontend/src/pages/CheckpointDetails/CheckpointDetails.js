@@ -6,9 +6,6 @@ import { useEffect } from "react";
 import AddQuizQuestion from "./Components/AddQuizQuestion";
 import DisplayQuiz from "./Components/DisplayQuiz";
 
-//page
-//display all info of a single checkpoint
-
 export default function CheckpointDetails() {
 
     const navigate = useNavigate();
@@ -17,7 +14,7 @@ export default function CheckpointDetails() {
     const [QuizId, setQuizId] = useState("");
     const [quizChanged, setQuizChanged] = useState(1);
     const [gameType, setGameType] = useState("");
-
+    const games = { 1: "Fallingboxes", 2: "Chemistry", 3: "LogicGates" };
     const params = useParams();
     const checkpointId = params.checkpointId;
 
@@ -25,15 +22,7 @@ export default function CheckpointDetails() {
         const response = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId);
         //fiks naviger- naviger om feil status
         //https://auth0.com/blog/forbidden-unauthorized-http-status-codes/ 
-        
-    const games = { 1: "Fallingboxes", 2: "Chemistry", 3: "LogicGates" };
 
-
-    useEffect(() => {
-        //is authenticated and correct track?
-        const isAuthenticated = async () => {
-
-        console.log(response.status);
         const checkpoint = await response.json();
 
         if (checkpoint.gameId == 0) {
@@ -41,15 +30,16 @@ export default function CheckpointDetails() {
             //this checkpoint has quiz
             setHasQuiz(true);
             setQuizId(checkpoint.quizId);
-        };
-    }
 
-    
+        } else {
+
+            setGameType(games[checkpoint.gameId]);
+        }
+    }
 
     useEffect(() => {
         loadCheckpoint();
     })
-
 
     if (hasQuiz) {
 
@@ -58,9 +48,7 @@ export default function CheckpointDetails() {
                 container
                 spacing={3}
                 margin="10px"
-                direction={{ xs: "column-reverse", md: "row" }}
-
-            >
+                direction={{ xs: "column-reverse", md: "row" }}>
 
                 <Grid item xs={10} md={6}>
                     <h4>Questions</h4>
@@ -81,54 +69,3 @@ export default function CheckpointDetails() {
         </>);
     };
 };
-
-//fix slett dette
-//useEffect(() => {
-    //    //is authenticated and correct track?
-    //    const isAuthenticated = async () => {
-
-    //        //const checkUserUrl = "/api/user/getSignedInUserId";
-    //        //const response = await fetch(checkUserUrl);
-
-    //        //if (!response.ok) {
-    //        //    //not signed in, redirect to login
-    //        //    navigate("/login");
-    //        //    return false;
-    //        //};
-
-    //        //const user = await response.json();
-    //        //const userId = user.id;
-
-    //        //load checkpoint
-    //        const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId).then(res => res.json());
-    //        //console.log(checkpoint.quizId);
-    //        //console.log(typeof (checkpoint.quizId));
-    //        //console.log(checkpoint.gameId);
-
-
-    //        if (checkpoint.gameId == 0) {
-
-    //            //this checkpoint has quiz
-    //            setHasQuiz(true);
-    //            setQuizId(checkpoint.quizId);
-    //        };
-
-
-    //        ////check that the signed in user owns the track
-    //        //const trackId = checkpoint.trackId;
-    //        //const getTrackUrl = "/api/track/getTrack?trackId=" + trackId;
-
-    //        //const track = await fetch(getTrackUrl).then(res => res.json());
-
-    //        //if (userId != track.userId) {
-    //        //    navigate("/unauthorized");
-    //        //    return false;
-    //        //}
-    //        //return true;
-
-    //    };
-
-    //    //isAuthenticated().then(result => { setRender(result) });
-    //    loadCheckpoint();
-
-    //}, []);

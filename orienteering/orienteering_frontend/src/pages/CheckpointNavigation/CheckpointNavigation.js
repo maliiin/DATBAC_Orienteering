@@ -5,7 +5,6 @@ import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import DisplayImagesUser from './Components/DisplayImagesUser';
 export default function CheckpointNavigation() {
-    //kan være greit å få inn checkpointid slik at det senere blir mulig å registrere at noen har vært på checkpointet, lagre score osv...
     const [current, setCurrent] = useState(0);
     const [trackFinished, setTrackFinished] = useState(false);
     const navigate = useNavigate();
@@ -33,7 +32,7 @@ export default function CheckpointNavigation() {
             navigate("/errorpage")
         }
         var nav = await response.json();
-            //fix-dersom endre rekkefølge på objekter, enten endre rekkefølge her eller display med rett order
+
         const sessionInfo = await fetch("/api/session/checkTrackFinished?toCheckpoint=" + nav.toCheckpoint).then(res => res.json());
         if (sessionInfo.timeUsed != null) {
             setTrackFinished(true);

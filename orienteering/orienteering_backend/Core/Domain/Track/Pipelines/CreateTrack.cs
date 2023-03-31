@@ -20,14 +20,12 @@ public static class CreateTrack
         private readonly OrienteeringContext _db;
         private readonly IMapper _mapper;
         private readonly IIdentityService _identityService;
-        private readonly IMediator _mediator;
 
-        public Handler(OrienteeringContext db, IMapper mapper, IIdentityService identityService, IMediator mediator)
+        public Handler(OrienteeringContext db, IMapper mapper, IIdentityService identityService)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _mapper = mapper;
             _identityService = identityService;
-            _mediator = mediator;
         }
 
         public async Task<Guid> Handle(Request request, CancellationToken cancellationToken)

@@ -1,11 +1,6 @@
-import { TextField, Button } from '@mui/material';
 import React, { useState } from "react";
-import { Link, redirect, useNavigate } from 'react-router-dom';
-import { createSearchParams, useParams } from 'react-router-dom';
 import { useEffect } from "react";
-import AddQuizQuestion from "./AddQuizQuestion";
 import DisplayQuestion from "./DisplayQuestion";
-//
 
 export default function DisplayQuiz(props) {
     const [quizQuestions, setQuizQuestions] = useState("");
@@ -13,7 +8,6 @@ export default function DisplayQuiz(props) {
     const fetchQuiz = async () => {
         const Quiz = await fetch("/api/quiz/getQuiz?quizId=" + props.quizId).then(res => res.json());
         setQuizQuestions(Quiz.quizQuestions);
-        //console.log(Quiz.quizQuestions);
     }
 
     useEffect(() => {
@@ -33,13 +27,9 @@ export default function DisplayQuiz(props) {
                     </DisplayQuestion>
                 )
             }
-
         </>
         );
     } else {
         return <p>Here comes the quiestions you make</p>;
     }
 }
-
-//fiks reaktiv ved legging til av spørsmål.
-//som i de andre to filene.

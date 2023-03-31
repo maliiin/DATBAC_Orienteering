@@ -14,11 +14,9 @@ public static class GetTrackUser
 {
     public record Request(
         Guid trackId) : IRequest<TrackUserIdDto>;
-    //Guid UserId) : IRequest<List<Track>>;
 
 
     public class Handler : IRequestHandler<Request, TrackUserIdDto>
-    //public class Handler : IRequestHandler<Request, List<Track>>
     {
         private readonly OrienteeringContext _db;
 

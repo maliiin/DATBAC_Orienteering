@@ -10,9 +10,8 @@ export default function NavigationEditPage() {
     const navigate = useNavigate();
     const params = useParams();
 
-    const [imageList, setImageList] = useState("hei");
+    const [imageList, setImageList] = useState("");
 
-    const cId = params.checkpointId;
 
     //const [render, setRender] = useState(false);
 

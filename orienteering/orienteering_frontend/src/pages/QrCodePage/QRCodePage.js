@@ -10,27 +10,16 @@ function QRCodePage() {
     const navigate = useNavigate();
 
     const fetchCheckpoints = async () => {
-        console.log("start");
         // Kilder: til location.state.trackid: linje 13 under https://stackoverflow.com/questions/64566405/react-router-dom-v6-usenavigate-passing-value-to-another-component (13.02.2023)
         const TrackId = location.state.trackid;
-        //const TrackId = "08db0da6-3633-48ec-8b8f-0799ce2f9cbd";
-        //const TrackId = params.TrackId;
-        //const UserId = "536a339d-f3f6-43f1-a921-099bdeb9fb1b";
-        //const userResponse = await fetch("api/user/GetSignedInUserId").then(response => response.json());
-        //const user = await userResponse.json();
-        // const UserId = user.Id;
         const url = "api/qrcode/getqrcodes?TrackId=" + TrackId;
-        //console.log("hei");
-        //const data = await fetch(url).then(response => response.json());
+        //sjekk mulige responser
         const response = await fetch(url);
         if (!response.ok) {
             navigate("/errorpage");
         }
         const data = await response.json();
 
-        //const data = await response.json();
-        //console.log(data);
-        //setCheckpointList(data);
         setListItems(data.map((checkpoint, index) =>
             <QRContainer
                 title={checkpoint.title}
@@ -44,7 +33,6 @@ function QRCodePage() {
         fetchCheckpoints();
     }, []);
     ////Kilder: https://reactjs.org/docs/lists-and-keys.html (02.02.2023)
-    //console.log(CheckpointList);
     return (<>
 
         <Grid
@@ -53,12 +41,10 @@ function QRCodePage() {
             alignItems="center"
             justifyContent="center"
         >
-            {ListeItems }
+            {ListeItems}
         </Grid>
 
     </>);
-
-
 }
 
 export default QRCodePage;

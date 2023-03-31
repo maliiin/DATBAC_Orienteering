@@ -24,15 +24,13 @@ public static class GetQuiz
     {
         private readonly OrienteeringContext _db;
         private readonly IMapper _mapper;
-        private readonly IIdentityService _identityService;
-        private readonly IMediator _mediator;
+        
 
-        public Handler(OrienteeringContext db, IMapper mapper, IIdentityService identityService, IMediator mediator)
+        public Handler(OrienteeringContext db, IMapper mapper)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _mapper = mapper;
-            _identityService = identityService;
-            _mediator = mediator;
+            
         }
         public async Task<QuizDto> Handle(Request request, CancellationToken cancellationToken)
         {
