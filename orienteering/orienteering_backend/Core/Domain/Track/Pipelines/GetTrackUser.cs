@@ -39,7 +39,7 @@ public static class GetTrackUser
             if (track == null) { return null; }
 
             //create dto
-            TrackUserIdDto trackDto=_mapper.Map<TrackUserIdDto>(track);
+            TrackUserIdDto trackDto=_mapper.Map<Track,TrackUserIdDto>(track);
 
             return trackDto;
         }
