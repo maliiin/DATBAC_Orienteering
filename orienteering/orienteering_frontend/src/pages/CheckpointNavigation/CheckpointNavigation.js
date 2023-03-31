@@ -20,7 +20,7 @@ export default function CheckpointNavigation() {
     }
     const params = useParams();
 
-    const [imagesList, setImagesList] = useState(["h", "hh"]);
+    const [imagesList, setImagesList] = useState(["", ""]);
     const [totalTime, setTotalTime] = useState("");
 
     const currentCheckpointId = params.checkpointId;
