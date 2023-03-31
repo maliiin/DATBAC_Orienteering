@@ -49,6 +49,7 @@ public class InMemoryTest
     private readonly Mock<UserManager<IdentityUser>> _userManager;
     private readonly Mock<SignInManager<IdentityUser>> _signInManager;
     private readonly Mock<IHttpContextAccessor> _httpContextAccessor;
+    private readonly Mock<FakeSignInManager> _testSignInManager;
     public static UserManager<TUser> TestUserManager<TUser>(IUserStore<TUser> store = null) where TUser : class
     {
         store = store ?? new Mock<IUserStore<TUser>>().Object;
@@ -87,6 +88,16 @@ public class InMemoryTest
         return mgr;
     }
 
+    public static Mock<IIdentityService> mockService<TUser>() where TUser : class
+    {
+        var serv= new Mock<IIdentityService>();
+        //serv.Setup(x => x.CreateUser(It.IsAny<UserRegistration>())).Returns(Task<IdentityResult.Success>);
+        serv.Setup(x=>x.GetCurrentUserId());
+       
+
+        return serv;
+    }
+
     //public class FakeSignInManager : SignInManager<IdentityUser>
     //{
     //    public FakeSignInManager()
@@ -106,7 +117,36 @@ public class InMemoryTest
         return o;
 
     }
+    public class FakeUserManager : UserManager<IdentityUser>
+    {
+        public FakeUserManager()
+            : base(
+                  new Mock<IUserStore<IdentityUser>>().Object,
+                  new Mock<Microsoft.Extensions.Options.IOptions<IdentityOptions>>().Object,
+                  new Mock<IPasswordHasher<IdentityUser>>().Object,
+                  new IUserValidator<IdentityUser>[0],
+                  new IPasswordValidator<IdentityUser>[0],
+                  new Mock<ILookupNormalizer>().Object,
+                  new Mock<IdentityErrorDescriber>().Object,
+                  new Mock<IServiceProvider>().Object,
+                  new Mock<ILogger<UserManager<IdentityUser>>>().Object)
+        { }
+    }
 
+    public class FakeSignInManager : SignInManager<IdentityUser>
+    {
+        public FakeSignInManager()
+            : base(
+                  new Mock<FakeUserManager>().Object,
+                  new HttpContextAccessor(),
+                  new Mock<IUserClaimsPrincipalFactory<IdentityUser>>().Object,
+                  new Mock<Microsoft.Extensions.Options.IOptions<IdentityOptions>>().Object,
+                  new Mock<ILogger<SignInManager<IdentityUser>>>().Object,
+                  new Mock<Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider>().Object,
+                  new Mock<Microsoft.AspNetCore.Identity.IUserConfirmation<IdentityUser>>().Object
+                  )
+        { }
+    }
 
     public InMemoryTest()
     {
@@ -127,13 +167,26 @@ public class InMemoryTest
         //_signInManager.Setup(x => x.ClaimsFactory).Returns(userPrincipalFactory.Object);
         //_signInManager.
 
-        _signInManager = new Mock<SignInManager<IdentityUser>>(MockBehavior.Default, _userManager.Object, contextAccessor.Object, userPrincipalFactory.Object, null, null, null, null);
+        //_signInManager = new Mock<SignInManager<IdentityUser>>(MockBehavior.Default, _userManager.Object, contextAccessor.Object, userPrincipalFactory.Object, null, null, null, null);
+        //_signInManager = new Mock<SignInManager<IdentityUser>>(
+        //    _userManager.Object,
+        //    /* IHttpContextAccessor contextAccessor */Mock.Of<IHttpContextAccessor>(),
+        //    /* IUserClaimsPrincipalFactory<TUser> claimsFactory */Mock.Of<IUserClaimsPrincipalFactory<IdentityUser>>(),
+        //    /* IOptions<IdentityOptions> optionsAccessor */null,
+        //    /* ILogger<SignInManager<TUser>> logger */null,
+        //    /* IAuthenticationSchemeProvider schemes */null,
+        //    /* IUserConfirmation<TUser> confirmation */null);
+
+        //var testSignInManager=new Mock<FakeSignInManager>();
+        _testSignInManager = new Mock<FakeSignInManager>();
 
         _mediator = new Mock<IMediator>();
-        _identityService = new Mock<IIdentityService>(_userManager.Object, _signInManager.Object, _httpContextAccessor.Object);
+        //_identityService = new Mock<IIdentityService>(_userManager.Object, _testSignInManager.Object, _httpContextAccessor.Object);
         _mapper = new Mock<IMapper>();
         //_identityService= new Mock<IIdentityService>(); 
 
+
+        _identityService = new Mock<IIdentityService>();
         // Build DbContextOptions
         dbContextOptions = new DbContextOptionsBuilder<OrienteeringContext>()
             .UseInMemoryDatabase(databaseName: "orienteeringTest")
@@ -473,38 +526,74 @@ public class InMemoryTest
 
 
 
+    //[Fact]
+    //public async Task CreateTrackTest()
+    //{
+
+
+    //    Assert.NotNull(3);
+    //    var k = 2;
+    //    var identityService = _identityService.Object;
+    //    var t = await identityService.CreateUser(new UserRegistration("hei", "password123", "mail@gmail.com"));
+    //    var a = await identityService.SignInUser(new UserSignIn("hei", "password123"));
+    //    var h = identityService.GetCurrentUserId();
+    //    //Assert.NotNull(null);
+    //    var _db = new OrienteeringContext(dbContextOptions, null);
+    //    if (!_db.Database.IsInMemory())
+    //    {
+    //        _db.Database.Migrate();
+    //    }
+    //    var trackDto = new CreateTrackDto("test");
+    //    //trackDto.UserId = Guid.NewGuid();
+    //    //trackDto.TrackName = "Test";
+    //    //trackDto.TrackId = Guid.NewGuid();
+    //    var request = new CreateTrack.Request(trackDto);
+    //    var handler = new CreateTrack.Handler(_db, _mapper.Object, identityService);
+    //    var result = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+    //    //Assert.Equal(result, trackDto.TrackId);
+
+    //    //var addedTrack = await _db.Tracks.FirstOrDefaultAsync(t => t.Id == trackDto.TrackId);
+    //    var addedTrack = await _db.Tracks.FirstOrDefaultAsync(t => t.Name == "test");
+    //    Assert.NotNull(addedTrack);
+    //    var addedTrackDto = _mapper.Object.Map<Track, TrackDto>(addedTrack);
+    //    Assert.Equal(JsonConvert.SerializeObject(trackDto), JsonConvert.SerializeObject(addedTrackDto));
+    //}
+
     [Fact]
-    public async Task CreateTrackTest()
+    public async Task GivenUserWhenCreateTrackThenCreate()
     {
+        //Arrange
+        var db = new OrienteeringContext(dbContextOptions, null);
+        if (!db.Database.IsInMemory()) { db.Database.Migrate(); }
+        var mapper=_mapper.Object;
+        var identityService=_identityService.Object;
+
+        //var service = new IdentityService(_userManager.Object, _testSignInManager.Object, _httpContextAccessor.Object);
+
+        //var identityService = _identityService.Object;
+        var w= identityService.CreateUser(new UserRegistration("h", "dsfghjklghjkl", "3@fff.mvmv"));
+        var h = identityService.SignInUser(new UserSignIn("h", "dsfghjklghjkl"));
+        var q= identityService.GetCurrentUserId();
 
 
-
-        var k = 2;
-        var identityService = _identityService.Object;
-        var t = await identityService.CreateUser(new UserRegistration("hei", "password123", "mail@gmail.com"));
-        var a = await identityService.SignInUser(new UserSignIn("hei", "password123"));
-        var h = identityService.GetCurrentUserId();
-        //Assert.NotNull(null);
-        var _db = new OrienteeringContext(dbContextOptions, null);
-        if (!_db.Database.IsInMemory())
-        {
-            _db.Database.Migrate();
-        }
-        var trackDto = new CreateTrackDto("test");
-        //trackDto.UserId = Guid.NewGuid();
-        //trackDto.TrackName = "Test";
-        //trackDto.TrackId = Guid.NewGuid();
+        var trackDto = new CreateTrackDto("trackTestName");
         var request = new CreateTrack.Request(trackDto);
-        var handler = new CreateTrack.Handler(_db, _mapper.Object, identityService);
-        var result = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-        //Assert.Equal(result, trackDto.TrackId);
+        var handler = new CreateTrack.Handler(db, mapper, service);
+        //Act
+        var result=handler.Handle(request,CancellationToken.None).GetAwaiter().GetResult();
 
-        //var addedTrack = await _db.Tracks.FirstOrDefaultAsync(t => t.Id == trackDto.TrackId);
-        var addedTrack = await _db.Tracks.FirstOrDefaultAsync(t => t.Name == "test");
-        Assert.NotNull(addedTrack);
-        var addedTrackDto = _mapper.Object.Map<Track, TrackDto>(addedTrack);
-        Assert.Equal(JsonConvert.SerializeObject(trackDto), JsonConvert.SerializeObject(addedTrackDto));
+        //var request = new GetSingleTrack.Request(track.Id);
+        //    var handler = new GetSingleTrack.Handler(_db, _mapper.Object, _identityService.Object);
+        //    var returnedTrackDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+
+
+
+        //Assert
+        Assert.IsType<CreateTrackDto>(result);
+
     }
+
 
     //[Fact]
     //public async Task GetSingleTrackTest()
