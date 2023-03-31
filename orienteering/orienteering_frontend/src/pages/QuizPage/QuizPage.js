@@ -140,7 +140,8 @@ export default function QuizPage() {
             spacing={0}
             direction="column"
             alignItems="center"
-            justifyContent="center"
+            //justifyContent="center"
+            
 
             style={{
                 minHeight: '50vh',
@@ -150,7 +151,9 @@ export default function QuizPage() {
                 item
                 sx={10}
                 style={{
-                    width: '80%'
+                    width: '70%',
+                    top: "20%",
+                    position:"absolute"
                 }}
             >
 
