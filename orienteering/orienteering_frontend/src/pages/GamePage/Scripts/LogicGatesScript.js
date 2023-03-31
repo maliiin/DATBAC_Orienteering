@@ -81,6 +81,7 @@ function checkAnswer() {
         if (lastBoard)
             {
             document.getElementById("gamecontainer").style.display = "none";
+            document.getElementById("descriptionContainer").style.whiteSpace = "pre";
             const newLine = "\r\n";
             if (boardPassed)
                 {
@@ -88,13 +89,13 @@ function checkAnswer() {
                 }
             else
             {
-                document.getElementById("descriptionContainer").style.display = "block";
-                document.getElementById("descriptionContainer").style.whiteSpace = "pre";
                 document.getElementById("descriptionContainer").textContent = "Wrong gates" + newLine + "Game finished" + newLine + `Total score: ${score}`;
                 
 
                 }
             document.getElementById("navigationButton").style.display = "block";
+            document.getElementById("descriptionContainer").style.display = "block";
+
             
             }
         else

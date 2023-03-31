@@ -49,18 +49,29 @@ function checkAnswer() {
         document.getElementById("scorediv").textContent = `HP left: ${hp}`;
     }
     if (boardPassed || hp < 1) {
-        goToNextBoard = true;
-        score += hp;
-        hp = 3;
-        document.getElementById("scorediv").textContent = `Score: ${score}`;
+            goToNextBoard = true;
+            score += hp;
+            hp = 3;
+            document.getElementById("scorediv").textContent = `Score: ${score}`;
 
-        if (lastBoard) {
-            document.getElementById("statusdiv").textContent = `Game finished`;
-            document.getElementById("navigationButton").style.display = "block";
-        }
-        else {
-            document.getElementById("nextboardbtn").style.display = "inline-block";
-        }
+            if (lastBoard) {
+                document.getElementById("gamecontainer").style.display = "none";
+                document.getElementById("descriptionContainer").style.whiteSpace = "pre";
+                const newLine = "\r\n";
+                if (boardPassed) {
+                    document.getElementById("descriptionContainer").textContent = "Correct solutionmix" + newLine + "Game finished" + newLine + `Total score: ${score}`;
+                }
+                else {
+                    document.getElementById("descriptionContainer").textContent = "Wrong solutionmix" + newLine + "Game finished" + newLine + `Total score: ${score}`;
+
+
+                }
+                document.getElementById("descriptionContainer").style.display = "block";
+                document.getElementById("navigationButton").style.display = "block";
+            }
+            else {
+                document.getElementById("nextboardbtn").style.display = "inline-block";
+            }
     }
 }
 
