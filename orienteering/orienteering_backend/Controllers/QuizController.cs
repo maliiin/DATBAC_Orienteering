@@ -85,27 +85,25 @@ namespace orienteering_backend.Controllers
             }
 
         }
+        //[HttpGet("getNextQuizQuestion")]
+        //public async Task<NextQuizQuestionDto> GetNextQuizQuestion(string quizId, string quizQuestionIndex)
+        //{
+        //    var QuizId = new Guid(quizId);
+        //    var QuizQuestionIndex = Int32.Parse(quizQuestionIndex);
+        //    var nextQuizQuestionDto = await _mediator.Send(new GetNextQuizQuestion.Request(QuizId, QuizQuestionIndex));
+        //    return nextQuizQuestionDto;
+        //}
+        // fix; fjern dette dersom pipeline ikke brukt
 
-        //ikke sikret pga trenger ikke å logge inn
-        [HttpGet("getNextQuizQuestion")]
-        public async Task<NextQuizQuestionDto> GetNextQuizQuestion(string quizId, string quizQuestionIndex)
-        {
-            var QuizId = new Guid(quizId);
-            var QuizQuestionIndex = Int32.Parse(quizQuestionIndex);
-            var nextQuizQuestionDto = await _mediator.Send(new GetNextQuizQuestion.Request(QuizId, QuizQuestionIndex));
-            return nextQuizQuestionDto;
-        }
-
-
-        //ikke sikret pga trenger ikke å logge inn
-        [HttpGet("getSolution")]
-        public async Task<string> getSolution(string quizId, string quizQuestionId)
-        {
-            var QuizId = new Guid(quizId);
-            var QuizQuestionId = new Guid(quizQuestionId);
-            var solution = await _mediator.Send(new GetSolution.Request(QuizId, QuizQuestionId));
-            return solution;
-        }
+        //[HttpGet("getSolution")]
+        //public async Task<string> getSolution(string quizId, string quizQuestionId)
+        //{
+        //    var QuizId = new Guid(quizId);
+        //    var QuizQuestionId = new Guid(quizQuestionId);
+        //    var solution = await _mediator.Send(new GetSolution.Request(QuizId, QuizQuestionId));
+        //    return solution;
+        //}
+        // fix; fjern dette dersom pipeline ikke brukt
 
     }
 }
