@@ -28,11 +28,11 @@ export default function CheckpointNavigation() {
     const getNavigation = async () => {
 
         const navUrl = "/api/Navigation/GetNextNavigation?currentCheckpointId=" + currentCheckpointId;
-        var response = await fetch(navUrl);
+        const response = await fetch(navUrl);
         if (!response.ok) {
             navigate("/errorpage")
         }
-        var nav = await response.json();
+        const nav = await response.json();
             //fix-dersom endre rekkefølge på objekter, enten endre rekkefølge her eller display med rett order
         const sessionInfo = await fetch("/api/session/checkTrackFinished?toCheckpoint=" + nav.toCheckpoint).then(res => res.json());
         if (sessionInfo.timeUsed != null) {

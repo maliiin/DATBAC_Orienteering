@@ -4,8 +4,8 @@ import Data from "../Data/FallingBoxesData";
 var interact = require('interactjs')
 
 //global variables
-var fallingWidth = 30;
-var fallingHeigth = 30;
+const fallingWidth = 30;
+const fallingHeigth = 30;
 const totalLives = 3;
 var BasketHeight, BasketWidth;
 const speed = 3;
@@ -159,7 +159,7 @@ function FallingObject(x, y, values) {
     };
 
     this.onGround = function () {
-        var bottom = gameArea.canvas.height - this.height;
+        const bottom = gameArea.canvas.height - this.height;
         if (this.pos_y >= bottom) {
             if (this.collect) {
                 //should have collected this
@@ -208,14 +208,14 @@ function updateGameArea() {
     for (var i = fallingObjects.length - 1; i >= 0; i--) {
         fallingObjects[i].moveElement();
 
-        let remove = fallingObjects[i].onGround() || fallingObjects[i].inBasket()
+        const remove = fallingObjects[i].onGround() || fallingObjects[i].inBasket()
 
         //remove element 
         if (remove) {
 
             //remove element from list
-            let firstPart = fallingObjects.slice(0, i);
-            let lastPart = fallingObjects.slice(i + 1);
+            const firstPart = fallingObjects.slice(0, i);
+            const lastPart = fallingObjects.slice(i + 1);
             fallingObjects = firstPart.concat(lastPart);
             //return;
         } else {

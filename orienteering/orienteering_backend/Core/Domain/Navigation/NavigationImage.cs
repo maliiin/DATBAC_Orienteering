@@ -9,7 +9,7 @@
             TextDescription = textDescription;
         }
 
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
         public string ImagePath { get; set; }
         public string TextDescription { get; set; }
         public int Order { get; set; }
