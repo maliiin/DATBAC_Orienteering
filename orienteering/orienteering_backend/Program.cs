@@ -1,4 +1,5 @@
 using MediatR;
+// lisens for mediatr: https://github.com/jbogard/MediatR/blob/master/LICENSE
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
