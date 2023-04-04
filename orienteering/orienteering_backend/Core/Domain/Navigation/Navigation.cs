@@ -9,7 +9,7 @@ namespace orienteering_backend.Core.Domain.Navigation
         {
             ToCheckpoint = toCheckpoint;
         }
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
         //public Guid FromCheckpoint { get; set; }
 
         public Guid ToCheckpoint { get; set; }

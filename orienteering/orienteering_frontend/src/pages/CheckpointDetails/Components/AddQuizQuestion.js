@@ -60,7 +60,7 @@ export default function AddQuizQuestion(props) {
 
         };
 
-        var response = await fetch('/api/quiz/addQuizQuestion', requestAlternatives);
+        const response = await fetch('/api/quiz/addQuizQuestion', requestAlternatives);
         // Fix: errorhandling her ??
         //return false;
 

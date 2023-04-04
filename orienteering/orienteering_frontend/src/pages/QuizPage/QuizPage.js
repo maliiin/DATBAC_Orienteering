@@ -77,7 +77,7 @@ export default function QuizPage() {
         //get correct answer from backend
         //var url = "/api/quiz/getSolution?quizId=" + quizId + "&quizQuestionId=" + currentQuizQuestion.quizQuestionId;
         //Fix: Fjern getsolution pipeline
-        var solution = currentQuizQuestion.alternatives[currentQuizQuestion.correctAlternative - 1].text;
+        const solution = currentQuizQuestion.alternatives[currentQuizQuestion.correctAlternative - 1].text;
 
         //check if answer is correct
         if (solution == guess) {

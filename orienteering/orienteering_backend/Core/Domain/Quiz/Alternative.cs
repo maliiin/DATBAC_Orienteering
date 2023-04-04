@@ -18,7 +18,7 @@ namespace orienteering_backend.Core.Domain.Quiz
 
 
         [Key]
-        public Guid UniqueId { get; set; }
+        public Guid UniqueId { get; private set; }
 
 
 

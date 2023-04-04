@@ -5,7 +5,7 @@
         public QuizQuestion() 
         { 
         }
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
         public string? Question { get; set; }
         public List<Alternative> Alternatives { get; set; } = new();
         public int CorrectAlternative { get; set; }
