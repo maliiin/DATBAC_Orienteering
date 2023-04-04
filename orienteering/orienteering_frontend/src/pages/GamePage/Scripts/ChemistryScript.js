@@ -10,13 +10,11 @@ function setup(inpCorrectMix, inpLastBoard = false) {
     if (!GameInitialized) {
         initGame();
         GameInitialized = true;
+        chemistry();
     }
-    chemistry();
-
     correctMix = inpCorrectMix;
     lastBoard = inpLastBoard;
     goToNextBoard = false;
-
 }
 export default setup;
 
