@@ -26,7 +26,11 @@ export default function CheckpointNavigation() {
     const currentCheckpointId = params.checkpointId;
 
     const getNavigation = async () => {
-
+        const sessionInfo = await fetch("/api/session/checkTrackFinished?currentCheckpoint=" + currentCheckpointId).then(res => res.json());
+        if (sessionInfo.timeUsed != null) {
+            setTrackFinished(true);
+            setTotalTime(sessionInfo.timeUsed);
+        }
         const navUrl = "/api/Navigation/GetNextNavigation?currentCheckpointId=" + currentCheckpointId;
         const response = await fetch(navUrl);
         if (!response.ok) {
@@ -34,11 +38,7 @@ export default function CheckpointNavigation() {
         }
         const nav = await response.json();
             //fix-dersom endre rekkefølge på objekter, enten endre rekkefølge her eller display med rett order
-        const sessionInfo = await fetch("/api/session/checkTrackFinished?toCheckpoint=" + nav.toCheckpoint).then(res => res.json());
-        if (sessionInfo.timeUsed != null) {
-            setTrackFinished(true);
-            setTotalTime(sessionInfo.timeUsed);
-        }
+        
 
             setImagesList(nav.images.map((imageInfo, index) =>
                 <>
