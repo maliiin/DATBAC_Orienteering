@@ -52,26 +52,11 @@ public static class AddQuizQuestion
             var Quiz = await _db.Quiz
                 .FirstOrDefaultAsync(q => q.Id == QuizGuid, cancellationToken);
 
-
             if (Quiz == null)
             {
                 Console.WriteLine("quiz er null");
                 return false;
             }
-
-            //dette er testing som virker
-            //var test = new QuizQuestion("dette er spm111112", 2);
-            //test.Alternatives.Add(new Alternative(1, "dette er alternativ1"));
-            //test.Alternatives.Add(new Alternative(2, "dette er alternativ2122"));
-
-            //test uten å sette id
-            //test.Alternatives.Add(new Alternative(1, "dette er alternativ1"));
-            //test.Alternatives.Add(new Alternative(2, "dette er alternativ2122"));
-
-            //Quiz.AddQuizQuestion(test);
-
-
-
 
             var quizQuestion = new QuizQuestion();
             quizQuestion.Question = request.inputCreateQuestionDto.Question;
@@ -88,61 +73,10 @@ public static class AddQuizQuestion
 
             Quiz.AddQuizQuestion(quizQuestion);
 
-            //try
-            //{
+            
             await _db.SaveChangesAsync();
-            //    // move on
-            //}
-            //catch (DbUpdateException)
-            //{
-            //    Console.WriteLine("\n\n\n\n\n\n\nfungerer ikke"); // get latest version of record for display
-            //    return false;
-            //}
+          
             return true;
-            //await _db.SaveChangesAsync();
-            //return true;
-
-
-
-            //gammel- fungerer ikke!!! error
-
-            //Guid QuizGuid = new Guid(request.inputCreateQuestionDto.QuizId);
-            //Console.WriteLine($"guid of quiz is {QuizGuid}\n\n");
-            //var Quiz = await _db.Quiz
-            //    .FirstOrDefaultAsync(q => q.Id == QuizGuid, cancellationToken);
-
-
-            //if (Quiz == null)
-            //{
-            //    Console.WriteLine("quiz er null");
-            //    return false;
-            //}
-            //var quizQuestion = new QuizQuestion(request.inputCreateQuestionDto.Question, request.inputCreateQuestionDto.CorrectAlternative);
-
-            //List<Alternative> alternatives = new List<Alternative>();
-            //foreach (var dto in request.inputCreateQuestionDto.Alternatives)
-            //{
-            //    alternatives.Add(new Alternative(dto.Id, dto.Text));
-            //    //alternatives.Append(new Alternative(dto.Text));
-            //}
-            //quizQuestion.Alternatives = alternatives;
-            //Console.WriteLine($"the whole quiz {Quiz}\n\n");
-
-            //Quiz.AddQuizQuestion(quizQuestion);
-
-            //try
-            //{
-            //    await _db.SaveChangesAsync();
-            //    // move on
-            //}
-            //catch (DbUpdateException)
-            //{
-            //    Console.WriteLine("\n\n\n\n\n\n\n fungerer ikke"); // get latest version of record for display
-            //    return false;
-            //}
-            //return true;
-            ////await _db.SaveChangesAsync();
-            ////return true;
         }
     }
 }

@@ -196,12 +196,92 @@ namespace orienteering_backend.Tests.Helpers
             //ACT
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
-
-
             //ASSERT
             Assert.True(response);
             var dbTrack =await _db.Tracks.Where(t=>t.UserId== userId).FirstOrDefaultAsync();
             Assert.Null(dbTrack);
+        }
+
+        [Fact]
+        public async Task GivenCorrectUser_WhenGetTracks_ThenReturnTracks()
+        {
+            //test GetTracks
+            //ARRANGE
+
+            var identityService = new Mock<IIdentityService>();
+            //identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
+
+            //var request = new DeleteTrack.Request(track.Id);
+            //var handler = new DeleteTrack.Handler(_db, identityService.Object, mediator.Object);
+
+            //ACT
+
+            //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+
+            //ASSERT
+        }
+
+        [Fact]
+        public async Task Given_When_Then1()
+        {
+            //fix test  gettrackuserbyquiz
+            //ARRANGE
+            var _db = new OrienteeringContext(dbContextOptions, null);
+            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
+
+            var identityService = new Mock<IIdentityService>();
+            //identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
+
+            //var request = new DeleteTrack.Request(track.Id);
+            //var handler = new DeleteTrack.Handler(_db, identityService.Object, mediator.Object);
+
+            //ACT
+
+            //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+
+            //ASSERT
+        }
+
+
+        [Fact]
+        public async Task Given_When_Then2()
+        {
+            //test check start checkpoint
+            //ARRANGE
+
+            var identityService = new Mock<IIdentityService>();
+            //identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
+
+            //var request = new DeleteTrack.Request(track.Id);
+            //var handler = new DeleteTrack.Handler(_db, identityService.Object, mediator.Object);
+
+            //ACT
+
+            //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+
+            //ASSERT
+        }
+        [Fact]
+        public async Task Given_When_Then3()
+        {
+            //test update track title
+            //ARRANGE
+
+            var identityService = new Mock<IIdentityService>();
+            //identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
+
+            //var request = new DeleteTrack.Request(track.Id);
+            //var handler = new DeleteTrack.Handler(_db, identityService.Object, mediator.Object);
+
+            //ACT
+
+            //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+
+            //ASSERT
         }
 
 

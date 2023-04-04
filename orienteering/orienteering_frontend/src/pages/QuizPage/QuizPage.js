@@ -55,6 +55,7 @@ export default function QuizPage() {
         if (!response.ok) {
             navigate("/errorpage");
         }
+        //fix-her bør vi heller fetche quiz basert på checkpointId istedenfor å først hente checkpoint og så quiz
         const checkpointDto = await response.json();
         const quizUrl = "/api/quiz/getQuiz?quizId=" + checkpointDto.quizId;
         const quizResponse = await fetch(quizUrl);
