@@ -48,7 +48,7 @@ public static class AddQuizQuestion
                 throw new AuthenticationException("the quiz is not owned by that user");
             }
 
-            Console.WriteLine($"guid of quiz is {QuizGuid}\n\n");
+            //Console.WriteLine($"guid of quiz is {QuizGuid}\n\n");
             var Quiz = await _db.Quiz
                 .FirstOrDefaultAsync(q => q.Id == QuizGuid, cancellationToken);
 
@@ -72,8 +72,6 @@ public static class AddQuizQuestion
             Console.WriteLine($"the whole quiz {Quiz}\n\n");
 
             Quiz.AddQuizQuestion(quizQuestion);
-
-            
             await _db.SaveChangesAsync();
           
             return true;
