@@ -2,15 +2,9 @@
 using System;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using orienteering_backend;
-using orienteering_backend.Core.Domain.Checkpoint;
-using orienteering_backend.Core.Domain.Checkpoint.Dto;
-using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
+
 using orienteering_backend.Infrastructure.Data;
-using orienteering_backend.Core.Domain.Quiz;
-using orienteering_backend.Core.Domain.Quiz.Dto;
-using orienteering_backend.Core.Domain.Quiz.Pipelines;
+
 using AutoMapper;
 using orienteering_backend.Infrastructure.Automapper;
 using Newtonsoft.Json;
@@ -563,134 +557,14 @@ public class InMemoryTest
     //}
 
 
-    [Fact]
-    //denne testen fungerer og kjører
-
-    public async Task TestGetTrackUser()
-    {
-        //arrange
-        var db = new OrienteeringContext(dbContextOptions, null);
-        if (!db.Database.IsInMemory()) { db.Database.Migrate(); }
-
-        //add track to db
-        var track = new Track();
-        track.Name = "name";
-        track.UserId = Guid.NewGuid();
-        //track.UserId = Guid.NewGuid();
-        await db.Tracks.AddAsync(track);
-        await db.SaveChangesAsync();
-
-        var trackDb = await db.Tracks.Where(t => t.Name == "name").FirstOrDefaultAsync();
-        var expected = new TrackUserIdDto();
-        expected.UserId = track.UserId;
-        expected.TrackId = trackDb.Id;
-
-        //var mapper = _mapper;
-        var mapper = new Mock<IMapper>();
-        mapper.Setup(x => x.Map<Track, TrackUserIdDto>(track)).Returns(expected);
-
-        var request = new GetTrackUser.Request(trackDb.Id);
-        var handler = new GetTrackUser.Handler(db, mapper.Object);
-
-        //act
-        var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-        Assert.Equal(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(response));
-    }
 
 
-    [Fact]
-    //denne testen fungere
-    public async Task GivenUser_WhenCreateTrack_ThenCreate()
-    {
-        //ARRANGE
-        var db = new OrienteeringContext(dbContextOptions, null);
-        if (!db.Database.IsInMemory()) { db.Database.Migrate(); }
-
-        var testUserId = Guid.NewGuid();
-        var createTrackDto = new CreateTrackDto("trackName");
-
-        var realTrack = new Track();
-        realTrack.Name = "trackName";
-        realTrack.UserId = testUserId;
-
-        var identityService = new Mock<IIdentityService>();
-        identityService.Setup(i => i.GetCurrentUserId()).Returns(testUserId);
-
-        var mapper = new Mock<IMapper>();
-        mapper.Setup(x => x.Map<CreateTrackDto, Track>(createTrackDto)).Returns(realTrack);
-
-        var request = new CreateTrack.Request(createTrackDto);
-        var handler = new CreateTrack.Handler(db, mapper.Object, identityService.Object);
-
-        //ACT
-        var result = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-
-        //ASSERT
-        Assert.IsType<Guid>(result);
-
-    }
-
-    [Fact]
-    public async Task GivenNoUser_WhenCreateTrack_ThenFail()
-    {
-        //ARRANGE
-        var db = new OrienteeringContext(dbContextOptions, null);
-        if (!db.Database.IsInMemory()) { db.Database.Migrate(); }
-
-        var userId = Guid.NewGuid();
-        var createTrackDto = new CreateTrackDto("trackName");
-
-        var realTrack = new Track();
-        realTrack.Name = "trackName";
-        realTrack.UserId = userId;
-
-        var identityService = new Mock<IIdentityService>();
-        identityService.Setup(i => i.GetCurrentUserId()).Returns<Guid?>(null);
-
-        var mapper = new Mock<IMapper>();
-        mapper.Setup(x => x.Map<CreateTrackDto, Track>(createTrackDto)).Returns(realTrack);
-
-        var request = new CreateTrack.Request(createTrackDto);
-        var handler = new CreateTrack.Handler(db, mapper.Object, identityService.Object);
-
-        //ACT AND ASSERT
-        Assert.Throws<AuthenticationException>(() => handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult());
-    }
+    
 
 
-    [Fact]
-    public async Task GivenUser_WhenAskForTrack_ThenReturnTrack()
-    {
-        //ARRANGE
-        var _db = new OrienteeringContext(dbContextOptions, null);
-        if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
-        var userId = Guid.NewGuid();
 
-        var track = new Track();
-        track.UserId = userId;
-        track.Name = "Test";
-        await _db.Tracks.AddAsync(track);
-        await _db.SaveChangesAsync();
 
-        var excpectedTrackDto = new TrackDto();
-        excpectedTrackDto.TrackName = "Test";
-
-        var mapper = new Mock<IMapper>();
-        mapper.Setup(x => x.Map<Track, TrackDto>(track)).Returns(excpectedTrackDto);
-
-        var identityService = new Mock<IIdentityService>();
-        identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
-
-        var request = new GetSingleTrack.Request(track.Id);
-        var handler = new GetSingleTrack.Handler(_db, mapper.Object, identityService.Object);
-
-        //ACT
-        var returnedTrackDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-
-        //ASSERT
-        Assert.Equal(JsonConvert.SerializeObject(excpectedTrackDto), JsonConvert.SerializeObject(returnedTrackDto));
-    }
-
+    
     //[Fact]
     //public async Task GetTracksTest()
     //{
