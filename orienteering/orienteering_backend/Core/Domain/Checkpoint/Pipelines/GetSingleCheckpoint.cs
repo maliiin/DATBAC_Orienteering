@@ -36,7 +36,6 @@ public static class GetSingleCheckpoint
         }
 
         public async Task<CheckpointDto> Handle(Request request, CancellationToken cancellationToken)
-        // public async Task<List<Track>> Handle(Request request, CancellationToken cancellationToken)
         {
             //check that signed in
             var userId = _identityService.GetCurrentUserId();

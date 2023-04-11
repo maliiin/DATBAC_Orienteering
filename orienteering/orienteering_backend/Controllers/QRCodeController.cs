@@ -45,10 +45,13 @@ public class QRCodeController : ControllerBase
             var checkpointList = await _mediator.Send(new GetQRCodes.Request(track));
             return checkpointList;
         }
-        catch
+        catch (AuthenticationException)
         {
             return Unauthorized();
         }
-        
+        catch (NullReferenceException)
+        {
+            return NotFound();
+        }
     }
 }

@@ -27,6 +27,8 @@ namespace orienteering_backend.Controllers
         }
         //fix/se på -bør userGuid sendes inn fra frontend? eller skal backend hente userId fra seg selv fra den som er logget inn?
 
+
+        //fix-denne bør sikres
         [HttpGet("getQuiz")]
         public async Task<ActionResult<QuizDto>> GetQuiz(string quizId)
         {
@@ -42,6 +44,28 @@ namespace orienteering_backend.Controllers
             //    return Unauthorized();
             //}
 
+        }
+
+        [HttpGet("getQuizByCheckpoint")]
+        public async Task<ActionResult> GetQuizByCheckpoint(string checkpointId)
+        {
+            var CheckpointId = new Guid(checkpointId);
+            try
+            {
+                var quiz = await _mediator.Send(new GetQuizByCheckpointId.Request(CheckpointId));
+
+                return Ok(quiz);
+
+            }
+            catch (AuthenticationException)
+            {
+                return Unauthorized("user not signed in");
+
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost("addQuizQuestion")]

@@ -43,7 +43,7 @@ public static class GetQRCodes
 
             //check that user is allowed to access this track
             TrackUserIdDto track = await _mediator.Send(new GetTrackUser.Request(request.TrackId));
-            if (userId != track.UserId) { throw new AuthenticationException(); }
+            if (userId != track.UserId) { throw new NullReferenceException("not found or access not allowed"); }
 
             //get checkpoints
             var checkpointList = await _db.Checkpoints
@@ -52,7 +52,7 @@ public static class GetQRCodes
 
             if (checkpointList == null)
             {
-                throw new Exception("Checkpoint not found");
+                throw new NullReferenceException("not found or access not allowed");
             }
             var dtoList = new List<CheckpointNameAndQRCodeDto>();
 

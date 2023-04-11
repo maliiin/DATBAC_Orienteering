@@ -1,6 +1,7 @@
-import { Radio, FormControlLabel } from '@mui/material';
+//import { Radio, FormControlLabel } from '@mui/material';
 
 
-const QuizQuestionAlternative = ({ data }) => <FormControlLabel value={data} control={<Radio />} label={data} />
+//const QuizQuestionAlternative = ({ data }) => <FormControlLabel value={data} control={<Radio />} label={data} />
 
-export default QuizQuestionAlternative;
+//export default QuizQuestionAlternative;
+//fix slett
