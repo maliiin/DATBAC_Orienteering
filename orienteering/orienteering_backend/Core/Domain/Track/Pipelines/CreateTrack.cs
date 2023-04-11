@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿//fix-skriv lisens om mediatr!!!!
+using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Authentication.Services;

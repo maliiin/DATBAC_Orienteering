@@ -14,37 +14,17 @@ import Grid from '@mui/material/Grid';
 //displays all the tracks of a user. not details of the tracks
 
 export default function TrackOverview() {
-    //const [shouldRender, setShouldRender] = useState(false);
-    const [render, setRender] = useState(false);
-
     const navigate = useNavigate();
-    //gir undefined
-    //const test = useAuthentication();
-
-   
-
-    const [trackList, setTrackList] = useState("");
     const [list, setList] = useState("");
-
-    //laster userid og sjekker at det stemmer
-    //const loadUserId = async () => {
-    //    const response = await fetch("api/user/getsignedinuserid");
-
-    //    ////not signed in
-    //    //if (!response.ok) {
-    //    //    console.log("ikke innlogget!!!");
-    //    //    navigate("/login");
-    //    //}
-
-    //    const data = await response.json();
-
-    //    setUserInfo(prevState => { return { ...prevState, Id: data.id } });
-    //};
 
     const loadTrack = async () => {
         const response = await fetch("api/track/getTracks");
-        if (!response.ok) {
-            navigate("/errorpage");
+        if (response.status == 401) {
+            console.log("feil");
+            //
+            navigate("/login");
+        } else if (!response.ok) {
+            navigate("/errorpage")
         }
 
         const data = await response.json();
@@ -58,8 +38,6 @@ export default function TrackOverview() {
         ));
     }
 
-
-
     useEffect(() => {
         loadTrack();
 
@@ -71,7 +49,6 @@ export default function TrackOverview() {
                 spacing={3}
                 margin="10px"
                 direction={{ xs: "column-reverse", md: "row" }}
-
             >
                 <Grid item xs={10} md={6}>
                     <h4>List of all your tracks</h4>
@@ -84,7 +61,6 @@ export default function TrackOverview() {
                     <CreateTrackForm updateTracks={loadTrack} ></CreateTrackForm>
                 </Grid>
             </Grid>
-
         </>
     );
 };
