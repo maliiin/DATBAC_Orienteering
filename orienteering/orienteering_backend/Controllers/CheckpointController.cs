@@ -58,6 +58,7 @@ namespace orienteering_backend.Controllers
             }
             catch
             {
+                //fix-eller skal den returnere NotFound
                 //user dont own this track
                 return Unauthorized();
             }
@@ -74,9 +75,15 @@ namespace orienteering_backend.Controllers
                 CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(CheckpointId));
                 return checkpoint;
             }
-            catch
+            catch(AuthenticationException)
             {
+                //not signed in
                 return Unauthorized();
+            }
+            catch(NullReferenceException)
+            {
+                //not authenticated or dont exist
+                return NotFound();
             }
 
 

@@ -4,11 +4,16 @@ import { Link, redirect, useNavigate } from 'react-router-dom';
 import { createSearchParams, useParams } from 'react-router-dom';
 
 export default function DisplayQuestion(props) {
+    const navigate = useNavigate();
 
     const deleteQuestion = async () => {
         const url = '/api/quiz/deleteQuestion?';
         const parameter = 'questionId=' + props.questionInfo.quizQuestionId + '&quizId=' + props.quizId;
-        await fetch(url + parameter, { method: 'DELETE' });
+        const response=await fetch(url + parameter, { method: 'DELETE' });
+        //401 => not signed in
+        if (response.status == 401) { navigate("/login"); }
+        //404 => dont exist or not your checkpoint
+        if (response.status == 404) { navigate("/errorpage") }
 
         //update value to render quizquestions
         props.setQuizChanged(props.quizChanged * -1);

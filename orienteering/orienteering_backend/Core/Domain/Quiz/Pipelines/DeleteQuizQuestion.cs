@@ -16,11 +16,8 @@ public static class DeleteQuizQuestion
 {
     public record Request(
         Guid quizQuestionId, Guid quizId
-        ):IRequest<bool>;
+        ) : IRequest<bool>;
 
-
-    //fix- se på denne-har ingen returtype
-    //hvis ok bør vi se på de andre som heller ikke trenger å returnere noe
     public class Handler : IRequestHandler<Request, bool>
     {
         private readonly OrienteeringContext _db;
@@ -36,7 +33,6 @@ public static class DeleteQuizQuestion
 
         public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
         {
-
             //check that signed in
             var userId = _identityService.GetCurrentUserId();
             if (userId == null) { throw new AuthenticationException("user not signed in"); }
@@ -46,24 +42,23 @@ public static class DeleteQuizQuestion
             if (trackUser.UserId != userId)
             {
                 //the user that owns the track is not the one signed in
-                throw new AuthenticationException("the quiz is not owned by that user");
+                throw new NullReferenceException("the quiz dont exist or not allowed to access");
             }
 
             var quiz = await _db.Quiz
                .Where(q => q.Id == request.quizId)
-               .Include(q=>q.QuizQuestions)
+               .Include(q => q.QuizQuestions)
                .FirstOrDefaultAsync(cancellationToken);
 
 
+            if (quiz == null) { throw new NullReferenceException("the quiz dont exist or not allowed to access"); }
 
             //if quiz is null, the checkpoint did not have quiz
             //else delete the quiz
-            if (quiz != null)
-            {
-                quiz.RemoveQuizQuestion(request.quizQuestionId);
-                await _db.SaveChangesAsync(cancellationToken);
-            }
-            //fix ingenting skjer hvis quiz er null??
+
+            quiz.RemoveQuizQuestion(request.quizQuestionId);
+            await _db.SaveChangesAsync(cancellationToken);
+
             return true;
         }
     }

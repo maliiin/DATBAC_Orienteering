@@ -45,7 +45,7 @@ public static class AddQuizQuestion
             if (trackUser.UserId != userId)
             {
                 //the user that owns the track is not the one signed in
-                throw new AuthenticationException("the quiz is not owned by that user");
+                throw new NullReferenceException("the quiz dont exist or you are not allowed to edit");
             }
 
             //Console.WriteLine($"guid of quiz is {QuizGuid}\n\n");
@@ -54,8 +54,7 @@ public static class AddQuizQuestion
 
             if (Quiz == null)
             {
-                Console.WriteLine("quiz er null");
-                return false;
+                throw new NullReferenceException("the quiz dont exist or you are not allowed to edit");
             }
 
             var quizQuestion = new QuizQuestion();
@@ -69,7 +68,6 @@ public static class AddQuizQuestion
                 //alternatives.Append(new Alternative(dto.Text));
             }
             quizQuestion.Alternatives = alternatives;
-            Console.WriteLine($"the whole quiz {Quiz}\n\n");
 
             Quiz.AddQuizQuestion(quizQuestion);
             await _db.SaveChangesAsync();

@@ -6,7 +6,10 @@ export default function DisplayQuiz(props) {
     const [quizQuestions, setQuizQuestions] = useState("");
 
     const fetchQuiz = async () => {
-        const Quiz = await fetch("/api/quiz/getQuiz?quizId=" + props.quizId).then(res => res.json());
+        const response = await fetch("/api/quiz/getQuiz?quizId=" + props.quizId);
+        //fix dobbelsjekk-denne er ikke sikret siden taquiz bruker denne også
+
+        const Quiz = await response.json();
         setQuizQuestions(Quiz.quizQuestions);
     }
 

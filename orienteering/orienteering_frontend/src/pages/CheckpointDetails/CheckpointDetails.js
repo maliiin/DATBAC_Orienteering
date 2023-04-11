@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
 import React, { useState } from "react";
-import { Link, redirect, useNavigate } from 'react-router-dom';
-import { createSearchParams, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import AddQuizQuestion from "./Components/AddQuizQuestion";
 import DisplayQuiz from "./Components/DisplayQuiz";
@@ -9,7 +9,6 @@ import DisplayQuiz from "./Components/DisplayQuiz";
 export default function CheckpointDetails() {
 
     const navigate = useNavigate();
-    //const [render, setRender] = useState(false);
     const [hasQuiz, setHasQuiz] = useState(false);
     const [QuizId, setQuizId] = useState("");
     const [quizChanged, setQuizChanged] = useState(1);
@@ -20,8 +19,11 @@ export default function CheckpointDetails() {
 
     const loadCheckpoint = async () => {
         const response = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + checkpointId);
-        //fiks naviger- naviger om feil status
-        //https://auth0.com/blog/forbidden-unauthorized-http-status-codes/ 
+        //401 => not signed in
+        if (response.status == 401) { navigate("/login"); }
+        //404 => dont exist or not your checkpoint
+        if (response.status == 404) { navigate("/errorpage") }
+
 
         const checkpoint = await response.json();
 
@@ -52,12 +54,20 @@ export default function CheckpointDetails() {
 
                 <Grid item xs={10} md={6}>
                     <h4>Questions</h4>
-                    <DisplayQuiz quizChanged={quizChanged} setQuizChanged={setQuizChanged} quizId={QuizId}></DisplayQuiz>
+                    <DisplayQuiz
+                        quizChanged={quizChanged}
+                        setQuizChanged={setQuizChanged}
+                        quizId={QuizId}>
+                    </DisplayQuiz>
                 </Grid>
 
                 <Grid item xs={10} md={6}>
                     <h4>Add more questions here</h4>
-                    <AddQuizQuestion quizChanged={quizChanged} setQuizChanged={setQuizChanged} ></AddQuizQuestion>
+                    <AddQuizQuestion
+                        quizChanged={quizChanged}
+                        setQuizChanged={setQuizChanged}
+                        quizId={QuizId} >
+                    </AddQuizQuestion>
                 </Grid>
             </Grid>
         </>);

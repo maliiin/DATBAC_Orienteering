@@ -11,6 +11,7 @@ using orienteering_backend.Core.Domain.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Quiz.Events;
+using System.Security.Authentication;
 
 namespace orienteering_backend.Controllers
 {
@@ -31,15 +32,15 @@ namespace orienteering_backend.Controllers
         {
             var QuizId = new Guid(quizId);
 
-            try
-            {
-                var quizDto = await _mediator.Send(new GetQuiz.Request(QuizId));
-                return quizDto;
-            }
-            catch
-            {
-                return Unauthorized();
-            }
+            //try
+            //{
+            var quizDto = await _mediator.Send(new GetQuiz.Request(QuizId));
+            return quizDto;
+            //}
+            //catch
+            //{
+            //    return Unauthorized();
+            //}
 
         }
 
@@ -55,12 +56,15 @@ namespace orienteering_backend.Controllers
                 return Created("Added quiz question.", null);
 
             }
-            catch
+            catch (AuthenticationException)
             {
-                return Unauthorized("something went wrong creating quiz question");
+                return Unauthorized("user not signed in");
 
             }
-            
+            catch (NullReferenceException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete("deleteQuestion")]
@@ -79,31 +83,15 @@ namespace orienteering_backend.Controllers
                 await _mediator.Send(new DeleteQuizQuestion.Request(questionGuid, quizGuid));
                 return Ok();
             }
-            catch
+            catch (AuthenticationException)
             {
-                return Unauthorized("not able to delete question");
+                return Unauthorized("user not signed in");
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound("");
             }
 
         }
-        //[HttpGet("getNextQuizQuestion")]
-        //public async Task<NextQuizQuestionDto> GetNextQuizQuestion(string quizId, string quizQuestionIndex)
-        //{
-        //    var QuizId = new Guid(quizId);
-        //    var QuizQuestionIndex = Int32.Parse(quizQuestionIndex);
-        //    var nextQuizQuestionDto = await _mediator.Send(new GetNextQuizQuestion.Request(QuizId, QuizQuestionIndex));
-        //    return nextQuizQuestionDto;
-        //}
-        // fix; fjern dette dersom pipeline ikke brukt
-
-        //[HttpGet("getSolution")]
-        //public async Task<string> getSolution(string quizId, string quizQuestionId)
-        //{
-        //    var QuizId = new Guid(quizId);
-        //    var QuizQuestionId = new Guid(quizQuestionId);
-        //    var solution = await _mediator.Send(new GetSolution.Request(QuizId, QuizQuestionId));
-        //    return solution;
-        //}
-        // fix; fjern dette dersom pipeline ikke brukt
-
     }
 }

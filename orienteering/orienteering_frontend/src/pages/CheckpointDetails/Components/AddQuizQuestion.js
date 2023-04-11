@@ -1,15 +1,14 @@
 import { TextField, Box, Button } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 
 export default function AddQuizQuestion(props) {
-    const params = useParams();
     const navigate = useNavigate();
 
     const [questionInfo, setQuestionInfo] = useState({
         Question: "",
-        QuizId: "",
+        QuizId: props.quizId,
         Alternatives: [{
             Id: 1,
             Text: ""
@@ -25,11 +24,6 @@ export default function AddQuizQuestion(props) {
 
     //amount of alternatives
     const [count, setCount] = useState(3);
-
-    const GetQuizId = async () => {
-        const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId).then(res => res.json());
-        setQuestionInfo({ ...questionInfo, QuizId: checkpoint.quizId });
-    }
 
     //adds one more field for alternative
     const handleAddAlternative = () => {
@@ -58,13 +52,17 @@ export default function AddQuizQuestion(props) {
         };
 
         var response = await fetch('/api/quiz/addQuizQuestion', requestAlternatives);
-        // Fix: errorhandling her ??
+        //401 => not signed in
+        if (response.status == 401) { navigate("/login"); }
+        //404 => dont exist or not your checkpoint
+        if (response.status == 404) { navigate("/errorpage") }
 
         //update value to render quizquestions
         props.setQuizChanged(props.quizChanged * -1);
 
         //clear input field
-        setQuestionInfo({...questionInfo,
+        setQuestionInfo({
+            ...questionInfo,
             Question: "",
             Alternatives: [{
                 Id: 1,
@@ -92,7 +90,7 @@ export default function AddQuizQuestion(props) {
         setQuestionInfo({ ...questionInfo, Alternatives: newItems });
     }
 
-    const handleRemoveAlternative = (event) => {
+    const handleRemoveAlternative = () => {
         //all exept last alternative
         let shorterList = questionInfo.Alternatives.slice(0, -1);
 
@@ -104,10 +102,6 @@ export default function AddQuizQuestion(props) {
         //update state
         setQuestionInfo({ ...questionInfo, [event.target.name]: event.target.value });
     };
-
-    useEffect(() => {
-        GetQuizId();
-    }, []);
 
     return (<>
         <Box
@@ -163,7 +157,7 @@ export default function AddQuizQuestion(props) {
                         id="standard-basic" label="Question"
                         name="Question"
                         variant="standard"
-                        value={questionInfo.Question}/>
+                        value={questionInfo.Question} />
                 </Grid>
 
 
