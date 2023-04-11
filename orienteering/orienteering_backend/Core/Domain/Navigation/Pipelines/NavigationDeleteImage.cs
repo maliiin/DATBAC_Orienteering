@@ -43,12 +43,12 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                      .Include(n => n.Images)
                      .FirstOrDefaultAsync(cancellationToken);
 
-                if (navigation == null) { return false; }
+                if (navigation == null) { throw new NullReferenceException("not found or access not allowed"); }
 
                 //check that user is allowed to access this navigation
                 CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(navigation.ToCheckpoint));
                 TrackUserIdDto track = await _mediator.Send(new GetTrackUser.Request(checkpoint.TrackId));
-                if (userId != track.UserId) { throw new AuthenticationException(); }
+                if (userId != track.UserId) { throw new NullReferenceException("not found or access not allowed"); }
 
 
                 var navImage = navigation.Images.FirstOrDefault(i => i.Id == request.imageId);

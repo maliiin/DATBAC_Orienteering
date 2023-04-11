@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Navigation.Dto;
 using orienteering_backend.Core.Domain.Navigation.Pipelines;
+using System.Security.Authentication;
 
 namespace orienteering_backend.Controllers
 {
@@ -36,10 +37,17 @@ namespace orienteering_backend.Controllers
                 return Ok();
 
             }
-            catch
+            catch (AuthenticationException)
             {
                 return Unauthorized();
             }
+            catch (NullReferenceException)
+            {
+                return NotFound();
+            }
+
+
+
 
 
         }
@@ -52,14 +60,16 @@ namespace orienteering_backend.Controllers
 
             try
             {
-
                 await _mediator.Send(new NavigationDeleteImage.Request(imageGuid, navigationGuid));
-
                 return Ok();
             }
-            catch
+            catch (AuthenticationException)
             {
                 return Unauthorized();
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
             }
         }
 
@@ -74,9 +84,13 @@ namespace orienteering_backend.Controllers
                 NavigationDto navDto = await _mediator.Send(new GetNavigation.Request(checkpointGuid));
                 return navDto;
             }
-            catch
+            catch (AuthenticationException)
             {
                 return Unauthorized();
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
             }
             
         }

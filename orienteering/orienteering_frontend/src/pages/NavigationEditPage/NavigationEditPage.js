@@ -1,9 +1,8 @@
-import { TextField, Button, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import React, { useState, useEffect } from "react";
-import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AddImage from "./Components/AddImage";
 import DisplayImagesAdmin from './Components/DisplayImagesAdmin';
-
 
 export default function NavigationEditPage() {
 
@@ -12,12 +11,14 @@ export default function NavigationEditPage() {
 
     const [imageList, setImageList] = useState("");
 
-
-    //const [render, setRender] = useState(false);
-
     const loadImages = async () => {
-        //fiks navigation-sjekk om error
-        const Navigation = await fetch("/api/navigation/GetNavigation?checkpointId=" + params.checkpointId).then(r => r.json());
+        const response = await fetch("/api/navigation/GetNavigation?checkpointId=" + params.checkpointId);
+        //401 => not signed in
+        if (response.status == 401) { navigate("/login"); }
+        //404 => dont exist or not your checkpoint
+        if (response.status == 404) { navigate("/errorpage") }
+
+        const Navigation = await response.json();
 
         setImageList(Navigation.images.map((imageInfo, index) =>
             <>
@@ -40,13 +41,6 @@ export default function NavigationEditPage() {
             loadImages();
 
         }, []);
-
-
-
-
-
-
-
 
     return (<>
 

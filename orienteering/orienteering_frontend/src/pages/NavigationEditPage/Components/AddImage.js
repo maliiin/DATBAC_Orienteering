@@ -1,5 +1,5 @@
-import { TextField, Input, Button, Grid, Box } from '@mui/material';
-import React, { useState, useEffect, props, useRef } from "react";
+import { TextField, Button, Box } from '@mui/material';
+import React, { useState, useRef } from "react";
 import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
 
 export default function AddImage(props) {
@@ -14,32 +14,16 @@ export default function AddImage(props) {
 
         const formData = new FormData();
         formData.append("file", uploadedImage);
-        //console.log(imageRef.current.value)
-        //formData.append("file", {
-        //    FormFile: imageRef.current.value
-        //});
-
         formData.append("checkpointId", props.checkpointId);
         formData.append("textDescription", textDescription);
 
         const requestAlternatives = {
             method: 'POST',
-            //mode: 'cors',
-            //headers: {
-            //'Content-Type': 'application/json',
-            //'Accept': 'application/json',
-
-            //fix linje under -sikkerhet
-            //'Access-Control-Allow-Origin': '*',
-            // },
-            //body: JSON.stringify(testBilde)
             body: formData
-            //body: JSON.stringify(send)
-
         };
 
         var response = await fetch('/api/navigation/AddImage', requestAlternatives);
- 
+        //fix-vet ikke om errorhandling trengs her?
 
         //update parent
         props.updateImages();
@@ -52,26 +36,14 @@ export default function AddImage(props) {
     const handleChangeImage = function (event) {
         event.preventDefault();
         setUploadedImage(event.target.files[0]);
-
-        //imageRef.current.value = event.target.value[0];
-        //console.log(event.target.value)
-
-
     }
 
     const handleChangeText = function (event) {
         setTextDescription(event.target.value);
-
     }
-
-
-    //fix remove selected file on submit-clear input
-
-
 
     return (
         <>
-
             <Box onSubmit={handleSubmit} component="form" style={{ width: "80%" }}>
                 <p>Upload images showing the path from previous checkpoint to this checkpoint</p>
                 <p>For the first checkpoint, the "previous" checkpoint will be the one created last</p>
@@ -79,19 +51,16 @@ export default function AddImage(props) {
 
                 <h4>Add more images</h4>
                 <input
-                    //multiple
                     type="file"
                     id="image"
                     required
                     accept="image/*"
                     onChange={handleChangeImage}
                     ref={imageRef}
-                //value={uploadedImage.FormFile }
                 />
 
                 <br></br>
                 <TextField
-                    //fix-skal være required eller ikke
                     required
                     onChange={(e) => handleChangeText(e)}
                     label="Description"
@@ -103,15 +72,10 @@ export default function AddImage(props) {
                 </TextField>
                 <br></br>
                 <br></br>
-                <Button
-                    type="submit"
-                >
+                <Button type="submit">
                     Add Image
                 </Button>
                 <p>If the image won't be uploaded, try to downscale the image</p>
             </Box>
-
-
-
         </>);
 }

@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Authentication.Services;
-using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Track.Dto;
@@ -39,7 +37,7 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                 //check that user is allowed to access this navigation
                 CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(request.checkpointId));
                 TrackUserIdDto track = await _mediator.Send(new GetTrackUser.Request(checkpoint.TrackId));
-                if (userId != track.UserId) { throw new AuthenticationException(); }
+                if (userId != track.UserId) { throw new NullReferenceException("not found or access not allowed"); }
 
                 //get navigation
                 var navigation = await _db.Navigation
@@ -49,7 +47,7 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
 
                 //fix er dette rett eller bør den lage hvis den ikke finnes?
                 //den skal finnes fra før
-                if (navigation == null) { return false; }
+                if (navigation == null) { throw new NullReferenceException("not found or access not allowed"); }
 
                 //wwwroot/checkpointId is the folder
                 string folder = $"{request.checkpointId}";
