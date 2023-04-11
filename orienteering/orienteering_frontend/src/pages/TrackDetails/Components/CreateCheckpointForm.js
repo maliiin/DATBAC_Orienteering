@@ -1,11 +1,14 @@
 import { React, useState, useEffect } from "react";
 import { Radio, FormLabel, Box, RadioGroup, FormControlLabel, Select, MenuItem, Button, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import FormControl from '@mui/material/FormControl';
 
 
 export default function CreateCheckpointForm(props) {
-    //the chosen activity
+    //the chosen activity (quiz/game)
     const [activity, setActivity] = useState("");
+    const navigate = useNavigate();
+
 
     const [checkpointInfo, setCheckpointInfo] = useState({
         Title: "",
@@ -40,6 +43,10 @@ export default function CreateCheckpointForm(props) {
         };
 
         const response = await fetch('/api/checkpoint/createCheckpoint', requestOptions);
+        if (!response.ok) {
+            //not allowed or dont exist
+            navigate("/errorpage");
+        }
 
         //update checkpointlist of parent
         props.updateCheckpointList();

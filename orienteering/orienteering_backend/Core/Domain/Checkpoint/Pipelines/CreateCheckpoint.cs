@@ -35,7 +35,7 @@ public static class CreateCheckpoint
             //get track to get numCheckpoint
             var trackDto=await _mediator.Send(new GetSingleTrack.Request(request.checkpointDto.TrackId));
 
-            if (trackDto.UserId != request.userId) { throw new AuthenticationException("The user dont own this track."); };
+            if (trackDto.UserId != request.userId) { throw new NullReferenceException("The user dont own this track or it dosent exist."); };
 
             //create checkpoint
             var newCheckpoint = new Checkpoint(request.checkpointDto.Title, request.checkpointDto.GameId, request.checkpointDto.TrackId);

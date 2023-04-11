@@ -50,11 +50,13 @@ public static class DeleteCheckpoint
                 .Where(ch => ch.Id == request.checkpointId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (checkpoint is null) { throw new NullReferenceException("the checkpoint cannot be found"); };
+            if (checkpoint is null) { throw new NullReferenceException("the checkpoint cannot be found, or you cannot access it"); };
 
             //check that user is allowed to access this checkpoint
             TrackUserIdDto track = await _mediator.Send(new GetTrackUser.Request(checkpoint.TrackId));
-            if (userId != track.UserId) { throw new AuthenticationException(); }
+
+            //return null even if it exist because dont tell atacker that it exists!
+            if (userId != track.UserId) { throw new NullReferenceException("the checkpoint cannot be found, or you cannot access it"); }
 
 
             //delete

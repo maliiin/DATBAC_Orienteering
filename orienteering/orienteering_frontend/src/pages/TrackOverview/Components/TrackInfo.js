@@ -1,9 +1,6 @@
 import { React, useState } from "react";
 import { Button, Box } from '@mui/material';
-import { Link, redirect, useNavigate } from 'react-router-dom';
-
-
-//some info of track, not details
+import { useNavigate } from 'react-router-dom';
 
 export default function TrackInfo(props) {
     //props is props.Trackinfo (id, name, userid ...)
@@ -16,12 +13,8 @@ export default function TrackInfo(props) {
     //display spesific track
     const showTrack = (event) => {
         const url = "/track/" + props.trackInfo.trackId;
-        //console.log(url);
         navigate(url);
-
-        //console.log(event);
     }
-
 
     const shouldEdit = () => {
         setEditing(true)
@@ -30,7 +23,6 @@ export default function TrackInfo(props) {
     const stopEdit = async () => {
         setEditing(false)
 
-
         const url = '/api/track/updateTrackTitle?';
         const parameter = "trackId=" + props.trackInfo.trackId+'&newTitle=' + oldTitle;
         const response = await fetch(url + parameter, { method: 'PUT' });
@@ -38,13 +30,10 @@ export default function TrackInfo(props) {
 
         //update list of parent
         props.updateTrackList()
-
     }
 
     const handleChange = (e) => {
-        console.log("endre");
         setOldTitle(e.target.value);
-
     }
 
     const deleteTrack = async() => {
@@ -58,14 +47,8 @@ export default function TrackInfo(props) {
         props.updateTrackList()
     }
 
-
-
-
     return (<>
-
-
         <Box border="1px solid lightblue;" margin="2px;" style={{ width:'80%'}}>
-
             <p style={{ display: "inline" }}>Title:</p>
             {editing ?
                 <input
@@ -85,11 +68,7 @@ export default function TrackInfo(props) {
 
             <Button onClick={showTrack}>Show details</Button>
             <Button onClick={deleteTrack}>Delete track</Button>
-
         </Box>
-
-
-
 
     </>);
 }

@@ -41,6 +41,7 @@ namespace orienteering_backend.Controllers
             }
             catch
             {
+                //not signed in
                 return Unauthorized();
             }
 

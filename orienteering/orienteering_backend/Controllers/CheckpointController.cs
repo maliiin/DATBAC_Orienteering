@@ -36,7 +36,7 @@ namespace orienteering_backend.Controllers
             }
             catch
             {
-                return Unauthorized();
+                return NotFound();
             }
 
         }
@@ -55,16 +55,12 @@ namespace orienteering_backend.Controllers
                 Guid trackGuid = new Guid(trackId);
                 var checkpoints = await _mediator.Send(new GetCheckpointsForTrack.Request(trackGuid, (Guid)userId));
                 return Ok(checkpoints);
-
             }
             catch
             {
+                //user dont own this track
                 return Unauthorized();
             }
-
-
-
-
         }
 
         [HttpGet("getCheckpoint")]
@@ -99,10 +95,12 @@ namespace orienteering_backend.Controllers
             }
             catch (AuthenticationException ex)
             {
+                //not signed in
                 return Unauthorized();
             }
             catch
             {
+                //not allowed or dont exist
                 return NotFound("Could not find the checkpoint to delete");
             }
 
@@ -121,13 +119,16 @@ namespace orienteering_backend.Controllers
                 var changed = await _mediator.Send(new UpdateCheckpointTitle.Request(checkpointTitle, CheckpointId));
                 return Ok();
             }
-            catch
+            catch (AuthenticationException ex)
             {
-                return NotFound("Could not find the checkpoint to edit");
-
+                //not signed in
+                return Unauthorized("Not signed in");
             }
-
-
+            catch(NullReferenceException)
+            {
+                //does not exist or not allowed
+                return NotFound("Could not find the checkpoint to edit");
+            }
         }
     }
 }

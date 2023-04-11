@@ -1,19 +1,16 @@
-import { TextField, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import React, { useState } from "react";
-import { Link, redirect, useNavigate } from 'react-router-dom';
-import { createSearchParams, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import CheckpointInfo from './Components/CheckpointInfo';
 import CreateCheckpointForm from './Components/CreateCheckpointForm';
 import Grid from '@mui/material/Grid';
 
-//all details of single track, list of the checkpoints
-
 export default function TrackDetails() {
     const navigate = useNavigate();
     const params = useParams();
 
-    const [render, setRender] = useState(false);
     const [checkpointList, setCheckpointList] = useState("");
 
     const [trackInfo, setTrackInfo] = useState({
@@ -28,7 +25,14 @@ export default function TrackDetails() {
     //get all checkpoints for this id
     const loadCheckpoints = async () => {
         const url = "/api/checkpoint/getCheckpoints?trackId=" + params.trackId;
-        const data = await fetch(url).then(res => res.json());
+        const response = await fetch(url);
+
+        //fix-obs se på-nå navigeres bruker til error både om ikke logget inn og dersom
+        //det er en annen brukers ting man ser på
+        if (!response.ok) {
+            navigate("/errorpage")
+        }
+        const data = await response.json();
 
         setCheckpointList(data.map((checkpointElement, index) =>
             <CheckpointInfo
