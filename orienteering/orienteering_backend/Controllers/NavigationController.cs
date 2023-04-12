@@ -45,11 +45,6 @@ namespace orienteering_backend.Controllers
             {
                 return NotFound();
             }
-
-
-
-
-
         }
 
         [HttpDelete("DeleteImage")]
@@ -100,9 +95,12 @@ namespace orienteering_backend.Controllers
         [HttpGet("GetNextNavigation")]
         public async Task<NavigationDto> GetNavigationForNextCheckpoint(string currentCheckpointId)
         {
+            //problem
+            //er ikke logget inn, men den nederste funksjonene krever det!!!
+            //
             Guid currentCheckpointGuid = new Guid(currentCheckpointId);
             var nextCheckpointId = await _mediator.Send(new GetNextCheckpoint.Request(currentCheckpointGuid));
-            var navDto = await _mediator.Send(new GetNavigation.Request(nextCheckpointId));
+            var navDto = await _mediator.Send(new GetNavigationUnauthorized.Request(nextCheckpointId));
 
             return navDto;
         }
@@ -112,7 +110,6 @@ namespace orienteering_backend.Controllers
         {
             Guid NavigationId = new Guid(navigationId);
             Guid NavigationImageId = new Guid(navigationImageId);
-
 
             try
             {
