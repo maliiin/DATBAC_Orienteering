@@ -33,8 +33,10 @@ public static class CreateCheckpoint
         public async Task<Guid> Handle(Request request, CancellationToken cancellationToken)
         {
             //get track to get numCheckpoint
+            ////(fix, her kan kanskje getsingletrackunauthorizeb brukes istedenfor siden denne pipelinen allerede er sikret.)
             var trackDto=await _mediator.Send(new GetSingleTrack.Request(request.checkpointDto.TrackId));
 
+            //Not allowed to do this
             if (trackDto.UserId != request.userId) { throw new NullReferenceException("The user dont own this track or it dosent exist."); };
 
             //create checkpoint

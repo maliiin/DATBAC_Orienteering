@@ -30,7 +30,6 @@ public static class DeleteCheckpoint
         private readonly IIdentityService _identityService;
         private readonly IMediator _mediator;
 
-        //public Handler(OrienteeringContext db) => _db = db ?? throw new ArgumentNullException(nameof(db));
         public Handler(OrienteeringContext db, IIdentityService identityService, IMediator mediator)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));

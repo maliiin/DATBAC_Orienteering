@@ -17,8 +17,6 @@ public static class GetSingleCheckpoint
 {
     public record Request(
         Guid checkpointId) : IRequest<CheckpointDto>;
-    //Guid UserId) : IRequest<List<Track>>;
-
 
     public class Handler : IRequestHandler<Request, CheckpointDto>
     {
