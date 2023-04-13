@@ -6,10 +6,12 @@ using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint.Events;
 
 namespace orienteering_backend.Core.Domain.Track.Handlers;
-//Kilder: CampusEats Handlers
-//Kilder: https://github.com/dat240-2022/assignments/blob/main/Lab3/UiS.Dat240.Lab3/Core/Domain/Cart/Handlers/FoodItemNameChangedHandler.cs (07.02.2023)
-// bruker samme struktur som kilden
 
+
+//oppgave- kall added checkpoint på track så telleren øker
+
+//fix-heter 1 fordi den andre kanskje ikke trengs?
+//hvis ikke kan de slås sammen??
 public class CheckpointCreatedHandler : INotificationHandler<CheckpointCreated>
 {
     private readonly OrienteeringContext _db;
@@ -22,15 +24,17 @@ public class CheckpointCreatedHandler : INotificationHandler<CheckpointCreated>
     }
     public async Task Handle(CheckpointCreated notification, CancellationToken cancellationToken)
     {
-        //fix-hva gjør denne koden?? hvorfor skjer ikke dette direkte i checkpoint domain?
-        //(er der det kommer fra!!)
-        var checkpoint = await _db.Checkpoints.SingleOrDefaultAsync(c => c.Id == notification.CheckpointId);
-        if (checkpoint == null)
-        {
-            return;
-        }
-        await _mediator.Send(new GenerateQR.Request(notification.CheckpointId));
+        //get track from db
+        var track = await _db.Tracks
+            .Where(t => t.Id == notification.TrackId)
+            .FirstOrDefaultAsync(cancellationToken);
 
+        //fix error?
+        if (track == null) { throw new KeyNotFoundException("could not find track"); }
 
+        Console.WriteLine("created checkpoint handler event");
+        //checkpoint was added earlier
+        track.AddedCheckpoint();
+        await _db.SaveChangesAsync(cancellationToken);
     }
 }
