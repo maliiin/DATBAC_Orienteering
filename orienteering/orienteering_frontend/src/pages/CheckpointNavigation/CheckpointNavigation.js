@@ -1,9 +1,10 @@
-import { TextField, Button, Grid, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
-import React, { useState, useRef } from "react";
-import { Link, redirect, useNavigate } from 'react-router-dom';
-import { createSearchParams, useParams } from 'react-router-dom';
+import { Button, Grid } from '@mui/material';
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import DisplayImagesUser from './Components/DisplayImagesUser';
+
 export default function CheckpointNavigation() {
     const [current, setCurrent] = useState(0);
     const [trackFinished, setTrackFinished] = useState(false);
@@ -37,26 +38,20 @@ export default function CheckpointNavigation() {
         }
         var nav = await response.json();
 
-        const sessionInfo = await fetch("/api/session/checkTrackFinished?toCheckpoint=" + nav.toCheckpoint).then(res => res.json());
-        if (sessionInfo.timeUsed != null) {
-            setTrackFinished(true);
-            setTotalTime(sessionInfo.timeUsed);
-        }
+        setImagesList(nav.images.map((imageInfo, index) =>
+            <>
+                <DisplayImagesUser
+                    imageInfo={imageInfo}
+                    key={index + "-" + imageInfo.Order}
 
-            setImagesList(nav.images.map((imageInfo, index) =>
-                <>
-                    <DisplayImagesUser
-                        imageInfo={imageInfo}
-                        key={index + "-" + imageInfo.Order}
 
-                        
-                    >
-                    </DisplayImagesUser>
-                </>
+                >
+                </DisplayImagesUser>
+            </>
 
-            ));
-        }
-        //fix-naviger til errorside hvis ikke?
+        ));
+    }
+    //fix-naviger til errorside hvis ikke?
 
 
 
@@ -107,7 +102,7 @@ export default function CheckpointNavigation() {
                     <Button
                         disabled
                         style={{
-                            display: current >= imagesList.length - 1 ?   "inline":"none"
+                            display: current >= imagesList.length - 1 ? "inline" : "none"
                             //visibility: current >= imagesList.length - 1 ? "hidden" : "inline"
                         }}
                     >
@@ -130,8 +125,8 @@ export default function CheckpointNavigation() {
                 <p>Track finished</p>
                 <p>Total time used: {totalTime} minutes</p>
             </>
-            );
+        );
     }
-    
+
 
 }

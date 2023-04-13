@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using orienteering_backend.Core.Domain.Track.Dto;
+using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 
 namespace orienteering_backend.Controllers;
 
