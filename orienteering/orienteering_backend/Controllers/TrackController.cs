@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Track.Pipelines;
 using orienteering_backend.Core.Domain.Track.Dto;
+using System.Security.Authentication;
 
 namespace orienteering_backend.Controllers
 {
@@ -23,9 +24,6 @@ namespace orienteering_backend.Controllers
         [HttpPost("createTrack")]
         public async Task<ActionResult> CreateTrack(CreateTrackDto trackDto)
         {
-            //tar ikke in userid lenger, det skal backend hente inn selv
-            //fiks det i pipelinen
-            //sjekk at det virker etterpå
             try
             {
                 var newTrackId = await _mediator.Send(new CreateTrack.Request(trackDto));
@@ -36,7 +34,6 @@ namespace orienteering_backend.Controllers
                 //not signed in
                 return Unauthorized();
             }
-
         }
 
 
@@ -81,14 +78,17 @@ namespace orienteering_backend.Controllers
             Guid trackGuid = new Guid(trackId);
             try
             {
-                bool response = await _mediator.Send(new UpdateTrackTitle.Request(trackGuid, newTitle));
-                //fiks sjekk respons
-                if (response) { return Ok(); }
-                else { return NotFound("could not find the track to update"); }
+                await _mediator.Send(new UpdateTrackTitle.Request(trackGuid, newTitle));
+                return Ok();
+
             }
-            catch
+            catch (AuthenticationException)
             {
                 return Unauthorized();
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
             }
 
         }
@@ -104,7 +104,14 @@ namespace orienteering_backend.Controllers
                 bool response = await _mediator.Send(new DeleteTrack.Request(trackGuid));
                 return Ok();
             }
-            catch { return Unauthorized(); }
+            catch (AuthenticationException)
+            {
+                return Unauthorized();
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
+            }
         }
 
     }

@@ -43,7 +43,6 @@ namespace orienteering_backend.Controllers
 
 
         [HttpGet("getCheckpoints")]
-        //get all checkpoints that belongs to a track
         public async Task<ActionResult<List<CheckpointDto>>> GetCheckpointsOfTrack(string trackId)
         {
             //check that signed in
@@ -67,7 +66,6 @@ namespace orienteering_backend.Controllers
         [HttpGet("getCheckpoint")]
         public async Task<ActionResult<CheckpointDto>> GetSingleCheckpoint(string checkpointId)
         {
-
             Guid CheckpointId = new Guid(checkpointId);
 
             try
@@ -85,8 +83,6 @@ namespace orienteering_backend.Controllers
                 //not authenticated or dont exist
                 return NotFound();
             }
-
-
         }
         //sjekk om db order blir autoinkrementet av nytt checkpoint
 
@@ -110,9 +106,6 @@ namespace orienteering_backend.Controllers
                 //not allowed or dont exist
                 return NotFound("Could not find the checkpoint to delete");
             }
-
-
-
         }
 
         //fix-skal dette være put eller patch???

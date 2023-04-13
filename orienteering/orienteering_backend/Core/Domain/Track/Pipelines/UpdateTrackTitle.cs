@@ -33,10 +33,10 @@ public static class UpdateTrackTitle
                 .Where(t => t.Id == request.trackId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (track == null) { return false; }
+            if (track == null) { throw new NullReferenceException("not found or access not allowed"); }
 
             //check that user is allowed to access track
-            if (userId != track.UserId) { throw new AuthenticationException("user not allowed to access this"); }
+            if (userId != track.UserId) { throw new NullReferenceException("not found or access not allowed"); }
 
             track.Name = request.newTitle;
 

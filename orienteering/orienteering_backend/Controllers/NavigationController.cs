@@ -87,7 +87,7 @@ namespace orienteering_backend.Controllers
             {
                 return NotFound();
             }
-            
+
         }
 
 
@@ -95,9 +95,6 @@ namespace orienteering_backend.Controllers
         [HttpGet("GetNextNavigation")]
         public async Task<NavigationDto> GetNavigationForNextCheckpoint(string currentCheckpointId)
         {
-            //problem
-            //er ikke logget inn, men den nederste funksjonene krever det!!!
-            //
             Guid currentCheckpointGuid = new Guid(currentCheckpointId);
             var nextCheckpointId = await _mediator.Send(new GetNextCheckpoint.Request(currentCheckpointGuid));
             var navDto = await _mediator.Send(new GetNavigationUnauthorized.Request(nextCheckpointId));
@@ -119,11 +116,8 @@ namespace orienteering_backend.Controllers
             catch
             {
                 //fix feilmelding
-
                 return Unauthorized("Could not find the navigation to edit");
-
             }
-            
         }
     }
 }
