@@ -12,7 +12,6 @@ export default function CheckpointNavigation() {
 
     const nextImage = () => {
         setCurrent(current + 1)
-        console.log(current)
     }
 
     const prevImage = () => {

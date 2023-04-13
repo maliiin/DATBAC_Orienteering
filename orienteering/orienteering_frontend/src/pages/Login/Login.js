@@ -22,7 +22,6 @@ function Login() {
             navigate("/");
         } else {
             setErrorMsg("Incorrect username or password")
-            console.log("not ok");
         }
 
     }
@@ -33,7 +32,6 @@ function Login() {
 
 
     const handleChange = (event) => {
-        console.log("change");
         //update state
         setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
     };

@@ -20,8 +20,6 @@ export default function TrackOverview() {
     const loadTrack = async () => {
         const response = await fetch("api/track/getTracks");
         if (response.status == 401) {
-            console.log("feil");
-            //
             navigate("/login");
         } else if (!response.ok) {
             navigate("/errorpage")

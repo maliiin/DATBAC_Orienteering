@@ -32,7 +32,6 @@ public class CheckpointCreatedHandler : INotificationHandler<CheckpointCreated>
         //fix error?
         if (track == null) { throw new KeyNotFoundException("could not find track"); }
 
-        Console.WriteLine("created checkpoint handler event");
         //checkpoint was added earlier
         track.AddedCheckpoint();
         await _db.SaveChangesAsync(cancellationToken);

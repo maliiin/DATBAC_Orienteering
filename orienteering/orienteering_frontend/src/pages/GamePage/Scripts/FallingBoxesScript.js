@@ -236,14 +236,10 @@ function moveBasket() {
 
         //gir posisjonen
         listeners: {
-            start(event) {
-                //console.log(event.type, event.target)
-            },
             move(event) {
                 positionBasket.x += event.dx
 
                 event.target.style.transform =
-                    //`translate(${positionBasket.x}px, ${positionBasket.y}px)`
                     `translate(${positionBasket.x}px, 0px)`
 
             },

@@ -44,7 +44,6 @@ function Layout() {
     };
 
     const signOutUser = async () => {
-        console.log("loggut")
         await fetch("api/user/signOut");
         setIsSignedIn(false)
         navigate("login")

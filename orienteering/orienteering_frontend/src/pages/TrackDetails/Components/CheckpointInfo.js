@@ -14,7 +14,6 @@ export default function CheckpointInfo(props) {
         //fix- skal det være track/id/checkpoint/id??
 
         const url = "/checkpointdetails/" + props.checkpointInfo.id;
-        console.log(url);
         navigate(url);
 
     }

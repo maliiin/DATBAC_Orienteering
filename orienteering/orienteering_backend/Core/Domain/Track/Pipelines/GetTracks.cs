@@ -43,8 +43,6 @@ public static class GetTracks
                 .Where(t => t.UserId == userId)
                 .ToArrayAsync(cancellationToken);//ToListAsync();
 
-
-            //Console.WriteLine($"lengde inni {tracks.Count}");
             var trackDtoList = new List<TrackDto>();
             for (var i=0; i < tracks.Length; i++)
             {

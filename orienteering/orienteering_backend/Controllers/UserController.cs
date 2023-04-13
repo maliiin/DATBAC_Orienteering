@@ -30,7 +30,6 @@ namespace orienteering_backend.Controllers
         [Route("signOut")]
         public async Task SignOut()
         {
-            Console.WriteLine("sign out");
             await _identityService.SignOutUser();
         }
 
@@ -68,59 +67,20 @@ namespace orienteering_backend.Controllers
         [Route("GetSignedInUserId")]
         public ActionResult<object> GetSignedInUserId()
         {
-            
-            //er en bruker logget in?
-            var userIsAuthenticated = HttpContext.User.Identity.IsAuthenticated;
-
-            //gir userid, men exeption om ingen er logget inn
-            //var p = HttpContext.User.Claims.First().Value;
-
-            //gir userid, men er null om ingen er logget inn (klikker hvis du kjører .value når ingen er logget inn (null.value))            
             var id = HttpContext.User.Claims.FirstOrDefault();
-            //Console.WriteLine($"is authenticated?? {userIsAuthenticated}");
 
             if (id is null) 
             { 
-                //Console.WriteLine("no user is signed in");
                 return NotFound();
 
             }
             else             
             {
-                //Console.WriteLine($"value of id? {id.Value}");
-                //return id.Value;
                 //fiks fix returtypen her, bør lage eget objekt, ikke sende identity user!!
                 var user1 = new IdentityUser();
                 user1.Id = id.Value;
                 return user1;
-                
-                
             }
         }
-
-
-
-        
-
-        ////fix-denne skal slettes? brukes ikke
-        //// GET: api/User/username
-        //[HttpGet]
-        ////testing authorization/authentication
-        //[Authorize]
-        //[Route("{username}")]
-        
-        //public async Task<ActionResult<UserRegistration>> GetUser(string username)
-        //{
-        //    IdentityUser user = await _userManager.FindByNameAsync(username);
-
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(user);
-
-        //    //return CreatedAtAction("GetUser", new { username = user.UserName }, user);
-        //}
-
     }
 }
