@@ -6,7 +6,6 @@ using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 
 namespace orienteering_backend.Controllers;
 
-//fix-fjern sixlabors imagesharp fra pakker!!
 [ApiController]
 [Route("api/qrcode")]
 public class QRCodeController : ControllerBase

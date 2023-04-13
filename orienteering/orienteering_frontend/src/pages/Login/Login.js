@@ -1,40 +1,31 @@
 import { TextField, Button, Grid } from '@mui/material';
 import React, { useState } from "react";
-import { Link, redirect, useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
-
-
-//dette er registrer, ikke login!!
 function Login() {
     const navigate = useNavigate();
+    //sends message to layout
     const [isSignedIn, setIsSignedIn] = useOutletContext();
     const [errorMsg, setErrorMsg] = useState("");
 
-
-
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         const response = await SignInUser();
 
         if (response.ok) {
             setIsSignedIn(true);
             navigate("/");
         } else {
-            setErrorMsg("Incorrect username or password")
-            console.log("not ok");
+            setErrorMsg("Incorrect username or password");
         }
-
     }
+
     const [userInfo, setUserInfo] = useState({
         username: "",
         password: ""
     });
 
-
     const handleChange = (event) => {
-        console.log("change");
-        //update state
         setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
     };
 
@@ -48,14 +39,11 @@ function Login() {
             body: JSON.stringify(userInfo)
         };
         const response = await fetch('/api/user/signinuser', requestOptions);
-        //if (response.status.su
         return response;
     }
 
     return (
         <>
-
-
             <Grid
                 container
                 spacing={0}
@@ -93,10 +81,7 @@ function Login() {
                         />
                         <br></br>
                         {errorMsg}
-
                         <br></br>
-
-
 
                         <Button variant="contained" type="submit">
                             Log in

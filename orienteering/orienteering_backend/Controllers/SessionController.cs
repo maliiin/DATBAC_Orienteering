@@ -28,6 +28,7 @@ public class SessionController : ControllerBase
     }
 
     [HttpGet("checkTrackFinished")]
+    //fix-flytt til pipeline kanskje!!
     public async Task<TrackLoggingDto> checkTrackFinished(string currentCheckpoint)
     {
         if (HttpContext.Session.GetString("StartCheckpoint") == null)

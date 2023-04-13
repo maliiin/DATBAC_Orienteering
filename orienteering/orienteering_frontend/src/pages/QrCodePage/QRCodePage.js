@@ -41,7 +41,6 @@ function QRCodePage() {
         >
             {ListeItems}
         </Grid>
-
     </>);
 }
 

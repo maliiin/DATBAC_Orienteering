@@ -11,7 +11,7 @@ export default function TrackInfo(props) {
 
 
     //display spesific track
-    const showTrack = (event) => {
+    const showTrack = () => {
         const url = "/track/" + props.trackInfo.trackId;
         navigate(url);
     }

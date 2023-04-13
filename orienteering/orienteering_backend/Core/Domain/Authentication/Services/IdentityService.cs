@@ -22,8 +22,6 @@ public class IdentityService :IIdentityService
 
     public async Task<UserRegistration> CreateUser(UserRegistration user)
     {
-       
-
         //fix endre denne (input?) user til createUser?, ikke bryt ddd 
 
         var result = await _userManager.CreateAsync(

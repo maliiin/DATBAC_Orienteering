@@ -14,7 +14,6 @@ export default function CheckpointInfo(props) {
         //fix- skal det være track/id/checkpoint/id??
 
         const url = "/checkpointdetails/" + props.checkpointInfo.id;
-        console.log(url);
         navigate(url);
 
     }
@@ -31,8 +30,10 @@ export default function CheckpointInfo(props) {
         const url = '/api/checkpoint/removeCheckpoint?';
         const parameter = 'checkpointId=' + props.checkpointInfo.id;
         const response = await fetch(url + parameter, { method: 'DELETE' });
+
         //401 => not signed in
         if (response.status == 401) { navigate("/login"); }
+
         //404 => dont exist or not your checkpoint
         if (response.status == 404) {navigate("/errorpage") }
 

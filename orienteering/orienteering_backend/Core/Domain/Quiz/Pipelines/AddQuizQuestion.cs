@@ -47,7 +47,6 @@ public static class AddQuizQuestion
                 throw new NullReferenceException("the quiz dont exist or you are not allowed to edit");
             }
 
-            //Console.WriteLine($"guid of quiz is {QuizGuid}\n\n");
             var Quiz = await _db.Quiz
                 .FirstOrDefaultAsync(q => q.Id == QuizGuid, cancellationToken);
 

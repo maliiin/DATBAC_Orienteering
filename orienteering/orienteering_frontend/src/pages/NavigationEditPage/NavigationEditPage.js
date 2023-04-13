@@ -29,46 +29,38 @@ export default function NavigationEditPage() {
                     updateImages={loadImages}
                 >
                 </DisplayImagesAdmin>
-
             </>
         ));
-
     }
 
 
     useEffect(() => {
-
-            loadImages();
-
-        }, []);
+        loadImages();
+    }, []);
 
     return (<>
-
         <Grid
             container
             spacing={3}
             margin="10px"
             direction={{ xs: "column-reverse", md: "row" }}
         >
-
             <Grid item xs={10} md={6}>
                 <h4>Navigation overview </h4>
                 <p>Doubletap description text to edit.</p>
                 {imageList}
             </Grid>
 
-                <Grid item xs={10} md={6 }>
-                    <AddImage
-                        checkpointId={params.checkpointId}
-                        updateImages={loadImages }
-                    >
-                    </AddImage>
-
+            <Grid item xs={10} md={6}>
+                <AddImage
+                    checkpointId={params.checkpointId}
+                    updateImages={loadImages}
+                >
+                </AddImage>
             </Grid>
         </Grid>
 
     </>);
-
 };
 
 

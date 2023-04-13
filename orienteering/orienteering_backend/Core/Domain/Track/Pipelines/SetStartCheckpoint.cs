@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Infrastructure.Data;
 
 namespace orienteering_backend.Core.Domain.Track.Pipelines;
-
+//fix ikke i bruk foreløpig!!
 public static class SetStartCheckpoint
 {
     public record Request(

@@ -1,6 +1,5 @@
 import { TextField, Button, Box } from '@mui/material';
 import React, { useState, useRef } from "react";
-import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
 
 export default function AddImage(props) {
     const [uploadedImage, setUploadedImage] = useState({

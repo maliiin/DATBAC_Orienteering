@@ -55,7 +55,6 @@ function ChemistryGame() {
     //function retryGame() {
     //    var solutions = solutionDivs;
     //    for (let i = 0; i < solutions.length; i++) {
-    //        console.log(solutions[i])
     //        solutions[i].style.transform = "translate(0px, 0px)";
     //    }
     //    if (solutions != "") {

@@ -10,12 +10,8 @@ import Grid from '@mui/material/Grid';
 export default function TrackDetails() {
     const navigate = useNavigate();
     const params = useParams();
-
     const [checkpointList, setCheckpointList] = useState("");
-
-    const [trackInfo, setTrackInfo] = useState({
-        Id: params.trackId
-    });
+    const trackId = params.trackid;
 
     const showQrcodes = async () => {
         const trackid = params.trackId;
@@ -66,7 +62,8 @@ export default function TrackDetails() {
             <Grid item xs={10} md={4}>
                 <CreateCheckpointForm
                     updateCheckpointList={loadCheckpoints}
-                    trackId={trackInfo.Id}>
+                    trackId={trackId}>
+                    
                 </CreateCheckpointForm>
             </Grid>
 

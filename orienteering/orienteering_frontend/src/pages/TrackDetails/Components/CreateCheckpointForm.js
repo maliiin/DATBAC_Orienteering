@@ -120,7 +120,7 @@ export default function CreateCheckpointForm(props) {
 
                 <br></br>
 
-                <FormControl //required={showForm ? true : false}
+                <FormControl 
                 >
                     <FormLabel
                         style={activity == "spill" ? {} : { display: 'none' }}
