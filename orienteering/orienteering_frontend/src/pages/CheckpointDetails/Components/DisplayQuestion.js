@@ -1,7 +1,6 @@
-import { TextField, Button, Box } from '@mui/material';
-import React, { useState } from "react";
-import { Link, redirect, useNavigate } from 'react-router-dom';
-import { createSearchParams, useParams } from 'react-router-dom';
+import { Button, Box } from '@mui/material';
+import React from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function DisplayQuestion(props) {
     const navigate = useNavigate();
@@ -9,7 +8,7 @@ export default function DisplayQuestion(props) {
     const deleteQuestion = async () => {
         const url = '/api/quiz/deleteQuestion?';
         const parameter = 'questionId=' + props.questionInfo.quizQuestionId + '&quizId=' + props.quizId;
-        const response=await fetch(url + parameter, { method: 'DELETE' });
+        const response = await fetch(url + parameter, { method: 'DELETE' });
         //401 => not signed in
         if (response.status == 401) { navigate("/login"); }
         //404 => dont exist or not your checkpoint

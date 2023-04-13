@@ -2,7 +2,6 @@ import { TextField, Button, Grid } from '@mui/material';
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
-
 function Registration() {
     const navigate = useNavigate();
 
@@ -14,7 +13,6 @@ function Registration() {
     });
 
     const handleChange = (event) => {
-        //update state
         setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
     };
 

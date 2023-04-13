@@ -1,7 +1,6 @@
 import { Button, Box } from '@mui/material';
 import React, { useState } from "react";
 
-
 export default function DisplayImagesAdmin(props) {
     const [editing, setEditing] = useState(false);
     const [oldText, setOldText] = useState(props.imageInfo.textDescription);

@@ -1,18 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import { Outlet, Link, useNavigate } from "react-router-dom";
 
-//usikker på hvordan dette skal gjøres. kanskje mye av logikken skal
-//ligge her, og så har layout ansvar for p sjekke om logget inn?
-
-//eller så må det skje av backend??
 function Layout() {
     const [isSignedIn, setIsSignedIn] = useState(false);
     const navigate = useNavigate();
@@ -50,8 +40,6 @@ function Layout() {
 
     }
     return (
-
-
         <>
             <AppBar position="static" style={linkContainer}>
                 <div>
@@ -76,7 +64,6 @@ function Layout() {
             </AppBar>
 
             <Outlet context={[isSignedIn, setIsSignedIn] }></Outlet>
-
 
         </>
     )

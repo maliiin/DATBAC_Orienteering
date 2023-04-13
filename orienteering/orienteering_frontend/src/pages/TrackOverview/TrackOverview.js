@@ -1,17 +1,9 @@
-import { Button } from '@mui/material';
 import { useState, useEffect } from "react";
 import TrackInfo from "./Components/TrackInfo";
 import React from "react";
 import CreateTrackForm from "./Components/CreateTrackForm";
 import { useNavigate } from 'react-router-dom';
-import { redirect } from "react-router-dom";
 import Grid from '@mui/material/Grid';
-
-
-//få returtype fra de ulike hooksene, ikke i use state men i const. så blir det
-//if den og den er true vis dette, pass på at det kun blir en navigate--> kanskje slå sammen to hooks
-
-//displays all the tracks of a user. not details of the tracks
 
 export default function TrackOverview() {
     const navigate = useNavigate();

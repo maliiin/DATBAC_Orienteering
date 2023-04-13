@@ -41,10 +41,7 @@ export default function CheckpointNavigation() {
             <>
                 <DisplayImagesUser
                     imageInfo={imageInfo}
-                    key={index + "-" + imageInfo.Order}
-
-
-                >
+                    key={index + "-" + imageInfo.Order}>
                 </DisplayImagesUser>
             </>
 
@@ -52,36 +49,25 @@ export default function CheckpointNavigation() {
     }
     //fix-naviger til errorside hvis ikke?
 
-
-
-
     useEffect(() => {
         getNavigation();
     }, []);
 
-    //<DisplayImagesUser imageInfo={imagesList[current]}></DisplayImagesUser>
     if (!trackFinished) {
         return (<>
-
-
             {imagesList[current]}
-
-
-
 
             <Grid container spacing={2}
                 justifyContent="space-around"
                 style={{
                     bottom: "10px",
                     position: "absolute"
-                }}
+                }}>
 
-            >
                 <Grid item xs={5}>
                     <Button
                         onClick={prevImage}
                         style={{
-                            //visibility: current <= 0 ? "hidden" : "inline"
                             display: current <= 0 ? "none" : "inline"
                         }}
                     >
@@ -93,7 +79,6 @@ export default function CheckpointNavigation() {
                         onClick={nextImage}
                         style={{
                             display: current >= imagesList.length - 1 ? "none" : "inline"
-                            //visibility: current >= imagesList.length - 1 ? "hidden" : "inline"
                         }}
                     >
                         Next image
@@ -102,21 +87,16 @@ export default function CheckpointNavigation() {
                         disabled
                         style={{
                             display: current >= imagesList.length - 1 ? "inline" : "none"
-                            //visibility: current >= imagesList.length - 1 ? "hidden" : "inline"
-                        }}
-                    >
+                        }}>
                         Scan QR code
                     </Button>
                 </Grid>
 
             </Grid>
             <br></br>
-
-
         </>
         );
     }
-
 
     if (trackFinished) {
         return (
@@ -126,6 +106,4 @@ export default function CheckpointNavigation() {
             </>
         );
     }
-
-
 }

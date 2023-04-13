@@ -1,7 +1,4 @@
-import { TextField, Button, Grid, Box } from '@mui/material';
-import React, { useState, useEffect, props } from "react";
-import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
-
+import React from "react";
 
 export default function DisplayImagesUser(props) {
     //fix- nå kan bildet skaleres rart om det er for høyt
@@ -20,6 +17,4 @@ export default function DisplayImagesUser(props) {
                 {props.imageInfo.textDescription}
             </p>
         </>);
-
-
 }

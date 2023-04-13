@@ -26,8 +26,6 @@ export default function QuizPage() {
 
     useEffect(() => {
         getQuiz();
-
-       // fetchQuizQuestion();
         checkSession();
     }, []);
 
@@ -38,7 +36,6 @@ export default function QuizPage() {
     }, [currentQuizQuestion]);
 
     useEffect(() => {
-        // 
         if (quiz != "") {
             nextQuizQuestion();
         }
@@ -50,24 +47,16 @@ export default function QuizPage() {
     }
 
     async function getQuiz() {
-        //const url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
-        //const response = await fetch(url);
-        //if (!response.ok) {
-        //    navigate("/errorpage");
-        //}
-        //fix-her bør vi heller fetche quiz basert på checkpointId istedenfor å først hente checkpoint og så quiz
-        //const checkpointDto = await response.json();
         const quizUrl = "/api/quiz/getQuizByCheckpoint?checkpointId=" + params.checkpointId;
         const quizResponse = await fetch(quizUrl);
         if (!quizResponse.ok) {
             navigate("/errorpage");
         }
-        const fetchedQuiz = await quizResponse.json(); 
+        const fetchedQuiz = await quizResponse.json();
         setQuiz(fetchedQuiz);
     }
 
     async function nextQuizQuestion() {
-        //const url = "/api/quiz/getNextQuizQuestion?quizId=" + quizId + "&quizQuestionIndex=" + quizQuestionIndex.toString();
         const quizQuestion = quiz.quizQuestions[quizQuestionIndex];
         setCurrentQuizQuestion(quizQuestion);
     };
@@ -82,7 +71,7 @@ export default function QuizPage() {
             setQuizStatus(<>
                 <p>Correct answer</p>
             </>
-                )
+            )
         } else {
             setQuizStatus(<p>Wrong answer. Correct answer is: {solution}</p>)
         }
@@ -141,7 +130,7 @@ export default function QuizPage() {
                 style={{
                     width: '70%',
                     top: "20%",
-                    position:"absolute"
+                    position: "absolute"
                 }}
             >
                 <Box
