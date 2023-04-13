@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using orienteering_backend.Core.Domain.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using orienteering_backend.Core.Domain.Authentication.Services;
 
 namespace orienteering_backend.Controllers
 {
-    //[Route("api/[controller]/[action]")]
-    //[RoutePrefix("api/user")]
     [ApiController]
     [Route("api/user")]
     public class UserController : ControllerBase
@@ -68,6 +63,7 @@ namespace orienteering_backend.Controllers
         }
 
 
+        //fiks-er denne nødvendig å ha? nå kan dette skje i en service heller
         [HttpGet]
         [Route("GetSignedInUserId")]
         public ActionResult<object> GetSignedInUserId()
@@ -81,17 +77,17 @@ namespace orienteering_backend.Controllers
 
             //gir userid, men er null om ingen er logget inn (klikker hvis du kjører .value når ingen er logget inn (null.value))            
             var id = HttpContext.User.Claims.FirstOrDefault();
-            Console.WriteLine($"is authenticated?? {userIsAuthenticated}");
+            //Console.WriteLine($"is authenticated?? {userIsAuthenticated}");
 
             if (id is null) 
             { 
-                Console.WriteLine("no user is signed in");
+                //Console.WriteLine("no user is signed in");
                 return NotFound();
 
             }
             else             
             {
-                Console.WriteLine($"value of id? {id.Value}");
+                //Console.WriteLine($"value of id? {id.Value}");
                 //return id.Value;
                 //fiks fix returtypen her, bør lage eget objekt, ikke sende identity user!!
                 var user1 = new IdentityUser();
@@ -106,25 +102,25 @@ namespace orienteering_backend.Controllers
 
         
 
-        //fix-denne skal slettes? brukes ikke
-        // GET: api/User/username
-        [HttpGet]
-        //testing authorization/authentication
-        [Authorize]
-        [Route("{username}")]
+        ////fix-denne skal slettes? brukes ikke
+        //// GET: api/User/username
+        //[HttpGet]
+        ////testing authorization/authentication
+        //[Authorize]
+        //[Route("{username}")]
         
-        public async Task<ActionResult<UserRegistration>> GetUser(string username)
-        {
-            IdentityUser user = await _userManager.FindByNameAsync(username);
+        //public async Task<ActionResult<UserRegistration>> GetUser(string username)
+        //{
+        //    IdentityUser user = await _userManager.FindByNameAsync(username);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return Ok(user);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(user);
 
-            //return CreatedAtAction("GetUser", new { username = user.UserName }, user);
-        }
+        //    //return CreatedAtAction("GetUser", new { username = user.UserName }, user);
+        //}
 
     }
 }

@@ -12,12 +12,6 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\build</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\components\" />
-    <Folder Include="src\pages\GamePage\Chemistry\" />
-    <Folder Include="src\pages\GamePage\FallingBoxes\" />
-    <Folder Include="src\pages\GamePage\LogicGates\" />
-  </ItemGroup>
-  <ItemGroup>
     <TypeScriptConfiguration Remove="src\pages\NewFolder1\**" />
   </ItemGroup>
   <ItemGroup>
@@ -35,4 +29,33 @@
   <ItemGroup>
     <None Remove="src\pages\Game\**" />
   </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="src\pages\GamePage\Chemistry\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\pages\GamePage\Chemistry\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="src\pages\GamePage\FallingBoxes\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\pages\GamePage\FallingBoxes\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="src\pages\GamePage\LogicGates\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\pages\GamePage\LogicGates\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="src\components\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\components\**" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties package_1json__JsonSchema="https://json.schemastore.org/pattern.json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

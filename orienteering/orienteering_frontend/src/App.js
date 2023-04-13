@@ -1,7 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout/Layout";
-import LayoutSignedIn from "./pages/Layout/LayoutSignedIn";
 import Login from "./pages/Login/Login";
 import CheckpointDetails from "./pages/CheckpointDetails/CheckpointDetails";
 import Registration from "./pages/Registration/Registration";

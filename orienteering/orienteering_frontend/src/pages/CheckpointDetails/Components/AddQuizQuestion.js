@@ -1,18 +1,14 @@
-import { TextField, FormGroup, Box, Button } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { TextField, Box, Button } from "@mui/material";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 
-
-
 export default function AddQuizQuestion(props) {
-    const params = useParams();
-    console.log(params.checkpointId);
     const navigate = useNavigate();
 
     const [questionInfo, setQuestionInfo] = useState({
         Question: "",
-        QuizId: "",
+        QuizId: props.quizId,
         Alternatives: [{
             Id: 1,
             Text: ""
@@ -24,14 +20,13 @@ export default function AddQuizQuestion(props) {
             Text: ""
         }],
         CorrectAlternative: ""
-
     });
 
     //amount of alternatives
     const [count, setCount] = useState(3);
 
     //adds one more field for alternative
-    const handleAddAlternative = (event) => {
+    const handleAddAlternative = () => {
 
         //update alternativeslist to contain one more element
         let newItems = questionInfo.Alternatives.slice();
@@ -41,8 +36,6 @@ export default function AddQuizQuestion(props) {
         });
         setQuestionInfo({ ...questionInfo, Alternatives: newItems });
         setCount(count + 1);
-
-
     }
 
     //adds question to the quiz
@@ -50,25 +43,26 @@ export default function AddQuizQuestion(props) {
         event.preventDefault();
 
         const requestAlternatives = {
-
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
             body: JSON.stringify(questionInfo)
-
         };
 
-        const response = await fetch('/api/quiz/addQuizQuestion', requestAlternatives);
-        // Fix: errorhandling her ??
-        //return false;
+        var response = await fetch('/api/quiz/addQuizQuestion', requestAlternatives);
+        //401 => not signed in
+        if (response.status == 401) { navigate("/login"); }
+        //404 => dont exist or not your checkpoint
+        if (response.status == 404) { navigate("/errorpage") }
 
         //update value to render quizquestions
         props.setQuizChanged(props.quizChanged * -1);
 
         //clear input field
-        setQuestionInfo({...questionInfo,
+        setQuestionInfo({
+            ...questionInfo,
             Question: "",
             Alternatives: [{
                 Id: 1,
@@ -81,12 +75,8 @@ export default function AddQuizQuestion(props) {
                 Text: ""
             }],
             CorrectAlternative: ""
-
         });
         setCount(3);
-
-
-
     }
 
     const handleAlternativeChange = (event, i) => {
@@ -98,45 +88,22 @@ export default function AddQuizQuestion(props) {
 
         //update original list to include the updated value
         setQuestionInfo({ ...questionInfo, Alternatives: newItems });
-
     }
 
-    const handleRemoveAlternative = (event) => {
+    const handleRemoveAlternative = () => {
         //all exept last alternative
         let shorterList = questionInfo.Alternatives.slice(0, -1);
 
-
         setQuestionInfo({ ...questionInfo, Alternatives: shorterList });
         setCount(count - 1);
-
-
     }
-
 
     const handleChange = (event) => {
         //update state
         setQuestionInfo({ ...questionInfo, [event.target.name]: event.target.value });
     };
 
-
-    useEffect(() => {
-
-        //load quiz id
-        const GetQuizId = async () => {
-            const checkpoint = await fetch("/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId).then(res => res.json());
-            setQuestionInfo({ ...questionInfo, QuizId: checkpoint.quizId });
-            console.log(checkpoint);
-
-        }
-
-        GetQuizId();
-
-    }, []);
-
-
-
     return (<>
-
         <Box
             onSubmit={handleSubmit}
             //kilde. akuratt sx= er fra https://mui.com/material-ui/react-text-field/ 17.02
@@ -185,15 +152,12 @@ export default function AddQuizQuestion(props) {
             <Grid container spacing={3} >
                 <Grid item sx={6}>
                     <TextField
-                       
                         required
                         onChange={(e) => handleChange(e)}
                         id="standard-basic" label="Question"
                         name="Question"
                         variant="standard"
-                        value={questionInfo.Question}
-
-                    />
+                        value={questionInfo.Question} />
                 </Grid>
 
 
@@ -212,7 +176,6 @@ export default function AddQuizQuestion(props) {
 
                 </Grid>
 
-
                 <>
                     {[...Array(count)].map((element, index) => (
                         <Grid item sx={6} key={index + "-" + element}>
@@ -226,16 +189,11 @@ export default function AddQuizQuestion(props) {
                                 value={questionInfo.Alternatives[index].Text}
                             />
                         </Grid>
-
                     ))
                     }
-
                 </>
-
             </Grid>
-
         </Box>
-
     </>);
 }
 

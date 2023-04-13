@@ -33,7 +33,7 @@ public static class GetNextCheckpoint
                 .Where(c => c.Id == request.currentCheckpointId)
                 .FirstOrDefaultAsync(cancellationToken);
             //fix error is null
-            var track = await _mediator.Send(new GetSingleTrack.Request(currentCheckpoint.TrackId));
+            var track = await _mediator.Send(new GetSingleTrackUnauthorized.Request(currentCheckpoint.TrackId));
 
             int orderNewCheckpoint=currentCheckpoint.Order+1;
             if (currentCheckpoint.Order >= track.NumCheckpoints)

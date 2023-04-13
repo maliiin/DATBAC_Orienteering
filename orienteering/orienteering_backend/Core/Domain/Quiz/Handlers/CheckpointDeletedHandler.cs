@@ -8,7 +8,7 @@ using orienteering_backend.Core.Domain.Checkpoint.Events;
 
 namespace orienteering_backend.Core.Domain.Quiz.Handlers;
 
-
+//fix-not in use? byttet til pipeline heller
 public class CheckpointDeletedHandler : INotificationHandler<CheckpointDeleted>
 {
     private readonly OrienteeringContext _db;

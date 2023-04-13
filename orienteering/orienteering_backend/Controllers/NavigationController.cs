@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Navigation.Dto;
 using orienteering_backend.Core.Domain.Navigation.Pipelines;
+using System.Security.Authentication;
 
 namespace orienteering_backend.Controllers
 {
@@ -28,37 +29,78 @@ namespace orienteering_backend.Controllers
         {
             var checkpointId = HttpContext.Request.Form["checkpointId"];
             var textDescription = HttpContext.Request.Form["textDescription"];
-
             Guid checkpointGuid = new(checkpointId);
-            await _mediator.Send(new CreateNavigationImage.Request(checkpointGuid, file, textDescription));
-            return Ok();
+
+            try
+            {
+                await _mediator.Send(new CreateNavigationImage.Request(checkpointGuid, file, textDescription));
+                return Ok();
+
+            }
+            catch (AuthenticationException)
+            {
+                return Unauthorized();
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete("DeleteImage")]
-        public async Task<ActionResult> DeleteImage(string navigationId,string imageId)
+        public async Task<ActionResult> DeleteImage(string navigationId, string imageId)
         {
             Guid imageGuid = new(imageId);
             Guid navigationGuid = new(navigationId);
 
-            await _mediator.Send(new NavigationDeleteImage.Request(imageGuid, navigationGuid));
-
-            return Ok();
+            try
+            {
+                await _mediator.Send(new NavigationDeleteImage.Request(imageGuid, navigationGuid));
+                return Ok();
+            }
+            catch (AuthenticationException)
+            {
+                return Unauthorized();
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
+            }
         }
+
 
         [HttpGet("GetNavigation")]
-        public async Task<NavigationDto> GetNavigation(string checkpointId)
+        public async Task<ActionResult<NavigationDto>> GetNavigation(string checkpointId)
         {
             Guid checkpointGuid = new(checkpointId);
-            NavigationDto navDto=await _mediator.Send(new GetNavigation.Request(checkpointGuid));
-            return navDto;
+
+            try
+            {
+                NavigationDto navDto = await _mediator.Send(new GetNavigation.Request(checkpointGuid));
+                return navDto;
+            }
+            catch (AuthenticationException)
+            {
+                return Unauthorized();
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
+            }
+            
         }
 
+
+        //denne skal ikke være beskyttet
         [HttpGet("GetNextNavigation")]
         public async Task<NavigationDto> GetNavigationForNextCheckpoint(string currentCheckpointId)
         {
+            //problem
+            //er ikke logget inn, men den nederste funksjonene krever det!!!
+            //
             Guid currentCheckpointGuid = new Guid(currentCheckpointId);
             var nextCheckpointId = await _mediator.Send(new GetNextCheckpoint.Request(currentCheckpointGuid));
-            var navDto = await _mediator.Send(new GetNavigation.Request(nextCheckpointId));
+            var navDto = await _mediator.Send(new GetNavigationUnauthorized.Request(nextCheckpointId));
 
             return navDto;
         }
@@ -69,16 +111,19 @@ namespace orienteering_backend.Controllers
             Guid NavigationId = new Guid(navigationId);
             Guid NavigationImageId = new Guid(navigationImageId);
 
-            var changed = await _mediator.Send(new UpdateNavigationText.Request(NavigationId, newText, NavigationImageId));
-            if (changed)
+            try
             {
+                var changed = await _mediator.Send(new UpdateNavigationText.Request(NavigationId, newText, NavigationImageId));
                 return Ok();
             }
-            else
+            catch
             {
                 //fix feilmelding
+
                 return Unauthorized("Could not find the navigation to edit");
+
             }
+            
         }
     }
 }

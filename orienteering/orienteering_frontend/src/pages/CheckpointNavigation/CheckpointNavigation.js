@@ -1,11 +1,11 @@
-import { TextField, Button, Grid, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
-import React, { useState, useRef } from "react";
-import { Link, redirect, useNavigate } from 'react-router-dom';
-import { createSearchParams, useParams } from 'react-router-dom';
+import { Button, Grid } from '@mui/material';
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect } from "react";
 import DisplayImagesUser from './Components/DisplayImagesUser';
+
 export default function CheckpointNavigation() {
-    //kan være greit å få inn checkpointid slik at det senere blir mulig å registrere at noen har vært på checkpointet, lagre score osv...
     const [current, setCurrent] = useState(0);
     const [trackFinished, setTrackFinished] = useState(false);
     const navigate = useNavigate();
@@ -36,24 +36,22 @@ export default function CheckpointNavigation() {
         if (!response.ok) {
             navigate("/errorpage")
         }
-        const nav = await response.json();
-            //fix-dersom endre rekkefølge på objekter, enten endre rekkefølge her eller display med rett order
-        
+        var nav = await response.json();
 
-            setImagesList(nav.images.map((imageInfo, index) =>
-                <>
-                    <DisplayImagesUser
-                        imageInfo={imageInfo}
-                        key={index + "-" + imageInfo.Order}
+        setImagesList(nav.images.map((imageInfo, index) =>
+            <>
+                <DisplayImagesUser
+                    imageInfo={imageInfo}
+                    key={index + "-" + imageInfo.Order}
 
-                        
-                    >
-                    </DisplayImagesUser>
-                </>
 
-            ));
-        }
-        //fix-naviger til errorside hvis ikke?
+                >
+                </DisplayImagesUser>
+            </>
+
+        ));
+    }
+    //fix-naviger til errorside hvis ikke?
 
 
 
@@ -104,7 +102,7 @@ export default function CheckpointNavigation() {
                     <Button
                         disabled
                         style={{
-                            display: current >= imagesList.length - 1 ?   "inline":"none"
+                            display: current >= imagesList.length - 1 ? "inline" : "none"
                             //visibility: current >= imagesList.length - 1 ? "hidden" : "inline"
                         }}
                     >
@@ -127,8 +125,8 @@ export default function CheckpointNavigation() {
                 <p>Track finished</p>
                 <p>Total time used: {totalTime} minutes</p>
             </>
-            );
+        );
     }
-    
+
 
 }

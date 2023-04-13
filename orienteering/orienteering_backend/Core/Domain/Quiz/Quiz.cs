@@ -24,9 +24,6 @@
             if (questionToDelete == null) { return false; };
             _ = QuizQuestions.Remove(questionToDelete);
             return true;
-            
-
         }
-
     }
 }

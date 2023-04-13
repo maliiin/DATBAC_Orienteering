@@ -1,7 +1,7 @@
-import { TextField, Grid, Box, Button, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
-import React, { useState, useRef } from "react";
-import { Link, redirect, useNavigate } from 'react-router-dom';
-import { createSearchParams, useParams } from 'react-router-dom';
+import { Grid, Box, Button, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect } from "react";
 
 export default function QuizPage() {
@@ -50,13 +50,14 @@ export default function QuizPage() {
     }
 
     async function getQuiz() {
-        const url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
-        const response = await fetch(url);
-        if (!response.ok) {
-            navigate("/errorpage");
-        }
-        const checkpointDto = await response.json();
-        const quizUrl = "/api/quiz/getQuiz?quizId=" + checkpointDto.quizId;
+        //const url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
+        //const response = await fetch(url);
+        //if (!response.ok) {
+        //    navigate("/errorpage");
+        //}
+        //fix-her bør vi heller fetche quiz basert på checkpointId istedenfor å først hente checkpoint og så quiz
+        //const checkpointDto = await response.json();
+        const quizUrl = "/api/quiz/getQuizByCheckpoint?checkpointId=" + params.checkpointId;
         const quizResponse = await fetch(quizUrl);
         if (!quizResponse.ok) {
             navigate("/errorpage");
@@ -74,10 +75,7 @@ export default function QuizPage() {
     async function handleSubmit(event) {
         event.preventDefault();
 
-        //get correct answer from backend
-        //var url = "/api/quiz/getSolution?quizId=" + quizId + "&quizQuestionId=" + currentQuizQuestion.quizQuestionId;
-        //Fix: Fjern getsolution pipeline
-        const solution = currentQuizQuestion.alternatives[currentQuizQuestion.correctAlternative - 1].text;
+        var solution = currentQuizQuestion.alternatives[currentQuizQuestion.correctAlternative - 1].text;
 
         //check if answer is correct
         if (solution == guess) {
@@ -110,11 +108,7 @@ export default function QuizPage() {
                     value={alternative.text}
                     label={alternative.text}
                     control={<Radio required={true} />}
-                    defaultChecked={guess == alternative.text}
-                //style={{backgroundColor:"blue"} }
-                //checked={guess == alternative.text}
-
-                >
+                    defaultChecked={guess == alternative.text}>
                 </FormControlLabel>
             )
         })
@@ -126,12 +120,9 @@ export default function QuizPage() {
         navigate('/checkpointnavigation/' + params.checkpointId);
     }
 
-
     const changeGuess = (event) => {
         setGuess(event.target.value);
     };
-
-
 
     return (<>
 
@@ -140,9 +131,6 @@ export default function QuizPage() {
             spacing={0}
             direction="column"
             alignItems="center"
-            //justifyContent="center"
-            
-
             style={{
                 minHeight: '50vh',
             }}
@@ -156,15 +144,12 @@ export default function QuizPage() {
                     position:"absolute"
                 }}
             >
-
-
                 <Box
                     onSubmit={handleSubmit}
                     component="form"
                     style={{
                         display: endOfQuiz ? "none" : "block"
                     }}
-
                 >
                     <FormLabel
                         id="question"
@@ -190,12 +175,6 @@ export default function QuizPage() {
                     >
                         Check answer
                     </Button>
-
-
-
-
-
-
                 </Box>
                 {quizStatus}
 

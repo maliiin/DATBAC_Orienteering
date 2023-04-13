@@ -8,7 +8,8 @@ using orienteering_backend.Core.Domain.Authentication.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddTransient<IIdentityService, IdentityService>();
+//builder.Services.AddScoped<IIdentityService, IdentityService>();
 
 
 builder.Services.AddControllers();
@@ -59,8 +60,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     //options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
     //fix- lag skikkelig url- blir videresendt hvis ikke
-    options.LoginPath = "/login";
-    options.AccessDeniedPath = "/AccessDenied";
+    //options.LoginPath = "/login";
+    //options.AccessDeniedPath = "/AccessDenied";
     options.SlidingExpiration = true;
 });
 
@@ -101,3 +102,6 @@ app.UseSession();
 app.MapControllers();
 
 app.Run();
+
+// to be able to perform tests on the code
+public partial class Program { }

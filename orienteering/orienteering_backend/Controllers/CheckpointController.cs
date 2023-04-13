@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using orienteering_backend.Core.Domain.Checkpoint;
+using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
-using orienteering_backend.Core.Domain.Navigation.Dto;
+using System.Security.Authentication;
 
 namespace orienteering_backend.Controllers
 {
@@ -12,90 +13,129 @@ namespace orienteering_backend.Controllers
     public class CheckpointController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly IIdentityService _identityService;
 
-        public CheckpointController(IMediator Mediator)
+        public CheckpointController(IMediator Mediator, IIdentityService identityService)
         {
             _mediator = Mediator;
+            _identityService = identityService;
         }
 
-        //create checkpoint
-        //POST
+        //[Authorize]
         [HttpPost("createCheckpoint")]
-        public async Task<Guid> CreateCheckpoint(CheckpointDto checkpointDto)
+        public async Task<ActionResult> CreateCheckpoint(CheckpointDto checkpointDto)
         {
-            //fiks objekt her i parameter
+            var userId = _identityService.GetCurrentUserId();
+            if (userId == null) { return Unauthorized(); }
 
-            var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(checkpointDto));
+            //fiks objekt her i parameter (tror ok?)
+            try
+            {
+                var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(checkpointDto, (Guid)userId));
+                return Ok(newCheckPointId);
+            }
+            catch
+            {
+                return NotFound();
+            }
 
-            return newCheckPointId;
         }
 
 
         [HttpGet("getCheckpoints")]
         //get all checkpoints that belongs to a track
-        public async Task<List<CheckpointDto>> GetCheckpointsOfTrack(string trackId)
+        public async Task<ActionResult<List<CheckpointDto>>> GetCheckpointsOfTrack(string trackId)
         {
+            //check that signed in
+            var userId = _identityService.GetCurrentUserId();
+            if (userId == null) { return Unauthorized(); }
 
-            Guid trackGuid = new Guid(trackId);
-            var checkpoints = await _mediator.Send(new GetCheckpointsForTrack.Request(trackGuid));
-            return checkpoints;
-
+            try
+            {
+                Guid trackGuid = new Guid(trackId);
+                var checkpoints = await _mediator.Send(new GetCheckpointsForTrack.Request(trackGuid, (Guid)userId));
+                return Ok(checkpoints);
+            }
+            catch
+            {
+                //fix-eller skal den returnere NotFound
+                //user dont own this track
+                return Unauthorized();
+            }
         }
 
-
         [HttpGet("getCheckpoint")]
-        public async Task<CheckpointDto> GetSingleCheckpoint(string checkpointId)
+        public async Task<ActionResult<CheckpointDto>> GetSingleCheckpoint(string checkpointId)
         {
 
             Guid CheckpointId = new Guid(checkpointId);
-            CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(CheckpointId));
 
-            return checkpoint;
+            try
+            {
+                CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(CheckpointId));
+                return checkpoint;
+            }
+            catch(AuthenticationException)
+            {
+                //not signed in
+                return Unauthorized();
+            }
+            catch(NullReferenceException)
+            {
+                //not authenticated or dont exist
+                return NotFound();
+            }
+
 
         }
         //sjekk om db order blir autoinkrementet av nytt checkpoint
 
-
         [HttpDelete("removeCheckpoint")]
-
         public async Task<IActionResult> DeleteCheckpoint(string checkpointId)
         {
-            Console.WriteLine("prøver å slettw");
             Guid CheckpointId = new Guid(checkpointId);
-            bool removed = await _mediator.Send(new DeleteCheckpoint.Request(CheckpointId));
-            if (removed)
-            {
-                return Ok();
 
-            }
-            else
+            try
             {
+                bool removed = await _mediator.Send(new DeleteCheckpoint.Request(CheckpointId));
+                return Ok();
+            }
+            catch (AuthenticationException ex)
+            {
+                //not signed in
+                return Unauthorized();
+            }
+            catch
+            {
+                //not allowed or dont exist
                 return NotFound("Could not find the checkpoint to delete");
             }
 
+
+
         }
 
+        //fix-skal dette være put eller patch???
         [HttpPut("editCheckpointTitle")]
         public async Task<IActionResult> UpdateCheckpointTitle(string checkpointTitle, string checkpointId)
         {
             Guid CheckpointId = new Guid(checkpointId);
 
-            var changed = await _mediator.Send(new UpdateCheckpointTitle.Request(checkpointTitle, CheckpointId));
-            if (changed != null)
+            try
             {
+                var changed = await _mediator.Send(new UpdateCheckpointTitle.Request(checkpointTitle, CheckpointId));
                 return Ok();
-
             }
-            else
+            catch (AuthenticationException ex)
             {
-                //fix feilmelding
-                return Unauthorized("Could not find the checkpoint to edit");
+                //not signed in
+                return Unauthorized("Not signed in");
             }
-
+            catch(NullReferenceException)
+            {
+                //does not exist or not allowed
+                return NotFound("Could not find the checkpoint to edit");
+            }
         }
-
-
-
-
     }
 }

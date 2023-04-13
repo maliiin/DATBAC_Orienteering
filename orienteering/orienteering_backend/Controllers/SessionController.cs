@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
 using MediatR;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
-using System.Web.Helpers;
-using orienteering_backend.Core.Domain.Quiz;
-using orienteering_backend.Core.Domain.Quiz.Pipelines;
-using orienteering_backend.Core.Domain.Quiz.Dto;
 
 namespace orienteering_backend.Controllers;
 
@@ -27,14 +22,10 @@ public class SessionController : ControllerBase
         {
             HttpContext.Session.SetString("StartCheckpoint", CheckpointId);
             HttpContext.Session.SetString("StartTime", DateTime.Now.ToString());
-            Console.WriteLine(HttpContext.Session.GetString("StartCheckpoint"));
         }
-       
+
         return CheckpointId;
     }
-
-
-
 
     [HttpGet("checkTrackFinished")]
     public async Task<TrackLoggingDto> checkTrackFinished(string currentCheckpoint)
@@ -72,14 +63,6 @@ public class SessionController : ControllerBase
                 trackLoggingDto.StartCheckpointId = new Guid(startCheckpoint);
                 return trackLoggingDto;
             }
-
-
-
         }
     }
-
-
-
-
-
 }
