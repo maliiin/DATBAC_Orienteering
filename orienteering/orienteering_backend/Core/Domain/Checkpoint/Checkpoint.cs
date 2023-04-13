@@ -10,7 +10,7 @@ namespace orienteering_backend.Core.Domain.Checkpoint
             TrackId = trackId;
         }
 
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
         public string Title { get; set; }
         public Guid? QuizId { get; set; }
         public int GameId { get; set; }

@@ -25,9 +25,13 @@ export default function CheckpointNavigation() {
     const currentCheckpointId = params.checkpointId;
 
     const getNavigation = async () => {
-
+        const sessionInfo = await fetch("/api/session/checkTrackFinished?currentCheckpoint=" + currentCheckpointId).then(res => res.json());
+        if (sessionInfo.timeUsed != null) {
+            setTrackFinished(true);
+            setTotalTime(sessionInfo.timeUsed);
+        }
         const navUrl = "/api/Navigation/GetNextNavigation?currentCheckpointId=" + currentCheckpointId;
-        var response = await fetch(navUrl);
+        const response = await fetch(navUrl);
         if (!response.ok) {
             navigate("/errorpage")
         }

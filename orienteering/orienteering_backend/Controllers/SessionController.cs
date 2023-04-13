@@ -27,7 +27,7 @@ public class SessionController : ControllerBase
     }
 
     [HttpGet("checkTrackFinished")]
-    public TrackLoggingDto checkTrackFinished(string toCheckpoint)
+    public async Task<TrackLoggingDto> checkTrackFinished(string currentCheckpoint)
     {
         if (HttpContext.Session.GetString("StartCheckpoint") == null)
         {
@@ -36,10 +36,13 @@ public class SessionController : ControllerBase
         else
         {
             var startCheckpoint = HttpContext.Session.GetString("StartCheckpoint");
+            var toCheckpointGuid = await _mediator.Send(new GetNextCheckpoint.Request(new Guid(currentCheckpoint)));
+            var toCheckpoint = toCheckpointGuid.ToString();
             if (startCheckpoint == toCheckpoint)
             {
                 var trackLoggingDto = new TrackLoggingDto();
                 trackLoggingDto.StartCheckpointId = new Guid(startCheckpoint);
+
                 var startTimeString = HttpContext.Session.GetString("StartTime");
                 if (startTimeString == null)
                 {
