@@ -165,10 +165,57 @@ namespace orienteering_backend.Tests.Helpers
             Assert.True(response);
             //var quizDb = await _db.Quiz.Where(q => q.Id == quizId).FirstOrDefaultAsync();
             Assert.NotNull(quizDb);
-            Assert.Equal(0, quizDb.QuizQuestions.Count);
-
+            Assert.Empty( quizDb.QuizQuestions);
            
         }
 
+
+        [Fact]
+        public async Task Given_WhenAskForQuiz_ThenReturnQuiz()
+        {
+            //ARRANGE
+            var _db = new OrienteeringContext(dbContextOptions, null);
+            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
+            
+            //create quiz and add to db
+            var quizId = Guid.NewGuid();
+            var quiz = new Quiz(quizId);
+            var quizQuestion = new QuizQuestion();
+            quizQuestion.Question = "question";
+            quizQuestion.CorrectAlternative = 1;
+            var alt1 = new Alternative(1, "green");
+            var alt2 = new Alternative(2, "red");
+            quizQuestion.Alternatives.Add(alt1);
+            quizQuestion.Alternatives.Add(alt2);
+            quiz.QuizQuestions.Add(quizQuestion);
+            await _db.Quiz.AddAsync(quiz);
+            await _db.SaveChangesAsync();
+
+            //excpected values
+            var quizQuestionDto = new QuizQuestionDto();
+            var alternativeDtoList = new List<AlternativeDto>();
+            alternativeDtoList.Add(_mapper.Map<Alternative, AlternativeDto>(alt1));
+            alternativeDtoList.Add(_mapper.Map<Alternative, AlternativeDto>(alt2));
+            quizQuestionDto.Alternatives = alternativeDtoList;
+            quizQuestionDto.QuizQuestionId = quizQuestion.Id;
+            quizQuestionDto.Question = quizQuestion.Question;
+            quizQuestionDto.CorrectAlternative = quizQuestion.CorrectAlternative;
+            var quizDto = new QuizDto(quizId, new List<QuizQuestionDto> { quizQuestionDto });
+
+            var request = new GetQuiz.Request(quizId);
+            var handler = new GetQuiz.Handler(_db, _mapper);
+
+            //act
+            var returnedQuizDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+
+
+            //ASSERT
+            Assert.Equal(JsonConvert.SerializeObject(quizDto), JsonConvert.SerializeObject(returnedQuizDto));
+        }
+
+
+        //fix-mangler å teste getquizbycheckpointId pipeline
+        //ellers ferdig i quiz domain
     }
 }

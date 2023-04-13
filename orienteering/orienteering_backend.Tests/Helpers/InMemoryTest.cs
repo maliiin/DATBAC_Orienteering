@@ -456,6 +456,7 @@ public class InMemoryTest
     //    Assert.Equal(JsonConvert.SerializeObject(returnedDto), JsonConvert.SerializeObject(nextQuizQuestion));
     //}
 
+    //DEN UNDER ER KOPIERT OG I BRUK
     //[Fact]
     //public async Task GetQuizTest()
     //{
@@ -564,7 +565,7 @@ public class InMemoryTest
 
 
 
-    
+    //DENNE BRUKES I ANNEN FIL
     //[Fact]
     //public async Task GetTracksTest()
     //{

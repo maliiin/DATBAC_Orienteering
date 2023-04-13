@@ -21,14 +21,10 @@ public class SessionController : ControllerBase
         {
             HttpContext.Session.SetString("StartCheckpoint", CheckpointId);
             HttpContext.Session.SetString("StartTime", DateTime.Now.ToString());
-            Console.WriteLine(HttpContext.Session.GetString("StartCheckpoint"));
         }
-       
+
         return CheckpointId;
     }
-
-
-
 
     [HttpGet("checkTrackFinished")]
     public TrackLoggingDto checkTrackFinished(string toCheckpoint)
@@ -63,14 +59,6 @@ public class SessionController : ControllerBase
                 trackLoggingDto.StartCheckpointId = new Guid(startCheckpoint);
                 return trackLoggingDto;
             }
-
-
-
         }
     }
-
-
-
-
-
 }
