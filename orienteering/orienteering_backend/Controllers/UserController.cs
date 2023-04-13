@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using orienteering_backend.Core.Domain.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using orienteering_backend.Core.Domain.Authentication.Services;
 
 namespace orienteering_backend.Controllers
 {
-    //[Route("api/[controller]/[action]")]
-    //[RoutePrefix("api/user")]
     [ApiController]
     [Route("api/user")]
     public class UserController : ControllerBase

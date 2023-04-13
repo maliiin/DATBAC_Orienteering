@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Infrastructure.Data;
 using orienteering_backend.Core.Domain.Quiz.Dto;
-using AutoMapper;
 using orienteering_backend.Core.Domain.Authentication.Services;
 using System.Security.Authentication;
 using orienteering_backend.Core.Domain.Track.Pipelines;

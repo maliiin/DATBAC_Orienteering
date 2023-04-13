@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
 using MediatR;
 using orienteering_backend.Core.Domain.Track.Dto;
-using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
-using System.Web.Helpers;
-using orienteering_backend.Core.Domain.Quiz;
-using orienteering_backend.Core.Domain.Quiz.Pipelines;
 
 namespace orienteering_backend.Controllers;
 

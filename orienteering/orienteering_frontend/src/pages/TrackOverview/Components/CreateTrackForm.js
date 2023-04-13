@@ -1,6 +1,6 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import { Button, TextField } from '@mui/material';
-import { Link, redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateTrackForm(props) {
     const [trackInfo, setTrackInfo] = useState({
@@ -22,6 +22,9 @@ export default function CreateTrackForm(props) {
         };
 
         const response = await fetch('/api/track/createTrack', requestOptions);
+        if (!response.ok) {
+            navigate("login");
+        }
 
         props.updateTracks();
 

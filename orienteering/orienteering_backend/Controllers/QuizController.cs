@@ -2,15 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Quiz.Pipelines;
 using orienteering_backend.Core.Domain.Quiz.Dto;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using orienteering_backend.Core.Domain.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using orienteering_backend.Core.Domain.Authentication.Services;
-using orienteering_backend.Core.Domain.Quiz.Events;
 using System.Security.Authentication;
 
 namespace orienteering_backend.Controllers

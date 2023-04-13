@@ -1,15 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Track.Pipelines;
-using orienteering_backend.Core.Domain.Authentication;
-using Microsoft.AspNetCore.Identity;
 using orienteering_backend.Core.Domain.Track.Dto;
-using orienteering_backend.Core.Domain.Checkpoint.Dto;
-using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
-using orienteering_backend.Core.Domain.Checkpoint;
-using Microsoft.AspNetCore.Authorization;
-using orienteering_backend.Core.Domain.Quiz.Dto;
-using orienteering_backend.Core.Domain.Quiz.Pipelines;
 
 namespace orienteering_backend.Controllers
 {
@@ -50,7 +42,7 @@ namespace orienteering_backend.Controllers
 
         //list of all tracks of a user
         [HttpGet("getTracks")]
-        public async Task<ActionResult<List<TrackDto>>> GetTracksByUserId()
+        public async Task<ActionResult<List<TrackDto>>> GetTracksForUser()
         {
             try
             {
