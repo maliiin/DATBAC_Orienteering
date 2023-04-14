@@ -12,20 +12,13 @@ export default function CreateCheckpointForm(props) {
 
     const [checkpointInfo, setCheckpointInfo] = useState({
         Title: "",
-        TrackId: "",
+        TrackId: props.trackId,
         GameId: 1
     });
 
-
-    //set userId from props
-    useEffect(() => {
-        setCheckpointInfo(prevState => { return { ...prevState, TrackId: props.trackId } });
-
-    }, [props.TrackId]);
-
-
     const handleSubmit = async (event) => {
         event.preventDefault();
+        // Creates an object that can be updated immediately, unlike the useState variable 
         let copiedCheckpoint = JSON.parse(JSON.stringify(checkpointInfo));
 
         if (activity == "quiz") {
