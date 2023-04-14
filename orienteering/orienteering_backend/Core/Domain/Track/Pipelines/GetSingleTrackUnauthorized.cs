@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using orienteering_backend.Core.Domain.Authentication.Services;
-using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Infrastructure.Data;
-using System.Security.Authentication;
+
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Core.Domain.Track.Pipelines;
 
@@ -19,13 +18,11 @@ public static class GetSingleTrackUnauthorized
     {
         private readonly OrienteeringContext _db;
         private readonly IMapper _mapper;
-        private readonly IIdentityService _identityService;
 
-        public Handler(OrienteeringContext db, IMapper mapper, IIdentityService identityService)
+        public Handler(OrienteeringContext db, IMapper mapper)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _mapper = mapper;
-            _identityService = identityService;
         }
 
         public async Task<TrackDto> Handle(Request request, CancellationToken cancellationToken)

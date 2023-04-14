@@ -5,6 +5,8 @@ using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Navigation.Dto;
 using orienteering_backend.Infrastructure.Data;
 
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+
 namespace orienteering_backend.Core.Domain.Navigation.Pipelines
 {
     public class GetNavigationUnauthorized

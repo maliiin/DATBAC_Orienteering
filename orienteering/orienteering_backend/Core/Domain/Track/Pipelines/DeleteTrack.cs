@@ -1,10 +1,11 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Track.Events;
 using orienteering_backend.Infrastructure.Data;
 using System.Security.Authentication;
+
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Core.Domain.Track.Pipelines;
 //fix fjern mapper fra funksjoner som ikke bruker den

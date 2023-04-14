@@ -5,6 +5,8 @@ using orienteering_backend.Core.Domain.Navigation.Dto;
 using orienteering_backend.Core.Domain.Navigation.Pipelines;
 using System.Security.Authentication;
 
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+
 namespace orienteering_backend.Controllers
 {
     [ApiController]

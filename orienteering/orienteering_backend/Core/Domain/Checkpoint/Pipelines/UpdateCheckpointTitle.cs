@@ -1,14 +1,12 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using orienteering_backend.Core.Domain.Checkpoint.Dto;
-using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Infrastructure.Data;
-using orienteering_backend.Core.Domain.Checkpoint.Events;
 using System.Security.Authentication;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Track.Pipelines;
-using AutoMapper;
 using orienteering_backend.Core.Domain.Authentication.Services;
+
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 
@@ -21,15 +19,13 @@ public static class UpdateCheckpointTitle
     public class Handler : IRequestHandler<Request, Checkpoint>
     {
         private readonly OrienteeringContext _db;
-        private readonly IMapper _mapper;
         private readonly IIdentityService _identityService;
         private readonly IMediator _mediator;
 
 
-        public Handler(OrienteeringContext db, IMapper mapper, IIdentityService identityService, IMediator mediator)
+        public Handler(OrienteeringContext db, IIdentityService identityService, IMediator mediator)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
-            _mapper = mapper;
             _identityService = identityService;
             _mediator = mediator;
         }

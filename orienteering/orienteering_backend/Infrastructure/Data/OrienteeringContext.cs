@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Core.Domain.Quiz;
-using orienteering_backend.Core.Domain.Navigation;
 
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Infrastructure.Data;
 
 public class OrienteeringContext : IdentityUserContext<IdentityUser>
 {
+    // fix: fjern mediator
     private readonly IMediator _mediator;
 
     public OrienteeringContext(DbContextOptions<OrienteeringContext> configuration, IMediator mediator) : base(configuration)
