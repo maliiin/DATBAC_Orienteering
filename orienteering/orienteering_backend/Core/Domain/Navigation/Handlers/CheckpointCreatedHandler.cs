@@ -1,7 +1,5 @@
 ﻿using MediatR;
 using orienteering_backend.Core.Domain.Checkpoint.Events;
-using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
-using orienteering_backend.Core.Domain.Quiz.Events;
 using orienteering_backend.Infrastructure.Data;
 
 namespace orienteering_backend.Core.Domain.Navigation.Handlers

@@ -28,13 +28,16 @@ namespace orienteering_backend.Core.Domain.Checkpoint.Handlers
 
             foreach (var checkpoint in checkpointList)
             {
-                // fix er dette rett? å publisere før lagring-hva om noe kræsjer?
-                //eventuelt å lagre hver gang inni loopen
                 _db.Checkpoints.Remove(checkpoint);
-                await _mediator.Publish(new CheckpointDeleted(notification.TrackId, checkpoint.Id, checkpoint.QuizId));
-
             }
             await _db.SaveChangesAsync(cancellationToken);
+            // Publisher event for hvert slettet checkpoint etter savechangesasync()
+            // Dersom lagringen krasjer, unngår vi med dette å sende ut et
+            // checkpointDeleted event uten at checkpoints er slettet fra databasen
+            foreach (var checkpoint in checkpointList)
+            {
+                await _mediator.Publish(new CheckpointDeleted(notification.TrackId, checkpoint.Id, checkpoint.QuizId));
+            }
         }
     }
 }
