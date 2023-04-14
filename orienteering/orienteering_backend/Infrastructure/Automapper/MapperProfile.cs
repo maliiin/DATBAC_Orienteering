@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Navigation;

@@ -15,17 +15,17 @@ export default function TrackOverview() {
             navigate("/login");
         } else if (!response.ok) {
             navigate("/errorpage")
+        } else {
+            const data = await response.json();
+
+            setList(data.map((trackElement, index) =>
+                <TrackInfo
+                    key={trackElement.id + "-" + index}
+                    trackInfo={trackElement}
+                    updateTrackList={loadTrack}>
+                </TrackInfo>
+            ));
         }
-
-        const data = await response.json();
-
-        setList(data.map((trackElement, index) =>
-            <TrackInfo
-                key={trackElement.id + "-" + index}
-                trackInfo={trackElement}
-                updateTrackList={loadTrack}>
-            </TrackInfo>
-        ));
     }
 
     useEffect(() => {

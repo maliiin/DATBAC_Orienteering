@@ -1,19 +1,15 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using orienteering_backend.Core.Domain.Checkpoint.Dto;
-using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Infrastructure.Data;
 using orienteering_backend.Core.Domain.Checkpoint.Events;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Routing.Matching;
-using AutoMapper;
 using orienteering_backend.Core.Domain.Authentication.Services;
 using System.Security.Authentication;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Track.Pipelines;
 
 namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines;
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+
 
 public static class DeleteCheckpoint
 {
