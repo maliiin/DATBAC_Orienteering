@@ -42,6 +42,8 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                     .Where(n => n.Id == request.NavigationId)
                     .Include(n => n.Images)
                     .FirstOrDefaultAsync(cancellationToken);
+
+                //fix-throw exception istedefor return false
                 if (navigation == null) { return false; }
 
 
@@ -52,6 +54,7 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                 CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(navigation.ToCheckpoint));
                 TrackUserIdDto track = await _mediator.Send(new GetTrackUser.Request(checkpoint.TrackId));
 
+                //fix-feil exception her! heller nullfererence
                 if (userId != track.UserId) { throw new AuthenticationException(); }
 
                 foreach (var navImage in navigation.Images)

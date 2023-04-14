@@ -30,6 +30,7 @@ public static class SetStartCheckpoint
                 .Where(t => t.Id == request.trackId)
                 .FirstOrDefaultAsync(cancellationToken);
 
+            //fix errorhandling? eller ikke
             if (track == null) { return false; }
             track.Name = request.newTitle;
 

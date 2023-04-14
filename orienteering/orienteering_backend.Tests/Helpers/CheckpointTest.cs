@@ -48,7 +48,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task GivenCorrectUser_WhenCreateCheckpoint_ThenCreate()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
@@ -96,7 +96,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task GivenCorretUser_WhenDeleteCheckpoint_ThenDeleteCheckpoint()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
@@ -143,10 +143,10 @@ namespace orienteering_backend.Tests.Helpers
 
 
         [Fact]
-        public async Task GivenNoUser_WhenDeleteCheckpoint_ThenException()
+        public  void GivenNoUser_WhenDeleteCheckpoint_ThenException()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var checkpointId = Guid.NewGuid();
@@ -169,7 +169,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task GivenCorrectUser_WhenGetCheckpointForTrack_ThenSuccess()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
@@ -181,7 +181,6 @@ namespace orienteering_backend.Tests.Helpers
             await _db.Tracks.AddAsync(track);
             await _db.SaveChangesAsync();
 
-            //var trackDb = await _db.Tracks..FirstOrDefaultAsync();
             TrackUserIdDto trackUserIdDto = _mapper.Map<TrackUserIdDto>(track);
 
             //create checkpoints
@@ -219,7 +218,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task GivenLastCheckpoint_WhenGetNextCheckpoint_ThenSuccess()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
@@ -270,7 +269,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task GivenMiddleCheckpoint_WhenGetNextCheckpoint_ThenSuccess()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
@@ -319,7 +318,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task Given_WhenGetQuizIdOfCheckpoint_ThenSuccess()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             //create checkpoint
@@ -346,7 +345,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task GivenCorrectUser_WhenGetSingleCheckpoint_ThenSuccess()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
@@ -391,7 +390,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task GivenTrackAndQuiz_WhenGetTrackIdForQuiz_ThenGetId()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
 
@@ -416,7 +415,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task GivenCorrectUser_WhenUpdateCheckpointTitle_ThenUpdate()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
@@ -458,30 +457,6 @@ namespace orienteering_backend.Tests.Helpers
             //ASSERT
             Assert.Equal(JsonConvert.SerializeObject(expectedCheckpoint), JsonConvert.SerializeObject(response));
         }
-
-        //fix slett denne
-        [Fact]
-        public async Task MAL()
-        {
-            //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
-            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
-
-            var userId = Guid.NewGuid();
-
-            var _identityService = new Mock<IIdentityService>();
-            _identityService.Setup(i => i.GetCurrentUserId()).Returns<Guid?>(null);
-
-
-            var _mediator = new Mock<IMediator>();
-            //_mediator.Setup(m => m.Send(It.IsAny<GetSingleTrack.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
-
-            //var request = new CreateCheckpoint.Request(checkpointDto, userId);
-            //var handler = new CreateCheckpoint.Handler(_db, _mediator.Object);
-
-            //ACT
-            //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-
-        }
+       
     }
 }

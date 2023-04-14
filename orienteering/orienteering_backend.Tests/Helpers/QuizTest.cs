@@ -7,16 +7,13 @@ using orienteering_backend.Core.Domain.Track.Pipelines;
 using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Infrastructure.Automapper;
 using orienteering_backend.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using orienteering_backend.Core.Domain.Quiz;
 using orienteering_backend.Core.Domain.Quiz.Dto;
 using MediatR;
 using orienteering_backend.Core.Domain.Quiz.Pipelines;
 using orienteering_backend.Core.Domain.Authentication.Services;
+using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
+using orienteering_backend.Core.Domain.Checkpoint;
 
 namespace orienteering_backend.Tests.Helpers
 {
@@ -48,7 +45,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task GivenSignedInUser_WhenAddQuestion_ThenAddQuestion()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
@@ -88,39 +85,13 @@ namespace orienteering_backend.Tests.Helpers
             //fix-hvor mye skal sjekkes? skal vi sjekke at det som kommer ut av db stemmer med det som ble puttet inn?
             var quizQuestion = quizDb.QuizQuestions[0];
 
-
-
-            ////add track to db
-            //var track = new Track();
-            //track.Name = "name";
-            //track.UserId = Guid.NewGuid();
-            ////track.UserId = Guid.NewGuid();
-            //await _db.Tracks.AddAsync(track);
-            //await _db.SaveChangesAsync();
-
-            //var trackDb = await _db.Tracks.Where(t => t.Name == "name").FirstOrDefaultAsync();
-            //var expected = new TrackUserIdDto();
-            //expected.UserId = track.UserId;
-            //expected.TrackId = trackDb.Id;
-
-            ////var mapper = _mapper;
-            //var mapper = new Mock<IMapper>();
-            //mapper.Setup(x => x.Map<Track, TrackUserIdDto>(track)).Returns(expected);
-
-            //var request = new GetTrackUser.Request(trackDb.Id);
-            //var handler = new GetTrackUser.Handler(_db, mapper.Object);
-
-            ////act
-            //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-            //Assert.Equal(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(response));
-
         }
 
         [Fact]
         public async Task GivenSignedInUser_WhenDeleteQuestion_ThenDeleteQuestion()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
@@ -174,7 +145,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task Given_WhenAskForQuiz_ThenReturnQuiz()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
             
             //create quiz and add to db
@@ -214,8 +185,62 @@ namespace orienteering_backend.Tests.Helpers
             Assert.Equal(JsonConvert.SerializeObject(quizDto), JsonConvert.SerializeObject(returnedQuizDto));
         }
 
+        [Fact]
+        public async Task GivenCheckpointId_WhenGetQuizByCheckpointId()
+        {
+            //ARRANGE
+            var _db = new OrienteeringContext(dbContextOptions);
+            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
-        //fix-mangler å teste getquizbycheckpointId pipeline
-        //ellers ferdig i quiz domain
+            //create track
+            var track = new Track();
+            track.UserId = Guid.NewGuid();
+            track.Name = "trackname";
+            await _db.Tracks.AddAsync(track);
+            await _db.SaveChangesAsync();
+
+            //create Quiz
+            var quizId = Guid.NewGuid();
+            var quiz = new Quiz(quizId);
+            var quizQuestion = new QuizQuestion();
+            quizQuestion.Question = "question";
+            quizQuestion.CorrectAlternative = 1;
+            var alt1 = new Alternative(1, "green");
+            var alt2 = new Alternative(2, "red");
+            quizQuestion.Alternatives.Add(alt1);
+            quizQuestion.Alternatives.Add(alt2);
+            quiz.QuizQuestions.Add(quizQuestion);
+            await _db.Quiz.AddAsync(quiz);
+            await _db.SaveChangesAsync();
+
+            //quizDto
+            var dtoList = new List<QuizQuestionDto>();
+            for (var i = 0; i < quiz.QuizQuestions.Count; i++)
+            {
+                var quizQuestion1 = quiz.QuizQuestions[i];
+                var quizQuestionDto = _mapper.Map<QuizQuestion, QuizQuestionDto>(quizQuestion1);
+                dtoList.Add(quizQuestionDto);
+            }
+            var quizDto = new QuizDto(quiz.Id, dtoList);
+
+            //create checkpoint
+            var checkpoint = new Checkpoint("test10", 0, track.Id);
+            checkpoint.QuizId= quizId;
+            await _db.Checkpoints.AddAsync(checkpoint);
+            track.AddedCheckpoint();
+            await _db.SaveChangesAsync();
+
+            var _mediator = new Mock<IMediator>();
+            _mediator.Setup(m => m.Send(It.IsAny<GetQuizIdOfCheckpoint.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(quizId);
+
+            var request = new GetQuizByCheckpointId.Request(quizId);
+            var handler = new GetQuizByCheckpointId.Handler(_db, _mapper, _mediator.Object);
+
+            //act
+            var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+            //ASSERT
+            Assert.Equal(JsonConvert.SerializeObject(quizDto),JsonConvert.SerializeObject(response));
+        }
     }
 }
