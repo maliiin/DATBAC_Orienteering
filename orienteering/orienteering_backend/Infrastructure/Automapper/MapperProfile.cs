@@ -18,19 +18,6 @@ namespace orienteering_backend.Infrastructure.Automapper
     {
         public MapperProfile()
         {
-
-            //Alternative
-            //CreateMap<Alternative, AlternativeDto>().ReverseMap();
-
-            ////Group
-            //CreateMap<Group, GroupViewModel>().ReverseMap()
-            //    .ForMember(dest => dest.Description, src => src.Ignore())
-            //    .AfterMap((src, dest) =>
-            //    {
-            //        dest.CreatedAt = DateTime.Now;
-            //        dest.Description = dest.Name;
-            //    });
-
             CreateMap<QuizQuestion, NextQuizQuestionDto>().ForMember(
                     dest => dest.QuizQuestionId,
                     opt => opt.MapFrom(src => $"{src.Id}")
@@ -44,13 +31,6 @@ namespace orienteering_backend.Infrastructure.Automapper
             CreateMap<Alternative, AlternativeDto>();
             CreateMap<Checkpoint, CheckpointDto>().ReverseMap();
             CreateMap<Checkpoint, CheckpointNameAndQRCodeDto>().ReverseMap();
-            CreateMap<Checkpoint, CheckpointNameAndQRCodeDto>().ReverseMap();
-            //CreateMap<Quiz, QuizDto>()
-            //    .ForMember(dest => dest.QuizId,
-            //        opt => opt.MapFrom(src => $"{src.Id}"))
-            //    .ForMember(dest => dest.QuizQuestions, opt => opt.MapFrom(src => src.QuizQuestions))
-            //    .ForMember(dest => dest.QuizQuestions, opt => opt.MapFrom(src => src.QuizQuestions));
-            //fix to like linjer over
             CreateMap<Track, TrackDto>()
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.TrackName, opt => opt.MapFrom(src => src.Name)).ReverseMap();
@@ -61,12 +41,8 @@ namespace orienteering_backend.Infrastructure.Automapper
                 .ConstructUsing(src => new NavigationDto(src.ToCheckpoint));
             CreateMap<Track, TrackUserIdDto>()
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Id));
-
-
             CreateMap<CreateTrackDto, Track>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.TrackName));
-
-
         }
     }
 

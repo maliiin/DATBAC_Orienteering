@@ -42,64 +42,63 @@ function Registration() {
             return response;
         }
 
-        return (
-            <>
-                <p>heihei</p>
-                <Grid
-                    container
-                    spacing={0}
-                    direction="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={{ minHeight: '50vh' }}>
-                    <Grid item xs={3}>
-                        <h4>Sign up</h4>
-                        <form onSubmit={handleSubmit}>
-
-                            <TextField
-                                required
-                                onChange={(e) => handleChange(e)}
-                                label="Username"
-                                name="username"
-                                variant="standard" value={userInfo.username}
-
-                            />
-                            <br></br>
-
-                            <TextField
-                                required
-                                type="password"
-                                onChange={(e) => handleChange(e)}
-                                label="Password"
-                                variant="standard" value={userInfo.password}
-                                name="password"
-                                inputProps={{ minLength: 6 }}
-
-
-                            />
-                            <br></br>
-
-                            <TextField
-                                required
-                                onChange={(e) => handleChange(e)}
-                                label="Email"
-                                variant="standard"
-                                value={userInfo.email}
-                                name="email"
-                                type="email"
-
-                            />
-                            <br />
-                            <br />
-                            <Button variant="contained" type="submit">
-                                Create user
-                            </Button>
-
-                        </form>
-                    </Grid>
-                </Grid>
-            </>
-        );
     }
+    return (
+        <>
+            <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                style={{ minHeight: '50vh' }}>
+                <Grid item xs={3}>
+                    <h4>Sign up</h4>
+                    <form onSubmit={handleSubmit}>
+
+                        <TextField
+                            required
+                            onChange={(e) => handleChange(e)}
+                            label="Username"
+                            name="username"
+                            variant="standard" value={userInfo.username}
+
+                        />
+                        <br></br>
+
+                        <TextField
+                            required
+                            type="password"
+                            onChange={(e) => handleChange(e)}
+                            label="Password"
+                            variant="standard" value={userInfo.password}
+                            name="password"
+                            inputProps={{ minLength: 6 }}
+
+
+                        />
+                        <br></br>
+
+                        <TextField
+                            required
+                            onChange={(e) => handleChange(e)}
+                            label="Email"
+                            variant="standard"
+                            value={userInfo.email}
+                            name="email"
+                            type="email"
+
+                        />
+                        <br />
+                        <br />
+                        <Button variant="contained" type="submit">
+                            Create user
+                        </Button>
+
+                    </form>
+                </Grid>
+            </Grid>
+        </>
+    );
 }
 export default Registration;
