@@ -8,10 +8,8 @@ using orienteering_backend.Core.Domain.Checkpoint.Events;
 namespace orienteering_backend.Core.Domain.Track.Handlers;
 
 
-//oppgave- kall added checkpoint på track så telleren øker
+//Denne pipelinen kaller addedcheckpoint på track så telleren øker
 
-//fix-heter 1 fordi den andre kanskje ikke trengs?
-//hvis ikke kan de slås sammen??
 public class CheckpointCreatedHandler : INotificationHandler<CheckpointCreated>
 {
     private readonly OrienteeringContext _db;

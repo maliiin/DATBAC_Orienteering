@@ -5,7 +5,6 @@ using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Infrastructure.Data;
 using System.Security.Authentication;
-//Kilder: CampusEats lab fra dat240
 
 namespace orienteering_backend.Core.Domain.Track.Pipelines;
 

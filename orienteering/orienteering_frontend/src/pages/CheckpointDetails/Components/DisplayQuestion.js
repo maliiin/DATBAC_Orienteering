@@ -7,7 +7,7 @@ export default function DisplayQuestion(props) {
 
     const deleteQuestion = async () => {
         const url = '/api/quiz/deleteQuestion?';
-        const parameter = 'questionId=' + props.questionInfo.quizQuestionId + '&quizId=' + props.quizId;
+        const parameter = 'questionId=' + props.questionInfo.quizQuestionId;
         const response = await fetch(url + parameter, { method: 'DELETE' });
         //401 => not signed in
         if (response.status == 401) { navigate("/login"); }
