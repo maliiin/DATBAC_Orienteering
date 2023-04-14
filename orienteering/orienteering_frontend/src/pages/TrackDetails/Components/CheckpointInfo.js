@@ -87,7 +87,7 @@ export default function CheckpointInfo(props) {
             <p>Type: {props.checkpointInfo.quizId == null ? "Game" : "Quiz"}
                 
             </p>
-            Order: {props.checkpointInfo.order }
+            
 
             <Button onClick={showCheckpoint}>Show details</Button>
             <Button onClick={deleteCheckpoint}>Delete checkpoint</Button>

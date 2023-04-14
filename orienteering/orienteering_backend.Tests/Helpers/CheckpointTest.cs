@@ -23,6 +23,9 @@ using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using System.Reflection.Metadata;
 using System.Security.Authentication;
 
+//manglende tester
+//getQrCodes
+
 namespace orienteering_backend.Tests.Helpers
 {
     public class CheckpointTest
@@ -297,7 +300,7 @@ namespace orienteering_backend.Tests.Helpers
             await _db.SaveChangesAsync();
 
             var trackDb = await _db.Tracks.FirstOrDefaultAsync();
-            var trackDto = _mapper.Map<TrackDto>(trackDb);
+
 
             //create checkpoints
             var checkpoint1 = new Checkpoint("test1", 0, trackDb.Id);
@@ -318,6 +321,10 @@ namespace orienteering_backend.Tests.Helpers
             var checkpoint2Db = await _db.Checkpoints.Where(c => c.Title == checkpoint2.Title).FirstOrDefaultAsync();
             var checkpoint3Db = await _db.Checkpoints.Where(c => c.Title == checkpoint3.Title).FirstOrDefaultAsync();
 
+            //get again to get updated NumCheckpoints
+            trackDb = await _db.Tracks.FirstOrDefaultAsync();
+            var trackDto = _mapper.Map<TrackDto>(trackDb);
+
             //mock
             var _mediator = new Mock<IMediator>();
             _mediator.Setup(m => m.Send(It.IsAny<GetSingleTrackUnauthorized.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
@@ -330,6 +337,63 @@ namespace orienteering_backend.Tests.Helpers
 
             //assert
             Assert.Equal(checkpoint3Db.Id, response);
+
+        }
+
+        [Fact]
+        public async Task Given_WhenGetQuizIdOfCheckpoint()
+        {
+            //arrange
+            var _db = new OrienteeringContext(dbContextOptions, null);
+            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
+
+            //create checkpoint
+            var quizId = Guid.NewGuid();
+            var checkpoint = new Checkpoint("title", 0, Guid.NewGuid());
+            checkpoint.QuizId = quizId;
+            await _db.Checkpoints.AddAsync(checkpoint);
+            await _db.SaveChangesAsync();
+
+            var checkpointDb = await _db.Checkpoints.FirstOrDefaultAsync();
+
+            var request = new GetQuizIdOfCheckpoint.Request(checkpointDb.Id);
+            var handler = new GetQuizIdOfCheckpoint.Handler(_db);
+
+            //act
+            var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+            //assert
+            Assert.Equal(quizId, response);
+
+        }
+
+        public async Task GivenCorrectUser_WhenGetSingleCheckpoint()
+        {
+            //arrange
+            var _db = new OrienteeringContext(dbContextOptions, null);
+            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
+
+            var userId = Guid.NewGuid();
+            var trackId = Guid.NewGuid();
+            var checkpoint = new Checkpoint("test1", 0, trackId);
+            await _db.Checkpoints.AddAsync(checkpoint);
+            await _db.SaveChangesAsync();
+
+            CheckpointDto checkpointDto = _mapper.Map<CheckpointDto>(checkpoint);
+
+
+            var identityService = new Mock<IIdentityService>();
+            identityService.Setup(i => i.GetCurrentUserId()).Returns<Guid?>(null);
+
+
+            var _mediator = new Mock<IMediator>();
+            //_mediator.Setup(m => m.Send(It.IsAny<GetSingleTrack.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
+
+            //var request = new CreateCheckpoint.Request(checkpointDto, userId);
+            //var handler = new CreateCheckpoint.Handler(_db, _mediator.Object);
+
+            //act
+            //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
         }
 
