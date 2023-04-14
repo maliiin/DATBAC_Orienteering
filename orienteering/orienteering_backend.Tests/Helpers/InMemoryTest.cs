@@ -255,7 +255,7 @@ public class InMemoryTest
     ////[Fact]
     ////public async Task GetCheckpointForTracksTest()
     ////{
-    ////    //Arrange
+    ////    //ARRANGE
     ////    var mediator = new Mock<IMediator>();
 
     ////    var _db = new OrienteeringContext(dbContextOptions, null);
@@ -354,7 +354,7 @@ public class InMemoryTest
     //[Fact]
     //public async Task AddQuizQuestionTest()
     //{
-    //    ////arrange
+    //    ////ARRANGE
     //    var _db = new OrienteeringContext(dbContextOptions, null);
     //    if (!_db.Database.IsInMemory())
     //    {

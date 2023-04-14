@@ -45,7 +45,7 @@ namespace orienteering_backend.Tests.Helpers
         [Fact]
         public async Task TestGetTrackUser()
         {
-            //arrange
+            //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 

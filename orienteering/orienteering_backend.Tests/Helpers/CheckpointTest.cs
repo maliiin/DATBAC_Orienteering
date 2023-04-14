@@ -7,22 +7,14 @@ using orienteering_backend.Core.Domain.Track.Pipelines;
 using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Infrastructure.Automapper;
 using orienteering_backend.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using orienteering_backend.Core.Domain.Quiz;
-using orienteering_backend.Core.Domain.Quiz.Dto;
 using MediatR;
-using orienteering_backend.Core.Domain.Quiz.Pipelines;
 using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
-using System.Reflection.Metadata;
 using System.Security.Authentication;
 
+//fix-legg inn lisens her!
 //manglende tester
 //getQrCodes
 
@@ -39,7 +31,7 @@ namespace orienteering_backend.Tests.Helpers
                .UseInMemoryDatabase(databaseName: "orienteeringTest")
                .Options;
 
-            // "Mocker" automapper Fix bruker mock nå heller eller ikke?
+            // "Mocker" automapper Fix bruke denne alltid istedenfor moq på automapper
             //Kilder: https://www.thecodebuzz.com/unit-test-mock-automapper-asp-net-core-imapper/ (06.03.2023)
             if (_mapper == null)
             {
@@ -55,41 +47,41 @@ namespace orienteering_backend.Tests.Helpers
         [Fact]
         public async Task GivenCorrectUser_WhenCreateCheckpoint_ThenCreate()
         {
-            //arrange
+            //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
-            var trackId = Guid.NewGuid();
 
-            TrackDto trackDto = new();
-            trackDto.UserId = userId;
-            trackDto.TrackId = trackId;
-            trackDto.TrackName = "trackname";
+            Track track = new();
+            track.UserId = userId;
+            track.Name = "trackname";
+            await _db.Tracks.AddAsync(track);
 
-            Checkpoint expectedCheckpoint = new("test1", 0, trackId);
-            CheckpointDto checkpointDto = new("test1", trackId, 0);
+            var trackDto=_mapper.Map<TrackDto>(track);
+
+            Checkpoint expectedCheckpoint = new("test1", 0, track.Id);
+            CheckpointDto checkpointDto = new("test1", track.Id, 0);
+
+            var _identityService = new Mock<IIdentityService>();
+            _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
 
             var _mediator = new Mock<IMediator>();
-            _mediator.Setup(m => m.Send(It.IsAny<GetSingleTrack.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
+            _mediator.Setup(m => m.Send(It.IsAny<GetSingleTrackUnauthorized.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
 
+            var request = new CreateCheckpoint.Request(checkpointDto);
+            var handler = new CreateCheckpoint.Handler(_db, _mediator.Object, _identityService.Object);
 
-            //var userId =Guid.NewGuid();
-            //var trackId = new Guid();
-            //Checkpoint checkpoint = new("test1", 0, trackId);
-            //CheckpointDto checkpointDto = new("test1", trackId, 0);
-
-            var request = new CreateCheckpoint.Request(checkpointDto, userId);
-            var handler = new CreateCheckpoint.Handler(_db, _mediator.Object);
-
-            //act
+            //ACT
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-            var allCheckpoint = await _db.Checkpoints.ToListAsync();
-            var h = trackDto.TrackId;
+            //var allCheckpoint = await _db.Checkpoints.ToListAsync();
+            //var h = trackDto.TrackId;
             //var createdCheckpoint=await _db.Checkpoints.Where(c => c.TrackId == trackDto.TrackId).FirstOrDefaultAsync();
             //createdCheckpoint.Id = new Guid();
-            //assert
+
+            //ASSERT
             Assert.IsType<Guid>(response);
+
             //Assert.Equal(JsonConvert.SerializeObject(expectedCheckpoint), JsonConvert.SerializeObject(createdCheckpoint));
 
 
@@ -103,7 +95,7 @@ namespace orienteering_backend.Tests.Helpers
         [Fact]
         public async Task GivenCorretUser_WhenDeleteCheckpoint_ThenDeleteCheckpoint()
         {
-            //arrange
+            //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
@@ -116,39 +108,34 @@ namespace orienteering_backend.Tests.Helpers
             await _db.Tracks.AddAsync(track);
             await _db.SaveChangesAsync();
 
-            var Track = await _db.Tracks.FirstOrDefaultAsync();
-            var trackId = Track.Id;
+            //var Track = await _db.Tracks.FirstOrDefaultAsync();
+            //var trackId = Track.Id;
 
             //create checkpoint
-            var checkpoint = new Checkpoint("title", 1, trackId);
+            var checkpoint = new Checkpoint("title", 1, track.Id);
             track.AddedCheckpoint();
             await _db.Checkpoints.AddAsync(checkpoint);
             await _db.SaveChangesAsync();
 
-            //get checkpointID from db
-            var checkpointDb = await _db.Checkpoints.Where(c => c.TrackId == trackId).FirstOrDefaultAsync();
-            var checkpointId = checkpointDb.Id;
-
             //trackUserDto
-            var trackUserDto = _mapper.Map<TrackUserIdDto>(Track);
+            var trackUserDto = _mapper.Map<TrackUserIdDto>(track);
 
             //mock
-
             var _identityService = new Mock<IIdentityService>();
             _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
 
             var _mediator = new Mock<IMediator>();
             _mediator.Setup(m => m.Send(It.IsAny<GetTrackUser.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackUserDto);
 
-            var request = new DeleteCheckpoint.Request(checkpointId);
+            var request = new DeleteCheckpoint.Request(checkpoint.Id);
             var handler = new DeleteCheckpoint.Handler(_db, _identityService.Object, _mediator.Object);
 
-            //act
+            //ACT
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
-            var isDeleted = await _db.Checkpoints.Where(c => c.TrackId == trackId).FirstOrDefaultAsync();
+            var isDeleted = await _db.Checkpoints.Where(c => c.TrackId == track.Id).FirstOrDefaultAsync();
 
-            //assert
+            //ASSERT
             Assert.True(response);
             Assert.Null(isDeleted);
 
@@ -158,7 +145,7 @@ namespace orienteering_backend.Tests.Helpers
         [Fact]
         public async Task GivenNoUser_WhenDeleteCheckpoint_ThenException()
         {
-            //arrange
+            //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
@@ -173,7 +160,7 @@ namespace orienteering_backend.Tests.Helpers
             var request = new DeleteCheckpoint.Request(checkpointId);
             var handler = new DeleteCheckpoint.Handler(_db, _identityService.Object, _mediator.Object);
 
-            //act and assert
+            //ACT and assert
             Assert.Throws<AuthenticationException>(() => handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult());
 
         }
@@ -181,7 +168,7 @@ namespace orienteering_backend.Tests.Helpers
         [Fact]
         public async Task GivenCorrectUser_WhenGetCheckpointForTrack_ThenSuccess()
         {
-            //arrange
+            //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
@@ -194,12 +181,12 @@ namespace orienteering_backend.Tests.Helpers
             await _db.Tracks.AddAsync(track);
             await _db.SaveChangesAsync();
 
-            var trackDb = await _db.Tracks.FirstOrDefaultAsync();
-            TrackUserIdDto trackUserIdDto = _mapper.Map<TrackUserIdDto>(trackDb);
+            //var trackDb = await _db.Tracks..FirstOrDefaultAsync();
+            TrackUserIdDto trackUserIdDto = _mapper.Map<TrackUserIdDto>(track);
 
             //create checkpoints
-            var checkpoint1 = new Checkpoint("test1", 0, trackDb.Id);
-            var checkpoint2 = new Checkpoint("test2", 0, trackDb.Id);
+            var checkpoint1 = new Checkpoint("test1", 0, track.Id);
+            var checkpoint2 = new Checkpoint("test2", 0, track.Id);
 
             await _db.Checkpoints.AddAsync(checkpoint1);
             await _db.Checkpoints.AddAsync(checkpoint2);
@@ -208,7 +195,6 @@ namespace orienteering_backend.Tests.Helpers
             var checkpoint1Dto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint1);
             var checkpoint2Dto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint2);
 
-
             //mock
             var _identityService = new Mock<IIdentityService>();
             _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
@@ -216,13 +202,13 @@ namespace orienteering_backend.Tests.Helpers
             var _mediator = new Mock<IMediator>();
             _mediator.Setup(m => m.Send(It.IsAny<GetTrackUser.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackUserIdDto);
 
-            var request = new GetCheckpointsForTrack.Request(trackDb.Id);
+            var request = new GetCheckpointsForTrack.Request(track.Id);
             var handler = new GetCheckpointsForTrack.Handler(_db, _mapper, _mediator.Object, _identityService.Object);
 
-            //act
+            //ACT
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
-            //Assert
+            //ASSERT
             Assert.Equal(JsonConvert.SerializeObject(response[0]), JsonConvert.SerializeObject(checkpoint1Dto));
             Assert.Equal(JsonConvert.SerializeObject(response[1]), JsonConvert.SerializeObject(checkpoint2Dto));
 
@@ -232,7 +218,7 @@ namespace orienteering_backend.Tests.Helpers
         [Fact]
         public async Task GivenLastCheckpoint_WhenGetNextCheckpoint_ThenSuccess()
         {
-            //arrange
+            //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
@@ -246,61 +232,7 @@ namespace orienteering_backend.Tests.Helpers
             await _db.SaveChangesAsync();
 
             var trackDb = await _db.Tracks.FirstOrDefaultAsync();
-            var trackDto=_mapper.Map<TrackDto>(trackDb);
-
-            //create checkpoints
-            var checkpoint1 = new Checkpoint("test1", 0, trackDb.Id);
-            checkpoint1.Order= 1;
-            var checkpoint2 = new Checkpoint("test2", 0, trackDb.Id);
-            checkpoint2.Order= 2;
-            var checkpoint3 = new Checkpoint("test3", 0, trackDb.Id);
-            checkpoint3.Order= 3;   
-            //add to db
-            await _db.Checkpoints.AddAsync(checkpoint1);
-            track.AddedCheckpoint();
-            await _db.Checkpoints.AddAsync(checkpoint2);
-            track.AddedCheckpoint();
-            await _db.Checkpoints.AddAsync(checkpoint3);
-            track.AddedCheckpoint();
-            await _db.SaveChangesAsync();
-
-            var checkpoint1Db= await _db.Checkpoints.Where(c=>c.Title==checkpoint1.Title).FirstOrDefaultAsync();
-            var checkpoint3Db= await _db.Checkpoints.Where(c=>c.Title==checkpoint3.Title).FirstOrDefaultAsync();
-
-            //mock
-            var _mediator = new Mock<IMediator>();
-            _mediator.Setup(m => m.Send(It.IsAny<GetSingleTrackUnauthorized.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
-
-            var request = new GetNextCheckpoint.Request(checkpoint3Db.Id);
-            var handler = new GetNextCheckpoint.Handler(_db, _mediator.Object);
-
-            //act
-            var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-
-            //assert
-            Assert.Equal(checkpoint1Db.Id, response);
-
-        }
-
-
-        [Fact]
-        public async Task GivenMiddleCheckpoint_WhenGetNextCheckpoint_ThenSuccess()
-        {
-            //arrange
-            var _db = new OrienteeringContext(dbContextOptions, null);
-            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
-
-            var userId = Guid.NewGuid();
-
-            //create track
-            var track = new Track();
-            track.Name = "testName";
-            track.UserId = userId;
-            await _db.Tracks.AddAsync(track);
-            await _db.SaveChangesAsync();
-
-            var trackDb = await _db.Tracks.FirstOrDefaultAsync();
-
+            var trackDto = _mapper.Map<TrackDto>(trackDb);
 
             //create checkpoints
             var checkpoint1 = new Checkpoint("test1", 0, trackDb.Id);
@@ -318,32 +250,75 @@ namespace orienteering_backend.Tests.Helpers
             track.AddedCheckpoint();
             await _db.SaveChangesAsync();
 
-            var checkpoint2Db = await _db.Checkpoints.Where(c => c.Title == checkpoint2.Title).FirstOrDefaultAsync();
-            var checkpoint3Db = await _db.Checkpoints.Where(c => c.Title == checkpoint3.Title).FirstOrDefaultAsync();
+            //mock
+            var _mediator = new Mock<IMediator>();
+            _mediator.Setup(m => m.Send(It.IsAny<GetSingleTrackUnauthorized.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
 
-            //get again to get updated NumCheckpoints
-            trackDb = await _db.Tracks.FirstOrDefaultAsync();
-            var trackDto = _mapper.Map<TrackDto>(trackDb);
+            var request = new GetNextCheckpoint.Request(checkpoint3.Id);
+            var handler = new GetNextCheckpoint.Handler(_db, _mediator.Object);
+
+            //ACT
+            var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+            //ASSERT
+            Assert.Equal(checkpoint1.Id, response);
+
+        }
+
+
+        [Fact]
+        public async Task GivenMiddleCheckpoint_WhenGetNextCheckpoint_ThenSuccess()
+        {
+            //ARRANGE
+            var _db = new OrienteeringContext(dbContextOptions, null);
+            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
+
+            var userId = Guid.NewGuid();
+
+            //create track
+            var track = new Track();
+            track.Name = "testNameTrack";
+            track.UserId = userId;
+            await _db.Tracks.AddAsync(track);
+            await _db.SaveChangesAsync();
+
+            //create checkpoints
+            var checkpoint1 = new Checkpoint("test1", 0, track.Id);
+            checkpoint1.Order = 1;
+            var checkpoint2 = new Checkpoint("test2", 0, track.Id);
+            checkpoint2.Order = 2;
+            var checkpoint3 = new Checkpoint("test3", 0, track.Id);
+            checkpoint3.Order = 3;
+            //add to db
+            await _db.Checkpoints.AddAsync(checkpoint1);
+            track.AddedCheckpoint();
+            await _db.Checkpoints.AddAsync(checkpoint2);
+            track.AddedCheckpoint();
+            await _db.Checkpoints.AddAsync(checkpoint3);
+            track.AddedCheckpoint();
+            await _db.SaveChangesAsync();
+
+            var trackDto = _mapper.Map<TrackDto>(track);
 
             //mock
             var _mediator = new Mock<IMediator>();
             _mediator.Setup(m => m.Send(It.IsAny<GetSingleTrackUnauthorized.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
 
-            var request = new GetNextCheckpoint.Request(checkpoint2Db.Id);
+            var request = new GetNextCheckpoint.Request(checkpoint2.Id);
             var handler = new GetNextCheckpoint.Handler(_db, _mediator.Object);
 
-            //act
+            //ACT
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
-            //assert
-            Assert.Equal(checkpoint3Db.Id, response);
+            //ASSERT
+            Assert.Equal(checkpoint3.Id, response);
 
         }
 
         [Fact]
         public async Task Given_WhenGetQuizIdOfCheckpoint_ThenSuccess()
         {
-            //arrange
+            //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
@@ -354,15 +329,15 @@ namespace orienteering_backend.Tests.Helpers
             await _db.Checkpoints.AddAsync(checkpoint);
             await _db.SaveChangesAsync();
 
-            var checkpointDb = await _db.Checkpoints.FirstOrDefaultAsync();
+            var checkpointDb = await _db.Checkpoints.Where(c => c.Id == checkpoint.Id).FirstOrDefaultAsync();
 
             var request = new GetQuizIdOfCheckpoint.Request(checkpointDb.Id);
             var handler = new GetQuizIdOfCheckpoint.Handler(_db);
 
-            //act
+            //ACT
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
-            //assert
+            //ASSERT
             Assert.Equal(quizId, response);
 
         }
@@ -370,28 +345,27 @@ namespace orienteering_backend.Tests.Helpers
         [Fact]
         public async Task GivenCorrectUser_WhenGetSingleCheckpoint_ThenSuccess()
         {
-            //arrange
+            //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
 
             //create track
-            var track=new Track();
+            var track = new Track();
             track.UserId = userId;
             track.Name = "trackname";
             await _db.Tracks.AddAsync(track);
             await _db.SaveChangesAsync();
 
             //create checkpoint
-            var trackId = Guid.NewGuid();
-            var checkpoint = new Checkpoint("test1", 0, trackId);
+            var checkpoint = new Checkpoint("test1", 0, track.Id);
             await _db.Checkpoints.AddAsync(checkpoint);
             track.AddedCheckpoint();
             await _db.SaveChangesAsync();
 
             //dto
-            TrackUserIdDto trackDto=_mapper.Map<TrackUserIdDto>(track);
+            TrackUserIdDto trackDto = _mapper.Map<TrackUserIdDto>(track);
             CheckpointDto checkpointDto = _mapper.Map<CheckpointDto>(checkpoint);
 
 
@@ -405,10 +379,10 @@ namespace orienteering_backend.Tests.Helpers
             var request = new GetSingleCheckpoint.Request(checkpoint.Id);
             var handler = new GetSingleCheckpoint.Handler(_db, _mapper, _identityService.Object, _mediator.Object);
 
-            //act
+            //ACT
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
-            //Assert
+            //ASSERT
             Assert.Equal(JsonConvert.SerializeObject(checkpointDto), JsonConvert.SerializeObject(response));
         }
 
@@ -416,34 +390,80 @@ namespace orienteering_backend.Tests.Helpers
         [Fact]
         public async Task GivenTrackAndQuiz_WhenGetTrackIdForQuiz_ThenGetId()
         {
-            //arrange
+            //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
 
-            var trackId=Guid.NewGuid();
-            var quizId=Guid.NewGuid();
+            var trackId = Guid.NewGuid();
+            var quizId = Guid.NewGuid();
             var checkpoint = new Checkpoint("title", 0, trackId);
-            checkpoint.QuizId= quizId;
+            checkpoint.QuizId = quizId;
             await _db.Checkpoints.AddAsync(checkpoint);
             await _db.SaveChangesAsync();
 
             var request = new GetTrackIdForQuiz.Request(quizId);
             var handler = new GetTrackIdForQuiz.Handler(_db);
 
-            //act
+            //ACT
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
-            //assert
+            //ASSERT
             Assert.Equal(trackId, response);
         }
 
+        [Fact]
+        public async Task GivenCorrectUser_WhenUpdateCheckpointTitle_ThenUpdate()
+        {
+            //ARRANGE
+            var _db = new OrienteeringContext(dbContextOptions, null);
+            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
+
+            var userId = Guid.NewGuid();
+
+            //create track
+            var track = new Track();
+            track.UserId = userId;
+            track.Name = "trackname";
+            await _db.Tracks.AddAsync(track);
+            await _db.SaveChangesAsync();
+
+            //create checkpoint
+            var checkpoint = new Checkpoint("test1", 0, track.Id);
+            await _db.Checkpoints.AddAsync(checkpoint);
+            track.AddedCheckpoint();
+            await _db.SaveChangesAsync();
+
+            //dto
+            TrackUserIdDto trackDto = _mapper.Map<TrackUserIdDto>(track);
+            CheckpointDto checkpointDto = _mapper.Map<CheckpointDto>(checkpoint);
+
+            var newTitle = "newTitle";
+            var expectedCheckpoint = checkpoint;
+            expectedCheckpoint.Title = newTitle;
+
+            var _identityService = new Mock<IIdentityService>();
+            _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
+
+
+            var _mediator = new Mock<IMediator>();
+            _mediator.Setup(m => m.Send(It.IsAny<GetTrackUser.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
+
+            var request = new UpdateCheckpointTitle.Request(newTitle, checkpoint.Id);
+            var handler = new UpdateCheckpointTitle.Handler(_db, _identityService.Object, _mediator.Object);
+
+            //ACT
+            var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+            //ASSERT
+            Assert.Equal(JsonConvert.SerializeObject(expectedCheckpoint), JsonConvert.SerializeObject(response));
+        }
 
         //fix slett denne
         [Fact]
         public async Task MAL()
         {
-            //arrange
+            //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
@@ -459,7 +479,7 @@ namespace orienteering_backend.Tests.Helpers
             //var request = new CreateCheckpoint.Request(checkpointDto, userId);
             //var handler = new CreateCheckpoint.Handler(_db, _mediator.Object);
 
-            //act
+            //ACT
             //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
         }

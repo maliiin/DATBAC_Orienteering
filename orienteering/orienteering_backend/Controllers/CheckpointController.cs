@@ -26,13 +26,10 @@ namespace orienteering_backend.Controllers
         [HttpPost("createCheckpoint")]
         public async Task<ActionResult> CreateCheckpoint(CheckpointDto checkpointDto)
         {
-            var userId = _identityService.GetCurrentUserId();
-            if (userId == null) { return Unauthorized(); }
-
             //fiks objekt her i parameter (tror ok?)
             try
             {
-                var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(checkpointDto, (Guid)userId));
+                var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(checkpointDto));
                 return Ok(newCheckPointId);
             }
             catch

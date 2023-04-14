@@ -47,7 +47,7 @@ namespace orienteering_backend.Tests.Helpers
         [Fact]
         public async Task GivenSignedInUser_WhenAddQuestion_ThenAddQuestion()
         {
-            //arrange
+            //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
@@ -119,7 +119,7 @@ namespace orienteering_backend.Tests.Helpers
         [Fact]
         public async Task GivenSignedInUser_WhenDeleteQuestion_ThenDeleteQuestion()
         {
-            //arrange
+            //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 

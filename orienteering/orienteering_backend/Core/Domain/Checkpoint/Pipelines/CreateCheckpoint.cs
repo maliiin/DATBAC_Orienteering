@@ -5,6 +5,8 @@ using orienteering_backend.Core.Domain.Checkpoint.Events;
 using orienteering_backend.Core.Domain.Track.Pipelines;
 using System.Security.Authentication;
 using System.Net;
+using System.Security.Principal;
+using orienteering_backend.Core.Domain.Authentication.Services;
 
 // Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
@@ -13,26 +15,31 @@ namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 public static class CreateCheckpoint
 {
     public record Request(
-        CheckpointDto checkpointDto, Guid userId) : IRequest<Guid>;
+        CheckpointDto checkpointDto) : IRequest<Guid>;
 
 
     public class Handler : IRequestHandler<Request, Guid>
     {
         private readonly OrienteeringContext _db;
         private readonly IMediator _mediator;
+        private readonly IIdentityService _identityService;
 
 
-        public Handler(OrienteeringContext db, IMediator mediator)
+        public Handler(OrienteeringContext db, IMediator mediator, IIdentityService identityService)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _mediator = mediator;
+            _identityService = identityService;
         }
         public async Task<Guid> Handle(Request request, CancellationToken cancellationToken)
         {
+            //check that signed in
+            var userId = _identityService.GetCurrentUserId();
+            if (userId == null) { throw new AuthenticationException("user not signed in"); }
             var trackDto = await _mediator.Send(new GetSingleTrackUnauthorized.Request(request.checkpointDto.TrackId));
 
             //Not allowed to do this
-            if (trackDto.UserId != request.userId) { throw new NullReferenceException("The user dont own this track or it dosent exist."); };
+            if (trackDto.UserId != userId) { throw new NullReferenceException("The user dont own this track or it dosent exist."); };
 
             //create checkpoint
             var newCheckpoint = new Checkpoint(request.checkpointDto.Title, request.checkpointDto.GameId, request.checkpointDto.TrackId);
