@@ -83,11 +83,10 @@ namespace orienteering_backend.Controllers
         }
 
         [HttpDelete("deleteQuestion")]
-        public async Task<ActionResult> DeleteQuestion(string questionId, string quizId)
+        public async Task<ActionResult> DeleteQuestion(string questionId)
         {
             //fix er dette ok navn på event?? det har jo ikke blitt slettet enda
             Guid questionGuid = new Guid(questionId);
-            Guid quizGuid = new Guid(quizId);
 
             ////fix sjekk at det er rett bruker som er logget inn for dette
             //før event i samme domain-nå pipeline
@@ -95,7 +94,7 @@ namespace orienteering_backend.Controllers
 
             try
             {
-                await _mediator.Send(new DeleteQuizQuestion.Request(questionGuid, quizGuid));
+                await _mediator.Send(new DeleteQuizQuestion.Request(questionGuid));
                 return Ok();
             }
             catch (AuthenticationException)

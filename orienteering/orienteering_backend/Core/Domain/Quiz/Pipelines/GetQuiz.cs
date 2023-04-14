@@ -47,18 +47,13 @@ public static class GetQuiz
 
             if (quiz == null) { throw new Exception("Quiz not found"); }
 
-            //var quizDto = _mapper.Map<Quiz, QuizDto>(quiz);
             var dtoList = new List<QuizQuestionDto>();
             for (var i = 0; i < quiz.QuizQuestions.Count; i++)
             {
                 var quizQuestion = quiz.QuizQuestions[i];
-                //var dtoElement = new QuizQuestionDto(quizQuestion.Question, quizQuestion.CorrectAlternative);
-                //dtoElement.Alternatives = quizQuestion.Alternatives;
-                //dtoElement.QuizQuestionId = quizQuestion.Id;
                 var quizQuestionDto = _mapper.Map<QuizQuestion, QuizQuestionDto>(quizQuestion);
                 dtoList.Add(quizQuestionDto);
             }
-            //var quizDto = _mapper.Map<Quiz, QuizDto>(Quiz);
             var quizDto = new QuizDto(quiz.Id, dtoList);
             return quizDto;
         }

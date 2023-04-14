@@ -11,7 +11,7 @@ export default function TrackDetails() {
     const navigate = useNavigate();
     const params = useParams();
     const [checkpointList, setCheckpointList] = useState("");
-    const trackId = params.trackid;
+    const trackId = params.trackId;
 
     const showQrcodes = async () => {
         const trackid = params.trackId;

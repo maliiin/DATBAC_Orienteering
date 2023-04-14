@@ -6,9 +6,6 @@ using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Infrastructure.Data;
 using System.Security.Authentication;
-//Kilder: CampusEats lab fra dat240
-// Kilder: https://github.com/dat240-2022/assignments/blob/main/Lab3/UiS.Dat240.Lab3/Core/Domain/Cart/Pipelines/AddItem.cs (07.02.2023)
-// Brukte samme struktur på pipelinen som i kilden
 
 namespace orienteering_backend.Core.Domain.Track.Pipelines;
 
