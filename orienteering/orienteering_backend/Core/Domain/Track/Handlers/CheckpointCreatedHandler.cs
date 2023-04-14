@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using System;
 using orienteering_backend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint.Events;
+
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Core.Domain.Track.Handlers;
 
@@ -13,11 +13,9 @@ namespace orienteering_backend.Core.Domain.Track.Handlers;
 public class CheckpointCreatedHandler : INotificationHandler<CheckpointCreated>
 {
     private readonly OrienteeringContext _db;
-    private readonly IMediator _mediator;
-    public CheckpointCreatedHandler(OrienteeringContext db, IMediator mediator)
+    public CheckpointCreatedHandler(OrienteeringContext db)
     {
         _db = db ?? throw new ArgumentNullException(nameof(db));
-        _mediator = mediator;
 
     }
     public async Task Handle(CheckpointCreated notification, CancellationToken cancellationToken)

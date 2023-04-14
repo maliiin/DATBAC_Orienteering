@@ -1,5 +1,4 @@
-﻿using orienteering_backend.Core.Domain.Quiz.Dto;
-namespace orienteering_backend.Core.Domain.Quiz.Dto
+﻿namespace orienteering_backend.Core.Domain.Quiz.Dto
 
 {
     public class QuizDto

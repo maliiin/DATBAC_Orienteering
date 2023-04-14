@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
-
-namespace orienteering_backend.Core.Domain.Navigation
+﻿namespace orienteering_backend.Core.Domain.Navigation
 {
     public class Navigation
     {

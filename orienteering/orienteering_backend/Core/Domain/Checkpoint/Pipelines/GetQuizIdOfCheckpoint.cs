@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Infrastructure.Data;
+
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+
 namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 
 //unauthorized way to get quizId of checkpoint

@@ -6,6 +6,8 @@ using AutoMapper;
 using System.Security.Authentication;
 using orienteering_backend.Core.Domain.Authentication.Services;
 
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+
 namespace orienteering_backend.Core.Domain.Track.Pipelines;
 
 public static class GetTracks

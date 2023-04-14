@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Checkpoint.Events;
-using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Track.Events;
 using orienteering_backend.Infrastructure.Data;
-using System.Web.Mvc;
+
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Core.Domain.Checkpoint.Handlers
 {

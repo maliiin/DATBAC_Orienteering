@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Checkpoint.Dto;
@@ -8,6 +7,8 @@ using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Track.Pipelines;
 using orienteering_backend.Infrastructure.Data;
 using System.Security.Authentication;
+
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Core.Domain.Navigation.Pipelines
 {

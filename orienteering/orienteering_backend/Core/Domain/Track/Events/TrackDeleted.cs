@@ -1,6 +1,4 @@
-﻿using MediatR;
-using orienteering_backend.SharedKernel;
-
+﻿using orienteering_backend.SharedKernel;
 
 namespace orienteering_backend.Core.Domain.Track.Events;
 
