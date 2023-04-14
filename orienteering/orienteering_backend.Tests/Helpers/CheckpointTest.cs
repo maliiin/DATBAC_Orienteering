@@ -341,7 +341,7 @@ namespace orienteering_backend.Tests.Helpers
         }
 
         [Fact]
-        public async Task Given_WhenGetQuizIdOfCheckpoint()
+        public async Task Given_WhenGetQuizIdOfCheckpoint_ThenSuccess()
         {
             //arrange
             var _db = new OrienteeringContext(dbContextOptions, null);
@@ -367,35 +367,77 @@ namespace orienteering_backend.Tests.Helpers
 
         }
 
-        public async Task GivenCorrectUser_WhenGetSingleCheckpoint()
+        [Fact]
+        public async Task GivenCorrectUser_WhenGetSingleCheckpoint_ThenSuccess()
         {
             //arrange
             var _db = new OrienteeringContext(dbContextOptions, null);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
+
+            //create track
+            var track=new Track();
+            track.UserId = userId;
+            track.Name = "trackname";
+            await _db.Tracks.AddAsync(track);
+            await _db.SaveChangesAsync();
+
+            //create checkpoint
             var trackId = Guid.NewGuid();
             var checkpoint = new Checkpoint("test1", 0, trackId);
             await _db.Checkpoints.AddAsync(checkpoint);
+            track.AddedCheckpoint();
             await _db.SaveChangesAsync();
 
+            //dto
+            TrackUserIdDto trackDto=_mapper.Map<TrackUserIdDto>(track);
             CheckpointDto checkpointDto = _mapper.Map<CheckpointDto>(checkpoint);
 
 
-            var identityService = new Mock<IIdentityService>();
-            identityService.Setup(i => i.GetCurrentUserId()).Returns<Guid?>(null);
+            var _identityService = new Mock<IIdentityService>();
+            _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
 
 
             var _mediator = new Mock<IMediator>();
-            //_mediator.Setup(m => m.Send(It.IsAny<GetSingleTrack.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
+            _mediator.Setup(m => m.Send(It.IsAny<GetTrackUser.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
 
-            //var request = new CreateCheckpoint.Request(checkpointDto, userId);
-            //var handler = new CreateCheckpoint.Handler(_db, _mediator.Object);
+            var request = new GetSingleCheckpoint.Request(checkpoint.Id);
+            var handler = new GetSingleCheckpoint.Handler(_db, _mapper, _identityService.Object, _mediator.Object);
 
             //act
-            //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+            var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
+            //Assert
+            Assert.Equal(JsonConvert.SerializeObject(checkpointDto), JsonConvert.SerializeObject(response));
         }
+
+
+        [Fact]
+        public async Task GivenTrackAndQuiz_WhenGetTrackIdForQuiz_ThenGetId()
+        {
+            //arrange
+            var _db = new OrienteeringContext(dbContextOptions, null);
+            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
+
+
+            var trackId=Guid.NewGuid();
+            var quizId=Guid.NewGuid();
+            var checkpoint = new Checkpoint("title", 0, trackId);
+            checkpoint.QuizId= quizId;
+            await _db.Checkpoints.AddAsync(checkpoint);
+            await _db.SaveChangesAsync();
+
+            var request = new GetTrackIdForQuiz.Request(quizId);
+            var handler = new GetTrackIdForQuiz.Handler(_db);
+
+            //act
+            var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+            //assert
+            Assert.Equal(trackId, response);
+        }
+
 
         //fix slett denne
         [Fact]
@@ -407,8 +449,8 @@ namespace orienteering_backend.Tests.Helpers
 
             var userId = Guid.NewGuid();
 
-            var identityService = new Mock<IIdentityService>();
-            identityService.Setup(i => i.GetCurrentUserId()).Returns<Guid?>(null);
+            var _identityService = new Mock<IIdentityService>();
+            _identityService.Setup(i => i.GetCurrentUserId()).Returns<Guid?>(null);
 
 
             var _mediator = new Mock<IMediator>();
