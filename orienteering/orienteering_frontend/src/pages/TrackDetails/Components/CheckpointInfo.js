@@ -46,11 +46,19 @@ export default function CheckpointInfo(props) {
 
     const stopEdit = async () => {
         setEditing(false)
-        //fix put/patch metord
 
-        const url = '/api/checkpoint/editCheckpointTitle?';
-        const parameter = 'checkpointTitle=' + oldTitle + "&checkpointId=" + props.checkpointInfo.id;
-        const response = await fetch(url + parameter, { method: 'PUT' });
+        const url = '/api/checkpoint/editCheckpointTitle';
+        const response = await fetch(url, {
+            method: "PATCH",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                CheckpointId: props.checkpointInfo.id,
+                Title: oldTitle
+            })
+        });
         //401 => not signed in
         if (response.status == 401) { navigate("/login"); }
         //404 => dont exist or not your checkpoint

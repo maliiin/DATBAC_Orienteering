@@ -73,14 +73,12 @@ namespace orienteering_backend.Controllers
 
         }
 
-        //fiks-sjekk metode put eller patch
-        [HttpPut("updateTrackTitle")]
-        public async Task<IActionResult> UpdateTrackTitle(string trackId, string newTitle)
+        [HttpPatch("updateTrackTitle")]
+        public async Task<IActionResult> UpdateTrackTitle(UpdateTrackTitleDto updateData)
         {
-            Guid trackGuid = new Guid(trackId);
             try
             {
-                await _mediator.Send(new UpdateTrackTitle.Request(trackGuid, newTitle));
+                await _mediator.Send(new UpdateTrackTitle.Request(updateData.TrackId, updateData.NewTitle));
                 return Ok();
 
             }

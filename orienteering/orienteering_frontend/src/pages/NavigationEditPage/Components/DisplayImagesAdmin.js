@@ -21,11 +21,19 @@ export default function DisplayImagesAdmin(props) {
     const stopEdit = async () => {
         setEditing(false)
 
-        const url = '/api/navigation/editNavigationText?';
-        const parameter = 'navigationId=' + props.navId
-            + "&newText=" + oldText
-            + "&navigationImageId=" + props.imageInfo.id;
-        const response = await fetch(url + parameter, { method: 'PUT' });
+        const url = '/api/navigation/editNavigationText';
+        const response = await fetch(url, {
+            method: "PATCH",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                NavigationId: props.navId,
+                NewText: oldText,
+                NavigationImageId: props.imageInfo.id
+            })
+        });
         //fiks sjekk respons i error handling, trengs det her??
 
         //update images in parent

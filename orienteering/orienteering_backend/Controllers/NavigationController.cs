@@ -104,15 +104,13 @@ namespace orienteering_backend.Controllers
             return navDto;
         }
 
-        [HttpPut("editNavigationText")]
-        public async Task<IActionResult> UpdateNavigationDescription(string navigationId, string newText, string navigationImageId)
+        [HttpPatch("editNavigationText")]
+        public async Task<IActionResult> UpdateNavigationDescription(UpdateNavigationTextDto updateData)
         {
-            Guid NavigationId = new Guid(navigationId);
-            Guid NavigationImageId = new Guid(navigationImageId);
 
             try
             {
-                var changed = await _mediator.Send(new UpdateNavigationText.Request(NavigationId, newText, NavigationImageId));
+                var changed = await _mediator.Send(new UpdateNavigationText.Request(updateData.NavigationId, updateData.NewText, updateData.NavigationImageId));
                 return Ok();
             }
             catch
