@@ -46,11 +46,11 @@ namespace orienteering_backend.Infrastructure.Automapper
             CreateMap<Checkpoint, CheckpointDto>().ReverseMap();
             CreateMap<Checkpoint, CheckpointNameAndQRCodeDto>().ReverseMap();
             CreateMap<Checkpoint, CheckpointNameAndQRCodeDto>().ReverseMap();
-            CreateMap<Quiz, QuizDto>()
-                .ForMember(dest => dest.QuizId,
-                    opt => opt.MapFrom(src => $"{src.Id}"))
-                .ForMember(dest => dest.QuizQuestions, opt => opt.MapFrom(src => src.QuizQuestions))
-                .ForMember(dest => dest.QuizQuestions, opt => opt.MapFrom(src => src.QuizQuestions));
+            //CreateMap<Quiz, QuizDto>()
+            //    .ForMember(dest => dest.QuizId,
+            //        opt => opt.MapFrom(src => $"{src.Id}"))
+            //    .ForMember(dest => dest.QuizQuestions, opt => opt.MapFrom(src => src.QuizQuestions))
+            //    .ForMember(dest => dest.QuizQuestions, opt => opt.MapFrom(src => src.QuizQuestions));
             //fix to like linjer over
             CreateMap<Track, TrackDto>()
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Id))

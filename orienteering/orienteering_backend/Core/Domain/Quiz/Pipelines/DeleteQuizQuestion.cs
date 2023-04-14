@@ -10,7 +10,7 @@ namespace orienteering_backend.Core.Domain.Quiz.Pipelines;
 public static class DeleteQuizQuestion
 {
     public record Request(
-        Guid quizQuestionId, Guid quizId
+        Guid quizQuestionId
         ) : IRequest<bool>;
 
     public class Handler : IRequestHandler<Request, bool>
@@ -32,26 +32,20 @@ public static class DeleteQuizQuestion
             var userId = _identityService.GetCurrentUserId();
             if (userId == null) { throw new AuthenticationException("user not signed in"); }
 
+            
+            var quiz2 = await _db.Quiz.Include(a => a.QuizQuestions).FirstOrDefaultAsync(q => q.QuizQuestions.Any(qq => qq.Id == request.quizQuestionId));
+            //check if there exists a quiz in the database containing a quizquestion with the given Id
+            if (quiz2 == null) { throw new NullReferenceException("the quiz dont exist or not allowed to access"); }
             //check that user is allowed to access this quiz
-            var trackUser = await _mediator.Send(new GetTrackUserByQuiz.Request(request.quizId));
+            var trackUser = await _mediator.Send(new GetTrackUserByQuiz.Request(quiz2.Id));
             if (trackUser.UserId != userId)
             {
                 //the user that owns the track is not the one signed in
                 throw new NullReferenceException("the quiz dont exist or not allowed to access");
             }
+           
 
-            var quiz = await _db.Quiz
-               .Where(q => q.Id == request.quizId)
-               .Include(q => q.QuizQuestions)
-               .FirstOrDefaultAsync(cancellationToken);
-
-
-            if (quiz == null) { throw new NullReferenceException("the quiz dont exist or not allowed to access"); }
-
-            //if quiz is null, the checkpoint did not have quiz
-            //else delete the quiz
-
-            quiz.RemoveQuizQuestion(request.quizQuestionId);
+            quiz2.RemoveQuizQuestion(request.quizQuestionId);
             await _db.SaveChangesAsync(cancellationToken);
 
             return true;

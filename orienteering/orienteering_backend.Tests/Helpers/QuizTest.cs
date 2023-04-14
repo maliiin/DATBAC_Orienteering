@@ -155,7 +155,7 @@ namespace orienteering_backend.Tests.Helpers
                 .FirstOrDefaultAsync();
             var quizQuestionId = quizDb.QuizQuestions[0].Id;
           
-            var request = new DeleteQuizQuestion.Request(quizQuestionId,quizId);
+            var request = new DeleteQuizQuestion.Request(quizQuestionId);
             var handler = new DeleteQuizQuestion.Handler(_db, identityService.Object, mediator.Object);
 
             //act
