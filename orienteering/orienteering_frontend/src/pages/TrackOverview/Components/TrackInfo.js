@@ -23,9 +23,18 @@ export default function TrackInfo(props) {
     const stopEdit = async () => {
         setEditing(false)
 
-        const url = '/api/track/updateTrackTitle?';
-        const parameter = "trackId=" + props.trackInfo.trackId+'&newTitle=' + oldTitle;
-        const response = await fetch(url + parameter, { method: 'PUT' });
+        const url = '/api/track/updateTrackTitle';
+        const response = await fetch(url, {
+            method: "PATCH",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                TrackId: props.trackInfo.trackId,
+                NewTitle: oldTitle
+            })
+        });
         //fiks sjekk respons i error handling
 
         //update list of parent
