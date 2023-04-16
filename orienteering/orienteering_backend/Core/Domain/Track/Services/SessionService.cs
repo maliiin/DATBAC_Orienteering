@@ -9,7 +9,7 @@ using MediatR;
 
 namespace orienteering_backend.Core.Domain.Track.Services;
 
-
+//Fix: Flytte til userdomain?
 public class SessionService : ISessionService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
