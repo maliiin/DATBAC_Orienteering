@@ -42,7 +42,7 @@ export default function QuizPage() {
     }, [quizQuestionIndex, quiz]);
 
     async function checkSession() {
-        const url = "/api/session/setStartCheckpoint?checkpointId=" + params.checkpointId;
+        const url = "/api/session/setStartCheckpoint?CheckpointId=" + params.checkpointId;
         await fetch(url);
     }
 

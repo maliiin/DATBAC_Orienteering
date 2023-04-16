@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace orienteering_backend.Core.Domain.Authentication.Services
+﻿namespace orienteering_backend.Core.Domain.Authentication.Services
 {
 
     public interface IIdentityService

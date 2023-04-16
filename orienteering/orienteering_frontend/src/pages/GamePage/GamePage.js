@@ -22,7 +22,7 @@ export default function GamePage() {
     }, []);
 
     async function checkSession() {
-        const url = "/api/session/setStartCheckpoint?checkpointId=" + params.checkpointId;
+        const url = "/api/session/setStartCheckpoint?CheckpointId=" + params.checkpointId;
         await fetch(url);
     }
 

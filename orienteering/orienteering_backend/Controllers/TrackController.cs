@@ -18,7 +18,6 @@ namespace orienteering_backend.Controllers
         {
             _mediator = Mediator;
         }
-        //bør userGuid sendes inn fra frontend? eller skal backend hente userId fra seg selv fra den som er logget inn?
 
         //greate new track
         //POST
