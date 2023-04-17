@@ -15,8 +15,8 @@ export default function NavigationEditPage() {
         const response = await fetch("/api/navigation/GetNavigation?checkpointId=" + params.checkpointId);
         //401 => not signed in
         if (response.status == 401) { navigate("/login"); }
-        //404 => dont exist or not your checkpoint
-        if (response.status == 404) { navigate("/errorpage") }
+        //other errors
+        if (!response.ok) { navigate("/errorpage") }
 
         const Navigation = await response.json();
 
