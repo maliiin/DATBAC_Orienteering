@@ -31,10 +31,7 @@ namespace orienteering_backend.Controllers
         public async Task<ActionResult<UserRegistration>> CreateUser(UserRegistration user)
         {
             //fix-hva gjør modelstate? bør dette være flere steder??
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
             var createduser = await _identityService.CreateUser(user);
             if (createduser == null) { return BadRequest("problem creating the user"); }

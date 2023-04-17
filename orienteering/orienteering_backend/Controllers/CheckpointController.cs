@@ -90,7 +90,7 @@ namespace orienteering_backend.Controllers
                 bool removed = await _mediator.Send(new DeleteCheckpoint.Request(CheckpointId));
                 return Ok();
             }
-            catch (AuthenticationException ex)
+            catch (AuthenticationException)
             {
                 //not signed in
                 return Unauthorized();
@@ -102,18 +102,17 @@ namespace orienteering_backend.Controllers
             }
         }
 
-        //fix-skal dette være put eller patch???
-        [HttpPut("editCheckpointTitle")]
-        public async Task<IActionResult> UpdateCheckpointTitle(string checkpointTitle, string checkpointId)
+
+        [HttpPatch("editCheckpointTitle")]
+        public async Task<IActionResult> UpdateCheckpointTitle(UpdateCheckpointTitleDto checkpointInfo)
         {
-            Guid CheckpointId = new Guid(checkpointId);
 
             try
             {
-                var changed = await _mediator.Send(new UpdateCheckpointTitle.Request(checkpointTitle, CheckpointId));
+                var changed = await _mediator.Send(new UpdateCheckpointTitle.Request(checkpointInfo.Title, checkpointInfo.CheckpointId));
                 return Ok();
             }
-            catch (AuthenticationException ex)
+            catch (AuthenticationException)
             {
                 //not signed in
                 return Unauthorized("Not signed in");
