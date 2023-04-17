@@ -9,10 +9,7 @@
 
         public Guid Id { get; private set; }
         public Guid ToCheckpoint { get; set; }
-
-        //private set på denne? så den ikke kan modifiseres
-        public List<NavigationImage> Images { get; set; } = new List<NavigationImage>();
-
+        public List<NavigationImage> Images { get; private set; } = new List<NavigationImage>();
         public int NumImages
         {
             get
