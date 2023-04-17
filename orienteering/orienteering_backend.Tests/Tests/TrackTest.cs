@@ -12,6 +12,8 @@ using System.Security.Authentication;
 using MediatR;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint;
+using Xunit;
+
 
 //fix-mangler kun å teste setStartCheckpoint dersom denne er i bruk!!
 
@@ -365,6 +367,48 @@ namespace orienteering_backend.Tests.Helpers
 
             //ASSERT
             Assert.Equal(JsonConvert.SerializeObject(trackDto),JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public void GivenTrack_WhenAddCheckpoint_ThenNumCheckpointsIncrease()
+        {
+            //arrange
+            var track = new Track();
+
+            //act
+            track.AddedCheckpoint();
+
+            //assert
+            Assert.Equal(1, track.NumCheckpoints);
+        }
+
+        [Fact]
+        public async Task GivenEmptyTrack_WhenRemoveCheckpoint_ThenReturnFalse()
+        {
+            //arrange
+            var track = new Track();
+
+            //act
+            var response= track.RemovedCheckpoint();
+
+            //assert
+            Assert.False(response);
+        }
+
+        [Fact]
+        public async Task GivenTrack_WhenRemoveCheckpoint_ThenReturnTrue()
+        {
+            //arrange
+            var track = new Track();
+            track.AddedCheckpoint();
+            track.AddedCheckpoint();
+
+            //act
+            var response = track.RemovedCheckpoint();
+
+            //assert
+            Assert.True(response);
+            Assert.Equal(1, track.NumCheckpoints);
         }
 
 

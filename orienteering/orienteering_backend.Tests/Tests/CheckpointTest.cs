@@ -13,6 +13,7 @@ using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using System.Security.Authentication;
+using Xunit;
 
 //fix-legg inn lisens her!
 //manglende tester

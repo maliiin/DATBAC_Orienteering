@@ -14,7 +14,9 @@ using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Track.Pipelines;
 using orienteering_backend.Infrastructure.Automapper;
 using orienteering_backend.Infrastructure.Data;
-using static System.Net.Mime.MediaTypeNames;
+using Xunit;
+
+
 
 //fix-generelt på tester-er det best å bruke moq mapper eller _mapper?
 //sjekk at vi er konsekvente

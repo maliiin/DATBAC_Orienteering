@@ -9,6 +9,7 @@
         public Guid Id { get; protected set; }
         public Guid? UserId { get; set; }
         public string? Name { get; set; }
+
         //fix-private set?? skal kun kunne settes internt her
         public int NumCheckpoints { get; set; } = 0;
 
@@ -31,7 +32,6 @@
             return true;
         }
     }
-
 }
 
     

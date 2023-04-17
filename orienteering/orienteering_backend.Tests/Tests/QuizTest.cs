@@ -14,6 +14,7 @@ using orienteering_backend.Core.Domain.Quiz.Pipelines;
 using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint;
+using Xunit;
 
 namespace orienteering_backend.Tests.Helpers
 {
@@ -241,6 +242,73 @@ namespace orienteering_backend.Tests.Helpers
 
             //ASSERT
             Assert.Equal(JsonConvert.SerializeObject(quizDto),JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public void GivenQuiz_WhenAddQuizQuestion_ThenIncreaceQuestions()
+        {
+            //arrange
+            var alternative1 = new Alternative(1, "alternative1");
+            var alternative2 = new Alternative(2, "alternative2");
+            var quizQuestion = new QuizQuestion();
+            quizQuestion.Alternatives.Add(alternative1);
+            quizQuestion.Alternatives.Add(alternative2);
+            var quiz = new Quiz(Guid.NewGuid());
+
+            //act
+            quiz.AddQuizQuestion(quizQuestion);
+
+            //assert
+            Assert.Single(quiz.QuizQuestions);
+        }
+
+        [Fact]
+        public async Task GivenQuiz_WhenRemoveQuizQuestion_ThenRemoveQuestions()
+        {
+            //arrange
+            var _db = new OrienteeringContext(dbContextOptions);
+            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
+
+            var alternative1 = new Alternative(1, "alternative1");
+            var alternative2 = new Alternative(2, "alternative2");
+            var quizQuestion1 = new QuizQuestion();
+            quizQuestion1.Alternatives.Add(alternative1);
+            quizQuestion1.Alternatives.Add(alternative2);
+
+            var alternative3 = new Alternative(1, "alternative1");
+            var alternative4 = new Alternative(2, "alternative2");
+            var quizQuestion2 = new QuizQuestion();
+            quizQuestion2.Alternatives.Add(alternative3);
+            quizQuestion2.Alternatives.Add(alternative4);
+
+            var quiz = new Quiz(Guid.NewGuid());
+            quiz.AddQuizQuestion(quizQuestion1);
+            quiz.AddQuizQuestion(quizQuestion2);
+
+            await _db.Quiz.AddAsync(quiz);
+            await _db.SaveChangesAsync();
+
+
+            //act
+            var result=quiz.RemoveQuizQuestion(quizQuestion1.Id);
+
+            //assert
+            Assert.Single(quiz.QuizQuestions);
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void GivenEmptyQuiz_WhenRemoveQuizQuestion_ThenReturnFalse()
+        {
+            //arrange
+            var quiz = new Quiz(Guid.NewGuid());
+
+            //act
+            var result = quiz.RemoveQuizQuestion(Guid.NewGuid());
+
+            //assert
+            Assert.Empty(quiz.QuizQuestions);
+            Assert.False(result);
         }
     }
 }
