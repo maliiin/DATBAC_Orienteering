@@ -19,15 +19,14 @@ public class SessionController : ControllerBase
     {
         _sessionService = sessionService;
     }
-    // fix: post eller get?
     [HttpPost("setStartCheckpoint")]
-    public void setStartCheckpoint(SessionDto CheckpointInfo)
+    public ActionResult setStartCheckpoint(SessionDto CheckpointInfo)
     {
         _sessionService.SetStartCheckpoint(CheckpointInfo.CheckpointId.ToString());
+        return Ok();
     }
 
     [HttpGet("checkTrackFinished")]
-    //fix-flytt til pipeline kanskje!!
     public async Task<TrackLoggingDto> checkTrackFinished(string CurrentCheckpoint)
     {
         var trackLoggingDto = await _sessionService.CheckTrackFinished(CurrentCheckpoint);
