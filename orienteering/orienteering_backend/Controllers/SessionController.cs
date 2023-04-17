@@ -20,10 +20,10 @@ public class SessionController : ControllerBase
         _sessionService = sessionService;
     }
     // fix: post eller get?
-    [HttpGet("setStartCheckpoint")]
-    public void setStartCheckpoint(string CheckpointId)
+    [HttpPost("setStartCheckpoint")]
+    public void setStartCheckpoint(SessionDto CheckpointInfo)
     {
-        _sessionService.SetStartCheckpoint(CheckpointId);
+        _sessionService.SetStartCheckpoint(CheckpointInfo.CheckpointId.ToString());
     }
 
     [HttpGet("checkTrackFinished")]

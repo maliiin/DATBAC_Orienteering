@@ -42,8 +42,17 @@ export default function QuizPage() {
     }, [quizQuestionIndex, quiz]);
 
     async function checkSession() {
-        const url = "/api/session/setStartCheckpoint?CheckpointId=" + params.checkpointId;
-        await fetch(url);
+        const url = "/api/session/setStartCheckpoint";
+        await fetch(url, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                CheckpointId: params.checkpointId
+            })
+        });
     }
 
     async function getQuiz() {

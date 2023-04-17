@@ -73,11 +73,11 @@ namespace orienteering_backend.Controllers
         }
 
         [HttpPatch("updateTrackTitle")]
-        public async Task<IActionResult> UpdateTrackTitle(UpdateTrackTitleDto updateData)
+        public async Task<IActionResult> UpdateTrackTitle(UpdateTrackTitleDto TrackInfo)
         {
             try
             {
-                await _mediator.Send(new UpdateTrackTitle.Request(updateData.TrackId, updateData.NewTitle));
+                await _mediator.Send(new UpdateTrackTitle.Request(TrackInfo.TrackId, TrackInfo.NewTitle));
                 return Ok();
 
             }
