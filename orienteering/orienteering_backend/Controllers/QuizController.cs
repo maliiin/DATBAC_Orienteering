@@ -25,6 +25,8 @@ namespace orienteering_backend.Controllers
         [HttpGet("getQuiz")]
         public async Task<ActionResult<QuizDto>> GetQuiz(string quizId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             var QuizId = new Guid(quizId);
 
             //try
@@ -42,6 +44,8 @@ namespace orienteering_backend.Controllers
         [HttpGet("getQuizByCheckpoint")]
         public async Task<ActionResult> GetQuizByCheckpoint(string checkpointId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             var CheckpointId = new Guid(checkpointId);
             try
             {
@@ -64,6 +68,8 @@ namespace orienteering_backend.Controllers
         [HttpPost("addQuizQuestion")]
         public async Task<ActionResult> AddQuizQuestion(InputCreateQuestionDto inputQuizQuestions)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             try
             {
                 //fix-sjekk status eller returner error hvis feil
@@ -87,6 +93,8 @@ namespace orienteering_backend.Controllers
         [HttpDelete("deleteQuestion")]
         public async Task<ActionResult> DeleteQuestion(string questionId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             //fix er dette ok navn på event?? det har jo ikke blitt slettet enda
             Guid questionGuid = new Guid(questionId);
 

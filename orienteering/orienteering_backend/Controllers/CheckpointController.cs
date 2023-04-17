@@ -26,6 +26,7 @@ namespace orienteering_backend.Controllers
         [HttpPost("createCheckpoint")]
         public async Task<ActionResult> CreateCheckpoint(CheckpointDto checkpointDto)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
             var userId = _identityService.GetCurrentUserId();
             if (userId == null) { return Unauthorized(); }
 
@@ -46,6 +47,7 @@ namespace orienteering_backend.Controllers
         [HttpGet("getCheckpoints")]
         public async Task<ActionResult<List<CheckpointDto>>> GetCheckpointsOfTrack(string trackId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
             //check that signed in
             var userId = _identityService.GetCurrentUserId();
             if (userId == null) { return Unauthorized(); }
@@ -67,6 +69,7 @@ namespace orienteering_backend.Controllers
         [HttpGet("getCheckpoint")]
         public async Task<ActionResult<CheckpointDto>> GetSingleCheckpoint(string checkpointId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
             Guid CheckpointId = new Guid(checkpointId);
 
             try
@@ -90,6 +93,7 @@ namespace orienteering_backend.Controllers
         [HttpDelete("removeCheckpoint")]
         public async Task<IActionResult> DeleteCheckpoint(string checkpointId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
             Guid CheckpointId = new Guid(checkpointId);
 
             try
@@ -113,6 +117,7 @@ namespace orienteering_backend.Controllers
         [HttpPatch("editCheckpointTitle")]
         public async Task<IActionResult> UpdateCheckpointTitle(UpdateCheckpointTitleDto checkpointInfo)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
             try
             {

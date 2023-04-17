@@ -25,6 +25,8 @@ namespace orienteering_backend.Controllers
         [HttpPost("createTrack")]
         public async Task<ActionResult> CreateTrack(CreateTrackDto trackDto)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             try
             {
                 var newTrackId = await _mediator.Send(new CreateTrack.Request(trackDto));
@@ -42,6 +44,8 @@ namespace orienteering_backend.Controllers
         [HttpGet("getTracks")]
         public async Task<ActionResult<List<TrackDto>>> GetTracksForUser()
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             try
             {
                 var tracks = await _mediator.Send(new GetTracks.Request());
@@ -58,6 +62,8 @@ namespace orienteering_backend.Controllers
         [HttpGet("getTrack")]
         public async Task<ActionResult<TrackDto>> GetSingleTrack(string trackId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             try
             {
                 Guid trackGuid = new Guid(trackId);
@@ -75,6 +81,8 @@ namespace orienteering_backend.Controllers
         [HttpPatch("updateTrackTitle")]
         public async Task<IActionResult> UpdateTrackTitle(UpdateTrackTitleDto TrackInfo)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             try
             {
                 await _mediator.Send(new UpdateTrackTitle.Request(TrackInfo.TrackId, TrackInfo.NewTitle));
@@ -96,6 +104,8 @@ namespace orienteering_backend.Controllers
         [HttpDelete("deleteTrack")]
         public async Task<IActionResult> DeleteTrack(string trackId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             Guid trackGuid = new Guid(trackId);
             try
             {

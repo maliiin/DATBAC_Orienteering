@@ -21,6 +21,8 @@ public class QRCodeController : ControllerBase
     [HttpGet("getqrcodes")]
     public async Task<ActionResult<List<CheckpointNameAndQRCodeDto>>> GetQRCodes(string TrackId)
     {
+        if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
         var track = new Guid(TrackId);
 
         try

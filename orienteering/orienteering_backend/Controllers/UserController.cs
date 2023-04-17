@@ -20,9 +20,12 @@ namespace orienteering_backend.Controllers
         //fix: bør dette være post heller? sender ikke inn noe data, og post gir 404
         [HttpGet]
         [Route("signOut")]
-        public async Task SignOut()
+        public async Task<ActionResult> SignOut()
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             await _identityService.SignOutUser();
+            return Ok();
         }
 
 
@@ -30,6 +33,8 @@ namespace orienteering_backend.Controllers
         [HttpPost("createuser")]
         public async Task<ActionResult<UserRegistration>> CreateUser(UserRegistration user)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             //fix-hva gjør modelstate? bør dette være flere steder??
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
@@ -43,6 +48,7 @@ namespace orienteering_backend.Controllers
         [HttpPost("signinuser")]
         public async Task<ActionResult<UserSignIn>> SignInUser(UserSignIn user)
         {
+
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
             var userSignedIn = await _identityService.SignInUser(user);
@@ -57,6 +63,8 @@ namespace orienteering_backend.Controllers
         [Route("GetSignedInUserId")]
         public ActionResult<object> GetSignedInUserId()
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             var id = HttpContext.User.Claims.FirstOrDefault();
 
             if (id is null)

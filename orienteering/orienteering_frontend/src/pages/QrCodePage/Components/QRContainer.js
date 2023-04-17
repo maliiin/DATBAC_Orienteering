@@ -7,7 +7,9 @@ export default function QRContainer(props) {
             <Grid item>
                 <h2
                     style={{
-                        'margin-left': '30px'
+                        'margin-left': '30px',
+                        'wordWrap': 'break-word',
+                        'width': '300px'
                     }}>
                     {props.title}
                 </h2>
