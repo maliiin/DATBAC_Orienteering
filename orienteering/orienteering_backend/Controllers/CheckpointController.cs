@@ -111,12 +111,12 @@ namespace orienteering_backend.Controllers
 
 
         [HttpPatch("editCheckpointTitle")]
-        public async Task<IActionResult> UpdateCheckpointTitle(UpdateCheckpointTitleDto updateData)
+        public async Task<IActionResult> UpdateCheckpointTitle(UpdateCheckpointTitleDto checkpointInfo)
         {
 
             try
             {
-                var changed = await _mediator.Send(new UpdateCheckpointTitle.Request(updateData.Title, updateData.CheckpointId));
+                var changed = await _mediator.Send(new UpdateCheckpointTitle.Request(checkpointInfo.Title, checkpointInfo.CheckpointId));
                 return Ok();
             }
             catch (AuthenticationException)

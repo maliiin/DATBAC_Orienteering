@@ -22,8 +22,17 @@ export default function GamePage() {
     }, []);
 
     async function checkSession() {
-        const url = "/api/session/setStartCheckpoint?checkpointId=" + params.checkpointId;
-        await fetch(url);
+        const url = "/api/session/setStartCheckpoint";
+        await fetch(url, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                CheckpointId: params.checkpointId
+            })
+        });
     }
 
     async function setGame() {

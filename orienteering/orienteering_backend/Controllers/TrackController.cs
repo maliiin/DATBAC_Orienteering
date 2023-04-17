@@ -18,7 +18,6 @@ namespace orienteering_backend.Controllers
         {
             _mediator = Mediator;
         }
-        //bør userGuid sendes inn fra frontend? eller skal backend hente userId fra seg selv fra den som er logget inn?
 
         //greate new track
         //POST
@@ -74,11 +73,11 @@ namespace orienteering_backend.Controllers
         }
 
         [HttpPatch("updateTrackTitle")]
-        public async Task<IActionResult> UpdateTrackTitle(UpdateTrackTitleDto updateData)
+        public async Task<IActionResult> UpdateTrackTitle(UpdateTrackTitleDto TrackInfo)
         {
             try
             {
-                await _mediator.Send(new UpdateTrackTitle.Request(updateData.TrackId, updateData.NewTitle));
+                await _mediator.Send(new UpdateTrackTitle.Request(TrackInfo.TrackId, TrackInfo.NewTitle));
                 return Ok();
 
             }

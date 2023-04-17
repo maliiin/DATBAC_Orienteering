@@ -1,5 +1,4 @@
-﻿//fix-skriv lisens om mediatr!!!!
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Track.Dto;

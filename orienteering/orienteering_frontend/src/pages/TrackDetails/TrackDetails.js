@@ -25,8 +25,11 @@ export default function TrackDetails() {
 
         //fix-obs se på-nå navigeres bruker til error både om ikke logget inn og dersom
         //det er en annen brukers ting man ser på
+        if (response.status==401) {
+            navigate("/login");
+        }
         if (!response.ok) {
-            navigate("/errorpage")
+            navigate("/errorpage");
         }
         const data = await response.json();
 

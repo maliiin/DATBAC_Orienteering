@@ -25,7 +25,7 @@ export default function CheckpointNavigation() {
     const currentCheckpointId = params.checkpointId;
 
     const getNavigation = async () => {
-        const sessionInfo = await fetch("/api/session/checkTrackFinished?currentCheckpoint=" + currentCheckpointId).then(res => res.json());
+        const sessionInfo = await fetch("/api/session/checkTrackFinished?CurrentCheckpoint=" + currentCheckpointId).then(res => res.json());
         if (sessionInfo.timeUsed != null) {
             setTrackFinished(true);
             setTotalTime(sessionInfo.timeUsed);
