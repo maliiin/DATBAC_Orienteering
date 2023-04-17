@@ -14,10 +14,7 @@ using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using System.Security.Authentication;
 using Xunit;
-
-//fix-legg inn lisens her!
-//manglende tester
-//getQrCodes
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Tests.Helpers
 {
@@ -59,10 +56,10 @@ namespace orienteering_backend.Tests.Helpers
             track.Name = "trackname";
             await _db.Tracks.AddAsync(track);
 
-            var trackDto=_mapper.Map<TrackDto>(track);
+            var trackDto = _mapper.Map<TrackDto>(track);
 
             Checkpoint expectedCheckpoint = new("test1", 0, track.Id);
-            CheckpointDto checkpointDto = new("test1", track.Id, 0);
+            CheckpointDto checkpointDto = new("test1CreateCheckpoint", track.Id, 0);
 
             var _identityService = new Mock<IIdentityService>();
             _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
@@ -75,22 +72,12 @@ namespace orienteering_backend.Tests.Helpers
 
             //ACT
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-            //var allCheckpoint = await _db.Checkpoints.ToListAsync();
-            //var h = trackDto.TrackId;
-            //var createdCheckpoint=await _db.Checkpoints.Where(c => c.TrackId == trackDto.TrackId).FirstOrDefaultAsync();
-            //createdCheckpoint.Id = new Guid();
+            var createdCheckpoint = await _db.Checkpoints.Where(c => c.Title == checkpointDto.Title).FirstOrDefaultAsync();
 
             //ASSERT
             Assert.IsType<Guid>(response);
-
-            //Assert.Equal(JsonConvert.SerializeObject(expectedCheckpoint), JsonConvert.SerializeObject(createdCheckpoint));
-
-
-            //fix denne testen. created checkpoint inneholder quiz id og sånn som ikke finnes ellers.
-            //så vanskelig å sammenligne objektene direkte.
-
-
-
+            Assert.NotNull(createdCheckpoint);
+            Assert.Equal(expectedCheckpoint.TrackId, createdCheckpoint.TrackId);
         }
 
         [Fact]
@@ -108,9 +95,6 @@ namespace orienteering_backend.Tests.Helpers
             track.UserId = userId;
             await _db.Tracks.AddAsync(track);
             await _db.SaveChangesAsync();
-
-            //var Track = await _db.Tracks.FirstOrDefaultAsync();
-            //var trackId = Track.Id;
 
             //create checkpoint
             var checkpoint = new Checkpoint("title", 1, track.Id);
@@ -139,12 +123,11 @@ namespace orienteering_backend.Tests.Helpers
             //ASSERT
             Assert.True(response);
             Assert.Null(isDeleted);
-
         }
 
 
         [Fact]
-        public  void GivenNoUser_WhenDeleteCheckpoint_ThenException()
+        public void GivenNoUser_WhenDeleteCheckpoint_ThenException()
         {
             //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions);
@@ -161,9 +144,8 @@ namespace orienteering_backend.Tests.Helpers
             var request = new DeleteCheckpoint.Request(checkpointId);
             var handler = new DeleteCheckpoint.Handler(_db, _identityService.Object, _mediator.Object);
 
-            //ACT and assert
+            //ACT and ASSERT
             Assert.Throws<AuthenticationException>(() => handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult());
-
         }
 
         [Fact]
@@ -211,9 +193,7 @@ namespace orienteering_backend.Tests.Helpers
             //ASSERT
             Assert.Equal(JsonConvert.SerializeObject(response[0]), JsonConvert.SerializeObject(checkpoint1Dto));
             Assert.Equal(JsonConvert.SerializeObject(response[1]), JsonConvert.SerializeObject(checkpoint2Dto));
-
         }
-
 
         [Fact]
         public async Task GivenLastCheckpoint_WhenGetNextCheckpoint_ThenSuccess()
@@ -262,9 +242,7 @@ namespace orienteering_backend.Tests.Helpers
 
             //ASSERT
             Assert.Equal(checkpoint1.Id, response);
-
         }
-
 
         [Fact]
         public async Task GivenMiddleCheckpoint_WhenGetNextCheckpoint_ThenSuccess()
@@ -312,7 +290,6 @@ namespace orienteering_backend.Tests.Helpers
 
             //ASSERT
             Assert.Equal(checkpoint3.Id, response);
-
         }
 
         [Fact]
@@ -339,7 +316,6 @@ namespace orienteering_backend.Tests.Helpers
 
             //ASSERT
             Assert.Equal(quizId, response);
-
         }
 
         [Fact]
@@ -368,10 +344,9 @@ namespace orienteering_backend.Tests.Helpers
             TrackUserIdDto trackDto = _mapper.Map<TrackUserIdDto>(track);
             CheckpointDto checkpointDto = _mapper.Map<CheckpointDto>(checkpoint);
 
-
+            //mock
             var _identityService = new Mock<IIdentityService>();
             _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
-
 
             var _mediator = new Mock<IMediator>();
             _mediator.Setup(m => m.Send(It.IsAny<GetTrackUser.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
@@ -393,7 +368,6 @@ namespace orienteering_backend.Tests.Helpers
             //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
-
 
             var trackId = Guid.NewGuid();
             var quizId = Guid.NewGuid();
@@ -442,9 +416,9 @@ namespace orienteering_backend.Tests.Helpers
             var expectedCheckpoint = checkpoint;
             expectedCheckpoint.Title = newTitle;
 
+            //mock
             var _identityService = new Mock<IIdentityService>();
             _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
-
 
             var _mediator = new Mock<IMediator>();
             _mediator.Setup(m => m.Send(It.IsAny<GetTrackUser.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
@@ -458,6 +432,5 @@ namespace orienteering_backend.Tests.Helpers
             //ASSERT
             Assert.Equal(JsonConvert.SerializeObject(expectedCheckpoint), JsonConvert.SerializeObject(response));
         }
-       
     }
 }

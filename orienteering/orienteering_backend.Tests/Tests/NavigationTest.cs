@@ -15,11 +15,9 @@ using orienteering_backend.Core.Domain.Track.Pipelines;
 using orienteering_backend.Infrastructure.Automapper;
 using orienteering_backend.Infrastructure.Data;
 using Xunit;
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 
-
-//fix-generelt på tester-er det best å bruke moq mapper eller _mapper?
-//sjekk at vi er konsekvente
 namespace orienteering_backend.Tests.Helpers
 {
     public class NavigationTest
@@ -46,9 +44,6 @@ namespace orienteering_backend.Tests.Helpers
             }
         }
 
-
-
-        //mal
         [Fact]
         public async Task GivenCorrectUser_WhenUpdateNavigationText_ThenUpdateText()
         {
@@ -56,7 +51,7 @@ namespace orienteering_backend.Tests.Helpers
             var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
-            var userId=Guid.NewGuid();
+            var userId = Guid.NewGuid();
             var newDescription = "new text";
 
             //create track
@@ -75,7 +70,6 @@ namespace orienteering_backend.Tests.Helpers
 
             var checkpointDto = _mapper.Map<CheckpointDto>(checkpoint);
 
-
             //create navigation
             var navigationImage = new NavigationImage("fakePath/fakeFile.jpg", 1, "go to the left");
             var navigation = new Navigation(checkpoint.Id);
@@ -91,24 +85,18 @@ namespace orienteering_backend.Tests.Helpers
             _mediator.Setup(m => m.Send(It.IsAny<GetSingleCheckpoint.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(checkpointDto);
             _mediator.Setup(m => m.Send(It.IsAny<GetTrackUser.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackUserDto);
 
-
-
             var request = new UpdateNavigationText.Request(navigation.Id, newDescription, navigationImage.Id);
             var handler = new UpdateNavigationText.Handler(_db, _identityService.Object, _mediator.Object);
 
             //ACT
-
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-            var navigationDb=await _db.Navigation.Where(n=>n.Id== navigation.Id).Include(n=>n.Images).FirstOrDefaultAsync();
-            
+            var navigationDb = await _db.Navigation.Where(n => n.Id == navigation.Id).Include(n => n.Images).FirstOrDefaultAsync();
+
             navigation.Images[0].TextDescription = newDescription;
 
-            //fix denne testen, sjekk at db nav er ok i forhold til forventet nav
-            //tror test ok
             //ASSERT
-            Assert.Equal(JsonConvert.SerializeObject(navigation),JsonConvert.SerializeObject(navigationDb));
+            Assert.Equal(JsonConvert.SerializeObject(navigation), JsonConvert.SerializeObject(navigationDb));
             Assert.Equal(JsonConvert.SerializeObject(navigation.Images[0]), JsonConvert.SerializeObject(navigationDb.Images[0]));
-
         }
 
         [Fact]
@@ -117,6 +105,7 @@ namespace orienteering_backend.Tests.Helpers
             //arrange
             var navigation = new Navigation(Guid.NewGuid());
             var image = new NavigationImage("fakePath.file.png", 1, "fake description");
+
             //act
             navigation.AddNavigationImage(image);
 

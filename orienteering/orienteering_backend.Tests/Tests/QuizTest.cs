@@ -15,6 +15,7 @@ using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint;
 using Xunit;
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Tests.Helpers
 {
@@ -51,7 +52,7 @@ namespace orienteering_backend.Tests.Helpers
 
             var userId = Guid.NewGuid();
             var user = new TrackUserIdDto();
-            user.UserId=userId;
+            user.UserId = userId;
 
             var identityService = new Mock<IIdentityService>();
             identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
@@ -71,7 +72,6 @@ namespace orienteering_backend.Tests.Helpers
             alternativesDto.Add(new AlternativeDto("alternative3", 3));
             var questionDto = new InputCreateQuestionDto("question string?", alternativesDto, 2, quizId.ToString());
 
-
             var request = new AddQuizQuestion.Request(questionDto);
             var handler = new AddQuizQuestion.Handler(_db, identityService.Object, mediator.Object);
 
@@ -82,10 +82,6 @@ namespace orienteering_backend.Tests.Helpers
             Assert.True(response);
             var quizDb = await _db.Quiz.Where(q => q.Id == quizId).FirstOrDefaultAsync();
             Assert.NotNull(quizDb);
-
-            //fix-hvor mye skal sjekkes? skal vi sjekke at det som kommer ut av db stemmer med det som ble puttet inn?
-            var quizQuestion = quizDb.QuizQuestions[0];
-
         }
 
         [Fact]
@@ -112,9 +108,9 @@ namespace orienteering_backend.Tests.Helpers
             quizQuestion.Question = "question?";
             quizQuestion.CorrectAlternative = 2;
             var alternatives = new List<Alternative>();
-            alternatives.Add(new Alternative(1,"alternative1"));
-            alternatives.Add(new Alternative(2,"alternative2"));
-            alternatives.Add(new Alternative(3,"alternative3"));
+            alternatives.Add(new Alternative(1, "alternative1"));
+            alternatives.Add(new Alternative(2, "alternative2"));
+            alternatives.Add(new Alternative(3, "alternative3"));
             quizQuestion.Alternatives = alternatives;
             quiz.AddQuizQuestion(quizQuestion);
             //add quiz to db
@@ -123,10 +119,10 @@ namespace orienteering_backend.Tests.Helpers
 
             var quizDb = await _db.Quiz
                 .Where(q => q.Id == quizId)
-                .Include(q=>q.QuizQuestions)
+                .Include(q => q.QuizQuestions)
                 .FirstOrDefaultAsync();
             var quizQuestionId = quizDb.QuizQuestions[0].Id;
-          
+
             var request = new DeleteQuizQuestion.Request(quizQuestionId);
             var handler = new DeleteQuizQuestion.Handler(_db, identityService.Object, mediator.Object);
 
@@ -137,10 +133,8 @@ namespace orienteering_backend.Tests.Helpers
             Assert.True(response);
             //var quizDb = await _db.Quiz.Where(q => q.Id == quizId).FirstOrDefaultAsync();
             Assert.NotNull(quizDb);
-            Assert.Empty( quizDb.QuizQuestions);
-           
+            Assert.Empty(quizDb.QuizQuestions);
         }
-
 
         [Fact]
         public async Task Given_WhenAskForQuiz_ThenReturnQuiz()
@@ -148,7 +142,7 @@ namespace orienteering_backend.Tests.Helpers
             //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
-            
+
             //create quiz and add to db
             var quizId = Guid.NewGuid();
             var quiz = new Quiz(quizId);
@@ -177,10 +171,8 @@ namespace orienteering_backend.Tests.Helpers
             var request = new GetQuiz.Request(quizId);
             var handler = new GetQuiz.Handler(_db, _mapper);
 
-            //act
+            //ACT
             var returnedQuizDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-
-
 
             //ASSERT
             Assert.Equal(JsonConvert.SerializeObject(quizDto), JsonConvert.SerializeObject(returnedQuizDto));
@@ -226,7 +218,7 @@ namespace orienteering_backend.Tests.Helpers
 
             //create checkpoint
             var checkpoint = new Checkpoint("test10", 0, track.Id);
-            checkpoint.QuizId= quizId;
+            checkpoint.QuizId = quizId;
             await _db.Checkpoints.AddAsync(checkpoint);
             track.AddedCheckpoint();
             await _db.SaveChangesAsync();
@@ -241,7 +233,7 @@ namespace orienteering_backend.Tests.Helpers
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
             //ASSERT
-            Assert.Equal(JsonConvert.SerializeObject(quizDto),JsonConvert.SerializeObject(response));
+            Assert.Equal(JsonConvert.SerializeObject(quizDto), JsonConvert.SerializeObject(response));
         }
 
         [Fact]
@@ -288,9 +280,8 @@ namespace orienteering_backend.Tests.Helpers
             await _db.Quiz.AddAsync(quiz);
             await _db.SaveChangesAsync();
 
-
             //act
-            var result=quiz.RemoveQuizQuestion(quizQuestion1.Id);
+            var result = quiz.RemoveQuizQuestion(quizQuestion1.Id);
 
             //assert
             Assert.Single(quiz.QuizQuestions);

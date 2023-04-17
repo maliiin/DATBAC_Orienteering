@@ -13,9 +13,8 @@ using MediatR;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint;
 using Xunit;
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
-
-//fix-mangler kun å teste setStartCheckpoint dersom denne er i bruk!!
 
 namespace orienteering_backend.Tests.Helpers
 {
@@ -45,7 +44,7 @@ namespace orienteering_backend.Tests.Helpers
         }
 
         [Fact]
-        public async Task TestGetTrackUser()
+        public async Task GivenTrackAndUser_WhenGetTrackUser_ThenReturnDto()
         {
             //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions);
@@ -97,7 +96,6 @@ namespace orienteering_backend.Tests.Helpers
 
             //ASSERT
             Assert.IsType<Guid>(result);
-
         }
 
         [Fact]
@@ -187,7 +185,6 @@ namespace orienteering_backend.Tests.Helpers
         [Fact]
         public async Task GivenCorrectUser_WhenGetTracks_ThenReturnTracks()
         {
-            //test GetTracks
             //ARRANGE
             var userId = Guid.NewGuid();
 
@@ -217,57 +214,11 @@ namespace orienteering_backend.Tests.Helpers
             var handler = new GetTracks.Handler(_db, _mapper, identityService.Object);
 
             //ACT
-
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-
 
             //ASSERT
             Assert.Equal(JsonConvert.SerializeObject(expectedList), JsonConvert.SerializeObject(response));
         }
-
-        //[Fact]
-        //public async Task Given_When_Then1()
-        //{
-        //    //fix test  gettrackuserbyquiz
-        //    //ARRANGE
-        //    var _db = new OrienteeringContext(dbContextOptions);
-        //    if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
-
-
-        //    var identityService = new Mock<IIdentityService>();
-        //    //identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
-
-        //    //var request = new DeleteTrack.Request(track.Id);
-        //    //var handler = new DeleteTrack.Handler(_db, identityService.Object, mediator.Object);
-
-        //    //ACT
-
-        //    //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-
-
-        //    //ASSERT
-        //}
-
-
-        //[Fact]
-        //public async Task Given_When_Then2()
-        //{
-        //    //test check start checkpoint
-        //    //ARRANGE
-
-        //    var identityService = new Mock<IIdentityService>();
-        //    //identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
-
-        //    //var request = new DeleteTrack.Request(track.Id);
-        //    //var handler = new DeleteTrack.Handler(_db, identityService.Object, mediator.Object);
-
-        //    //ACT
-
-        //    //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-
-
-        //    //ASSERT
-        //}
 
         [Fact]
         public async Task GivenCorrectUser_WhenUpdateTrackTitle_ThenUpdate()
@@ -296,7 +247,6 @@ namespace orienteering_backend.Tests.Helpers
             var handler = new UpdateTrackTitle.Handler(_db, identityService.Object);
 
             //ACT
-
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
             var changedTrack = await _db.Tracks.Where(t => t.UserId == track.UserId).FirstOrDefaultAsync();
 
@@ -331,42 +281,38 @@ namespace orienteering_backend.Tests.Helpers
             Assert.Equal(JsonConvert.SerializeObject(trackDto), JsonConvert.SerializeObject(response));
         }
 
-        //fix navn-de som  bare starter på given_
         [Fact]
-        public async Task Given_WhenTrackUserByQuiz_ThenSuccess()
+        public async Task GivenTrack_WhenGetTrackUserByQuiz_ThenSuccess()
         {
             //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             //create track
-            var userId= Guid.NewGuid();
+            var userId = Guid.NewGuid();
             var track = new Track();
             track.UserId = userId;
             track.Name = "Test";
             await _db.Tracks.AddAsync(track);
             await _db.SaveChangesAsync();
 
-            var trackDto=_mapper.Map<TrackUserIdDto>(track);
+            var trackDto = _mapper.Map<TrackUserIdDto>(track);
 
             //create checkpoint
             var checkpoint = new Checkpoint("title", 0, track.Id);
-            checkpoint.QuizId=Guid.NewGuid();
+            checkpoint.QuizId = Guid.NewGuid();
 
             var _mediator = new Mock<IMediator>();
             _mediator.Setup(m => m.Send(It.IsAny<GetTrackIdForQuiz.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(track.Id);
 
-
             var request = new GetTrackUserByQuiz.Request((Guid)checkpoint.QuizId);
-            var handler = new GetTrackUserByQuiz.Handler(_db,_mapper, _mediator.Object);
+            var handler = new GetTrackUserByQuiz.Handler(_db, _mapper, _mediator.Object);
 
             //ACT
-
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
-
             //ASSERT
-            Assert.Equal(JsonConvert.SerializeObject(trackDto),JsonConvert.SerializeObject(response));
+            Assert.Equal(JsonConvert.SerializeObject(trackDto), JsonConvert.SerializeObject(response));
         }
 
         [Fact]
@@ -389,7 +335,7 @@ namespace orienteering_backend.Tests.Helpers
             var track = new Track();
 
             //act
-            var response= track.RemovedCheckpoint();
+            var response = track.RemovedCheckpoint();
 
             //assert
             Assert.False(response);
@@ -410,36 +356,5 @@ namespace orienteering_backend.Tests.Helpers
             Assert.True(response);
             Assert.Equal(1, track.NumCheckpoints);
         }
-
-
-
-        //fix slett denne, dette er mal
-
-        //[Fact]
-        //public async Task Given_When_Then()
-        //{
-        //    //ARRANGE
-        //      var _db = new OrienteeringContext(dbContextOptions);
-        //    if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
-        //    var _identityService = new Mock<IIdentityService>();
-        //    //_identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
-
-        //var _mediator = new Mock<IMediator>();
-        //_mediator.Setup(m => m.Send(It.IsAny<GetTrackUser.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackUserIdDto);
-
-
-        //    //var request = new DeleteTrack.Request(track.Id);
-        //    //var handler = new DeleteTrack.Handler(_db, _identityService.Object, _mediator.Object);
-
-        //    //ACT
-
-        //    //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-
-
-        //    //ASSERT
-        //Assert.Equal(JsonConvert.SerializeObject(trackDto),JsonConvert.SerializeObject(response));
-
-        //}
-
     }
 }
