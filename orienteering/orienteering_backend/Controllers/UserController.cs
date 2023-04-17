@@ -17,7 +17,6 @@ namespace orienteering_backend.Controllers
             _identityService = identityService;
         }
 
-        //fix: bør dette være post heller? sender ikke inn noe data, og post gir 404
         [HttpPost]
         [Route("signOut")]
         public async Task<ActionResult> SignOut()
@@ -29,11 +28,9 @@ namespace orienteering_backend.Controllers
         }
 
 
-        // POST: api/User
         [HttpPost("createuser")]
         public async Task<ActionResult<UserRegistration>> CreateUser(UserRegistration user)
         {
-            if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
@@ -43,7 +40,6 @@ namespace orienteering_backend.Controllers
             return Created("", createduser);
         }
 
-        //POST
         [HttpPost("signinuser")]
         public async Task<ActionResult<UserSignIn>> SignInUser(UserSignIn user)
         {
@@ -51,7 +47,6 @@ namespace orienteering_backend.Controllers
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
             var userSignedIn = await _identityService.SignInUser(user);
-            //fix er dette ok error handling?
             if (userSignedIn == null) { return BadRequest(new string("could not sign in the user")); }
             return Ok("user signed in");
         }

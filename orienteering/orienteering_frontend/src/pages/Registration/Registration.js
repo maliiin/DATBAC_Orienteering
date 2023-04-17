@@ -16,6 +16,20 @@ function Registration() {
         setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
     };
 
+    const addUserToDb = async () => {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(userInfo)
+        };
+
+        const response = await fetch('/api/user/createuser', requestOptions);
+        return response;
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -26,21 +40,6 @@ function Registration() {
             //fix-error om ikke ok
             //krav til passord osv!!
         }
-
-        const addUserToDb = async () => {
-            const requestOptions = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(userInfo)
-            };
-
-            const response = await fetch('/api/user/createuser', requestOptions);
-            return response;
-        }
-
     }
     return (
         <>

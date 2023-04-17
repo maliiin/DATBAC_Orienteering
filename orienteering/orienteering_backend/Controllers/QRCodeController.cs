@@ -17,7 +17,7 @@ public class QRCodeController : ControllerBase
     {
         _mediator = Mediator;
     }
-    
+    // fix flytt til checkpointcontroller og fjern qrcodecontroller
     [HttpGet("getqrcodes")]
     public async Task<ActionResult<List<CheckpointNameAndQRCodeDto>>> GetQRCodes(string TrackId)
     {
