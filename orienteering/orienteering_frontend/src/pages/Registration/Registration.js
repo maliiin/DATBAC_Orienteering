@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 function Registration() {
     const navigate = useNavigate();
+    const [errorMsg, setErrorMsg] = useState("");
+
 
     const [userInfo, setUserInfo] = useState({
         username: "",
@@ -37,8 +39,9 @@ function Registration() {
 
         if (response.ok) {
             navigate("/login");
-            //fix-error om ikke ok
-            //krav til passord osv!!
+        }
+        else {
+            setErrorMsg("Username or email already taken")
         }
     }
     return (
@@ -60,7 +63,7 @@ function Registration() {
                             label="Username"
                             name="username"
                             variant="standard" value={userInfo.username}
-
+                            error={errorMsg == "" ? false : true}
                         />
                         <br></br>
 
@@ -72,8 +75,7 @@ function Registration() {
                             variant="standard" value={userInfo.password}
                             name="password"
                             inputProps={{ minLength: 6 }}
-
-
+                            error={errorMsg == "" ? false : true}
                         />
                         <br></br>
 
@@ -85,16 +87,18 @@ function Registration() {
                             value={userInfo.email}
                             name="email"
                             type="email"
-
+                            error={errorMsg == "" ? false : true}
                         />
                         <br />
                         <br />
+                       
                         <Button variant="contained" type="submit">
                             Create user
                         </Button>
 
                     </form>
                 </Grid>
+                {errorMsg}
             </Grid>
         </>
     );

@@ -80,7 +80,7 @@ function Login() {
 
                         />
                         <br></br>
-                        {errorMsg}
+                        
                         <br></br>
 
                         <Button variant="contained" type="submit">
@@ -89,7 +89,7 @@ function Login() {
 
                     </form>
                 </Grid>
-
+                {errorMsg}
             </Grid>
         </>
     );

@@ -18,7 +18,6 @@ namespace orienteering_backend.Controllers
         {
             _mediator = Mediator;
         }
-        //fix/se på -bør userGuid sendes inn fra frontend? eller skal backend hente userId fra seg selv fra den som er logget inn?
 
 
         //fix-denne bør sikres
@@ -95,12 +94,7 @@ namespace orienteering_backend.Controllers
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
-            //fix er dette ok navn på event?? det har jo ikke blitt slettet enda
             Guid questionGuid = new Guid(questionId);
-
-            ////fix sjekk at det er rett bruker som er logget inn for dette
-            //før event i samme domain-nå pipeline
-            //await _mediator.Publish(new QuizQuestionDeleted(quizGuid, questionGuid));
 
             try
             {

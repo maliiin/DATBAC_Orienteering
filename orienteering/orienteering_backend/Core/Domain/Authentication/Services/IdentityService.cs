@@ -48,6 +48,7 @@ public class IdentityService :IIdentityService
     {
         var testuser = await _userManager.FindByNameAsync(user.UserName);
         //fix eroor handling- sjekk at den over ikke er null
+        // fix: testuser variabelnavn?
         var result = await _signInManager.PasswordSignInAsync(
             testuser,
             user.Password,
