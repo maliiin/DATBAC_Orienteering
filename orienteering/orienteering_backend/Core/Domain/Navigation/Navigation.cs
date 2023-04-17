@@ -6,9 +6,8 @@
         {
             ToCheckpoint = toCheckpoint;
         }
-        public Guid Id { get; private set; }
-        //public Guid FromCheckpoint { get; set; }
 
+        public Guid Id { get; private set; }
         public Guid ToCheckpoint { get; set; }
 
         //private set på denne? så den ikke kan modifiseres
@@ -24,6 +23,7 @@
 
         public void AddNavigationImage(NavigationImage image)
         {
+            //fix-her burde order blitt satt istedenfor at den settes manuelt
             Images.Add(image);
         }
 
@@ -42,8 +42,6 @@
                 }
             }
             return result;
-
-
         }
     }
 }

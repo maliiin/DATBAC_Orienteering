@@ -14,6 +14,7 @@ using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Track.Pipelines;
 using orienteering_backend.Infrastructure.Automapper;
 using orienteering_backend.Infrastructure.Data;
+using static System.Net.Mime.MediaTypeNames;
 
 //fix-generelt på tester-er det best å bruke moq mapper eller _mapper?
 //sjekk at vi er konsekvente
@@ -106,6 +107,41 @@ namespace orienteering_backend.Tests.Helpers
             Assert.Equal(JsonConvert.SerializeObject(navigation),JsonConvert.SerializeObject(navigationDb));
             Assert.Equal(JsonConvert.SerializeObject(navigation.Images[0]), JsonConvert.SerializeObject(navigationDb.Images[0]));
 
+        }
+
+        [Fact]
+        public void GivenNavigation_WhenAddImage_ThenNumImagesIncrease()
+        {
+            //arrange
+            var navigation = new Navigation(Guid.NewGuid());
+            var image = new NavigationImage("fakePath.file.png", 1, "fake description");
+            //act
+            navigation.AddNavigationImage(image);
+
+            //assert
+            Assert.Equal(1, navigation.NumImages);
+        }
+
+        [Fact]
+        public void GivenNavigation_WhenRemoveImage_ThenNumImagesDecrease()
+        {
+            //arrange
+            var navigation = new Navigation(Guid.NewGuid());
+            var image1 = new NavigationImage("fakePath.file.png", 1, "fake description");
+            var image2 = new NavigationImage("fakePath.file.png", 2, "fake description");
+            var image3 = new NavigationImage("fakePath.file.png", 3, "fake description");
+
+            navigation.AddNavigationImage(image1);
+            navigation.AddNavigationImage(image2);
+            navigation.AddNavigationImage(image3);
+
+            //act
+            navigation.RemoveNavigationImage(image2);
+
+            //assert
+            Assert.Equal(2, navigation.NumImages);
+            Assert.Equal(1, image1.Order);
+            Assert.Equal(2, image3.Order);
         }
     }
 }
