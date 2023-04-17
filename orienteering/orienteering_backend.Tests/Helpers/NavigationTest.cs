@@ -14,12 +14,7 @@ using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Track.Pipelines;
 using orienteering_backend.Infrastructure.Automapper;
 using orienteering_backend.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Helpers;
+
 //fix-generelt på tester-er det best å bruke moq mapper eller _mapper?
 //sjekk at vi er konsekvente
 namespace orienteering_backend.Tests.Helpers

@@ -62,12 +62,8 @@ namespace orienteering_backend.Tests.Helpers
             expected.UserId = track.UserId;
             expected.TrackId = trackDb.Id;
 
-            //var mapper = _mapper;
-            var mapper = new Mock<IMapper>();
-            mapper.Setup(x => x.Map<Track, TrackUserIdDto>(track)).Returns(expected);
-
             var request = new GetTrackUser.Request(trackDb.Id);
-            var handler = new GetTrackUser.Handler(_db, mapper.Object);
+            var handler = new GetTrackUser.Handler(_db, _mapper);
 
             //act
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
@@ -91,11 +87,8 @@ namespace orienteering_backend.Tests.Helpers
             var identityService = new Mock<IIdentityService>();
             identityService.Setup(i => i.GetCurrentUserId()).Returns(testUserId);
 
-            var mapper = new Mock<IMapper>();
-            mapper.Setup(x => x.Map<CreateTrackDto, Track>(createTrackDto)).Returns(realTrack);
-
             var request = new CreateTrack.Request(createTrackDto);
-            var handler = new CreateTrack.Handler(db, mapper.Object, identityService.Object);
+            var handler = new CreateTrack.Handler(db, _mapper, identityService.Object);
 
             //ACT
             var result = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
@@ -122,11 +115,8 @@ namespace orienteering_backend.Tests.Helpers
             var identityService = new Mock<IIdentityService>();
             identityService.Setup(i => i.GetCurrentUserId()).Returns<Guid?>(null);
 
-            var mapper = new Mock<IMapper>();
-            mapper.Setup(x => x.Map<CreateTrackDto, Track>(createTrackDto)).Returns(realTrack);
-
             var request = new CreateTrack.Request(createTrackDto);
-            var handler = new CreateTrack.Handler(db, mapper.Object, identityService.Object);
+            var handler = new CreateTrack.Handler(db, _mapper, identityService.Object);
 
             //ACT AND ASSERT
             Assert.Throws<AuthenticationException>(() => handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult());
@@ -146,17 +136,13 @@ namespace orienteering_backend.Tests.Helpers
             await _db.Tracks.AddAsync(track);
             await _db.SaveChangesAsync();
 
-            var expectedTrackDto = new TrackDto();
-            expectedTrackDto.TrackName = "Test";
-
-            var mapper = new Mock<IMapper>();
-            mapper.Setup(x => x.Map<Track, TrackDto>(track)).Returns(expectedTrackDto);
+            var expectedTrackDto = _mapper.Map<TrackDto>(track);
 
             var identityService = new Mock<IIdentityService>();
             identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
 
             var request = new GetSingleTrack.Request(track.Id);
-            var handler = new GetSingleTrack.Handler(_db, mapper.Object, identityService.Object);
+            var handler = new GetSingleTrack.Handler(_db, _mapper, identityService.Object);
 
             //ACT
             var returnedTrackDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
@@ -183,7 +169,6 @@ namespace orienteering_backend.Tests.Helpers
             var identityService = new Mock<IIdentityService>();
             identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
             var mediator = new Mock<IMediator>();
-            //mediator.Setup(m=>m.)
 
             var request = new DeleteTrack.Request(track.Id);
             var handler = new DeleteTrack.Handler(_db, identityService.Object, mediator.Object);
