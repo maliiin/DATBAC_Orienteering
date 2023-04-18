@@ -23,7 +23,6 @@ var positionBasket = {
 
 function setup(basketWidth, basketHeight) {
     //display and hide elements
-    //fix- her kunne klasser istedenfor id blitt brukt kanskje??
     gameCanvas = document.getElementById("gameCanvas");
     gameCanvas.style.display = "block";
     var basket = document.getElementById("basket");
@@ -31,11 +30,9 @@ function setup(basketWidth, basketHeight) {
     var gameInfo = document.getElementById("beforeGameDiv");
     gameInfo.style.display = "none";
 
-
     //get data from react
     BasketWidth = basketWidth;
     BasketHeight = basketHeight
-
 
     //setter "intern" størrelse av canvas
     //gameCanvas.height = window.screen.availHeight;
@@ -92,15 +89,11 @@ function GameStatus() {
         navigationButton.style.display = "block";
         navigationButton.style.top = gameArea.canvas.height * 1 / 4 - 100 + "px";
         navigationButton.style.left = 20 + "px";
-        //navigationButton.style = {top:'5px', left: '20px'}
-
 
         //remove basket
         var basket = document.getElementById("basket");
         basket.style.display = "none";
-
     }
-
 }
 
 //https://www.w3schools.com/graphics/tryit.asp?filename=trygame_default_gravity
@@ -108,26 +101,17 @@ function GameArea(canvas) {
     this.canvas = canvas;
 
     this.start = function () {
-        //fix, flytt noe av koden her til setup
-
         //get context
         this.context = this.canvas.getContext("2d");
 
-
         //dont let screen scroll when dragging
-        //fix, kun body? trengs tror jeg
-        let rootDiv = document.getElementById("root");
-        rootDiv.style.touchAction = "none"
-        let body1 = document.getElementsByTagName("body")[0];
-        body1.style.touchAction = "none"
+        let htmlBody = document.getElementsByTagName("body")[0];
+        htmlBody.style.touchAction = "none"
 
         this.interval = setInterval(updateGameArea, 20);
 
     };
     this.clear = function () {
-        //clear whole canvas
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        //fix, trengs clear hvis vi har fill bg
         //bacground of canvas
         this.context.fillStyle = "green"
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height)
@@ -193,7 +177,6 @@ function FallingObject(x, y, values) {
 function updateGameArea() {
     gameArea.clear();
 
-
     //display score
     gameArea.context.font = "1em Arial";
     gameArea.context.fillStyle = "black";
@@ -222,26 +205,20 @@ function updateGameArea() {
             //dont remove-> draw it
             fallingObjects[i].drawElement();
             //fallingObjects[i].inBasket();
-
         }
     }
-
-
 }
 
 //this function makes basket able to move
 function moveBasket() {
     //kilde https://interactjs.io/docs/draggable/ 09/03.23
     interact('.draggable').draggable({
-
         //gir posisjonen
         listeners: {
             move(event) {
                 positionBasket.x += event.dx
-
                 event.target.style.transform =
                     `translate(${positionBasket.x}px, 0px)`
-
             },
         },
         modifiers: [
@@ -258,10 +235,7 @@ function addFallingBox() {
     let x = Math.floor(Math.random() * maxX);
 
     let value = Data[Math.floor(Math.random() * Data.length)];
-
-    //fix
     let fallingBox = new FallingObject(x, 0, value);
-
     fallingObjects.push(fallingBox);
 }
 

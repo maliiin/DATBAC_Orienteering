@@ -26,19 +26,16 @@ function setup(inpCorrectGates, inpLastBoard = false) {
         document.getElementById("dropzoneLower").style.position = 'absolute';
         document.getElementById("dropzoneLower").style.left = Math.floor((window.screen.width / 100) * 60) + 'px';
         document.getElementById("dropzoneLower").style.top = Math.floor(((document.getElementById("task_background").clientHeight) / 100) * 20) + 'px';
-    //document.getElementById("dropzoneLower").style.top = 20 + 'px';
+        //document.getElementById("dropzoneLower").style.top = 20 + 'px';
         document.getElementById("checkanswer").addEventListener("click", checkAnswer);
         GameInitialized = true;
     }
-    
+
 
 
     correctGates = inpCorrectGates;
     lastBoard = inpLastBoard;
     goToNextBoard = false;
-    
-    
-
 }
 export default setup;
 
@@ -53,16 +50,16 @@ function checkAnswer() {
 
     if (droppedGateUpper == undefined || droppedGateLower == undefined) {
         document.getElementById("statusdiv").textContent = `Some droparea missing a logic gate`;
-        return 
+        return
     }
- 
+
     if (droppedGateUpper.classList.contains(correctGates[0]) == false) {
         boardPassed = false;
     }
     if (droppedGateLower.classList.contains(correctGates[1]) == false) {
         boardPassed = false;
     }
-    
+
     if (boardPassed) {
         document.getElementById("statusdiv").textContent = `Correct gates`;
     }
@@ -71,38 +68,29 @@ function checkAnswer() {
         document.getElementById("statusdiv").textContent = `Wrong gates`;
         document.getElementById("scorediv").textContent = `HP left: ${hp}`;
     }
-    if (boardPassed || hp < 1)
-        {
+    if (boardPassed || hp < 1) {
         goToNextBoard = true;
         score += hp;
         hp = 3;
         document.getElementById("scorediv").textContent = `Score: ${score}`;
 
-        if (lastBoard)
-            {
+        if (lastBoard) {
             document.getElementById("gamecontainer").style.display = "none";
             document.getElementById("descriptionContainer").style.whiteSpace = "pre";
             const newLine = "\r\n";
-            if (boardPassed)
-                {
+            if (boardPassed) {
                 document.getElementById("descriptionContainer").textContent = "Correct gates" + newLine + "Game finished" + newLine + `Total score: ${score}`;
-                }
-            else
-            {
+            }
+            else {
                 document.getElementById("descriptionContainer").textContent = "Wrong gates" + newLine + "Game finished" + newLine + `Total score: ${score}`;
-                
-
-                }
+            }
             document.getElementById("navigationButton").style.display = "block";
             document.getElementById("descriptionContainer").style.display = "block";
-
-            
-            }
-        else
-            {
-            document.getElementById("nextboardbtn").style.display = "inline-block";
-            }
         }
+        else {
+            document.getElementById("nextboardbtn").style.display = "inline-block";
+        }
+    }
 }
 
 
@@ -164,7 +152,7 @@ function initDropzones() {
             event.target.classList.remove('drop-active')
             event.target.classList.remove('drop-target')
         }
-        
+
     })
 
     interact('.dropzoneUpper').dropzone({

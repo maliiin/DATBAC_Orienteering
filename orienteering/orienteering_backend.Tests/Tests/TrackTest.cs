@@ -13,6 +13,7 @@ using MediatR;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint;
 using Xunit;
+// Lisens Xunit: https://github.com/xunit/xunit/blob/main/LICENSE
 // Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 
@@ -78,15 +79,15 @@ namespace orienteering_backend.Tests.Helpers
             var db = new OrienteeringContext(dbContextOptions);
             if (!db.Database.IsInMemory()) { db.Database.Migrate(); }
 
-            var testUserId = Guid.NewGuid();
+            var userId = Guid.NewGuid();
             var createTrackDto = new CreateTrackDto("trackName");
 
             var realTrack = new Track();
             realTrack.Name = "trackName";
-            realTrack.UserId = testUserId;
+            realTrack.UserId = userId;
 
             var identityService = new Mock<IIdentityService>();
-            identityService.Setup(i => i.GetCurrentUserId()).Returns(testUserId);
+            identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
 
             var request = new CreateTrack.Request(createTrackDto);
             var handler = new CreateTrack.Handler(db, _mapper, identityService.Object);

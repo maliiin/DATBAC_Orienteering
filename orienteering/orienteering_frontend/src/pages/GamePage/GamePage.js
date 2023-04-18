@@ -1,20 +1,15 @@
 import FallingBoxesGame from "./Components/FallingBoxesGame";
 import ChemistryGame from "./Components/ChemistryGame";
-import { TextField, Button, Grid } from '@mui/material';
+import { Button } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import LogicGatesGame from "./Components/LogicGatesGame";
 
 
 export default function GamePage() {
-
-    // Fix/fiks: Fikse canvasheight og width variablene 
-    const canvasHeight = 200;
-    const canvasWidth = 200;
     const navigate = useNavigate();
     const params = useParams();
     const [chosenGame, setChosenGame] = useState("");
-
 
     useEffect(() => {
         checkSession();
@@ -36,28 +31,26 @@ export default function GamePage() {
     }
 
     async function setGame() {
-        const url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
+        const url = "/api/checkpoint/getGameidForCheckpoint?checkpointId=" + params.checkpointId;
         const response = await fetch(url);
         if (!response.ok) {
             navigate("/errorpage");
         }
-        const checkpointDto = await response.json();
-        if (checkpointDto.gameId == 1) {
+        const gameId = await response.json();
+        if (gameId == 1) {
             setChosenGame(<FallingBoxesGame></FallingBoxesGame>);
         }
-        else if (checkpointDto.gameId == 2) {
+        else if (gameId == 2) {
             setChosenGame(<ChemistryGame></ChemistryGame>);
         }
         else {
             setChosenGame(<LogicGatesGame></LogicGatesGame>);
         }
-        
     }
 
     function navigateToCheckpoint() {
         navigate("/checkpointnavigation/" + params.checkpointId);
     }
-
     
     return (
         <>
@@ -69,18 +62,12 @@ export default function GamePage() {
                     fontSize: 5 + "vw",
                     display: "none",
                     position: "absolute",
-                    //top: canvasHeight * 2 / 3 + "px",
-                    //left: canvasWidth / 2 - 100 + "px",
                     backgroundColor: "white",
-
                 }}
                 onClick={navigateToCheckpoint}
             >
                 Navigate to next checkpoint
             </Button>
-            
-
-
         </>
     );
 }

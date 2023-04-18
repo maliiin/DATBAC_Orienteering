@@ -34,7 +34,6 @@ namespace orienteering_backend.Controllers
             {
                 return NotFound();
             }
-
         }
 
 
@@ -142,6 +141,23 @@ namespace orienteering_backend.Controllers
                 return Unauthorized();
             }
             catch (ArgumentNullException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("getGameidForCheckpoint")]
+        public async Task<ActionResult<int>> getGameidForCheckpoint(string checkpointId)
+        {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            var checkpointGuid=new Guid(checkpointId);
+
+            try
+            {
+                var gameId = await _mediator.Send(new GetGameIdOfCheckpoint.Request(checkpointGuid));
+                return Ok(gameId);
+            }
+            catch
             {
                 return NotFound();
             }

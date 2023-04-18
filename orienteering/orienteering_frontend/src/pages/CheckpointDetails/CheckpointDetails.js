@@ -24,7 +24,6 @@ export default function CheckpointDetails() {
         //404 => dont exist or not your checkpoint
         if (response.status == 404) { navigate("/errorpage") }
 
-
         const checkpoint = await response.json();
 
         if (checkpoint.gameId == 0) {
@@ -32,9 +31,7 @@ export default function CheckpointDetails() {
             //this checkpoint has quiz
             setHasQuiz(true);
             setQuizId(checkpoint.quizId);
-
         } else {
-
             setGameType(games[checkpoint.gameId]);
         }
     }

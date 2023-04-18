@@ -44,10 +44,8 @@ export default function CheckpointNavigation() {
                     key={index + "-" + imageInfo.Order}>
                 </DisplayImagesUser>
             </>
-
         ));
     }
-    //fix-naviger til errorside hvis ikke?
 
     useEffect(() => {
         getNavigation();

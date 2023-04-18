@@ -21,6 +21,8 @@ public class CheckpointDeletedHandler : INotificationHandler<CheckpointDeleted>
     {
         var quiz = await _db.Quiz
             .Where(q => q.Id == notification.QuizId)
+            .Include(q=>q.QuizQuestions)
+            .ThenInclude(qq=>qq.Alternatives)
             .FirstOrDefaultAsync(cancellationToken);
 
 

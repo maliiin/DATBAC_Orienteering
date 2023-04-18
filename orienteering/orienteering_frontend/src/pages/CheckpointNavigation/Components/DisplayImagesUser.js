@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function DisplayImagesUser(props) {
-    //fix- nå kan bildet skaleres rart om det er for høyt
     return (
         <>
             <img

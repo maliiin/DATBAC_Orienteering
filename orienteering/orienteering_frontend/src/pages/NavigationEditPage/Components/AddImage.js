@@ -7,6 +7,7 @@ export default function AddImage(props) {
     });
     const imageRef = useRef(null);
     const [textDescription, setTextDescription] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -22,7 +23,10 @@ export default function AddImage(props) {
         };
 
         var response = await fetch('/api/navigation/AddImage', requestAlternatives);
-        //fix-vet ikke om errorhandling trengs her?
+        if (response.ok) { setErrorMessage(""); }
+        else {
+            setErrorMessage("Then image could not be uploaded. If you use a mobile device, try to upload from the photo gallery and try to downscale the image.");
+        }
 
         //update parent
         props.updateImages();
@@ -74,7 +78,8 @@ export default function AddImage(props) {
                 <Button type="submit">
                     Add Image
                 </Button>
-                <p>If the image won't be uploaded, try to downscale the image</p>
+                <p style={{ color:"red" }}>{errorMessage}</p>
+                <p></p>
             </Box>
         </>);
 }

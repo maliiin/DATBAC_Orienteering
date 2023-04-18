@@ -9,7 +9,9 @@ export default function DisplayQuiz(props) {
 
     const fetchQuiz = async () => {
         const response = await fetch("/api/quiz/getQuiz?quizId=" + props.quizId);
-        //fix dobbelsjekk-denne er ikke sikret siden taquiz bruker denne også
+        if (response.status == 401) {
+            navigate("/login")
+        }
         if (!response.ok) {
             navigate("/errorpage");
         }
