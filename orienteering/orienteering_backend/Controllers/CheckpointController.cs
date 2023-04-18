@@ -27,13 +27,11 @@ namespace orienteering_backend.Controllers
         public async Task<ActionResult> CreateCheckpoint(CheckpointDto checkpointDto)
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
-            var userId = _identityService.GetCurrentUserId();
-            if (userId == null) { return Unauthorized(); }
 
             //fiks objekt her i parameter (tror ok?)
             try
             {
-                var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(checkpointDto, (Guid)userId));
+                var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(checkpointDto));
                 return Ok(newCheckPointId);
             }
             catch
@@ -49,13 +47,11 @@ namespace orienteering_backend.Controllers
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
             //check that signed in
-            var userId = _identityService.GetCurrentUserId();
-            if (userId == null) { return Unauthorized(); }
 
             try
             {
                 Guid trackGuid = new Guid(trackId);
-                var checkpoints = await _mediator.Send(new GetCheckpointsForTrack.Request(trackGuid, (Guid)userId));
+                var checkpoints = await _mediator.Send(new GetCheckpointsForTrack.Request(trackGuid));
                 return Ok(checkpoints);
             }
             catch

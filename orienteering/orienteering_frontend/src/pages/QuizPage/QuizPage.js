@@ -42,17 +42,8 @@ export default function QuizPage() {
     }, [quizQuestionIndex, quiz]);
 
     async function checkSession() {
-        const url = "/api/session/setStartCheckpoint";
-        await fetch(url, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                CheckpointId: params.checkpointId
-            })
-        });
+        const url = "/api/session/setStartCheckpoint?checkpointId=" + params.checkpointId;
+        await fetch(url);
     }
 
     async function getQuiz() {
@@ -160,7 +151,6 @@ export default function QuizPage() {
                         value={guess}
                         aria-labelledby="radio-buttons-group"
                         name="radio-buttons-group"
-                        label="hei"
                         onChange={(e) => changeGuess(e)}
                     >
                         {radios}

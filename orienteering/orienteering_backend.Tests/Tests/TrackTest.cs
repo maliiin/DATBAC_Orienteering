@@ -10,10 +10,11 @@ using orienteering_backend.Infrastructure.Automapper;
 using orienteering_backend.Core.Domain.Authentication.Services;
 using System.Security.Authentication;
 using MediatR;
-//fix mangler
-//getsingletrackunauthorized
-//gettrackuserbyquiz
-//setstartcheckpoint
+using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
+using orienteering_backend.Core.Domain.Checkpoint;
+using Xunit;
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+
 
 namespace orienteering_backend.Tests.Helpers
 {
@@ -43,10 +44,10 @@ namespace orienteering_backend.Tests.Helpers
         }
 
         [Fact]
-        public async Task TestGetTrackUser()
+        public async Task GivenTrackAndUser_WhenGetTrackUser_ThenReturnDto()
         {
-            //arrange
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            //ARRANGE
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             //add track to db
@@ -62,12 +63,8 @@ namespace orienteering_backend.Tests.Helpers
             expected.UserId = track.UserId;
             expected.TrackId = trackDb.Id;
 
-            //var mapper = _mapper;
-            var mapper = new Mock<IMapper>();
-            mapper.Setup(x => x.Map<Track, TrackUserIdDto>(track)).Returns(expected);
-
             var request = new GetTrackUser.Request(trackDb.Id);
-            var handler = new GetTrackUser.Handler(_db, mapper.Object);
+            var handler = new GetTrackUser.Handler(_db, _mapper);
 
             //act
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
@@ -75,10 +72,10 @@ namespace orienteering_backend.Tests.Helpers
         }
 
         [Fact]
-        public async Task GivenUser_WhenCreateTrack_ThenCreate()
+        public void GivenUser_WhenCreateTrack_ThenCreate()
         {
             //ARRANGE
-            var db = new OrienteeringContext(dbContextOptions, null);
+            var db = new OrienteeringContext(dbContextOptions);
             if (!db.Database.IsInMemory()) { db.Database.Migrate(); }
 
             var testUserId = Guid.NewGuid();
@@ -91,25 +88,21 @@ namespace orienteering_backend.Tests.Helpers
             var identityService = new Mock<IIdentityService>();
             identityService.Setup(i => i.GetCurrentUserId()).Returns(testUserId);
 
-            var mapper = new Mock<IMapper>();
-            mapper.Setup(x => x.Map<CreateTrackDto, Track>(createTrackDto)).Returns(realTrack);
-
             var request = new CreateTrack.Request(createTrackDto);
-            var handler = new CreateTrack.Handler(db, mapper.Object, identityService.Object);
+            var handler = new CreateTrack.Handler(db, _mapper, identityService.Object);
 
             //ACT
             var result = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
             //ASSERT
             Assert.IsType<Guid>(result);
-
         }
 
         [Fact]
-        public async Task GivenNoUser_WhenCreateTrack_ThenFail()
+        public void GivenNoUser_WhenCreateTrack_ThenFail()
         {
             //ARRANGE
-            var db = new OrienteeringContext(dbContextOptions, null);
+            var db = new OrienteeringContext(dbContextOptions);
             if (!db.Database.IsInMemory()) { db.Database.Migrate(); }
 
             var userId = Guid.NewGuid();
@@ -122,11 +115,8 @@ namespace orienteering_backend.Tests.Helpers
             var identityService = new Mock<IIdentityService>();
             identityService.Setup(i => i.GetCurrentUserId()).Returns<Guid?>(null);
 
-            var mapper = new Mock<IMapper>();
-            mapper.Setup(x => x.Map<CreateTrackDto, Track>(createTrackDto)).Returns(realTrack);
-
             var request = new CreateTrack.Request(createTrackDto);
-            var handler = new CreateTrack.Handler(db, mapper.Object, identityService.Object);
+            var handler = new CreateTrack.Handler(db, _mapper, identityService.Object);
 
             //ACT AND ASSERT
             Assert.Throws<AuthenticationException>(() => handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult());
@@ -136,7 +126,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task GivenUser_WhenAskForTrack_ThenReturnTrack()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
             var userId = Guid.NewGuid();
 
@@ -146,17 +136,13 @@ namespace orienteering_backend.Tests.Helpers
             await _db.Tracks.AddAsync(track);
             await _db.SaveChangesAsync();
 
-            var expectedTrackDto = new TrackDto();
-            expectedTrackDto.TrackName = "Test";
-
-            var mapper = new Mock<IMapper>();
-            mapper.Setup(x => x.Map<Track, TrackDto>(track)).Returns(expectedTrackDto);
+            var expectedTrackDto = _mapper.Map<TrackDto>(track);
 
             var identityService = new Mock<IIdentityService>();
             identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
 
             var request = new GetSingleTrack.Request(track.Id);
-            var handler = new GetSingleTrack.Handler(_db, mapper.Object, identityService.Object);
+            var handler = new GetSingleTrack.Handler(_db, _mapper, identityService.Object);
 
             //ACT
             var returnedTrackDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
@@ -169,7 +155,7 @@ namespace orienteering_backend.Tests.Helpers
         public async Task GivenCorrectUser_WhenDeleteTrack_ThenDeleteTrack()
         {
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             //create track
@@ -183,7 +169,6 @@ namespace orienteering_backend.Tests.Helpers
             var identityService = new Mock<IIdentityService>();
             identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
             var mediator = new Mock<IMediator>();
-            //mediator.Setup(m=>m.)
 
             var request = new DeleteTrack.Request(track.Id);
             var handler = new DeleteTrack.Handler(_db, identityService.Object, mediator.Object);
@@ -193,21 +178,20 @@ namespace orienteering_backend.Tests.Helpers
 
             //ASSERT
             Assert.True(response);
-            var dbTrack =await _db.Tracks.Where(t=>t.UserId== userId).FirstOrDefaultAsync();
+            var dbTrack = await _db.Tracks.Where(t => t.UserId == userId).FirstOrDefaultAsync();
             Assert.Null(dbTrack);
         }
 
         [Fact]
         public async Task GivenCorrectUser_WhenGetTracks_ThenReturnTracks()
         {
-            //test GetTracks
             //ARRANGE
-            var userId=Guid.NewGuid();
+            var userId = Guid.NewGuid();
 
             var identityService = new Mock<IIdentityService>();
             identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
 
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
             //add tracks to db
@@ -227,67 +211,21 @@ namespace orienteering_backend.Tests.Helpers
             var expectedList = new List<TrackDto> { track1Dto, track2Dto };
 
             var request = new GetTracks.Request();
-            var handler = new GetTracks.Handler(_db,_mapper, identityService.Object);
+            var handler = new GetTracks.Handler(_db, _mapper, identityService.Object);
 
             //ACT
-
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-
 
             //ASSERT
             Assert.Equal(JsonConvert.SerializeObject(expectedList), JsonConvert.SerializeObject(response));
         }
-
-        //[Fact]
-        //public async Task Given_When_Then1()
-        //{
-        //    //fix test  gettrackuserbyquiz
-        //    //ARRANGE
-        //    var _db = new OrienteeringContext(dbContextOptions, null);
-        //    if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
-
-
-        //    var identityService = new Mock<IIdentityService>();
-        //    //identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
-
-        //    //var request = new DeleteTrack.Request(track.Id);
-        //    //var handler = new DeleteTrack.Handler(_db, identityService.Object, mediator.Object);
-
-        //    //ACT
-
-        //    //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-
-
-        //    //ASSERT
-        //}
-
-
-        //[Fact]
-        //public async Task Given_When_Then2()
-        //{
-        //    //test check start checkpoint
-        //    //ARRANGE
-
-        //    var identityService = new Mock<IIdentityService>();
-        //    //identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
-
-        //    //var request = new DeleteTrack.Request(track.Id);
-        //    //var handler = new DeleteTrack.Handler(_db, identityService.Object, mediator.Object);
-
-        //    //ACT
-
-        //    //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-
-
-        //    //ASSERT
-        //}
 
         [Fact]
         public async Task GivenCorrectUser_WhenUpdateTrackTitle_ThenUpdate()
         {
             //test update track title
             //ARRANGE
-            var _db = new OrienteeringContext(dbContextOptions, null);
+            var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
             var userId = Guid.NewGuid();
 
@@ -305,40 +243,118 @@ namespace orienteering_backend.Tests.Helpers
             var newTitle = "this is the new title";
             track.Name = newTitle;
 
-            var request = new UpdateTrackTitle.Request(track.Id, newTitle );
+            var request = new UpdateTrackTitle.Request(track.Id, newTitle);
             var handler = new UpdateTrackTitle.Handler(_db, identityService.Object);
 
             //ACT
-
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
-            var changedTrack=await _db.Tracks.Where(t => t.UserId == track.UserId).FirstOrDefaultAsync();
+            var changedTrack = await _db.Tracks.Where(t => t.UserId == track.UserId).FirstOrDefaultAsync();
 
             //ASSERT
             Assert.True(response);
             Assert.Equal(JsonConvert.SerializeObject(track), JsonConvert.SerializeObject(changedTrack));
         }
 
+        [Fact]
+        public async Task GivenNoUser_WhenAskForTrackUnauthorised_ThenReturnTrack()
+        {
+            //ARRANGE
+            var _db = new OrienteeringContext(dbContextOptions);
+            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
+            var userId = Guid.NewGuid();
 
-        //fix slett denne, dette er mal
+            var track = new Track();
+            track.UserId = userId;
+            track.Name = "Test";
+            await _db.Tracks.AddAsync(track);
+            await _db.SaveChangesAsync();
 
-        //[Fact]
-        //public async Task Given_When_Then()
-        //{
-        //    //ARRANGE
+            var trackDto = _mapper.Map<TrackDto>(track);
 
-        //    var identityService = new Mock<IIdentityService>();
-        //    //identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
+            var request = new GetSingleTrackUnauthorized.Request(track.Id);
+            var handler = new GetSingleTrackUnauthorized.Handler(_db, _mapper);
 
-        //    //var request = new DeleteTrack.Request(track.Id);
-        //    //var handler = new DeleteTrack.Handler(_db, identityService.Object, mediator.Object);
+            //ACT
+            var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
-        //    //ACT
+            //ASSERT
+            Assert.Equal(JsonConvert.SerializeObject(trackDto), JsonConvert.SerializeObject(response));
+        }
 
-        //    //var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+        [Fact]
+        public async Task GivenTrack_WhenGetTrackUserByQuiz_ThenSuccess()
+        {
+            //ARRANGE
+            var _db = new OrienteeringContext(dbContextOptions);
+            if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
+            //create track
+            var userId = Guid.NewGuid();
+            var track = new Track();
+            track.UserId = userId;
+            track.Name = "Test";
+            await _db.Tracks.AddAsync(track);
+            await _db.SaveChangesAsync();
 
-        //    //ASSERT
-        //}
+            var trackDto = _mapper.Map<TrackUserIdDto>(track);
 
+            //create checkpoint
+            var checkpoint = new Checkpoint("title", 0, track.Id);
+            checkpoint.QuizId = Guid.NewGuid();
+
+            var _mediator = new Mock<IMediator>();
+            _mediator.Setup(m => m.Send(It.IsAny<GetTrackIdForQuiz.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(track.Id);
+
+            var request = new GetTrackUserByQuiz.Request((Guid)checkpoint.QuizId);
+            var handler = new GetTrackUserByQuiz.Handler(_db, _mapper, _mediator.Object);
+
+            //ACT
+            var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+
+            //ASSERT
+            Assert.Equal(JsonConvert.SerializeObject(trackDto), JsonConvert.SerializeObject(response));
+        }
+
+        [Fact]
+        public void GivenTrack_WhenAddCheckpoint_ThenNumCheckpointsIncrease()
+        {
+            //arrange
+            var track = new Track();
+
+            //act
+            track.AddedCheckpoint();
+
+            //assert
+            Assert.Equal(1, track.NumCheckpoints);
+        }
+
+        [Fact]
+        public async Task GivenEmptyTrack_WhenRemoveCheckpoint_ThenReturnFalse()
+        {
+            //arrange
+            var track = new Track();
+
+            //act
+            var response = track.RemovedCheckpoint();
+
+            //assert
+            Assert.False(response);
+        }
+
+        [Fact]
+        public async Task GivenTrack_WhenRemoveCheckpoint_ThenReturnTrue()
+        {
+            //arrange
+            var track = new Track();
+            track.AddedCheckpoint();
+            track.AddedCheckpoint();
+
+            //act
+            var response = track.RemovedCheckpoint();
+
+            //assert
+            Assert.True(response);
+            Assert.Equal(1, track.NumCheckpoints);
+        }
     }
 }
