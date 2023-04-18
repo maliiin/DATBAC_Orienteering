@@ -3,12 +3,10 @@ import { Radio, FormLabel, Box, RadioGroup, FormControlLabel, Select, MenuItem, 
 import { useNavigate } from 'react-router-dom';
 import FormControl from '@mui/material/FormControl';
 
-
 export default function CreateCheckpointForm(props) {
     //the chosen activity (quiz/game)
     const [activity, setActivity] = useState("");
     const navigate = useNavigate();
-
 
     const [checkpointInfo, setCheckpointInfo] = useState({
         Title: "",
@@ -59,12 +57,10 @@ export default function CreateCheckpointForm(props) {
     };
 
     const handleChange = (event) => {
-        //update state
         setCheckpointInfo({ ...checkpointInfo, [event.target.name]: event.target.value });
     };
 
     const changeActivity = (event) => {
-
         setActivity(event.target.value);
     };
 
@@ -83,8 +79,6 @@ export default function CreateCheckpointForm(props) {
 
                 <br></br>
                 <br></br>
-
-
                 <FormLabel id="radio-buttons-group">Choose activity</FormLabel>
 
                 <RadioGroup
@@ -113,7 +107,7 @@ export default function CreateCheckpointForm(props) {
 
                 <br></br>
 
-                <FormControl 
+                <FormControl
                 >
                     <FormLabel
                         style={activity == "spill" ? {} : { display: 'none' }}

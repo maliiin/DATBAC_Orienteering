@@ -18,14 +18,6 @@ export default function LogicGatesGame() {
     const gates = ["AndGate", "NandGate", "Inverter", "OrGate", "AndGate", "NandGate", "Inverter", "OrGate"];
     var nextBoardIndex = 0;
 
-    useEffect(() => {
-
-        createFunctionTable();
-        createGates();
-        setup();
-
-    }, []);
-
     function createGates() {
         setGateDivs(
             gates.map((gate, index) =>
@@ -39,34 +31,9 @@ export default function LogicGatesGame() {
     }
 
     function createFunctionTable() {
-        //const data = (LogicGatesData.find(obj => obj.gates == gates)).values;;
         const data = LogicGatesData[nextBoardIndex].values;
 
-        //data.forEach((row) => {
-        //    const tr = document.createElement("tr");
-        //    row.forEach((column) => {
-        //        const td = document.createElement("td");
-        //        td.textContent = column;
-        //        tr.appendChild(td);
-        //    });
-
-        //    tbody.appendChild(tr);
-        //});
-        //var tbody = (data.map((row, index) => {
-        //    return (
-        //        <tr key={row + "-" + index}>
-        //            {
-        //                row.map((column, index) => {
-        //                    return (<td key={column + "-" + index}>{column}</td>)
-        //                })
-
-        //            }
-        //        </tr>
-        //    )
-        //}
-        //));
-
-        var tbody = (data.map((column, index) => {
+        var tbody = (data.map((column) => {
             return (
                 <>
                     {
@@ -124,7 +91,6 @@ export default function LogicGatesGame() {
                 >
                     Start game
                 </Button></div>
-
         </>
         )
         document.getElementById("gamecontainer").style.display = "none";
@@ -136,10 +102,11 @@ export default function LogicGatesGame() {
         document.getElementById("descriptionContainer").style.display = "none";
         nextBoard();
     }
-    //fix- to useeffect som tar inn []-disse kan slås sammen?
-    //og samle use effect på samme sted i koden
 
     useEffect(() => {
+        createFunctionTable();
+        createGates();
+        setup();
         showGameDescription();
         document.getElementById("nextboardbtn").addEventListener("click", nextBoard);
     }, []);
@@ -158,16 +125,10 @@ export default function LogicGatesGame() {
                 height: window.innerHeight,
             }}
         >
-
-
             <img id="task_background" src={require("../Assets/LogicGates/task1_background.png")}></img>
-
             <div id="dropzoneUpper" className={'dropzone' + ' ' + 'dropzoneUpper'}></div>
-
             <div id="dropzoneLower" className={'dropzone' + ' ' + 'dropzoneLower'}></div>
-
             {gateDivs}
-
             <table>
                 <tbody>
                     <tr>
@@ -198,9 +159,6 @@ export default function LogicGatesGame() {
         </div>
 
         <div id="descriptionContainer" className="readabletext"> {gameDescription}</div>
-
     </>);
 }
 
-            //<span id="scorediv"></span>
-            //<span id="statusdiv"></span>

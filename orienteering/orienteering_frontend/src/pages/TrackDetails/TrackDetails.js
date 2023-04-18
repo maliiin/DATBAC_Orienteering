@@ -23,8 +23,6 @@ export default function TrackDetails() {
         const url = "/api/checkpoint/getCheckpoints?trackId=" + params.trackId;
         const response = await fetch(url);
 
-        //fix-obs se på-nå navigeres bruker til error både om ikke logget inn og dersom
-        //det er en annen brukers ting man ser på
         if (response.status==401) {
             navigate("/login");
         }

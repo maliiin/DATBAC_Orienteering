@@ -1,15 +1,25 @@
 
 export default [
-    // Fix: legg inn virkelige solutions
+
     {
-        solutionList: ['sodshjgdfd sgfhadfagl1', 'sol2', 'sol4', 'sol3', 'sol5'],//, 'asdfwa', 'asdawsd', 'gafsdad'],
-        correctMix: ['sol2', 'sol3'],
-        taskText: "create a aslfns solution"
+        solutionList: ['Helium gas', 'Sulfate ion', 'Oxygen gas', 'Hydrogen gas', 'Nitric acid', 'Nitrogen gas'],
+        correctMix: ['Oxygen gas', 'Hydrogen gas'],
+        taskText: "Create Water."
     },
     {
-        solutionList: ['sohadfagl1', 'sol22', 'sol32', 'sol4', 'sol55', 'awsd', 'pqwrj', 'asdfwa'],
-        correctMix: ['sohadfagl1', 'sol4'],
-        taskText: "create a ljkgaf solution"
+        solutionList: ['Sulfate ion', 'Water', 'Sodium ion', 'Chlorate ion', 'Chlorine ion', 'Carbon'],
+        correctMix: ['Sodium ion', 'Chlorine ion'],
+        taskText: "Create Sodium chloride."
+    },
+    {
+        solutionList: ['Nitric acid','Copper', 'Sulfuric acid', 'Water', 'Oxygen', 'Carbonate ion'],
+        correctMix: ['Copper', 'Sulfuric', 'water'],
+        taskText: "Create Copper Sulfate."
+    },
+    {
+        solutionList: ['Water', 'Phosphoric acid', 'Iron', 'Oxygen gas', 'Sulfur', 'Formic acid', 'Hydrogen gas'],
+        correctMix: ['Iron', 'Sulfur'],
+        taskText: "Iron sulfide"
     }
 ];
 

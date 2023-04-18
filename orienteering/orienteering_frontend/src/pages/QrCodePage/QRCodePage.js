@@ -9,7 +9,6 @@ function QRCodePage() {
     const navigate = useNavigate();
 
     const fetchCheckpoints = async () => {
-        // Kilder: til location.state.trackid: linje 13 under https://stackoverflow.com/questions/64566405/react-router-dom-v6-usenavigate-passing-value-to-another-component (13.02.2023)
         const TrackId = location.state.trackid;
         const url = "api/qrcode/getqrcodes?TrackId=" + TrackId;
         const response = await fetch(url);
@@ -31,7 +30,6 @@ function QRCodePage() {
     useEffect(() => {
         fetchCheckpoints();
     }, []);
-    ////Kilder: https://reactjs.org/docs/lists-and-keys.html (02.02.2023)
     return (<>
         <Grid
             container
