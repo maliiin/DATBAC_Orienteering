@@ -58,6 +58,7 @@ export default function LogicGatesGame() {
 
     function nextBoard() {
         document.getElementById("nextboardbtn").style.display = "none";
+        document.getElementById("statusdiv").textContent = "";
         clearGateDivs();
         createGates();
         createFunctionTable();
@@ -129,6 +130,7 @@ export default function LogicGatesGame() {
             <div id="dropzoneUpper" className={'dropzone' + ' ' + 'dropzoneUpper'}></div>
             <div id="dropzoneLower" className={'dropzone' + ' ' + 'dropzoneLower'}></div>
             {gateDivs}
+
             <table>
                 <tbody>
                     <tr>

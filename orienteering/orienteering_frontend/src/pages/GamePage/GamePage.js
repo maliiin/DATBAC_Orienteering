@@ -31,16 +31,16 @@ export default function GamePage() {
     }
 
     async function setGame() {
-        const url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
+        const url = "/api/checkpoint/getGameidForCheckpoint?checkpointId=" + params.checkpointId;
         const response = await fetch(url);
         if (!response.ok) {
             navigate("/errorpage");
         }
-        const checkpointDto = await response.json();
-        if (checkpointDto.gameId == 1) {
+        const gameId = await response.json();
+        if (gameId == 1) {
             setChosenGame(<FallingBoxesGame></FallingBoxesGame>);
         }
-        else if (checkpointDto.gameId == 2) {
+        else if (gameId == 2) {
             setChosenGame(<ChemistryGame></ChemistryGame>);
         }
         else {

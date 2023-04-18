@@ -9,7 +9,6 @@ export default function TrackInfo(props) {
     const [editing, setEditing] = useState(false);
     const [oldTitle, setOldTitle] = useState(props.trackInfo.trackName);
 
-
     //display spesific track
     const showTrack = () => {
         const url = "/track/" + props.trackInfo.trackId;

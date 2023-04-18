@@ -57,6 +57,7 @@ export default function TrackDetails() {
 
             <Grid item xs={10} md={6}>
                 <h4>Checkpoints</h4>
+                <p>Double-click title to edit</p>
                 <div>{checkpointList}</div>
             </Grid>
 
