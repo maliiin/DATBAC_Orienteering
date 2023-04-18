@@ -84,13 +84,19 @@ public static class CreateCheckpoint
             }
 
             // publishing event 
-            await _mediator.Publish(new CheckpointCreated(newCheckpoint.Id, request.checkpointDto.TrackId));
-
+            
+            var checkpointCreatedEvent = new CheckpointCreated(newCheckpoint.Id, request.checkpointDto.TrackId);
             if (newCheckpoint.GameId == 0)
             {
-                //checkpoint with quiz
-                await _mediator.Publish(new QuizCheckpointCreated(newCheckpoint.Id, (Guid)newCheckpoint.QuizId));
+                checkpointCreatedEvent.QuizId = newCheckpoint.QuizId;
             }
+            await _mediator.Publish(checkpointCreatedEvent);
+
+            //if (newCheckpoint.GameId == 0)
+            //{
+            //    //checkpoint with quiz
+            //    //await _mediator.Publish(new QuizCheckpointCreated(newCheckpoint.Id, (Guid)newCheckpoint.QuizId), newCheckpoint.GameId);
+            //}
 
             return newCheckpoint.Id;
         }

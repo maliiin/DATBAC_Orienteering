@@ -10,10 +10,10 @@ public record CheckpointCreated : INotification
     public CheckpointCreated(Guid checkpointId, Guid trackId)
     {
         CheckpointId = checkpointId;
-        TrackId=trackId;
+        TrackId = trackId;
     }
 
     public Guid CheckpointId { get; }
     public Guid TrackId { get; }
-
+    public Guid? QuizId { get; set; }
 }
