@@ -79,15 +79,15 @@ namespace orienteering_backend.Tests.Helpers
             var db = new OrienteeringContext(dbContextOptions);
             if (!db.Database.IsInMemory()) { db.Database.Migrate(); }
 
-            var testUserId = Guid.NewGuid();
+            var userId = Guid.NewGuid();
             var createTrackDto = new CreateTrackDto("trackName");
 
             var realTrack = new Track();
             realTrack.Name = "trackName";
-            realTrack.UserId = testUserId;
+            realTrack.UserId = userId;
 
             var identityService = new Mock<IIdentityService>();
-            identityService.Setup(i => i.GetCurrentUserId()).Returns(testUserId);
+            identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
 
             var request = new CreateTrack.Request(createTrackDto);
             var handler = new CreateTrack.Handler(db, _mapper, identityService.Object);
