@@ -26,6 +26,8 @@ namespace orienteering_backend.Controllers
         [HttpPost("createCheckpoint")]
         public async Task<ActionResult> CreateCheckpoint(CheckpointDto checkpointDto)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             //fiks objekt her i parameter (tror ok?)
             try
             {
@@ -43,6 +45,9 @@ namespace orienteering_backend.Controllers
         [HttpGet("getCheckpoints")]
         public async Task<ActionResult<List<CheckpointDto>>> GetCheckpointsOfTrack(string trackId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            //check that signed in
+
             try
             {
                 Guid trackGuid = new Guid(trackId);
@@ -60,6 +65,7 @@ namespace orienteering_backend.Controllers
         [HttpGet("getCheckpoint")]
         public async Task<ActionResult<CheckpointDto>> GetSingleCheckpoint(string checkpointId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
             Guid CheckpointId = new Guid(checkpointId);
 
             try
@@ -83,6 +89,7 @@ namespace orienteering_backend.Controllers
         [HttpDelete("removeCheckpoint")]
         public async Task<IActionResult> DeleteCheckpoint(string checkpointId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
             Guid CheckpointId = new Guid(checkpointId);
 
             try
@@ -106,6 +113,7 @@ namespace orienteering_backend.Controllers
         [HttpPatch("editCheckpointTitle")]
         public async Task<IActionResult> UpdateCheckpointTitle(UpdateCheckpointTitleDto checkpointInfo)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
             try
             {

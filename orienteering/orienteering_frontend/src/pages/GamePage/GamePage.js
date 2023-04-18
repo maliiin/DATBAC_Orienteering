@@ -37,7 +37,11 @@ export default function GamePage() {
 
     async function setGame() {
         const url = "/api/checkpoint/getCheckpoint?checkpointId=" + params.checkpointId;
-        const checkpointDto = await fetch(url).then(res => res.json());
+        const response = await fetch(url);
+        if (!response.ok) {
+            navigate("/errorpage");
+        }
+        const checkpointDto = await response.json();
         if (checkpointDto.gameId == 1) {
             setChosenGame(<FallingBoxesGame></FallingBoxesGame>);
         }

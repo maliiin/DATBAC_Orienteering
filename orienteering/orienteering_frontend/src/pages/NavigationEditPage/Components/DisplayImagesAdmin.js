@@ -8,7 +8,6 @@ export default function DisplayImagesAdmin(props) {
     const deleteImage = async () => {
         const url = "/api/navigation/DeleteImage?navigationId=" + props.navId + "&imageId=" + props.imageInfo.id;
         await fetch(url, { method: 'DELETE' });
-        //fix-trengs error her???
 
         //update images in parent
         props.updateImages();
@@ -22,7 +21,7 @@ export default function DisplayImagesAdmin(props) {
         setEditing(false)
 
         const url = '/api/navigation/editNavigationText';
-        const response = await fetch(url, {
+        await fetch(url, {
             method: "PATCH",
             headers: {
                 Accept: "application/json",
@@ -34,7 +33,6 @@ export default function DisplayImagesAdmin(props) {
                 NavigationImageId: props.imageInfo.id
             })
         });
-        //fiks sjekk respons i error handling, trengs det her??
 
         //update images in parent
         props.updateImages();

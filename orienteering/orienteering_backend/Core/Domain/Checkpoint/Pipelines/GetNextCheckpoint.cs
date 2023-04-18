@@ -31,7 +31,7 @@ public static class GetNextCheckpoint
             var currentCheckpoint = await _db.Checkpoints
                 .Where(c => c.Id == request.currentCheckpointId)
                 .FirstOrDefaultAsync(cancellationToken);
-            //fix error is null
+            if (currentCheckpoint == null) { throw new NullReferenceException();  }
             var track = await _mediator.Send(new GetSingleTrackUnauthorized.Request(currentCheckpoint.TrackId));
 
             int orderNewCheckpoint=currentCheckpoint.Order+1;
@@ -40,7 +40,7 @@ public static class GetNextCheckpoint
                 //the current checkpoint was the "last"--> the next is the first
                 orderNewCheckpoint = 1;
             }
-
+            // If currentCheckpoint is retrieved from DB, the next query will succeed
             var nextCheckpoint = await _db.Checkpoints
                 .Where(c => c.TrackId == currentCheckpoint.TrackId)
                 .Where(c => c.Order == orderNewCheckpoint)

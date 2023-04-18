@@ -24,7 +24,7 @@ export default function TrackInfo(props) {
         setEditing(false)
 
         const url = '/api/track/updateTrackTitle';
-        const response = await fetch(url, {
+        await fetch(url, {
             method: "PATCH",
             headers: {
                 Accept: "application/json",
@@ -35,7 +35,6 @@ export default function TrackInfo(props) {
                 NewTitle: oldTitle
             })
         });
-        //fiks sjekk respons i error handling
 
         //update list of parent
         props.updateTrackList()
@@ -46,11 +45,9 @@ export default function TrackInfo(props) {
     }
 
     const deleteTrack = async() => {
-        //fix implementer
         const url = '/api/track/deleteTrack?';
         const parameter = "trackId=" + props.trackInfo.trackId;
-        const response = await fetch(url + parameter, { method: 'DELETE' });
-        //fiks sjekk respons i error handling
+        await fetch(url + parameter, { method: 'DELETE' });
 
         //update list of parent
         props.updateTrackList()

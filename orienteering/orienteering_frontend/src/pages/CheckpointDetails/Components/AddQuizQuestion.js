@@ -54,8 +54,8 @@ export default function AddQuizQuestion(props) {
         var response = await fetch('/api/quiz/addQuizQuestion', requestAlternatives);
         //401 => not signed in
         if (response.status == 401) { navigate("/login"); }
-        //404 => dont exist or not your checkpoint
-        if (response.status == 404) { navigate("/errorpage") }
+        //other errors
+        if (!response.ok) { navigate("/errorpage") }
 
         //update value to render quizquestions
         props.setQuizChanged(props.quizChanged * -1);

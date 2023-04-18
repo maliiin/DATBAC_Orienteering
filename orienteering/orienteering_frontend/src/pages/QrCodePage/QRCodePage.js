@@ -15,8 +15,8 @@ function QRCodePage() {
         const response = await fetch(url);
         //401 => not signed in
         if (response.status == 401) { navigate("/login"); }
-        //404 => dont exist or not your checkpoint
-        if (response.status == 404) { navigate("/errorpage"); }
+        //other errors
+        if (!response.ok) { navigate("/errorpage"); }
 
         const data = await response.json();
 

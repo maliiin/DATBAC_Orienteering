@@ -34,7 +34,14 @@ function Layout() {
     };
 
     const signOutUser = async () => {
-        await fetch("api/user/signOut");
+        const url = ("api/user/signOut");
+        await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
         setIsSignedIn(false)
         navigate("login")
 

@@ -22,13 +22,17 @@ public class SessionController : ControllerBase
     [HttpPost("setStartCheckpoint")]
     public ActionResult setStartCheckpoint(SessionDto CheckpointInfo)
     {
+        if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
         _sessionService.SetStartCheckpoint(CheckpointInfo.CheckpointId.ToString());
         return Ok();
     }
 
     [HttpGet("checkTrackFinished")]
-    public async Task<TrackLoggingDto> checkTrackFinished(string CurrentCheckpoint)
+    public async Task<ActionResult<TrackLoggingDto>> checkTrackFinished(string CurrentCheckpoint)
     {
+        if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
         var trackLoggingDto = await _sessionService.CheckTrackFinished(CurrentCheckpoint);
         return trackLoggingDto;
     }

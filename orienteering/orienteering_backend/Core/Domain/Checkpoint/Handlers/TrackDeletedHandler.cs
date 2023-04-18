@@ -31,9 +31,9 @@ namespace orienteering_backend.Core.Domain.Checkpoint.Handlers
                 _db.Checkpoints.Remove(checkpoint);
             }
             await _db.SaveChangesAsync(cancellationToken);
-            // Publisher event for hvert slettet checkpoint etter savechangesasync()
-            // Dersom lagringen krasjer, unngår vi med dette å sende ut et
-            // checkpointDeleted event uten at checkpoints er slettet fra databasen
+
+            // Publishing event for each deleted checkpoint after savechangesasync()
+            // If saving fails, the event checkpointDeleted are not sent 
             foreach (var checkpoint in checkpointList)
             {
                 await _mediator.Publish(new CheckpointDeleted(notification.TrackId, checkpoint.Id, checkpoint.QuizId));

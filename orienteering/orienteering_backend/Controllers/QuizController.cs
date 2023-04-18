@@ -18,13 +18,14 @@ namespace orienteering_backend.Controllers
         {
             _mediator = Mediator;
         }
-        //fix/se på -bør userGuid sendes inn fra frontend? eller skal backend hente userId fra seg selv fra den som er logget inn?
 
 
         //fix-denne bør sikres
         [HttpGet("getQuiz")]
         public async Task<ActionResult<QuizDto>> GetQuiz(string quizId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             var QuizId = new Guid(quizId);
 
             //try
@@ -42,6 +43,8 @@ namespace orienteering_backend.Controllers
         [HttpGet("getQuizByCheckpoint")]
         public async Task<ActionResult> GetQuizByCheckpoint(string checkpointId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             var CheckpointId = new Guid(checkpointId);
             try
             {
@@ -64,6 +67,8 @@ namespace orienteering_backend.Controllers
         [HttpPost("addQuizQuestion")]
         public async Task<ActionResult> AddQuizQuestion(InputCreateQuestionDto inputQuizQuestions)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             try
             {
                 //fix-sjekk status eller returner error hvis feil
@@ -87,12 +92,9 @@ namespace orienteering_backend.Controllers
         [HttpDelete("deleteQuestion")]
         public async Task<ActionResult> DeleteQuestion(string questionId)
         {
-            //fix er dette ok navn på event?? det har jo ikke blitt slettet enda
-            Guid questionGuid = new Guid(questionId);
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
-            ////fix sjekk at det er rett bruker som er logget inn for dette
-            //før event i samme domain-nå pipeline
-            //await _mediator.Publish(new QuizQuestionDeleted(quizGuid, questionGuid));
+            Guid questionGuid = new Guid(questionId);
 
             try
             {

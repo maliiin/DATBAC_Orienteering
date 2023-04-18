@@ -1,9 +1,11 @@
-﻿using orienteering_backend.SharedKernel;
+﻿using MediatR;
+
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Core.Domain.Track.Events;
 
 
-public record TrackDeleted : IDomainEvent
+public record TrackDeleted : INotification
 {
     public TrackDeleted(Guid trackId)
     {

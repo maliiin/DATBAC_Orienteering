@@ -1,9 +1,11 @@
-﻿using orienteering_backend.SharedKernel;
+﻿using MediatR;
+
+// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Core.Domain.Checkpoint.Events;
 
 
-public record QuizCheckpointCreated : IDomainEvent
+public record QuizCheckpointCreated : INotification
 {
     public QuizCheckpointCreated(Guid checkpointId, Guid quizId)
     {

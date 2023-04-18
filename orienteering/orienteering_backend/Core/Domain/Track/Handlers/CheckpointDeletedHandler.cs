@@ -8,10 +8,8 @@ using orienteering_backend.Core.Domain.Checkpoint.Events;
 namespace orienteering_backend.Core.Domain.Track.Handlers;
 
 
-//oppgave- kall removed checkpoint på track så telleren minker
+// This pipeline calls removedCheckpoint() on track which decrements the NumCheckpoints counter
 
-//fix-heter 1 fordi den andre kanskje ikke trengs?
-//hvis ikke kan de slås sammen??
 public class CheckpointDeletedHandler : INotificationHandler<CheckpointDeleted>
 {
     private readonly OrienteeringContext _db;
@@ -34,14 +32,6 @@ public class CheckpointDeletedHandler : INotificationHandler<CheckpointDeleted>
             await _db.SaveChangesAsync(cancellationToken);
         }
         //if track is null this event comes from track deleted, and nothing happens.
-
-
-
-        //fix-sjekk om rett- her er det ingen error handling. (og skal ikke være det heller?)
-        //dersom track er null kan det være fordi eventet sendes ut når track slettes
-
-
-
 
     }
 }

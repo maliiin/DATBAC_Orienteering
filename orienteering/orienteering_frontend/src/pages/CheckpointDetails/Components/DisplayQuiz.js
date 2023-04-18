@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import DisplayQuestion from "./DisplayQuestion";
+import { useNavigate } from 'react-router-dom';
 
 export default function DisplayQuiz(props) {
     const [quizQuestions, setQuizQuestions] = useState("");
+    const navigate = useNavigate();
 
     const fetchQuiz = async () => {
         const response = await fetch("/api/quiz/getQuiz?quizId=" + props.quizId);
         //fix dobbelsjekk-denne er ikke sikret siden taquiz bruker denne også
-
+        if (!response.ok) {
+            navigate("/errorpage");
+        }
         const Quiz = await response.json();
         setQuizQuestions(Quiz.quizQuestions);
     }

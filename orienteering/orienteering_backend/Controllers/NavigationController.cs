@@ -29,6 +29,8 @@ namespace orienteering_backend.Controllers
         [HttpPost("AddImage")]
         public async Task<ActionResult> AddImage([FromForm] IFormFile file)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             var checkpointId = HttpContext.Request.Form["checkpointId"];
             var textDescription = HttpContext.Request.Form["textDescription"];
             Guid checkpointGuid = new(checkpointId);
@@ -52,6 +54,8 @@ namespace orienteering_backend.Controllers
         [HttpDelete("DeleteImage")]
         public async Task<ActionResult> DeleteImage(string navigationId, string imageId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             Guid imageGuid = new(imageId);
             Guid navigationGuid = new(navigationId);
 
@@ -74,6 +78,8 @@ namespace orienteering_backend.Controllers
         [HttpGet("GetNavigation")]
         public async Task<ActionResult<NavigationDto>> GetNavigation(string checkpointId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             Guid checkpointGuid = new(checkpointId);
 
             try
@@ -95,8 +101,10 @@ namespace orienteering_backend.Controllers
 
         //denne skal ikke være beskyttet
         [HttpGet("GetNextNavigation")]
-        public async Task<NavigationDto> GetNavigationForNextCheckpoint(string currentCheckpointId)
+        public async Task<ActionResult<NavigationDto>> GetNavigationForNextCheckpoint(string currentCheckpointId)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
             Guid currentCheckpointGuid = new Guid(currentCheckpointId);
             var nextCheckpointId = await _mediator.Send(new GetNextCheckpoint.Request(currentCheckpointGuid));
             var navDto = await _mediator.Send(new GetNavigationUnauthorized.Request(nextCheckpointId));
@@ -107,6 +115,7 @@ namespace orienteering_backend.Controllers
         [HttpPatch("editNavigationText")]
         public async Task<IActionResult> UpdateNavigationDescription(UpdateNavigationTextDto NavigationInfo)
         {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
             try
             {
