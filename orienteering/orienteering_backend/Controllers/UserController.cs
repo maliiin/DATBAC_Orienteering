@@ -34,10 +34,10 @@ namespace orienteering_backend.Controllers
 
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
-            var createduser = await _identityService.CreateUser(user);
-            if (createduser == null) { return BadRequest("problem creating the user"); }
+            var response = await _identityService.CreateUser(user);
+            if (response == false) { return BadRequest("problem creating the user"); }
 
-            return Created("", createduser);
+            return Ok();
         }
 
         [HttpPost("signinuser")]
@@ -46,8 +46,8 @@ namespace orienteering_backend.Controllers
 
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
-            var userSignedIn = await _identityService.SignInUser(user);
-            if (userSignedIn == null) { return BadRequest(new string("could not sign in the user")); }
+            var response = await _identityService.SignInUser(user);
+            if (response == false) { return BadRequest(new string("could not sign in the user")); }
             return Ok("user signed in");
         }
 
