@@ -14,6 +14,7 @@ using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using System.Security.Authentication;
 using Xunit;
+// Lisens Xunit: https://github.com/xunit/xunit/blob/main/LICENSE
 // Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Tests.Helpers
