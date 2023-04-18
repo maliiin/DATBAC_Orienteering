@@ -38,7 +38,7 @@ public static class CreateCheckpoint
             var trackDto = await _mediator.Send(new GetSingleTrackUnauthorized.Request(request.checkpointDto.TrackId));
 
             //If not allowed allowed to do this then throw exception
-            if (trackDto.UserId != userId) { throw new NullReferenceException("The user dont own this track or it dosent exist."); };
+            if (trackDto.UserId != userId) { throw new ArgumentNullException("The user dont own this track or it dosent exist."); };
 
             //create checkpoint
             var newCheckpoint = new Checkpoint(request.checkpointDto.Title, request.checkpointDto.GameId, request.checkpointDto.TrackId);

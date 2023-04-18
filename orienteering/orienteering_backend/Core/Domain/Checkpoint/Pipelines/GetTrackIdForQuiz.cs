@@ -30,7 +30,7 @@ public static class GetTrackIdForQuiz
                 .Where(c => c.QuizId == request.quizId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (checkpoint is null) { throw new NullReferenceException("the checkpoint cannot be found"); };
+            if (checkpoint is null) { throw new ArgumentNullException("the checkpoint cannot be found"); };
             return checkpoint.TrackId;
         }
     }

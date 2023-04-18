@@ -38,7 +38,7 @@ public static class GetSingleTrack
             var track = await _db.Tracks
                 .Where(t => t.Id == request.trackId)
                 .FirstOrDefaultAsync();
-            if (track == null) { throw new NullReferenceException("this track dont exist"); }
+            if (track == null) { throw new ArgumentNullException("this track dont exist"); }
 
             //check that user is allowed to access track
             if (userId != track.UserId) { throw new AuthenticationException("user not allowed to access this"); }

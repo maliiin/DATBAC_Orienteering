@@ -37,13 +37,13 @@ public static class DeleteQuizQuestion
             
             var quiz = await _db.Quiz.Include(a => a.QuizQuestions).FirstOrDefaultAsync(q => q.QuizQuestions.Any(qq => qq.Id == request.quizQuestionId));
             //check if there exists a quiz in the database containing a quizquestion with the given Id
-            if (quiz == null) { throw new NullReferenceException("the quiz dont exist or not allowed to access"); }
+            if (quiz == null) { throw new ArgumentNullException("the quiz dont exist or not allowed to access"); }
             //check that user is allowed to access this quiz
             var trackUser = await _mediator.Send(new GetTrackUserByQuiz.Request(quiz.Id));
             if (trackUser.UserId != userId)
             {
                 //the user that owns the track is not the one signed in
-                throw new NullReferenceException("the quiz dont exist or not allowed to access");
+                throw new ArgumentNullException("the quiz dont exist or not allowed to access");
             }
            
             quiz.RemoveQuizQuestion(request.quizQuestionId);

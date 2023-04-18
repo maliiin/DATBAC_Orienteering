@@ -31,7 +31,7 @@ public static class GetTrackUser
                 .Where(t => t.Id == request.trackId)
                 .FirstOrDefaultAsync();
 
-            if (track == null) { throw new NullReferenceException(); }
+            if (track == null) { throw new ArgumentNullException(); }
 
             //create dto
             TrackUserIdDto trackDto=_mapper.Map<Track,TrackUserIdDto>(track);

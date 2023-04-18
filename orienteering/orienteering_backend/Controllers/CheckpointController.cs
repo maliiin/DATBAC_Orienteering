@@ -72,7 +72,7 @@ namespace orienteering_backend.Controllers
                 //not signed in
                 return Unauthorized();
             }
-            catch(NullReferenceException)
+            catch(ArgumentNullException)
             {
                 //not authenticated or dont exist
                 return NotFound();
@@ -118,7 +118,7 @@ namespace orienteering_backend.Controllers
                 //not signed in
                 return Unauthorized("Not signed in");
             }
-            catch(NullReferenceException)
+            catch(ArgumentNullException)
             {
                 //does not exist or not allowed
                 return NotFound("Could not find the checkpoint to edit");
@@ -141,7 +141,7 @@ namespace orienteering_backend.Controllers
             {
                 return Unauthorized();
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }

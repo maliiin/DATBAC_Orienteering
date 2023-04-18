@@ -41,11 +41,11 @@ public static class UpdateCheckpointTitle
                 .Where(ch => ch.Id == request.checkpointId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (checkpoint == null) { throw new NullReferenceException(); };
+            if (checkpoint == null) { throw new ArgumentNullException(); };
 
             //check that user is allowed to access this checkpoint
             TrackUserIdDto track = await _mediator.Send(new GetTrackUser.Request(checkpoint.TrackId));
-            if (userId != track.UserId) { throw new NullReferenceException(); }
+            if (userId != track.UserId) { throw new ArgumentNullException(); }
 
             //change title
             checkpoint.Title = request.checkpointTitle;

@@ -44,7 +44,7 @@ public static class GetQuiz
             if (trackUser.UserId != userId)
             {
                 //the user that owns the track is not the one signed in
-                throw new NullReferenceException("the quiz is not owned by that user or does not exists");
+                throw new ArgumentNullException("the quiz is not owned by that user or does not exists");
             }
 
             //get quiz
@@ -53,7 +53,7 @@ public static class GetQuiz
                 .ThenInclude(a => a.Alternatives)
                 .FirstOrDefaultAsync(q => q.Id == request.QuizId, cancellationToken);
 
-            if (quiz == null) { throw new NullReferenceException("the quiz is not owned by that user or does not exists"); }
+            if (quiz == null) { throw new ArgumentNullException("the quiz is not owned by that user or does not exists"); }
 
             var dtoList = new List<QuizQuestionDto>();
             for (var i = 0; i < quiz.QuizQuestions.Count; i++)

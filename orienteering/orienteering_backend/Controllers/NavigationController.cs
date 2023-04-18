@@ -40,7 +40,7 @@ namespace orienteering_backend.Controllers
             {
                 return Unauthorized();
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }
@@ -63,7 +63,7 @@ namespace orienteering_backend.Controllers
             {
                 return Unauthorized();
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }
@@ -86,7 +86,7 @@ namespace orienteering_backend.Controllers
             {
                 return Unauthorized();
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }
@@ -120,7 +120,7 @@ namespace orienteering_backend.Controllers
             {
                 return Unauthorized();
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }

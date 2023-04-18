@@ -44,7 +44,7 @@ public class IdentityService :IIdentityService
     public async Task<bool> SignInUser(UserSignIn inpUser)
     {
         var user = await _userManager.FindByNameAsync(inpUser.UserName);
-        if (user != null) {
+        if (user == null) {
             return false;
         }
         var result = await _signInManager.PasswordSignInAsync(

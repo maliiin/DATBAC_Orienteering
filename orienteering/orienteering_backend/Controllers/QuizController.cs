@@ -37,7 +37,7 @@ namespace orienteering_backend.Controllers
                 return Unauthorized("user not signed in");
 
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }
@@ -62,7 +62,7 @@ namespace orienteering_backend.Controllers
                 return Unauthorized("user not signed in");
 
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }
@@ -85,7 +85,7 @@ namespace orienteering_backend.Controllers
                 return Unauthorized("user not signed in");
 
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }
@@ -107,7 +107,7 @@ namespace orienteering_backend.Controllers
             {
                 return Unauthorized("user not signed in");
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound("");
             }

@@ -29,7 +29,7 @@ public static class GetSingleTrackUnauthorized
             var track = await _db.Tracks
                 .Where(t => t.Id == request.trackId)
                 .FirstOrDefaultAsync();
-            if (track == null) { throw new NullReferenceException("this track dont exist"); }
+            if (track == null) { throw new ArgumentNullException("this track dont exist"); }
 
             //create dto
             var trackDto = _mapper.Map<Track, TrackDto>(track);

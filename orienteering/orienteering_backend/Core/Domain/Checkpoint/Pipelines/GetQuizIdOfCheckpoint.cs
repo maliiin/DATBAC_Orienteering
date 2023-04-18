@@ -26,7 +26,7 @@ public static class GetQuizIdOfCheckpoint
                 .Where(c => c.Id == request.checkpointId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (checkpoint is null) { throw new NullReferenceException("the checkpoint cannot be found or not allowed to access"); };
+            if (checkpoint is null) { throw new ArgumentNullException("the checkpoint cannot be found or not allowed to access"); };
             return checkpoint.QuizId;
         }
     }

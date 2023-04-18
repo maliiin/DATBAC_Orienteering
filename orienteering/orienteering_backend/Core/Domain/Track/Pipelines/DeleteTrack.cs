@@ -35,10 +35,10 @@ public static class DeleteTrack
             var track = await _db.Tracks
                 .Where(t => t.Id == request.trackId)
                 .FirstOrDefaultAsync(cancellationToken);
-            if (track == null) { throw new NullReferenceException("not found or access not allowed");}
+            if (track == null) { throw new ArgumentNullException("not found or access not allowed");}
 
             //check that user is allowed to access track
-            if (userId != track.UserId) { throw new NullReferenceException("not found or access not allowed"); }
+            if (userId != track.UserId) { throw new ArgumentNullException("not found or access not allowed"); }
 
 
             var id = track.Id;

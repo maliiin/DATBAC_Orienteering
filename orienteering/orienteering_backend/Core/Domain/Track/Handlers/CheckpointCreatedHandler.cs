@@ -24,7 +24,7 @@ public class CheckpointCreatedHandler : INotificationHandler<CheckpointCreated>
             .Where(t => t.Id == notification.TrackId)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (track == null) { throw new NullReferenceException("could not find track"); }
+        if (track == null) { throw new ArgumentNullException("could not find track"); }
 
         //checkpoint was added earlier
         track.AddedCheckpoint();

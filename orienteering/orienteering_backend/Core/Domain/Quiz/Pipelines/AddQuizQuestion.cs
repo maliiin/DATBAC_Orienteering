@@ -43,7 +43,7 @@ public static class AddQuizQuestion
             if (trackUser.UserId != userId)
             {
                 //the user that owns the track is not the one signed in
-                throw new NullReferenceException("the quiz dont exist or you are not allowed to edit");
+                throw new ArgumentNullException("the quiz dont exist or you are not allowed to edit");
             }
 
             var Quiz = await _db.Quiz
@@ -51,7 +51,7 @@ public static class AddQuizQuestion
 
             if (Quiz == null)
             {
-                throw new NullReferenceException("the quiz dont exist or you are not allowed to edit");
+                throw new ArgumentNullException("the quiz dont exist or you are not allowed to edit");
             }
 
             var quizQuestion = new QuizQuestion();

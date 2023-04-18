@@ -32,7 +32,7 @@ public static class GetQuizByCheckpointId
         public async Task<QuizDto> Handle(Request request, CancellationToken cancellationToken)
         {
             var quizId = await _mediator.Send(new GetQuizIdOfCheckpoint.Request(request.CheckpointId));
-            if (quizId == null) { throw new NullReferenceException("Checkpoint dont have quiz"); }
+            if (quizId == null) { throw new ArgumentNullException("Checkpoint dont have quiz"); }
 
             //get quiz
             var quiz = await _db.Quiz
@@ -40,7 +40,7 @@ public static class GetQuizByCheckpointId
                 .ThenInclude(a => a.Alternatives)
                 .FirstOrDefaultAsync(q => q.Id == quizId, cancellationToken);
 
-            if (quiz == null) { throw new NullReferenceException("Quiz not found"); }
+            if (quiz == null) { throw new ArgumentNullException("Quiz not found"); }
 
             var dtoList = new List<QuizQuestionDto>();
             for (var i = 0; i < quiz.QuizQuestions.Count; i++)

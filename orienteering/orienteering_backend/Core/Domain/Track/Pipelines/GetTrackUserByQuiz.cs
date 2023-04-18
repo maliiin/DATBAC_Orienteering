@@ -38,7 +38,7 @@ public static class GetTrackUserByQuiz
                 .Where(t => t.Id == trackId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (track == null) { throw new NullReferenceException(); }
+            if (track == null) { throw new ArgumentNullException(); }
 
             TrackUserIdDto trackDto = _mapper.Map<TrackUserIdDto>(track);
             return trackDto;

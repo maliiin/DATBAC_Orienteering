@@ -43,11 +43,11 @@ public static class GetSingleCheckpoint
                 .Where(c => c.Id == request.checkpointId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (checkpoint is null) { throw new NullReferenceException("the checkpoint cannot be found or not allowed to access"); };
+            if (checkpoint is null) { throw new ArgumentNullException("the checkpoint cannot be found or not allowed to access"); };
 
             //check that user is allowed to access this track
             TrackUserIdDto track = await _mediator.Send(new GetTrackUser.Request(checkpoint.TrackId));
-            if (userId != track.UserId) { throw new NullReferenceException("the checkpoint cannot be found or not allowed to access"); }
+            if (userId != track.UserId) { throw new ArgumentNullException("the checkpoint cannot be found or not allowed to access"); }
 
             //create dto
             var checkpointDto = _mapper.Map<Checkpoint, CheckpointDto>(checkpoint);
