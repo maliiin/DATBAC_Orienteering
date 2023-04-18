@@ -13,7 +13,6 @@ public static class GetSingleTrackUnauthorized
     public record Request(
         Guid trackId) : IRequest<TrackDto>;
 
-
     public class Handler : IRequestHandler<Request, TrackDto>
     {
         private readonly OrienteeringContext _db;

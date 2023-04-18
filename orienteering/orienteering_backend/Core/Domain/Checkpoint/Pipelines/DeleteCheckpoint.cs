@@ -10,12 +10,10 @@ using orienteering_backend.Core.Domain.Track.Pipelines;
 namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 // Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
-
 public static class DeleteCheckpoint
 {
     public record Request(
         Guid checkpointId) : IRequest<bool>;
-
 
     public class Handler : IRequestHandler<Request, bool>
     {
@@ -31,7 +29,6 @@ public static class DeleteCheckpoint
         }
         public async Task<bool> Handle(Request request, CancellationToken cancellationToken)
         {
-            //fix returtype
 
             //check that signed in
             var userId = _identityService.GetCurrentUserId();
@@ -50,8 +47,6 @@ public static class DeleteCheckpoint
             //return null even if it exist because dont tell atacker that it exists!
             if (userId != track.UserId) { throw new NullReferenceException("the checkpoint cannot be found, or you cannot access it"); }
 
-
-            //delete
             _db.Checkpoints.Remove(checkpoint);
 
             //get all checkpoints where order was higher than the deleted one
@@ -67,7 +62,7 @@ public static class DeleteCheckpoint
 
             await _db.SaveChangesAsync(cancellationToken);
 
-            //send event
+            //Publish event 
             await _mediator.Publish(new CheckpointDeleted(checkpoint.TrackId, request.checkpointId, checkpoint.QuizId));
 
             return true;

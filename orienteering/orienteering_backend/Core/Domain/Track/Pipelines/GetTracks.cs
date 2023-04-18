@@ -13,11 +13,9 @@ namespace orienteering_backend.Core.Domain.Track.Pipelines;
 public static class GetTracks
 {
     public record Request() : IRequest<List<TrackDto>>;
-    //Guid UserId) : IRequest<List<Track>>;
 
 
     public class Handler : IRequestHandler<Request, List<TrackDto>>
-    //public class Handler : IRequestHandler<Request, List<Track>>
     {
         private readonly OrienteeringContext _db;
         private readonly IMapper _mapper;
@@ -31,7 +29,6 @@ public static class GetTracks
         }
 
         public async Task<List<TrackDto>> Handle(Request request, CancellationToken cancellationToken)
-       // public async Task<List<Track>> Handle(Request request, CancellationToken cancellationToken)
         {
             //check that signed in
             var userId = _identityService.GetCurrentUserId();
@@ -40,14 +37,12 @@ public static class GetTracks
 
             var tracks = await _db.Tracks
                 .Where(t => t.UserId == userId)
-                .ToArrayAsync(cancellationToken);//ToListAsync();
+                .ToArrayAsync(cancellationToken);
 
             var trackDtoList = new List<TrackDto>();
             for (var i=0; i < tracks.Length; i++)
             {
                 var track = tracks[i];
-                //var dtoElement = new TrackDto(track.UserId, track.Name);
-                //dtoElement.TrackId = track.Id;
                 var trackDto = _mapper.Map<Track, TrackDto>(track);
                 trackDtoList.Add(trackDto);
             }

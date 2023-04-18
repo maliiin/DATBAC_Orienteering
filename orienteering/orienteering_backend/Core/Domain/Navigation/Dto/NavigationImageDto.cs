@@ -7,7 +7,6 @@
             Order = order;
         }
 
-        //fix går dette fint? ikke lik original
         public byte[] ImageData { get; set; }
         public int Order { get; set; }
         public string TextDescription { get; set; }

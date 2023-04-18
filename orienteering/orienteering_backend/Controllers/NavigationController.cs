@@ -116,9 +116,13 @@ namespace orienteering_backend.Controllers
                 var changed = await _mediator.Send(new UpdateNavigationText.Request(NavigationInfo.NavigationId, NavigationInfo.NewText, NavigationInfo.NavigationImageId));
                 return Ok();
             }
-            catch
+            catch (AuthenticationException)
             {
-                return Unauthorized("Could not find the navigation to edit");
+                return Unauthorized();
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
             }
         }
     }

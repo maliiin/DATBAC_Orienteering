@@ -14,7 +14,7 @@ namespace orienteering_backend.Core.Domain.Quiz
         [Key]
         public Guid UniqueId { get; private set; }
 
-        //Id = hvilket alternativ
+        // Id = hvilket alternativnr i quizquestion
         public int Id { get; set; }
         public string Text { get; set; }
     }

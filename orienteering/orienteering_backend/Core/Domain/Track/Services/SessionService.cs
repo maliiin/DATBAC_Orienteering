@@ -49,32 +49,26 @@ public class SessionService : ISessionService
         }
         var toCheckpointGuid = await _mediator.Send(new GetNextCheckpoint.Request(new Guid(CurrentCheckpoint)));
         var trackLoggingDto = new TrackLoggingDto();
-        // Fix: Hvordan sjekke om pipelinen gav exception eller nullverdi??
-        if (toCheckpointGuid != null)
-        {
-            var toCheckpoint = toCheckpointGuid.ToString();
-            if (startCheckpoint == toCheckpoint)
-            {
-
-                trackLoggingDto.StartCheckpointId = new Guid(startCheckpoint);
-
-                var startTimeString = _httpContextAccessor.HttpContext.Session.GetString("StartTime");
-                if (startTimeString == null)
-                {
-                    throw new Exception("Startime not set");
-                }
-                var startTime = DateTime.Parse(startTimeString);
-                var timeNow = DateTime.Now;
-                var timeUsed = Math.Floor(timeNow.Subtract(startTime).TotalMinutes).ToString();
-                trackLoggingDto.TimeUsed = timeUsed;
-                _httpContextAccessor.HttpContext.Session.Remove("StartCheckpoint");
-                _httpContextAccessor.HttpContext.Session.Remove("StartTime");
-                return trackLoggingDto;
-            }
-        }
         trackLoggingDto.StartCheckpointId = new Guid(startCheckpoint);
-        return trackLoggingDto;
 
+        var toCheckpoint = toCheckpointGuid.ToString();
+        if (startCheckpoint == toCheckpoint)
+        {
+
+            var startTimeString = _httpContextAccessor.HttpContext.Session.GetString("StartTime");
+            if (startTimeString == null)
+            {
+                throw new Exception("Startime not set");
+            }
+            var startTime = DateTime.Parse(startTimeString);
+            var timeNow = DateTime.Now;
+            var timeUsed = Math.Floor(timeNow.Subtract(startTime).TotalMinutes).ToString();
+            trackLoggingDto.TimeUsed = timeUsed;
+            _httpContextAccessor.HttpContext.Session.Remove("StartCheckpoint");
+            _httpContextAccessor.HttpContext.Session.Remove("StartTime");
+            }
+
+        return trackLoggingDto;
     }
 }
 

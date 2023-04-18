@@ -87,7 +87,7 @@ namespace orienteering_backend.Controllers
 
             try
             {
-                bool removed = await _mediator.Send(new DeleteCheckpoint.Request(CheckpointId));
+                await _mediator.Send(new DeleteCheckpoint.Request(CheckpointId));
                 return Ok();
             }
             catch (AuthenticationException)

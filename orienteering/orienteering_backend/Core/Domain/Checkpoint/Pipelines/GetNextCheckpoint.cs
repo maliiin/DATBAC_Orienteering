@@ -33,6 +33,7 @@ public static class GetNextCheckpoint
                 .FirstOrDefaultAsync(cancellationToken);
             if (currentCheckpoint == null) { throw new NullReferenceException();  }
             var track = await _mediator.Send(new GetSingleTrackUnauthorized.Request(currentCheckpoint.TrackId));
+            if (track == null) { throw new NullReferenceException(); }
 
             int orderNewCheckpoint=currentCheckpoint.Order+1;
             if (currentCheckpoint.Order >= track.NumCheckpoints)
@@ -45,7 +46,7 @@ public static class GetNextCheckpoint
                 .Where(c => c.TrackId == currentCheckpoint.TrackId)
                 .Where(c => c.Order == orderNewCheckpoint)
                 .FirstOrDefaultAsync(cancellationToken);
-
+            if (nextCheckpoint == null) { throw new NullReferenceException(); }
             return nextCheckpoint.Id;
 
 

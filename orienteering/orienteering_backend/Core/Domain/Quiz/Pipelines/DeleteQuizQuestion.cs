@@ -46,7 +46,6 @@ public static class DeleteQuizQuestion
                 throw new NullReferenceException("the quiz dont exist or not allowed to access");
             }
            
-
             quiz.RemoveQuizQuestion(request.quizQuestionId);
             await _db.SaveChangesAsync(cancellationToken);
 

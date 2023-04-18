@@ -5,7 +5,6 @@ using orienteering_backend.Core.Domain.Checkpoint.Events;
 using orienteering_backend.Core.Domain.Track.Pipelines;
 using System.Security.Authentication;
 using System.Net;
-using System.Security.Principal;
 using orienteering_backend.Core.Domain.Authentication.Services;
 
 // Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
@@ -38,7 +37,7 @@ public static class CreateCheckpoint
             if (userId == null) { throw new AuthenticationException("user not signed in"); }
             var trackDto = await _mediator.Send(new GetSingleTrackUnauthorized.Request(request.checkpointDto.TrackId));
 
-            //If not allowed allowed to do this throw exception
+            //If not allowed allowed to do this then throw exception
             if (trackDto.UserId != userId) { throw new NullReferenceException("The user dont own this track or it dosent exist."); };
 
             //create checkpoint
@@ -47,7 +46,7 @@ public static class CreateCheckpoint
 
             if (request.checkpointDto.GameId == 0)
             {
-                //no game--> should be quiz
+                //no game--> cheeckpoint is quiz
                 newCheckpoint.QuizId = Guid.NewGuid();
             }
 
@@ -55,8 +54,7 @@ public static class CreateCheckpoint
             await _db.SaveChangesAsync(cancellationToken);
 
             //qrcode
-            //Kilder: https://www.c-sharpcorner.com/article/create-qr-code-using-google-charts-api-in-vb-net/ (31.01.2023)
-            //Lisens quickchart api: https://github.com/typpo/quickchart (31.01.2023)
+            
 
             string url = "http://152.94.160.74/checkpoint/";
             if (newCheckpoint.QuizId == null)
@@ -67,6 +65,9 @@ public static class CreateCheckpoint
             {
                 url += "quiz/" + newCheckpoint.Id.ToString();
             }
+
+            //Kilder: https://www.c-sharpcorner.com/article/create-qr-code-using-google-charts-api-in-vb-net/ (31.01.2023)
+            //Lisens quickchart api: https://github.com/typpo/quickchart (31.01.2023)
 
             string QrLink = "https://quickchart.io/qr?text=";
             QrLink = QrLink + url;

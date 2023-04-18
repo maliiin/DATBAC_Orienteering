@@ -19,9 +19,6 @@ namespace orienteering_backend.Controllers
             _mediator = Mediator;
         }
 
-        //greate new track
-        //POST
-        // [Authorize]
         [HttpPost("createTrack")]
         public async Task<ActionResult> CreateTrack(CreateTrackDto trackDto)
         {
@@ -34,13 +31,11 @@ namespace orienteering_backend.Controllers
             }
             catch
             {
-                //not signed in
                 return Unauthorized();
             }
         }
 
 
-        //list of all tracks of a user
         [HttpGet("getTracks")]
         public async Task<ActionResult<List<TrackDto>>> GetTracksForUser()
         {

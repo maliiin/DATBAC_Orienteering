@@ -18,7 +18,6 @@ public static class GetQRCodes
         Guid TrackId
         ) : IRequest<List<CheckpointNameAndQRCodeDto>>;
 
-
     public class Handler : IRequestHandler<Request, List<CheckpointNameAndQRCodeDto>>
     {
         private readonly OrienteeringContext _db;

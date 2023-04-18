@@ -15,7 +15,6 @@ public static class UpdateCheckpointTitle
     public record Request(
         string checkpointTitle, Guid checkpointId) : IRequest<Checkpoint>;
 
-
     public class Handler : IRequestHandler<Request, Checkpoint>
     {
         private readonly OrienteeringContext _db;

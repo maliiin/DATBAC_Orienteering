@@ -47,8 +47,6 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                     .Include(n => n.Images)
                     .FirstOrDefaultAsync(cancellationToken);
 
-                //fix er dette rett eller bør den lage hvis den ikke finnes?
-                //den skal finnes fra før
                 if (navigation == null) { throw new NullReferenceException("not found or access not allowed"); }
 
                 //wwwroot/checkpointId is the folder

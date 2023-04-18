@@ -20,7 +20,6 @@ namespace orienteering_backend.Controllers
         }
 
 
-        //fix-denne bør sikres
         [HttpGet("getQuiz")]
         public async Task<ActionResult<QuizDto>> GetQuiz(string quizId)
         {
@@ -28,15 +27,20 @@ namespace orienteering_backend.Controllers
 
             var QuizId = new Guid(quizId);
 
-            //try
-            //{
-            var quizDto = await _mediator.Send(new GetQuiz.Request(QuizId));
-            return quizDto;
-            //}
-            //catch
-            //{
-            //    return Unauthorized();
-            //}
+            try
+            {
+                var quizDto = await _mediator.Send(new GetQuiz.Request(QuizId));
+                return quizDto;
+            }
+            catch (AuthenticationException)
+            {
+                return Unauthorized("user not signed in");
+
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
+            }
 
         }
 
@@ -71,9 +75,7 @@ namespace orienteering_backend.Controllers
 
             try
             {
-                //fix-sjekk status eller returner error hvis feil
-                var status = await _mediator.Send(new AddQuizQuestion.Request(inputQuizQuestions));
-                //fiks returtypen her!!!
+                await _mediator.Send(new AddQuizQuestion.Request(inputQuizQuestions));
 
                 return Created("Added quiz question.", null);
 

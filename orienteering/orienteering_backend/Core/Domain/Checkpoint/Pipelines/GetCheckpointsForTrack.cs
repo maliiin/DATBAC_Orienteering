@@ -27,7 +27,6 @@ namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines
             private readonly IIdentityService _identityService;
 
 
-
             public Handler(OrienteeringContext db, IMapper mapper, IMediator mediator, IIdentityService identityService )
             {
                 _db = db ?? throw new ArgumentNullException(nameof(db));

@@ -28,23 +28,18 @@ public static class GetTrackUserByQuiz
             _mediator = mediator;
         }
 
-        //return TrackUserIdDto from quizId
         public async Task<TrackUserIdDto> Handle(Request request, CancellationToken cancellationToken)
         { 
             //get trackid from checkpoint domain
-            var trackId=await _mediator.Send(new GetTrackIdForQuiz.Request(request.quizId));
+            var trackId = await _mediator.Send(new GetTrackIdForQuiz.Request(request.quizId));
 
             //get track
             var track = await _db.Tracks
                 .Where(t => t.Id == trackId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            //fix error hvis null
-            if (track == null) { return null; }
+            if (track == null) { throw new NullReferenceException(); }
 
-            //fix-bør dette heller kun returnere guid til user istedenfor trackide også?
-            //isåfall gjelder dette for alle stedene man bruker trackuserIdDto
-            //create dto
             TrackUserIdDto trackDto = _mapper.Map<TrackUserIdDto>(track);
             return trackDto;
         }
