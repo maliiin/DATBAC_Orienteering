@@ -6,24 +6,17 @@ export default function CheckpointInfo(props) {
 
     const navigate = useNavigate();
     const [editing, setEditing] = useState(false);
-    //fix endre navn på dette
     const [oldTitle, setOldTitle] = useState(props.checkpointInfo.title);
 
     //display spesific track
     const showCheckpoint = () => {
-        //fix- skal det være track/id/checkpoint/id??
-
         const url = "/checkpointdetails/" + props.checkpointInfo.id;
         navigate(url);
-
     }
 
     const showNavigation = () => {
-        //fix- skal det være track/id/checkpoint/id??
-
         const url = "/navigationEdit/" + props.checkpointInfo.id;
         navigate(url);
-
     }
 
     const deleteCheckpoint = async () => {
@@ -35,7 +28,7 @@ export default function CheckpointInfo(props) {
         if (response.status == 401) { navigate("/login"); }
 
         //404 => dont exist or not your checkpoint
-        if (response.status == 404) {navigate("/errorpage") }
+        if (response.status == 404) { navigate("/errorpage") }
 
         props.updateCheckpointList()
     }
@@ -93,9 +86,8 @@ export default function CheckpointInfo(props) {
             }
 
             <p>Type: {props.checkpointInfo.quizId == null ? "Game" : "Quiz"}
-                
+
             </p>
-            
 
             <Button onClick={showCheckpoint}>Show details</Button>
             <Button onClick={deleteCheckpoint}>Delete checkpoint</Button>

@@ -6,7 +6,6 @@ function Registration() {
     const navigate = useNavigate();
     const [errorMsg, setErrorMsg] = useState("");
 
-
     const [userInfo, setUserInfo] = useState({
         username: "",
         password: "",

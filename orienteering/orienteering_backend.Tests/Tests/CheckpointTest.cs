@@ -14,6 +14,7 @@ using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using System.Security.Authentication;
 using Xunit;
+// Lisens Xunit: https://github.com/xunit/xunit/blob/main/LICENSE
 // Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Tests.Helpers
@@ -293,7 +294,7 @@ namespace orienteering_backend.Tests.Helpers
         }
 
         [Fact]
-        public async Task Given_WhenGetQuizIdOfCheckpoint_ThenSuccess()
+        public async Task GivenQuizId_WhenGetQuizIdOfCheckpoint_ThenSuccess()
         {
             //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions);
@@ -306,9 +307,9 @@ namespace orienteering_backend.Tests.Helpers
             await _db.Checkpoints.AddAsync(checkpoint);
             await _db.SaveChangesAsync();
 
-            var checkpointDb = await _db.Checkpoints.Where(c => c.Id == checkpoint.Id).FirstOrDefaultAsync();
+            //var checkpointDb = await _db.Checkpoints.Where(c => c.Id == checkpoint.Id).FirstOrDefaultAsync();
 
-            var request = new GetQuizIdOfCheckpoint.Request(checkpointDb.Id);
+            var request = new GetQuizIdOfCheckpoint.Request(checkpoint.Id);
             var handler = new GetQuizIdOfCheckpoint.Handler(_db);
 
             //ACT

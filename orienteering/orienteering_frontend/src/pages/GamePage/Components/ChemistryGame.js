@@ -10,20 +10,6 @@ var correctMix;
 
 function ChemistryGame() {
 
-    //var boardList = [
-    //// Fix: legg inn virkelige solutions
-    //    {
-    //        solutionList: ['sodshjgdfdsgfhadfagl1', 'sol2', 'sol4', 'sol3', 'sol5', 'asdfwa', 'asdawsd', 'gafsdad'],
-    //        correctMix: ['sol2', 'sol3'],
-    //        taskText: "create a aslfns solution"
-    //    },
-    //    {
-    //        solutionList: ['sohadfagl1', 'sol22', 'sol32', 'sol4', 'sol55', 'awsd', 'pqwrj', 'asdfwa'],
-    //        correctMix: ['sohadfagl1', 'sol4'],
-    //        taskText: "create a ljkgaf solution"
-    //    }
-    //]
-
     const [solutionDivs, setSolutionDivs] = useState("");
     const [taskText, setTaskText] = useState("");
     const [gameDescription, setGameDescription] = useState("");
@@ -51,21 +37,9 @@ function ChemistryGame() {
         setSolutionDivs("");
     }
 
-
-    //function retryGame() {
-    //    var solutions = solutionDivs;
-    //    for (let i = 0; i < solutions.length; i++) {
-    //        solutions[i].style.transform = "translate(0px, 0px)";
-    //    }
-    //    if (solutions != "") {
-    //        createSolutions();
-    //        setSolutionDivs(solutions);
-    //    }
-    //    document.getElementById("retrygamebtn").style.display = "none";
-    //}
-
     function nextBoard() {
         document.getElementById("nextboardbtn").style.display = "none";
+        document.getElementById("statusdiv").textContent = "";
         solutionList = ChemistryData[nextBoardIndex].solutionList;
         correctMix = ChemistryData[nextBoardIndex].correctMix;
         setTaskText(ChemistryData[nextBoardIndex].taskText);
@@ -108,16 +82,11 @@ function ChemistryGame() {
         nextBoard();
     }
 
-
     useEffect(() => {
-        //document.getElementById("retrygamebtn").addEventListener("click", retryGame);
         document.getElementById("nextboardbtn").addEventListener("click", nextBoard);
         showGameDescription();
 
     }, []);
-
-
-
 
     return (
         <>
@@ -129,7 +98,6 @@ function ChemistryGame() {
                 <div id="outer-dropzone" className="dropzone">
                 </div>
 
-
                 <button id="checkanswer" className="gamebtn">Mix</button>
                 <button id="nextboardbtn" hidden className="gamebtn">Next board</button>
 
@@ -139,7 +107,6 @@ function ChemistryGame() {
 
             <div id="descriptionContainer" className="readabletext">{gameDescription}</div>
         </>);
-
 }
 
 export default ChemistryGame;

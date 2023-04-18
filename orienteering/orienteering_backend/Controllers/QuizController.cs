@@ -53,11 +53,6 @@ namespace orienteering_backend.Controllers
                 return Ok(quiz);
 
             }
-            catch (AuthenticationException)
-            {
-                return Unauthorized("user not signed in");
-
-            }
             catch (NullReferenceException)
             {
                 return NotFound();
