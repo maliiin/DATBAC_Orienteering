@@ -11,12 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddTransient<IIdentityService, IdentityService>();
 builder.Services.AddTransient<ISessionService, SessionService>();
-//builder.Services.AddScoped<IIdentityService, IdentityService>();
 
 
 builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -30,8 +28,6 @@ builder.Services.AddAuthentication(options =>
 })
 .AddIdentityCookies();
 
-//about the settings
-//https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.identityoptions?view=aspnetcore-6.0 //02.02.23
 builder.Services.AddIdentityCore<IdentityUser>(options =>
 {
     //user settings
@@ -45,25 +41,16 @@ builder.Services.AddIdentityCore<IdentityUser>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false; 
     })
-    //uten linjen under fant den ikke _signInManager i controlleren
     .AddSignInManager<SignInManager<IdentityUser>>()
-
     .AddEntityFrameworkStores<OrienteeringContext>();
 
 
-//fra dat240 malin
 builder.Services.ConfigureApplicationCookie(options =>
 {
     // cookie settings
     options.Cookie.HttpOnly = true;
-    //fiks fix sett ned tiden!!
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(35);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
 
-    //options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-
-    //fix- lag skikkelig url- blir videresendt hvis ikke
-    //options.LoginPath = "/login";
-    //options.AccessDeniedPath = "/AccessDenied";
     options.SlidingExpiration = true;
 });
 
@@ -75,8 +62,6 @@ builder.Services.AddDbContext<OrienteeringContext>(
     options => options.UseMySql(connectionString: connectionString, serverVersion: version)
 );
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-//Kilder: https://stackoverflow.com/questions/31886779/asp-net-mvc-6-aspnet-session-errors-unable-to-resolve-service-for-type (21.03.2023)
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -93,7 +78,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();//c=>{c.SwaggerEndpoint("/swagger/v1/swagger.json", "Employee API V1"););
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -105,5 +90,4 @@ app.MapControllers();
 
 app.Run();
 
-// to be able to perform tests on the code
 public partial class Program { }

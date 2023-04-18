@@ -9,7 +9,6 @@ using MediatR;
 
 namespace orienteering_backend.Core.Domain.Track.Services;
 
-//Fix: Flytte til userdomain?
 public class SessionService : ISessionService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -28,7 +27,7 @@ public class SessionService : ISessionService
         if (_httpContextAccessor.HttpContext == null)
         {
             throw new ArgumentNullException(nameof(HttpContext));
-        } 
+        }
         if (_httpContextAccessor.HttpContext.Session.GetString("StartCheckpoint") == null)
         {
             _httpContextAccessor.HttpContext.Session.SetString("StartCheckpoint", CheckpointId);
@@ -48,13 +47,15 @@ public class SessionService : ISessionService
         {
             throw new Exception("SessionVariable not set");
         }
-        else
+        var toCheckpointGuid = await _mediator.Send(new GetNextCheckpoint.Request(new Guid(CurrentCheckpoint)));
+        var trackLoggingDto = new TrackLoggingDto();
+        // Fix: Hvordan sjekke om pipelinen gav exception eller nullverdi??
+        if (toCheckpointGuid != null)
         {
-            var toCheckpointGuid = await _mediator.Send(new GetNextCheckpoint.Request(new Guid(CurrentCheckpoint)));
             var toCheckpoint = toCheckpointGuid.ToString();
             if (startCheckpoint == toCheckpoint)
             {
-                var trackLoggingDto = new TrackLoggingDto();
+
                 trackLoggingDto.StartCheckpointId = new Guid(startCheckpoint);
 
                 var startTimeString = _httpContextAccessor.HttpContext.Session.GetString("StartTime");
@@ -70,13 +71,10 @@ public class SessionService : ISessionService
                 _httpContextAccessor.HttpContext.Session.Remove("StartTime");
                 return trackLoggingDto;
             }
-            else
-            {
-                var trackLoggingDto = new TrackLoggingDto();
-                trackLoggingDto.StartCheckpointId = new Guid(startCheckpoint);
-                return trackLoggingDto;
-            }
         }
+        trackLoggingDto.StartCheckpointId = new Guid(startCheckpoint);
+        return trackLoggingDto;
+
     }
 }
 
