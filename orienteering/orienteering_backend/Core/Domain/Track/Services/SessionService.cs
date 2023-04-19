@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
+﻿using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Track.Dto;
-using System.Web;
 using MediatR;
 
 // Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
