@@ -2,7 +2,7 @@
 export default [
 
     {
-        solutionList: ['Helium gas','Oxygen gas', 'Hydrogen gas', 'Nitric acid', 'Nitrogen gas'],
+        solutionList: ['Helium gas', 'Oxygen gas', 'Nitric acid', 'Hydrogen gas',  'Nitrogen gas'],
         correctMix: ['Oxygen gas', 'Hydrogen gas'],
         taskText: "Create Water."
     },
