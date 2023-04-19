@@ -13,7 +13,7 @@ export default function CheckpointDetails() {
     const [QuizId, setQuizId] = useState("");
     const [quizChanged, setQuizChanged] = useState(1);
     const [gameType, setGameType] = useState("");
-    const games = { 1: "Fallingboxes", 2: "Chemistry", 3: "LogicGates" };
+    const games = { 1: "Math", 2: "Chemistry", 3: "Electronics" };
     const params = useParams();
     const checkpointId = params.checkpointId;
 
