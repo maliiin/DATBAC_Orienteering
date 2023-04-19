@@ -2,22 +2,22 @@
 export default [
 
     {
-        solutionList: ['Helium gas', 'Sulfate ion', 'Oxygen gas', 'Hydrogen gas', 'Nitric acid', 'Nitrogen gas'],
+        solutionList: ['Helium gas','Oxygen gas', 'Hydrogen gas', 'Nitric acid', 'Nitrogen gas'],
         correctMix: ['Oxygen gas', 'Hydrogen gas'],
         taskText: "Create Water."
     },
     {
-        solutionList: ['Sulfate ion', 'Water', 'Sodium ion', 'Chlorate ion', 'Chlorine ion', 'Carbon'],
+        solutionList: ['Sulfate ion', 'Water', 'Sodium ion', 'Chlorate ion', 'Chlorine ion'],
         correctMix: ['Sodium ion', 'Chlorine ion'],
         taskText: "Create Sodium chloride."
     },
     {
-        solutionList: ['Nitric acid','Copper', 'Sulfuric acid', 'Water', 'Oxygen', 'Carbonate ion'],
+        solutionList: ['Nitric acid','Copper', 'Sulfuric acid', 'Water', 'Carbonate ion'],
         correctMix: ['Copper', 'Sulfuric acid', 'Water'],
         taskText: "Create Copper Sulfate."
     },
     {
-        solutionList: ['Water', 'Phosphoric acid', 'Iron', 'Oxygen gas', 'Sulfur', 'Formic acid', 'Hydrogen gas'],
+        solutionList: ['Phosphoric acid', 'Iron', 'Oxygen gas', 'Sulfur', 'Formic acid'],
         correctMix: ['Iron', 'Sulfur'],
         taskText: "Iron sulfide"
     }
