@@ -129,7 +129,7 @@ export default function CreateCheckpointForm(props) {
                     >
 
                         <MenuItem value={1}>
-                            FallingBoxes
+                            Math
                         </MenuItem>
 
                         <MenuItem value={2} >
@@ -137,7 +137,7 @@ export default function CreateCheckpointForm(props) {
                         </MenuItem>
 
                         <MenuItem value={3} >
-                            LogicGates
+                            Electronics
                         </MenuItem>
 
                     </Select>

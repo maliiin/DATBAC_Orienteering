@@ -13,7 +13,7 @@ export default [
     },
     {
         solutionList: ['Nitric acid','Copper', 'Sulfuric acid', 'Water', 'Oxygen', 'Carbonate ion'],
-        correctMix: ['Copper', 'Sulfuric', 'water'],
+        correctMix: ['Copper', 'Sulfuric acid', 'Water'],
         taskText: "Create Copper Sulfate."
     },
     {
