@@ -138,12 +138,16 @@ namespace orienteering_backend.Tests.Helpers
         }
 
         [Fact]
-        public async Task Given_WhenAskForQuiz_ThenReturnQuiz()
+        public async Task GivenCorrectUser_WhenAskForQuiz_ThenReturnQuiz()
         {
             //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
+            var userId = Guid.NewGuid();
+            TrackUserIdDto trackUser = new();
+            trackUser.UserId = userId;
+            
             //create quiz and add to db
             var quizId = Guid.NewGuid();
             var quiz = new Quiz(quizId);
@@ -168,16 +172,22 @@ namespace orienteering_backend.Tests.Helpers
             quizQuestionDto.Question = quizQuestion.Question;
             quizQuestionDto.CorrectAlternative = quizQuestion.CorrectAlternative;
             var quizDto = new QuizDto(quizId, new List<QuizQuestionDto> { quizQuestionDto });
-            //var identityService = new Mock<IIdentityService>();
-            //identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
-            //var request = new GetQuiz.Request(quizId);
-            //var handler = new GetQuiz.Handler(_db, _mapper);
+
+            //mock
+            var _identityService = new Mock<IIdentityService>();
+            _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
+
+            var _mediator = new Mock<IMediator>();
+            _mediator.Setup(m => m.Send(It.IsAny<GetTrackUserByQuiz.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackUser);
+
+            var request = new GetQuiz.Request(quizId);
+            var handler = new GetQuiz.Handler(_db, _mapper, _identityService.Object, _mediator.Object);
 
             //ACT
-            //var returnedQuizDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+            var returnedQuizDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
-            ////ASSERT
-            //Assert.Equal(JsonConvert.SerializeObject(quizDto), JsonConvert.SerializeObject(returnedQuizDto));
+            //ASSERT
+            Assert.Equal(JsonConvert.SerializeObject(quizDto), JsonConvert.SerializeObject(returnedQuizDto));
         }
 
         [Fact]

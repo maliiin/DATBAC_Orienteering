@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Infrastructure\Automapper\NewFolder\**" />
+    <Content Remove="Infrastructure\Automapper\NewFolder\**" />
+    <EmbeddedResource Remove="Infrastructure\Automapper\NewFolder\**" />
+    <None Remove="Infrastructure\Automapper\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
@@ -26,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\Automapper\NewFolder\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
