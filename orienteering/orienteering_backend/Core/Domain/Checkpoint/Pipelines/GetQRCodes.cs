@@ -18,7 +18,6 @@ public static class GetQRCodes
         Guid TrackId
         ) : IRequest<List<CheckpointNameAndQRCodeDto>>;
 
-
     public class Handler : IRequestHandler<Request, List<CheckpointNameAndQRCodeDto>>
     {
         private readonly OrienteeringContext _db;
@@ -42,7 +41,7 @@ public static class GetQRCodes
 
             //check that user is allowed to access this track
             TrackUserIdDto track = await _mediator.Send(new GetTrackUser.Request(request.TrackId));
-            if (userId != track.UserId) { throw new NullReferenceException("not found or access not allowed"); }
+            if (userId != track.UserId) { throw new ArgumentNullException("not found or access not allowed"); }
 
             //get checkpoints
             var checkpointList = await _db.Checkpoints
@@ -51,7 +50,7 @@ public static class GetQRCodes
 
             if (checkpointList == null)
             {
-                throw new NullReferenceException("not found or access not allowed");
+                throw new ArgumentNullException("not found or access not allowed");
             }
             var dtoList = new List<CheckpointNameAndQRCodeDto>();
 

@@ -3,8 +3,8 @@
 
     public interface IIdentityService
     {
-        public Task<UserRegistration> CreateUser(UserRegistration user);
-        public Task<UserSignIn> SignInUser(UserSignIn user);
+        public Task<bool> CreateUser(UserRegistration user);
+        public Task<bool> SignInUser(UserSignIn user);
         public Task SignOutUser();
         public Guid? GetCurrentUserId();
     }

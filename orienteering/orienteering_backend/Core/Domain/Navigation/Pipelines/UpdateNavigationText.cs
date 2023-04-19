@@ -43,19 +43,13 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                     .Include(n => n.Images)
                     .FirstOrDefaultAsync(cancellationToken);
 
-                //fix-throw exception istedefor return false
-                if (navigation == null) { return false; }
-
-
-                //fix-bør disse to under slås sammen til en eller ikke?
-                //tror den GetTrackUser kanskje kan slås om til den andre
+                if (navigation == null) { throw new ArgumentNullException("not found or access not allowed"); }
 
                 //check that user is allowed to access this navigation
                 CheckpointDto checkpoint = await _mediator.Send(new GetSingleCheckpoint.Request(navigation.ToCheckpoint));
                 TrackUserIdDto track = await _mediator.Send(new GetTrackUser.Request(checkpoint.TrackId));
 
-                //fix-feil exception her! heller nullfererence
-                if (userId != track.UserId) { throw new AuthenticationException(); }
+                if (userId != track.UserId) { throw new ArgumentNullException("not found or access not allowed"); }
 
                 foreach (var navImage in navigation.Images)
                 {
@@ -69,6 +63,5 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                 return true;
             }
         }
-
     }
 }

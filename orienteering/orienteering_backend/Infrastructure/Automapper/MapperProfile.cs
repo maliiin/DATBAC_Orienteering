@@ -9,6 +9,7 @@ using orienteering_backend.Core.Domain.Track;
 using orienteering_backend.Core.Domain.Track.Dto;
 using NavigationClass=orienteering_backend.Core.Domain.Navigation.Navigation;
 
+// Kilder Automapper: https://github.com/AutoMapper/AutoMapper/blob/master/LICENSE.txt (19.04.23)
 // Kilder: https://github.com/hgmauri/sample-automapper/blob/main/src/Sample.Automapper.Application/MapperProfile.cs (03.03.2023)
 
 namespace orienteering_backend.Infrastructure.Automapper

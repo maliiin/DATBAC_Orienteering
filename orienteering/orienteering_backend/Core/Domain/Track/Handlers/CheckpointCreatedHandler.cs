@@ -7,8 +7,7 @@ using orienteering_backend.Core.Domain.Checkpoint.Events;
 
 namespace orienteering_backend.Core.Domain.Track.Handlers;
 
-
-//Denne pipelinen kaller addedcheckpoint på track så telleren øker
+//This pipeline calls addedCheckpoint() on track which decrements the NumCheckpoints counter
 
 public class CheckpointCreatedHandler : INotificationHandler<CheckpointCreated>
 {
@@ -25,8 +24,7 @@ public class CheckpointCreatedHandler : INotificationHandler<CheckpointCreated>
             .Where(t => t.Id == notification.TrackId)
             .FirstOrDefaultAsync(cancellationToken);
 
-        //fix error?
-        if (track == null) { throw new KeyNotFoundException("could not find track"); }
+        if (track == null) { throw new ArgumentNullException("could not find track"); }
 
         //checkpoint was added earlier
         track.AddedCheckpoint();

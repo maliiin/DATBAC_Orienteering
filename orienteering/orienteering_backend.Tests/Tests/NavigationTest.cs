@@ -32,7 +32,7 @@ namespace orienteering_backend.Tests.Helpers
                .UseInMemoryDatabase(databaseName: "orienteeringTest")
                .Options;
 
-            // "Mocker" automapper Fix bruker mock nå heller
+            // "Mocker" automapper
             //Kilder: https://www.thecodebuzz.com/unit-test-mock-automapper-asp-net-core-imapper/ (06.03.2023)
             if (_mapper == null)
             {

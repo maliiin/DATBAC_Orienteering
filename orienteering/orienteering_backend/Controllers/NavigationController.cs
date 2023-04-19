@@ -21,11 +21,6 @@ namespace orienteering_backend.Controllers
             _mediator = mediator;
         }
 
-        //kilde legg kode i kontrolleren
-        //får status 200 nå
-        //https://stackoverflow.com/questions/55205135/how-to-upload-image-from-react-to-asp-net-core-web-api
-        //https://sankhadip.medium.com/how-to-upload-files-in-net-core-web-api-and-react-36a8fbf5c9e8
-
         [HttpPost("AddImage")]
         public async Task<ActionResult> AddImage([FromForm] IFormFile file)
         {
@@ -45,7 +40,7 @@ namespace orienteering_backend.Controllers
             {
                 return Unauthorized();
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }
@@ -68,7 +63,7 @@ namespace orienteering_backend.Controllers
             {
                 return Unauthorized();
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }
@@ -91,7 +86,7 @@ namespace orienteering_backend.Controllers
             {
                 return Unauthorized();
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }
@@ -99,7 +94,6 @@ namespace orienteering_backend.Controllers
         }
 
 
-        //denne skal ikke være beskyttet
         [HttpGet("GetNextNavigation")]
         public async Task<ActionResult<NavigationDto>> GetNavigationForNextCheckpoint(string currentCheckpointId)
         {
@@ -122,10 +116,13 @@ namespace orienteering_backend.Controllers
                 var changed = await _mediator.Send(new UpdateNavigationText.Request(NavigationInfo.NavigationId, NavigationInfo.NewText, NavigationInfo.NavigationImageId));
                 return Ok();
             }
-            catch
+            catch (AuthenticationException)
             {
-                //fix feilmelding
-                return Unauthorized("Could not find the navigation to edit");
+                return Unauthorized();
+            }
+            catch (ArgumentNullException)
+            {
+                return NotFound();
             }
         }
     }

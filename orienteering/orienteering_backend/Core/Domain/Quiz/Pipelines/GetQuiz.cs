@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Infrastructure.Data;
 using orienteering_backend.Core.Domain.Quiz.Dto;
 using AutoMapper;
+using orienteering_backend.Core.Domain.Authentication.Services;
+using orienteering_backend.Core.Domain.Track.Pipelines;
+using System.Security.Authentication;
 
 // Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
@@ -19,27 +22,30 @@ public static class GetQuiz
     {
         private readonly OrienteeringContext _db;
         private readonly IMapper _mapper;
-        
+        private readonly IIdentityService _identityService;
+        private readonly IMediator _mediator;
 
-        public Handler(OrienteeringContext db, IMapper mapper)
+        public Handler(OrienteeringContext db, IMapper mapper, IIdentityService identityService, IMediator mediator)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _mapper = mapper;
+            _identityService = identityService;
+            _mediator = mediator;
             
         }
         public async Task<QuizDto> Handle(Request request, CancellationToken cancellationToken)
         {
             //check that signed in
-            //var userId = _identityService.GetCurrentUserId();
-            //if (userId == null) { throw new AuthenticationException("user not signed in"); }
+            var userId = _identityService.GetCurrentUserId();
+            if (userId == null) { throw new AuthenticationException("user not signed in"); }
 
             //check that user is allowed to access this quiz
-            //var trackUser = await _mediator.Send(new GetTrackUserByQuiz.Request(request.QuizId));
-            //if (trackUser.UserId != userId)
-            //{
-            //    //the user that owns the track is not the one signed in
-            //    throw new AuthenticationException("the quiz is not owned by that user");
-            //}
+            var trackUser = await _mediator.Send(new GetTrackUserByQuiz.Request(request.QuizId));
+            if (trackUser.UserId != userId)
+            {
+                //the user that owns the track is not the one signed in
+                throw new ArgumentNullException("the quiz is not owned by that user or does not exists");
+            }
 
             //get quiz
             var quiz = await _db.Quiz
@@ -47,7 +53,7 @@ public static class GetQuiz
                 .ThenInclude(a => a.Alternatives)
                 .FirstOrDefaultAsync(q => q.Id == request.QuizId, cancellationToken);
 
-            if (quiz == null) { throw new Exception("Quiz not found"); }
+            if (quiz == null) { throw new ArgumentNullException("the quiz is not owned by that user or does not exists"); }
 
             var dtoList = new List<QuizQuestionDto>();
             for (var i = 0; i < quiz.QuizQuestions.Count; i++)

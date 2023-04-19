@@ -37,7 +37,7 @@ namespace orienteering_backend.Core.Domain.Navigation.Pipelines
                     .Include(n => n.Images)
                     .FirstOrDefaultAsync(cancellationToken);
 
-                if (navigation == null) { throw new NullReferenceException("Navigation is null or access not allowed"); }
+                if (navigation == null) { throw new ArgumentNullException("Navigation is null or access not allowed"); }
 
                 List<NavigationImageDto> imgDtoList = new();
                 foreach (NavigationImage navImage in navigation.Images)

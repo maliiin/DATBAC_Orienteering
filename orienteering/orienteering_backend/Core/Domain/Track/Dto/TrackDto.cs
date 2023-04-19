@@ -6,7 +6,6 @@
         }
         public Guid? UserId { get; set; }
         public string? TrackName { get; set; }
-
         public Guid? TrackId { get; set; }
         public int NumCheckpoints { get; set; }
 

@@ -19,9 +19,6 @@ namespace orienteering_backend.Controllers
             _mediator = Mediator;
         }
 
-        //greate new track
-        //POST
-        // [Authorize]
         [HttpPost("createTrack")]
         public async Task<ActionResult> CreateTrack(CreateTrackDto trackDto)
         {
@@ -34,13 +31,11 @@ namespace orienteering_backend.Controllers
             }
             catch
             {
-                //not signed in
                 return Unauthorized();
             }
         }
 
 
-        //list of all tracks of a user
         [HttpGet("getTracks")]
         public async Task<ActionResult<List<TrackDto>>> GetTracksForUser()
         {
@@ -93,7 +88,7 @@ namespace orienteering_backend.Controllers
             {
                 return Unauthorized();
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }
@@ -109,15 +104,14 @@ namespace orienteering_backend.Controllers
             Guid trackGuid = new Guid(trackId);
             try
             {
-                //fiks sjekk respons
-                bool response = await _mediator.Send(new DeleteTrack.Request(trackGuid));
+                await _mediator.Send(new DeleteTrack.Request(trackGuid));
                 return Ok();
             }
             catch (AuthenticationException)
             {
                 return Unauthorized();
             }
-            catch (NullReferenceException)
+            catch (ArgumentNullException)
             {
                 return NotFound();
             }

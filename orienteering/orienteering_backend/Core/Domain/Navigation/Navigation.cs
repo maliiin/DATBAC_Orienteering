@@ -20,7 +20,6 @@
 
         public void AddNavigationImage(NavigationImage image)
         {
-            //fix-her burde order blitt satt istedenfor at den settes manuelt
             Images.Add(image);
         }
 

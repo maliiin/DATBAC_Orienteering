@@ -7,7 +7,6 @@ using orienteering_backend.Core.Domain.Checkpoint.Events;
 
 namespace orienteering_backend.Core.Domain.Track.Handlers;
 
-
 // This pipeline calls removedCheckpoint() on track which decrements the NumCheckpoints counter
 
 public class CheckpointDeletedHandler : INotificationHandler<CheckpointDeleted>

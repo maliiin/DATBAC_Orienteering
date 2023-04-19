@@ -10,7 +10,7 @@ function QRCodePage() {
 
     const fetchCheckpoints = async () => {
         const TrackId = location.state.trackid;
-        const url = "api/qrcode/getqrcodes?TrackId=" + TrackId;
+        const url = "api/checkpoint/getqrcodes?TrackId=" + TrackId;
         const response = await fetch(url);
         //401 => not signed in
         if (response.status == 401) { navigate("/login"); }

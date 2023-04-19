@@ -8,7 +8,6 @@ using orienteering_backend.Core.Domain.Checkpoint.Events;
 
 namespace orienteering_backend.Core.Domain.Quiz.Handlers;
 
-//fix-not in use? byttet til pipeline heller
 public class CheckpointDeletedHandler : INotificationHandler<CheckpointDeleted>
 {
     private readonly OrienteeringContext _db;
@@ -18,7 +17,6 @@ public class CheckpointDeletedHandler : INotificationHandler<CheckpointDeleted>
 
     }
 
-    //delete quiz because related checkpoint is deleted
     public async Task Handle(CheckpointDeleted notification, CancellationToken cancellationToken)
     {
         var quiz = await _db.Quiz

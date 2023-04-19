@@ -14,21 +14,17 @@ namespace orienteering_backend.Controllers
     public class CheckpointController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly IIdentityService _identityService;
 
-        public CheckpointController(IMediator Mediator, IIdentityService identityService)
+        public CheckpointController(IMediator Mediator)
         {
             _mediator = Mediator;
-            _identityService = identityService;
         }
 
-        //[Authorize]
         [HttpPost("createCheckpoint")]
         public async Task<ActionResult> CreateCheckpoint(CheckpointDto checkpointDto)
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
-            //fiks objekt her i parameter (tror ok?)
             try
             {
                 var newCheckPointId = await _mediator.Send(new CreateCheckpoint.Request(checkpointDto));
@@ -55,8 +51,6 @@ namespace orienteering_backend.Controllers
             }
             catch
             {
-                //fix-eller skal den returnere NotFound
-                //user dont own this track
                 return Unauthorized();
             }
         }
@@ -77,13 +71,12 @@ namespace orienteering_backend.Controllers
                 //not signed in
                 return Unauthorized();
             }
-            catch(NullReferenceException)
+            catch(ArgumentNullException)
             {
                 //not authenticated or dont exist
                 return NotFound();
             }
         }
-        //sjekk om db order blir autoinkrementet av nytt checkpoint
 
         [HttpDelete("removeCheckpoint")]
         public async Task<IActionResult> DeleteCheckpoint(string checkpointId)
@@ -93,7 +86,7 @@ namespace orienteering_backend.Controllers
 
             try
             {
-                bool removed = await _mediator.Send(new DeleteCheckpoint.Request(CheckpointId));
+                await _mediator.Send(new DeleteCheckpoint.Request(CheckpointId));
                 return Ok();
             }
             catch (AuthenticationException)
@@ -124,10 +117,32 @@ namespace orienteering_backend.Controllers
                 //not signed in
                 return Unauthorized("Not signed in");
             }
-            catch(NullReferenceException)
+            catch(ArgumentNullException)
             {
                 //does not exist or not allowed
                 return NotFound("Could not find the checkpoint to edit");
+            }
+        }
+
+        [HttpGet("getqrcodes")]
+        public async Task<ActionResult<List<CheckpointNameAndQRCodeDto>>> GetQRCodes(string TrackId)
+        {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
+            var track = new Guid(TrackId);
+
+            try
+            {
+                var checkpointList = await _mediator.Send(new GetQRCodes.Request(track));
+                return checkpointList;
+            }
+            catch (AuthenticationException)
+            {
+                return Unauthorized();
+            }
+            catch (ArgumentNullException)
+            {
+                return NotFound();
             }
         }
 

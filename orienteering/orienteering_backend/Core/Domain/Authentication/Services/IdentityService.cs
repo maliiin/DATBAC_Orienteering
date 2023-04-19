@@ -20,9 +20,8 @@ public class IdentityService :IIdentityService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<UserRegistration> CreateUser(UserRegistration user)
+    public async Task<bool> CreateUser(UserRegistration user)
     {
-        //fix endre denne (input?) user til createUser?, ikke bryt ddd 
 
         var result = await _userManager.CreateAsync(
             new IdentityUser()
@@ -35,32 +34,31 @@ public class IdentityService :IIdentityService
 
         if (!result.Succeeded)
         {   
-            return null;
+            return false;
         }
 
-        user.Password = null;
-        return user;
-
+        return true;
     }
 
    
-    public async Task<UserSignIn> SignInUser(UserSignIn user)
+    public async Task<bool> SignInUser(UserSignIn inpUser)
     {
-        var testuser = await _userManager.FindByNameAsync(user.UserName);
-        //fix eroor handling- sjekk at den over ikke er null
-        // fix: testuser variabelnavn?
+        var user = await _userManager.FindByNameAsync(inpUser.UserName);
+        if (user == null) {
+            return false;
+        }
         var result = await _signInManager.PasswordSignInAsync(
-            testuser,
-            user.Password,
+            user,
+            inpUser.Password,
             false,
             false
         );
 
         if (!result.Succeeded)
         {
-            return null;
+            return false;
         }
-        return user;
+        return true;
     }
 
     public async Task SignOutUser()
@@ -73,15 +71,10 @@ public class IdentityService :IIdentityService
     {
         HttpContext context = _httpContextAccessor.HttpContext;
 
-        //gir userid, men exeption om ingen er logget inn
-        //var p = HttpContext.User.Claims.First().Value;
-
-        //gir userid, men er null om ingen er logget inn (klikker hvis du kjører .value når ingen er logget inn (null.value))            
         var id = context.User.Claims.FirstOrDefault();
         if (id == null) { return null; }
 
         return new Guid(id.Value);
-        //System.Security.Claims.Claim id = HttpContext.User.Claims.FirstOrDefault();
 
     }
 }
