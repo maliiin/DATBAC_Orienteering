@@ -20,8 +20,6 @@ public class CheckpointCreatedHandler : INotificationHandler<CheckpointCreated>
         var quizId = notification.QuizId;
         if (quizId != null)
         {
-            //var quizIdNonNullable = quizId ?? default;
-            //var Quiz = new Quiz(quizIdNonNullable);
             var Quiz = new Quiz((Guid)quizId);
             _db.Quiz.Add(Quiz);
             await _db.SaveChangesAsync(cancellationToken);
