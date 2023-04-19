@@ -104,8 +104,7 @@ namespace orienteering_backend.Controllers
             Guid trackGuid = new Guid(trackId);
             try
             {
-                //fiks sjekk respons
-                bool response = await _mediator.Send(new DeleteTrack.Request(trackGuid));
+                await _mediator.Send(new DeleteTrack.Request(trackGuid));
                 return Ok();
             }
             catch (AuthenticationException)

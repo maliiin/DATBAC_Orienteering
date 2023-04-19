@@ -30,7 +30,7 @@ namespace orienteering_backend.Tests.Helpers
                .UseInMemoryDatabase(databaseName: "orienteeringTest")
                .Options;
 
-            // "Mocker" automapper Fix bruke denne alltid istedenfor moq på automapper
+            // "Mocker" automapper 
             //Kilder: https://www.thecodebuzz.com/unit-test-mock-automapper-asp-net-core-imapper/ (06.03.2023)
             if (_mapper == null)
             {
@@ -150,7 +150,7 @@ namespace orienteering_backend.Tests.Helpers
         }
 
         [Fact]
-        public async Task GivenCorrectUser_WhenGetCheckpointForTrack_ThenSuccess()
+        public async Task GivenCorrectUser_WhenGetCheckpointForTrack_ThenGetCheckpoints()
         {
             //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions);
