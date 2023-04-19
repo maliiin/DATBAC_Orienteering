@@ -5,7 +5,7 @@
         public Track()
         {
         }
-        public Guid Id { get; protected set; }
+        public Guid Id { get; private set; }
         public Guid? UserId { get; set; }
         public string? Name { get; set; }
         public int NumCheckpoints { get; private set; } = 0;
