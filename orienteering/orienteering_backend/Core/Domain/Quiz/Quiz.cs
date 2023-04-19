@@ -8,7 +8,7 @@
         }
 
         public Guid Id { get; set; }
-        public List<QuizQuestion> QuizQuestions { get; set; } = new();
+        public List<QuizQuestion> QuizQuestions { get; private set; } = new();
 
         public void AddQuizQuestion(QuizQuestion quizQuestion)
         {
