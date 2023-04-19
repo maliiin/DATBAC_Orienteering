@@ -55,8 +55,8 @@ namespace orienteering_backend.Tests.Helpers
             var user = new TrackUserIdDto();
             user.UserId = userId;
 
-            var identityService = new Mock<IIdentityService>();
-            identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
+            var _identityService = new Mock<IIdentityService>();
+            _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
 
             var mediator = new Mock<IMediator>();
             mediator.Setup(m => m.Send(It.IsAny<GetTrackUserByQuiz.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(user);
@@ -74,7 +74,7 @@ namespace orienteering_backend.Tests.Helpers
             var questionDto = new InputCreateQuestionDto("question string?", alternativesDto, 2, quizId.ToString());
 
             var request = new AddQuizQuestion.Request(questionDto);
-            var handler = new AddQuizQuestion.Handler(_db, identityService.Object, mediator.Object);
+            var handler = new AddQuizQuestion.Handler(_db, _identityService.Object, mediator.Object);
 
             //act
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
@@ -96,8 +96,8 @@ namespace orienteering_backend.Tests.Helpers
             var user = new TrackUserIdDto();
             user.UserId = userId;
 
-            var identityService = new Mock<IIdentityService>();
-            identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
+            var _identityService = new Mock<IIdentityService>();
+            _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
 
             var mediator = new Mock<IMediator>();
             mediator.Setup(m => m.Send(It.IsAny<GetTrackUserByQuiz.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(user);
@@ -125,7 +125,7 @@ namespace orienteering_backend.Tests.Helpers
             var quizQuestionId = quizDb.QuizQuestions[0].Id;
 
             var request = new DeleteQuizQuestion.Request(quizQuestionId);
-            var handler = new DeleteQuizQuestion.Handler(_db, identityService.Object, mediator.Object);
+            var handler = new DeleteQuizQuestion.Handler(_db, _identityService.Object, mediator.Object);
 
             //act
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
@@ -138,12 +138,16 @@ namespace orienteering_backend.Tests.Helpers
         }
 
         [Fact]
-        public async Task Given_WhenAskForQuiz_ThenReturnQuiz()
+        public async Task GivenCorrectUser_WhenAskForQuiz_ThenReturnQuiz()
         {
             //ARRANGE
             var _db = new OrienteeringContext(dbContextOptions);
             if (!_db.Database.IsInMemory()) { _db.Database.Migrate(); }
 
+            var userId = Guid.NewGuid();
+            TrackUserIdDto trackUser = new();
+            trackUser.UserId = userId;
+            
             //create quiz and add to db
             var quizId = Guid.NewGuid();
             var quiz = new Quiz(quizId);
@@ -168,16 +172,22 @@ namespace orienteering_backend.Tests.Helpers
             quizQuestionDto.Question = quizQuestion.Question;
             quizQuestionDto.CorrectAlternative = quizQuestion.CorrectAlternative;
             var quizDto = new QuizDto(quizId, new List<QuizQuestionDto> { quizQuestionDto });
-            //var identityService = new Mock<IIdentityService>();
-            //identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
-            //var request = new GetQuiz.Request(quizId);
-            //var handler = new GetQuiz.Handler(_db, _mapper);
+
+            //mock
+            var _identityService = new Mock<IIdentityService>();
+            _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
+
+            var _mediator = new Mock<IMediator>();
+            _mediator.Setup(m => m.Send(It.IsAny<GetTrackUserByQuiz.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackUser);
+
+            var request = new GetQuiz.Request(quizId);
+            var handler = new GetQuiz.Handler(_db, _mapper, _identityService.Object, _mediator.Object);
 
             //ACT
-            //var returnedQuizDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+            var returnedQuizDto = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
-            ////ASSERT
-            //Assert.Equal(JsonConvert.SerializeObject(quizDto), JsonConvert.SerializeObject(returnedQuizDto));
+            //ASSERT
+            Assert.Equal(JsonConvert.SerializeObject(quizDto), JsonConvert.SerializeObject(returnedQuizDto));
         }
 
         [Fact]
