@@ -91,13 +91,6 @@ public static class CreateCheckpoint
                 checkpointCreatedEvent.QuizId = newCheckpoint.QuizId;
             }
             await _mediator.Publish(checkpointCreatedEvent);
-
-            //if (newCheckpoint.GameId == 0)
-            //{
-            //    //checkpoint with quiz
-            //    //await _mediator.Publish(new QuizCheckpointCreated(newCheckpoint.Id, (Guid)newCheckpoint.QuizId), newCheckpoint.GameId);
-            //}
-
             return newCheckpoint.Id;
         }
     }
