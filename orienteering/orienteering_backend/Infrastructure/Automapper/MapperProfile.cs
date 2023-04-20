@@ -19,6 +19,12 @@ namespace orienteering_backend.Infrastructure.Automapper
     {
         public MapperProfile()
         {
+            CreateMap<QuizQuestion, NextQuizQuestionDto>().ForMember(
+                    dest => dest.QuizQuestionId,
+                    opt => opt.MapFrom(src => $"{src.Id}")
+                )
+                .ForMember(dest => dest.CorrectAlternative, opt => opt.Ignore())
+                .ForMember(dest => dest.Alternatives, opt => opt.MapFrom(src => src.Alternatives));
             CreateMap<QuizQuestion, QuizQuestionDto>().ForMember(
                     dest => dest.QuizQuestionId,
                     opt => opt.MapFrom(src => $"{src.Id}")
@@ -30,7 +36,7 @@ namespace orienteering_backend.Infrastructure.Automapper
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.TrackName, opt => opt.MapFrom(src => src.Name)).ReverseMap();
             CreateMap<NavigationImage, NavigationImageDto>()
-                .ConstructUsing(src => new NavigationImageDto(src.Order));
+                .ConstructUsing(src => new NavigationImageDto(src.Order));//.ReverseMap();
 
             CreateMap<NavigationClass, NavigationDto>()
                 .ConstructUsing(src => new NavigationDto(src.ToCheckpoint));
