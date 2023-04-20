@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using orienteering_backend.Core.Domain.Authentication;
 using orienteering_backend.Core.Domain.Authentication.Services;
 
