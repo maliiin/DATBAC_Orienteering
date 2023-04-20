@@ -2,11 +2,12 @@
 {
     public class Checkpoint
     {
-        public Checkpoint(string title, int gameId, Guid trackId)
+        public Checkpoint(string title, int gameId, Guid trackId, string description)
         {
             Title = title;
             GameId = gameId;
             TrackId = trackId;
+            CheckpointDescription= description;
         }
 
         public Guid Id { get; private set; }
@@ -16,5 +17,6 @@
         public byte[]? QRCode { get; set; }
         public Guid TrackId { get; set; }
         public int Order { get; set; }
+        public string CheckpointDescription { get; set; }
     }
 }

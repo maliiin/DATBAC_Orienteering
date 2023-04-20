@@ -16,6 +16,7 @@
         public int GameId { get; set; }
         public Guid? QuizId { get; set; }
         public int Order { get; set; }
+        public string CheckpointDescription { get; set; }
 
 
 
