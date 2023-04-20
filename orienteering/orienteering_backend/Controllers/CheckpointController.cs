@@ -54,6 +54,14 @@ namespace orienteering_backend.Controllers
             }
         }
 
+        [HttpGet("getDescription")]
+        public async Task<string> GetDescription(string checkpointId)
+        {
+            var checkpointIdGuid = new Guid(checkpointId);
+            var checkpointDescription = await _mediator.Send(new GetCheckpointDescription.Request(checkpointIdGuid));
+            return checkpointDescription;
+        }
+
         [HttpGet("getCheckpoint")]
         public async Task<ActionResult<CheckpointDto>> GetSingleCheckpoint(string checkpointId)
         {
