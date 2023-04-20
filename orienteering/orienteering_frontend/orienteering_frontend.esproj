@@ -47,12 +47,6 @@
   <ItemGroup>
     <None Remove="src\pages\GamePage\LogicGates\**" />
   </ItemGroup>
-  <ItemGroup>
-    <TypeScriptConfiguration Remove="src\components\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="src\components\**" />
-  </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties package_1json__JsonSchema="https://json.schemastore.org/pattern.json" />

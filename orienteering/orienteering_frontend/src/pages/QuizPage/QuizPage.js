@@ -1,8 +1,8 @@
 import { Grid, Box, Button, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from "react";
+import CheckpointDescription from '../..Components/CheckpointDescription';
 
 export default function QuizPage() {
 
@@ -23,7 +23,8 @@ export default function QuizPage() {
 
     const [endOfQuiz, setEndOfQuiz] = useState(false);
     const [quizStatus, setQuizStatus] = useState(false);
-
+    const [checkpointDescriptionDisplayed, setCheckpointDescriptionDisplayed] = useState(false);
+    
     useEffect(() => {
         getQuiz();
         checkSession();
@@ -122,70 +123,99 @@ export default function QuizPage() {
         setGuess(event.target.value);
     };
 
-    return (<>
+    async function displayRadio() {
+        var t = currentQuizQuestion.alternatives.map((alternative, index) => {
+            return (
+                <FormControlLabel
+                    key={alternative.text + "-" + index}
+                    value={alternative.text}
+                    label={alternative.text}
+                    control={<Radio required={true} />}
+                    defaultChecked={guess == alternative.text}>
+                </FormControlLabel>
+            )
+        })
+        setRadios(t)
+    }
 
-        <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            style={{
-                minHeight: '50vh',
-            }}
-        >
+    const hideCheckpointDescription = async () => {
+        setCheckpointDescriptionDisplayed(true);
+    }
+
+    if (checkpointDescriptionDisplayed) {
+        return (<>
+
             <Grid
-                item
-                sx={10}
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
                 style={{
-                    width: '70%',
-                    top: "20%",
-                    position: "absolute"
+                    minHeight: '50vh',
                 }}
             >
-                <Box
-                    onSubmit={handleSubmit}
-                    component="form"
+                <Grid
+                    item
+                    sx={10}
                     style={{
-                        display: endOfQuiz ? "none" : "block"
+                        width: '70%',
+                        top: "20%",
+                        position: "absolute"
                     }}
                 >
-                    <FormLabel
-                        id="question"
+                    <Box
+                        onSubmit={handleSubmit}
+                        component="form"
+                        style={{
+                            display: endOfQuiz ? "none" : "block"
+                        }}
                     >
-                        {currentQuizQuestion.question}
-                    </FormLabel>
+                        <FormLabel
+                            id="question"
+                        >
+                            {currentQuizQuestion.question}
+                        </FormLabel>
 
-                    <RadioGroup
+                        <RadioGroup
 
-                        value={guess}
-                        aria-labelledby="radio-buttons-group"
-                        name="radio-buttons-group"
-                        onChange={(e) => changeGuess(e)}
-                    >
-                        {radios}
+                            value={guess}
+                            aria-labelledby="radio-buttons-group"
+                            name="radio-buttons-group"
+                            onChange={(e) => changeGuess(e)}
+                        >
+                            {radios}
 
-                    </RadioGroup>
+                        </RadioGroup>
 
-                    <Button
-                        type="submit"
-                        variant="contained"
-                    >
-                        Check answer
-                    </Button>
-                </Box>
-                {quizStatus}
+                        <Button
+                            type="submit"
+                            variant="contained"
+                        >
+                            Check answer
+                        </Button>
+                    </Box>
+                    {quizStatus}
 
-                <div style={{
-                    display: endOfQuiz ? "block" : "none"
-                }}>
+                    <div style={{
+                        display: endOfQuiz ? "block" : "none"
+                    }}>
 
-                    <p>End of quiz</p>
+                        <p>End of quiz</p>
 
-                    <Button onClick={navigateToNextCheckpoint}>
-                        Navigate to next checkpoint
-                    </Button>
-                </div>
+                        <Button onClick={navigateToNextCheckpoint}>
+                            Navigate to next checkpoint
+                        </Button>
+                    </div>
+                </Grid>
             </Grid>
-        </Grid>
-    </>);
+        </>);
+    }
+
+    if (!checkpointDescriptionDisplayed) {
+        return (
+            <>
+                <CheckpointDescription checkpointId={params.checkpointId}></CheckpointDescription>
+                <Button onClick={hideCheckpointDescription}></Button>
+            </>);
+    }
 }
