@@ -1,6 +1,7 @@
 ﻿using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Track.Dto;
 using MediatR;
+using orienteering_backend.Core.Domain.Checkpoint;
 
 // Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
@@ -29,6 +30,7 @@ public class SessionService : ISessionService
         {
             _httpContextAccessor.HttpContext.Session.SetString("StartCheckpoint", CheckpointId);
             _httpContextAccessor.HttpContext.Session.SetString("StartTime", DateTime.Now.ToString());
+            _httpContextAccessor.HttpContext.Session.SetInt32("Score", 0);
         }
 
     }
@@ -60,12 +62,29 @@ public class SessionService : ISessionService
             var startTime = DateTime.Parse(startTimeString);
             var timeNow = DateTime.Now;
             var timeUsed = Math.Floor(timeNow.Subtract(startTime).TotalMinutes).ToString();
+            var score = _httpContextAccessor.HttpContext.Session.GetInt32("Score");
             trackLoggingDto.TimeUsed = timeUsed;
+            trackLoggingDto.Score = score;
+            //clear session
             _httpContextAccessor.HttpContext.Session.Remove("StartCheckpoint");
             _httpContextAccessor.HttpContext.Session.Remove("StartTime");
+            _httpContextAccessor.HttpContext.Session.Remove("Score");
             }
 
         return trackLoggingDto;
+    }
+
+    public void AddScore(int points)
+    {
+        if (_httpContextAccessor.HttpContext == null)
+        {
+            throw new ArgumentNullException(nameof(HttpContext));
+        }
+        var previousScore = _httpContextAccessor.HttpContext.Session.GetInt32("Score");
+        if (previousScore == null) { throw new ArgumentNullException("score is null"); }
+
+        //add score to session
+        _httpContextAccessor.HttpContext.Session.SetInt32("Score",(int)previousScore+points);
     }
 }
 

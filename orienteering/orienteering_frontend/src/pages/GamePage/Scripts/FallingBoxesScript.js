@@ -1,5 +1,6 @@
 "use strict";
 import Data from "../Data/FallingBoxesData";
+import addScore from "./AddScoreToSession";
 
 var interact = require('interactjs')
 
@@ -93,8 +94,14 @@ function GameStatus() {
         //remove basket
         var basket = document.getElementById("basket");
         basket.style.display = "none";
+
+
+        //call function to add score to session
+        addScore(gameStatus.points);
+
     }
 }
+
 
 //https://www.w3schools.com/graphics/tryit.asp?filename=trygame_default_gravity
 function GameArea(canvas) {
@@ -162,7 +169,7 @@ function FallingObject(x, y, values) {
             (this.pos_x <= positionBasket.x + BasketWidth)) {
 
             if (this.collect) {
-                gameStatus.points += 10;
+                gameStatus.points += 1;
             } else {
                 //lost a life
                 gameStatus.looseLife();
@@ -240,3 +247,9 @@ function addFallingBox() {
 }
 
 export default setup;
+
+//export { GameScore };
+
+//function GameScore() {
+//    return gameStatus.points;
+//}
