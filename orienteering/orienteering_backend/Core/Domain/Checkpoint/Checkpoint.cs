@@ -1,5 +1,4 @@
-﻿
-namespace orienteering_backend.Core.Domain.Checkpoint
+﻿namespace orienteering_backend.Core.Domain.Checkpoint
 {
     public class Checkpoint
     {
