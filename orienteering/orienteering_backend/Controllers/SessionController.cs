@@ -30,4 +30,14 @@ public class SessionController : ControllerBase
         var trackLoggingDto = await _sessionService.CheckTrackFinished(CurrentCheckpoint);
         return trackLoggingDto;
     }
+
+    [HttpPost("addScore")]
+    public async Task<ActionResult> addScoreToSession(AddScoreDto scoreDto)
+    {
+        if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
+        _sessionService.AddScore(Int32.Parse(scoreDto.Score));
+        return Ok();
+        
+    }
 }

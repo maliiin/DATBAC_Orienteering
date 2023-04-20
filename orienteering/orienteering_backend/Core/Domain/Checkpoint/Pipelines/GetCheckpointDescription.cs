@@ -1,10 +1,6 @@
 ﻿using MediatR;
 using orienteering_backend.Infrastructure.Data;
-using orienteering_backend.Core.Domain.Checkpoint.Events;
-using orienteering_backend.Core.Domain.Track.Pipelines;
-using System.Security.Authentication;
-using System.Net;
-using orienteering_backend.Core.Domain.Authentication.Services;
+using orienteering_backend.Core.Domain.Checkpoint;
 using Microsoft.EntityFrameworkCore;
 
 // Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE

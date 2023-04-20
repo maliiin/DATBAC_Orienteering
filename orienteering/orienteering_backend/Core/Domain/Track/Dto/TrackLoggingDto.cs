@@ -2,12 +2,8 @@
 {
     public class TrackLoggingDto
     {
-        public TrackLoggingDto()
-        {
-        }
-
         public Guid? StartCheckpointId { get; set; }
-
         public string? TimeUsed { get; set; }
+        public int? Score { get; set; }
     }
 }
