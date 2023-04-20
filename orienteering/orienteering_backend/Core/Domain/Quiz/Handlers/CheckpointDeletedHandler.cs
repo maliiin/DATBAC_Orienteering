@@ -1,5 +1,4 @@
-﻿
-using MediatR;
+﻿using MediatR;
 using orienteering_backend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Checkpoint.Events;

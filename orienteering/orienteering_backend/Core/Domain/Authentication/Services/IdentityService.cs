@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using System.Web;
 
 namespace orienteering_backend.Core.Domain.Authentication.Services;
 
