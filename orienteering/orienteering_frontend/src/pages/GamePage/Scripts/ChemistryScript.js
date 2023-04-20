@@ -1,3 +1,5 @@
+import addScore from "./AddScoreToSession";
+
 var interact = require("interactjs");
 var correctMix;
 var GameInitialized = false;
@@ -64,6 +66,10 @@ function checkAnswer() {
             }
             document.getElementById("descriptionContainer").style.display = "block";
             document.getElementById("navigationButton").style.display = "block";
+
+            //Add score to session
+            addScore(score);
+
         }
         else {
             document.getElementById("nextboardbtn").style.display = "inline-block";

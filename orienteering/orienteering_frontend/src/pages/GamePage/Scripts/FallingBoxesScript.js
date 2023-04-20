@@ -1,5 +1,6 @@
 "use strict";
 import Data from "../Data/FallingBoxesData";
+import addScore from "./AddScoreToSession";
 
 var interact = require('interactjs')
 
@@ -101,18 +102,6 @@ function GameStatus() {
     }
 }
 
-async function addScore(points) {
-   
-    const requestAlternatives = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({ Score: ""+points })
-    };
-    await fetch("/api/session/addScore", requestAlternatives)
-}
 
 //https://www.w3schools.com/graphics/tryit.asp?filename=trygame_default_gravity
 function GameArea(canvas) {
