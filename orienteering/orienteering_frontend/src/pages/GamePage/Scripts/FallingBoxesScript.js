@@ -93,7 +93,25 @@ function GameStatus() {
         //remove basket
         var basket = document.getElementById("basket");
         basket.style.display = "none";
+
+
+        //call function to add score to session
+        addScore(gameStatus.points);
+
     }
+}
+
+async function addScore(points) {
+   
+    const requestAlternatives = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ Score: ""+points })
+    };
+    await fetch("/api/session/addScore", requestAlternatives)
 }
 
 //https://www.w3schools.com/graphics/tryit.asp?filename=trygame_default_gravity
@@ -162,7 +180,7 @@ function FallingObject(x, y, values) {
             (this.pos_x <= positionBasket.x + BasketWidth)) {
 
             if (this.collect) {
-                gameStatus.points += 10;
+                gameStatus.points += 1;
             } else {
                 //lost a life
                 gameStatus.looseLife();
@@ -240,3 +258,9 @@ function addFallingBox() {
 }
 
 export default setup;
+
+//export { GameScore };
+
+//function GameScore() {
+//    return gameStatus.points;
+//}

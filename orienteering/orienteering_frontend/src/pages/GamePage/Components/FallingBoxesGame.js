@@ -1,5 +1,6 @@
 import setup from "../Scripts/FallingBoxesScript";
 import { Button } from '@mui/material';
+//import GameScore from "../Scripts/FallingBoxesScript";
 
 
 export default function FallingBoxesGame() {
@@ -8,7 +9,7 @@ export default function FallingBoxesGame() {
 
     const canvasWidth = window.screen.availWidth;
 
-    function test() {
+    function SetupGame() {
         setup(basketWidth, basketHeight);
     }
 
@@ -62,7 +63,7 @@ export default function FallingBoxesGame() {
                         left: canvasWidth / 2 - 100 + "px",
                         backgroundColor: "white",
                     }}
-                    onClick={test}
+                    onClick={SetupGame}
                 >
                     Start Game
                 </Button></div>

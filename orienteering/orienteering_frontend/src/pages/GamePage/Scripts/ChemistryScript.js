@@ -18,6 +18,7 @@ function setup(inpCorrectMix, inpLastBoard = false) {
 }
 export default setup;
 
+
 function initGame() {
     document.getElementById("checkanswer").addEventListener("click", checkAnswer);
 }
@@ -68,6 +69,8 @@ function checkAnswer() {
             document.getElementById("nextboardbtn").style.display = "inline-block";
         }
     }
+
+    
 }
 
 
