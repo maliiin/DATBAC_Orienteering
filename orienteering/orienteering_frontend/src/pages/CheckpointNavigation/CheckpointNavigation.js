@@ -111,7 +111,7 @@ export default function CheckpointNavigation() {
                     <Grid item xs={4}>
                         <h3>Track finished</h3>
                         <p>Total time used: {totalTime} minutes</p>
-                        <p>Score: {totalScore} points</p>
+                        <p>Total score: {totalScore} points</p>
                     </Grid>
                 </Grid>
 
