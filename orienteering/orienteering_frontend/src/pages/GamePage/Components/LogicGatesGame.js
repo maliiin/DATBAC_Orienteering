@@ -83,6 +83,19 @@ export default function LogicGatesGame() {
                     <br></br>
                     When checking answer and the correct solutions are in the drop area, the remaining hp are added to your score.
                 </p>
+                <p>
+                    <b>Info about the gates:</b>
+                    <br></br>
+                    Inverter has 1 input, the other gates has 2 inputs. All gates has 1 output. 
+                    <br></br>
+                    <b>AND-gate</b> has output 1 when both input is 1, all other cases has output 0. 
+                    <br></br>
+                    <b>NAND-gate</b> has output opposite of AND-gate. If two inputs in AND-gate gives 1 out, the same inputs in NAND-gate gives 0 out. 
+                    <br></br>
+                    <b>Inverter</b> has output which as opposite of input. 0 in gives 1 out. 1 in gives 0 out. 
+                    <br></br>
+                    <b>OR-gate</b> has output 1 if at least one of the two inputs are 1. If not, it has ouptut 0. 
+                </p>
                 <br></br>
                 <br></br>
 
