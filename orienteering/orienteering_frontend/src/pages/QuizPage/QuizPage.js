@@ -8,6 +8,7 @@ export default function QuizPage() {
 
     const navigate = useNavigate();
     const params = useParams();
+    const [score, setScore] = useState(0);
 
     //what the user answers
     const [guess, setGuess] = useState("");
@@ -74,29 +75,45 @@ export default function QuizPage() {
         event.preventDefault();
 
         var solution = currentQuizQuestion.alternatives[currentQuizQuestion.correctAlternative - 1].text;
-
-        //check if answer is correct
-        if (solution == guess) {
-            setQuizStatus(<>
-                <p>Correct answer</p>
-            </>
-            )
-        } else {
-            setQuizStatus(<p>Wrong answer. Correct answer is: {solution}</p>)
-        }
-
         //check if end of quiz or not
         if (quiz.quizQuestions.length == quizQuestionIndex + 1) {
             setEndOfQuiz(true);
+            //score+1 because additional score not is added yet
+            addScore(score+1);
         }
         else {
             const newIndex = quizQuestionIndex + 1;
             setQuizQuestionIndex(newIndex);
         };
 
+        //check if answer is correct
+        if (solution == guess) {
+            setQuizStatus(<>
+                <p>Correct answer</p>
+            </>)
+            setScore(score + 1);
+        } else {
+            setQuizStatus(<p>Wrong answer. Correct answer is: {solution}</p>)
+        }
+
+
+
         //reset answer
         setGuess("")
     };
+
+    async function addScore(points) {
+
+        const requestAlternatives = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ Score: "" + points })
+        };
+        await fetch("/api/session/addScore", requestAlternatives)
+    }
 
     async function displayRadio() {
         var t = currentQuizQuestion.alternatives.map((alternative, index) => {
@@ -180,6 +197,7 @@ export default function QuizPage() {
                 }}>
 
                     <p>End of quiz</p>
+                    <p>You got {score} points.</p>
 
                     <Button onClick={navigateToNextCheckpoint}>
                         Navigate to next checkpoint

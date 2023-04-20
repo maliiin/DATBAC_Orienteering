@@ -101,9 +101,20 @@ export default function CheckpointNavigation() {
     if (trackFinished) {
         return (
             <>
-                <p>Track finished</p>
-                <p>Total time used: {totalTime} minutes</p>
-                <p>Score: {totalScore} points</p>
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{ minHeight: '50vh' }} >
+                    <Grid item xs={4}>
+                        <h3>Track finished</h3>
+                        <p>Total time used: {totalTime} minutes</p>
+                        <p>Score: {totalScore} points</p>
+                    </Grid>
+                </Grid>
+
             </>
         );
     }
