@@ -231,6 +231,7 @@ namespace orienteering_backend.Tests.Helpers
             //create checkpoint
             var checkpoint = new Checkpoint("test10", 0, track.Id);
             checkpoint.QuizId = quizId;
+            checkpoint.CheckpointDescription = "Test";
             await _db.Checkpoints.AddAsync(checkpoint);
             track.AddedCheckpoint();
             await _db.SaveChangesAsync();

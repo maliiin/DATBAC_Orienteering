@@ -66,6 +66,7 @@ namespace orienteering_backend.Tests.Helpers
 
             //create checkpoint
             var checkpoint = new Checkpoint("test1", 0, track.Id);
+            checkpoint.CheckpointDescription = "test";
             await _db.Checkpoints.AddAsync(checkpoint);
             await _db.SaveChangesAsync();
 
