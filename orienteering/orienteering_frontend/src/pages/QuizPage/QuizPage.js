@@ -2,7 +2,7 @@ import { Grid, Box, Button, FormLabel, RadioGroup, FormControlLabel, Radio } fro
 import React, { useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from "react";
-import CheckpointDescription from '../..Components/CheckpointDescription';
+import CheckpointDescription from '../../Components/CheckpointDescription';
 
 export default function QuizPage() {
 
@@ -25,7 +25,7 @@ export default function QuizPage() {
     const [endOfQuiz, setEndOfQuiz] = useState(false);
     const [quizStatus, setQuizStatus] = useState(false);
     const [checkpointDescriptionDisplayed, setCheckpointDescriptionDisplayed] = useState(false);
-    
+
     useEffect(() => {
         getQuiz();
         checkSession();
@@ -80,7 +80,7 @@ export default function QuizPage() {
         if (quiz.quizQuestions.length == quizQuestionIndex + 1) {
             setEndOfQuiz(true);
             //score+1 because additional score not is added yet
-            addScore(score+1);
+            addScore(score + 1);
         }
         else {
             const newIndex = quizQuestionIndex + 1;
@@ -217,8 +217,8 @@ export default function QuizPage() {
                         display: endOfQuiz ? "block" : "none"
                     }}>
 
-                    <p>End of quiz</p>
-                    <p>You got {score} points.</p>
+                        <p>End of quiz</p>
+                        <p>You got {score} points.</p>
 
                         <Button onClick={navigateToNextCheckpoint}>
                             Navigate to next checkpoint
@@ -232,8 +232,10 @@ export default function QuizPage() {
     if (!checkpointDescriptionDisplayed) {
         return (
             <>
-                <CheckpointDescription checkpointId={params.checkpointId}></CheckpointDescription>
-                <Button onClick={hideCheckpointDescription}></Button>
+                <CheckpointDescription
+                    checkpointId={params.checkpointId}
+                    hideDescription={hideCheckpointDescription}>
+                </CheckpointDescription>
             </>);
     }
 }

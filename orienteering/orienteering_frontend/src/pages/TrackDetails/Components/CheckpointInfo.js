@@ -69,24 +69,24 @@ export default function CheckpointInfo(props) {
 
             <p style={{ display: "inline" }}>Title:</p>
             {editing ?
-                (
-                    <input
-                        style={{ display: "inline" }}
-                        type="text"
-                        value={oldTitle}
-                        onChange={handleChange}
-                        onBlur={stopEdit}
-                    >
-                    </input>
+                (<input
+                    style={{ display: "inline" }}
+                    type="text"
+                    value={oldTitle}
+                    onChange={handleChange}
+                    onBlur={stopEdit}>
+                </input>
                 ) : (
-
-                    <span
-                        onDoubleClick={shouldEdit}
-                    > {props.checkpointInfo.title}</span>)
+                    <span onDoubleClick={shouldEdit}>
+                        {props.checkpointInfo.title}
+                    </span>)
             }
 
             <p>Type: {props.checkpointInfo.quizId == null ? "Game" : "Quiz"}
+            </p>
 
+            <p>
+                Description: {props.checkpointInfo.checkpointDescription}
             </p>
 
             <Button onClick={showCheckpoint}>Show details</Button>

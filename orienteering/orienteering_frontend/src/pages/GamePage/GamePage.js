@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import LogicGatesGame from "./Components/LogicGatesGame";
-import CheckpointDescription from '../..Components/CheckpointDescription';
+import CheckpointDescription from '../../Components/CheckpointDescription';
 
 export default function GamePage() {
     const navigate = useNavigate();
@@ -47,6 +47,10 @@ export default function GamePage() {
         else {
             setChosenGame(<LogicGatesGame></LogicGatesGame>);
         }
+    }
+
+    function hideCheckpointDescription() {
+        setCheckpointDescriptionDisplayed(true);
     }
 
     function navigateToCheckpoint() {
