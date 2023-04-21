@@ -28,11 +28,12 @@ public static class CreateCheckpoint
         
 
 
-        public Handler(OrienteeringContext db, IMediator mediator, IIdentityService identityService)
+        public Handler(OrienteeringContext db, IMediator mediator, IIdentityService identityService, IMapper mapper)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _mediator = mediator;
             _identityService = identityService;
+            _mapper=mapper;
         }
         public async Task<Guid> Handle(Request request, CancellationToken cancellationToken)
         {
@@ -45,13 +46,7 @@ public static class CreateCheckpoint
             if (trackDto.UserId != userId) { throw new ArgumentNullException("The user dont own this track or it dosent exist."); };
 
             //create checkpoint
-            //fix automapper her
-            //var newCheckpoint = _mapper.Map<Checkpoint>(request.checkpointDto);
-
-            var newCheckpoint = new Checkpoint(request.checkpointDto.Title, request.checkpointDto.GameId, request.checkpointDto.TrackId);
-            newCheckpoint.CheckpointDescription = request.checkpointDto.CheckpointDescription;
-
-
+            var newCheckpoint = _mapper.Map<Checkpoint>(request.checkpointDto);
             newCheckpoint.Order = trackDto.NumCheckpoints + 1;
 
             if (request.checkpointDto.GameId == 0)
