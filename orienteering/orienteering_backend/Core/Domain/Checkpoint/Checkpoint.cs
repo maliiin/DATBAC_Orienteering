@@ -2,12 +2,11 @@
 {
     public class Checkpoint
     {
-        public Checkpoint(string title, int gameId, Guid trackId, string description)
+        public Checkpoint(string title, int gameId, Guid trackId)
         {
             Title = title;
             GameId = gameId;
             TrackId = trackId;
-            CheckpointDescription= description;
         }
 
         public Guid Id { get; private set; }

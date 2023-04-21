@@ -1,5 +1,5 @@
-import { React, useState, useEffect } from "react";
-import { Radio, FormLabel, Box, RadioGroup, FormControlLabel, Select, MenuItem, Button, TextField } from '@mui/material';
+import { React, useState } from "react";
+import { Radio, FormLabel , Box, RadioGroup, FormControlLabel, Select, MenuItem, Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import FormControl from '@mui/material/FormControl';
 
@@ -10,6 +10,7 @@ export default function CreateCheckpointForm(props) {
 
     const [checkpointInfo, setCheckpointInfo] = useState({
         Title: "",
+        CheckpointDescription:"",
         TrackId: props.trackId,
         GameId: 1
     });
@@ -47,6 +48,7 @@ export default function CreateCheckpointForm(props) {
             {
                 ...checkpointInfo,
                 Title: "",
+                CheckpointDescription:"",
                 GameId: 1
             });
 
@@ -76,9 +78,21 @@ export default function CreateCheckpointForm(props) {
                     name="Title"
                     variant="standard"
                     value={checkpointInfo.Title} />
+                <br></br>
+                <br></br>
 
+
+                <TextField
+                    name="CheckpointDescription"
+                    label="Description"
+                    placeholder="Add description that shows before the quiz or game."
+                    multiline
+                    onChange={(e) => handleChange(e)}
+
+                />
                 <br></br>
                 <br></br>
+
                 <FormLabel id="radio-buttons-group">Choose activity</FormLabel>
 
                 <RadioGroup
@@ -107,8 +121,7 @@ export default function CreateCheckpointForm(props) {
 
                 <br></br>
 
-                <FormControl
-                >
+                <FormControl>
                     <FormLabel
                         style={activity == "spill" ? {} : { display: 'none' }}
                         id="radio-buttons-group"
