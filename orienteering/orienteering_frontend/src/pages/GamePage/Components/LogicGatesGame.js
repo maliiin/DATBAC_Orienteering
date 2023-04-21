@@ -79,9 +79,9 @@ export default function LogicGatesGame() {
                 <p >
                     Make the scheme correspond to the functional table by correctly placing the logical gates.
                     <br></br>
-                    You got 3 Hp for each task. For each check with wrong solutions, you loose 1 hp.
+                    You got 3 Hp for each task. For each check with wrong gates, you loose 1 hp.
                     <br></br>
-                    When checking answer and the correct solutions are in the drop area, the remaining hp are added to your score.
+                    When checking answer and the correct logical gates are in the drop area, the remaining hp are added to your score.
                 </p>
                 <p>
                     <b>Info about the gates:</b>

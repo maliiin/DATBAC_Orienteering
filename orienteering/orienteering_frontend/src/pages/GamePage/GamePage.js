@@ -4,12 +4,13 @@ import { Button } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import LogicGatesGame from "./Components/LogicGatesGame";
-
+import CheckpointDescription from '../..Components/CheckpointDescription';
 
 export default function GamePage() {
     const navigate = useNavigate();
     const params = useParams();
     const [chosenGame, setChosenGame] = useState("");
+    const [checkpointDescriptionDisplayed, setCheckpointDescriptionDisplayed] = useState(false);
 
     useEffect(() => {
         checkSession();
@@ -51,23 +52,33 @@ export default function GamePage() {
     function navigateToCheckpoint() {
         navigate("/checkpointnavigation/" + params.checkpointId);
     }
-    
-    return (
-        <>
-            {chosenGame}
 
-            <Button
-                id="navigationButton"
-                style={{
-                    fontSize: 5 + "vw",
-                    display: "none",
-                    position: "absolute",
-                    backgroundColor: "white",
-                }}
-                onClick={navigateToCheckpoint}
-            >
-                Navigate to next checkpoint
-            </Button>
-        </>
-    );
+    if (checkpointDescriptionDisplayed) {
+        return (
+            <>
+                {chosenGame}
+
+                <Button
+                    id="navigationButton"
+                    style={{
+                        fontSize: 5 + "vw",
+                        display: "none",
+                        position: "absolute",
+                        backgroundColor: "white",
+                    }}
+                    onClick={navigateToCheckpoint}
+                >
+                    Navigate to next checkpoint
+                </Button>
+            </>
+        );
+    }
+
+    if (!checkpointDescriptionDisplayed) {
+        return (
+            <>
+                <CheckpointDescription checkpointId={params.checkpointId}></CheckpointDescription>
+                <Button onClick={hideCheckpointDescription}></Button>
+            </>);
+    }
 }
