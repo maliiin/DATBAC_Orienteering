@@ -54,6 +54,17 @@ namespace orienteering_backend.Controllers
             }
         }
 
+        [HttpGet("getDescription")]
+        //public async Task<ActionResult<string>> GetDescription(string checkpointId)
+        public async Task<ActionResult<CheckpointDescriptionDto>> GetDescription(string checkpointId)
+        {
+            var checkpointIdGuid = new Guid(checkpointId);
+            var checkpointDescription = await _mediator.Send(new GetCheckpointDescription.Request(checkpointIdGuid));
+
+            return new CheckpointDescriptionDto(checkpointIdGuid, checkpointDescription);
+            //return checkpointDescription;
+        }
+
         [HttpGet("getCheckpoint")]
         public async Task<ActionResult<CheckpointDto>> GetSingleCheckpoint(string checkpointId)
         {
@@ -117,6 +128,28 @@ namespace orienteering_backend.Controllers
                 return Unauthorized("Not signed in");
             }
             catch(ArgumentNullException)
+            {
+                //does not exist or not allowed
+                return NotFound("Could not find the checkpoint to edit");
+            }
+        }
+
+        [HttpPatch("editCheckpointDescription")]
+        public async Task<IActionResult> UpdateCheckpointDescription(CheckpointDescriptionDto checkpointInfo)
+        {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
+            try
+            {
+                var changed = await _mediator.Send(new UpdateCheckpointDescription.Request(checkpointInfo));
+                return Ok();
+            }
+            catch (AuthenticationException)
+            {
+                //not signed in
+                return Unauthorized("Not signed in");
+            }
+            catch (ArgumentNullException)
             {
                 //does not exist or not allowed
                 return NotFound("Could not find the checkpoint to edit");

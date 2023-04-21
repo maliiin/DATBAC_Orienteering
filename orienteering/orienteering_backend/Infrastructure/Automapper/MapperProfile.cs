@@ -25,6 +25,7 @@ namespace orienteering_backend.Infrastructure.Automapper
                 ).ForMember(dest => dest.Alternatives, opt => opt.MapFrom(src => src.Alternatives));
             CreateMap<Alternative, AlternativeDto>();
             CreateMap<Checkpoint, CheckpointDto>().ReverseMap();
+
             CreateMap<Checkpoint, CheckpointNameAndQRCodeDto>().ReverseMap();
             CreateMap<Track, TrackDto>()
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Id))

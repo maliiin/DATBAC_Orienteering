@@ -6,6 +6,8 @@ using orienteering_backend.Core.Domain.Track.Pipelines;
 using System.Security.Authentication;
 using System.Net;
 using orienteering_backend.Core.Domain.Authentication.Services;
+using System.Runtime.CompilerServices;
+using AutoMapper;
 
 // Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
 
@@ -22,13 +24,16 @@ public static class CreateCheckpoint
         private readonly OrienteeringContext _db;
         private readonly IMediator _mediator;
         private readonly IIdentityService _identityService;
+        private readonly IMapper _mapper;
+        
 
 
-        public Handler(OrienteeringContext db, IMediator mediator, IIdentityService identityService)
+        public Handler(OrienteeringContext db, IMediator mediator, IIdentityService identityService, IMapper mapper)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _mediator = mediator;
             _identityService = identityService;
+            _mapper=mapper;
         }
         public async Task<Guid> Handle(Request request, CancellationToken cancellationToken)
         {
@@ -41,7 +46,7 @@ public static class CreateCheckpoint
             if (trackDto.UserId != userId) { throw new ArgumentNullException("The user dont own this track or it dosent exist."); };
 
             //create checkpoint
-            var newCheckpoint = new Checkpoint(request.checkpointDto.Title, request.checkpointDto.GameId, request.checkpointDto.TrackId);
+            var newCheckpoint = _mapper.Map<Checkpoint>(request.checkpointDto);
             newCheckpoint.Order = trackDto.NumCheckpoints + 1;
 
             if (request.checkpointDto.GameId == 0)
@@ -54,8 +59,6 @@ public static class CreateCheckpoint
             await _db.SaveChangesAsync(cancellationToken);
 
             //qrcode
-            
-
             string url = "http://152.94.160.74/checkpoint/";
             if (newCheckpoint.QuizId == null)
             {

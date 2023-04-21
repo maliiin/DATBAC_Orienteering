@@ -16,5 +16,6 @@
         public byte[]? QRCode { get; set; }
         public Guid TrackId { get; set; }
         public int Order { get; set; }
+        public string CheckpointDescription { get; set; }
     }
 }

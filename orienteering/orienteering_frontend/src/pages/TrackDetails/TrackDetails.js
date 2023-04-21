@@ -25,8 +25,7 @@ export default function TrackDetails() {
 
         if (response.status==401) {
             navigate("/login");
-        }
-        if (!response.ok) {
+        }else if (!response.ok) {
             navigate("/errorpage");
         }
         const data = await response.json();
@@ -57,7 +56,7 @@ export default function TrackDetails() {
 
             <Grid item xs={10} md={6}>
                 <h4>Checkpoints</h4>
-                <p>Double-click title to edit</p>
+                <p>Double-click title and description to edit</p>
                 <div>{checkpointList}</div>
             </Grid>
 
