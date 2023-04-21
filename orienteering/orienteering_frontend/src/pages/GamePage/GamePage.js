@@ -81,8 +81,10 @@ export default function GamePage() {
     if (!checkpointDescriptionDisplayed) {
         return (
             <>
-                <CheckpointDescription checkpointId={params.checkpointId}></CheckpointDescription>
-                <Button onClick={hideCheckpointDescription}></Button>
+                <CheckpointDescription
+                    checkpointId={params.checkpointId}
+                    hideDescription={hideCheckpointDescription}>
+                </CheckpointDescription>
             </>);
     }
 }
