@@ -81,7 +81,6 @@ export default function CreateCheckpointForm(props) {
                 <br></br>
                 <br></br>
 
-
                 <TextField
                     required
                     name="CheckpointDescription"
