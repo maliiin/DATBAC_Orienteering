@@ -5,8 +5,10 @@ import { useNavigate } from 'react-router-dom';
 export default function CheckpointInfo(props) {
 
     const navigate = useNavigate();
-    const [editing, setEditing] = useState(false);
+    const [editingTitle, setEditingTitle] = useState(false);
+    const [editingDescription, setEditingDescription] = useState(false);
     const [oldTitle, setOldTitle] = useState(props.checkpointInfo.title);
+    const [oldDescription, setOldDescription] = useState(props.checkpointInfo.title);
 
     //display spesific track
     const showCheckpoint = () => {
@@ -33,12 +35,15 @@ export default function CheckpointInfo(props) {
         props.updateCheckpointList()
     }
 
-    const shouldEdit = () => {
-        setEditing(true)
+    const shouldEditTitle = () => {
+        setEditingTitle(true)
+    }
+    const shouldEditDescription = () => {
+        setEditingDescription(true)
     }
 
-    const stopEdit = async () => {
-        setEditing(false)
+    const stopEditTitle = async () => {
+        setEditingTitle(false)
 
         const url = '/api/checkpoint/editCheckpointTitle';
         const response = await fetch(url, {
@@ -60,24 +65,52 @@ export default function CheckpointInfo(props) {
         props.updateCheckpointList()
     }
 
-    const handleChange = (e) => {
+    const stopEditDescription = async () => {
+        setEditingTitle(false)
+
+        const url = '/api/checkpoint/editCheckpointDescription';
+        const response = await fetch(url, {
+            method: "PATCH",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                CheckpointId: props.checkpointInfo.id,
+                Description: oldDescription
+            })
+        });
+        //401 => not signed in
+        if (response.status == 401) { navigate("/login"); }
+        //404 => dont exist or not your checkpoint
+        if (response.status == 404) { navigate("/errorpage") }
+
+        props.updateCheckpointList()
+    }
+
+    const handleChangeTitle = (e) => {
         setOldTitle(e.target.value);
     }
+
+    const handleChangeDescription = (e) => {
+        setOldDescription(e.target.value);
+    }
+    
 
     return (<>
         <Box border="1px solid lightblue;" margin="2px;" style={{ width: '80%' }}>
 
             <p style={{ display: "inline" }}>Title:</p>
-            {editing ?
+            {editingTitle ?
                 (<input
                     style={{ display: "inline" }}
                     type="text"
                     value={oldTitle}
-                    onChange={handleChange}
-                    onBlur={stopEdit}>
+                    onChange={handleChangeTitle}
+                    onBlur={stopEditTitle}>
                 </input>
                 ) : (
-                    <span onDoubleClick={shouldEdit}>
+                    <span onDoubleClick={shouldEditTitle}>
                         {props.checkpointInfo.title}
                     </span>)
             }
@@ -85,9 +118,22 @@ export default function CheckpointInfo(props) {
             <p>Type: {props.checkpointInfo.quizId == null ? "Game" : "Quiz"}
             </p>
 
-            <p>
-                Description: {props.checkpointInfo.checkpointDescription}
+            <p style={{ display: "inline" }}>
+                Description: 
             </p>
+            {editingDescription ?
+                (<input
+                    style={{ display: "inline" }}
+                    type="text"
+                    value={oldDescription}
+                    onChange={handleChangeDescription}
+                    onBlur={stopEditDescription}>
+                </input>
+                ) : (
+                    <span onDoubleClick={shouldEditDescription}>
+                        {props.checkpointInfo.checkpointDescription}
+                    </span>)
+            }
 
             <Button onClick={showCheckpoint}>Show details</Button>
             <Button onClick={deleteCheckpoint}>Delete checkpoint</Button>
