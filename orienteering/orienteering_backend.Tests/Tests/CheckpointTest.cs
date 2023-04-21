@@ -60,7 +60,9 @@ namespace orienteering_backend.Tests.Helpers
             var trackDto = _mapper.Map<TrackDto>(track);
 
             Checkpoint expectedCheckpoint = new("test1", 0, track.Id);
+            expectedCheckpoint.CheckpointDescription= "test1";
             CheckpointDto checkpointDto = new("test1CreateCheckpoint", track.Id, 0);
+            checkpointDto.CheckpointDescription = "test1";
 
             var _identityService = new Mock<IIdentityService>();
             _identityService.Setup(i => i.GetCurrentUserId()).Returns(userId);
@@ -69,7 +71,7 @@ namespace orienteering_backend.Tests.Helpers
             _mediator.Setup(m => m.Send(It.IsAny<GetSingleTrackUnauthorized.Request>(), It.IsAny<CancellationToken>())).ReturnsAsync(trackDto);
 
             var request = new CreateCheckpoint.Request(checkpointDto);
-            var handler = new CreateCheckpoint.Handler(_db, _mediator.Object, _identityService.Object);
+            var handler = new CreateCheckpoint.Handler(_db, _mediator.Object, _identityService.Object, _mapper);
 
             //ACT
             var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
@@ -99,6 +101,7 @@ namespace orienteering_backend.Tests.Helpers
 
             //create checkpoint
             var checkpoint = new Checkpoint("title", 1, track.Id);
+            checkpoint.CheckpointDescription = "Test";
             track.AddedCheckpoint();
             await _db.Checkpoints.AddAsync(checkpoint);
             await _db.SaveChangesAsync();
@@ -169,7 +172,9 @@ namespace orienteering_backend.Tests.Helpers
 
             //create checkpoints
             var checkpoint1 = new Checkpoint("test1", 0, track.Id);
+            checkpoint1.CheckpointDescription = "test1";
             var checkpoint2 = new Checkpoint("test2", 0, track.Id);
+            checkpoint2.CheckpointDescription = "test2";
 
             await _db.Checkpoints.AddAsync(checkpoint1);
             await _db.Checkpoints.AddAsync(checkpoint2);
@@ -218,10 +223,14 @@ namespace orienteering_backend.Tests.Helpers
             //create checkpoints
             var checkpoint1 = new Checkpoint("test1", 0, trackDb.Id);
             checkpoint1.Order = 1;
+            checkpoint1.CheckpointDescription = "Test1";
             var checkpoint2 = new Checkpoint("test2", 0, trackDb.Id);
             checkpoint2.Order = 2;
+            checkpoint2.CheckpointDescription = "Test2";
             var checkpoint3 = new Checkpoint("test3", 0, trackDb.Id);
             checkpoint3.Order = 3;
+            checkpoint3.CheckpointDescription = "Test3";
+
             //add to db
             await _db.Checkpoints.AddAsync(checkpoint1);
             track.AddedCheckpoint();
@@ -264,10 +273,13 @@ namespace orienteering_backend.Tests.Helpers
             //create checkpoints
             var checkpoint1 = new Checkpoint("test1", 0, track.Id);
             checkpoint1.Order = 1;
+            checkpoint1.CheckpointDescription = "Test1";
             var checkpoint2 = new Checkpoint("test2", 0, track.Id);
             checkpoint2.Order = 2;
+            checkpoint2.CheckpointDescription = "Test2";
             var checkpoint3 = new Checkpoint("test3", 0, track.Id);
             checkpoint3.Order = 3;
+            checkpoint3.CheckpointDescription = "Test3";
             //add to db
             await _db.Checkpoints.AddAsync(checkpoint1);
             track.AddedCheckpoint();
@@ -303,6 +315,8 @@ namespace orienteering_backend.Tests.Helpers
             //create checkpoint
             var quizId = Guid.NewGuid();
             var checkpoint = new Checkpoint("title", 0, Guid.NewGuid());
+            checkpoint.CheckpointDescription = "Test";
+            checkpoint.CheckpointDescription = "test";
             checkpoint.QuizId = quizId;
             await _db.Checkpoints.AddAsync(checkpoint);
             await _db.SaveChangesAsync();
@@ -337,6 +351,9 @@ namespace orienteering_backend.Tests.Helpers
 
             //create checkpoint
             var checkpoint = new Checkpoint("test1", 0, track.Id);
+            checkpoint.CheckpointDescription = "test";
+            checkpoint.CheckpointDescription = "TestDes";
+
             await _db.Checkpoints.AddAsync(checkpoint);
             track.AddedCheckpoint();
             await _db.SaveChangesAsync();
@@ -374,6 +391,8 @@ namespace orienteering_backend.Tests.Helpers
             var quizId = Guid.NewGuid();
             var checkpoint = new Checkpoint("title", 0, trackId);
             checkpoint.QuizId = quizId;
+            checkpoint.CheckpointDescription = "test";
+
             await _db.Checkpoints.AddAsync(checkpoint);
             await _db.SaveChangesAsync();
 
@@ -405,6 +424,8 @@ namespace orienteering_backend.Tests.Helpers
 
             //create checkpoint
             var checkpoint = new Checkpoint("test1", 0, track.Id);
+            checkpoint.CheckpointDescription = "test";
+
             await _db.Checkpoints.AddAsync(checkpoint);
             track.AddedCheckpoint();
             await _db.SaveChangesAsync();
