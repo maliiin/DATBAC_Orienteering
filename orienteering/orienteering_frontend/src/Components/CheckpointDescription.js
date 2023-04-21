@@ -1,16 +1,12 @@
 import { React, useState, useEffect } from "react";
 import { Grid, Button} from '@mui/material';
-import { Margin } from "../../../node_modules/@mui/icons-material/index";
-
 
 export default function CheckpointDescription(props) {
     const [description, setDescription] = useState("");
 
     const getDescription = async () => {
         const response = await fetch("/api/checkpoint/getDescription?checkpointId=" + props.checkpointId);
-        console.log(response);
         const fetchedDescription = await response.json();
-        console.log(fetchedDescription);
         setDescription(fetchedDescription.description);
     }
 
