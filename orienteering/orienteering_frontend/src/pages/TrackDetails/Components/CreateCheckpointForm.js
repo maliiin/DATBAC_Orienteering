@@ -83,10 +83,12 @@ export default function CreateCheckpointForm(props) {
 
 
                 <TextField
+                    required
                     name="CheckpointDescription"
                     label="Description"
                     placeholder="Add description that shows before the quiz or game."
                     multiline
+                    value={checkpointInfo.CheckpointDescription}
                     onChange={(e) => handleChange(e)}
 
                 />

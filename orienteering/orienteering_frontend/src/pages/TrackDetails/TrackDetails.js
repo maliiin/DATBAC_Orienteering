@@ -25,8 +25,7 @@ export default function TrackDetails() {
 
         if (response.status==401) {
             navigate("/login");
-        }
-        if (!response.ok) {
+        }else if (!response.ok) {
             navigate("/errorpage");
         }
         const data = await response.json();
