@@ -134,6 +134,28 @@ namespace orienteering_backend.Controllers
             }
         }
 
+        [HttpPatch("editCheckpointDescription")]
+        public async Task<IActionResult> UpdateCheckpointDescription(CheckpointDescriptionDto checkpointInfo)
+        {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
+            try
+            {
+                var changed = await _mediator.Send(new UpdateCheckpointDescription.Request(checkpointInfo));
+                return Ok();
+            }
+            catch (AuthenticationException)
+            {
+                //not signed in
+                return Unauthorized("Not signed in");
+            }
+            catch (ArgumentNullException)
+            {
+                //does not exist or not allowed
+                return NotFound("Could not find the checkpoint to edit");
+            }
+        }
+
         [HttpGet("getqrcodes")]
         public async Task<ActionResult<List<CheckpointNameAndQRCodeDto>>> GetQRCodes(string TrackId)
         {

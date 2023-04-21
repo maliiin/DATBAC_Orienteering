@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { Button, Box } from '@mui/material';
+import { Button, Box, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 export default function CheckpointInfo(props) {
@@ -8,7 +8,7 @@ export default function CheckpointInfo(props) {
     const [editingTitle, setEditingTitle] = useState(false);
     const [editingDescription, setEditingDescription] = useState(false);
     const [oldTitle, setOldTitle] = useState(props.checkpointInfo.title);
-    const [oldDescription, setOldDescription] = useState(props.checkpointInfo.title);
+    const [oldDescription, setOldDescription] = useState(props.checkpointInfo.checkpointDescription);
 
     //display spesific track
     const showCheckpoint = () => {
@@ -66,7 +66,7 @@ export default function CheckpointInfo(props) {
     }
 
     const stopEditDescription = async () => {
-        setEditingTitle(false)
+        setEditingDescription(false)
 
         const url = '/api/checkpoint/editCheckpointDescription';
         const response = await fetch(url, {
@@ -98,7 +98,9 @@ export default function CheckpointInfo(props) {
     
 
     return (<>
-        <Box border="1px solid lightblue;" margin="2px;" style={{ width: '80%' }}>
+        <Box border="1px solid lightblue;" margin="2px;" style={{
+            width: '80%',
+        }}>
 
             <p style={{ display: "inline" }}>Title:</p>
             {editingTitle ?
@@ -122,19 +124,21 @@ export default function CheckpointInfo(props) {
                 Description: 
             </p>
             {editingDescription ?
-                (<input
+                (<TextField
+                    multiline
                     style={{ display: "inline" }}
                     type="text"
                     value={oldDescription}
                     onChange={handleChangeDescription}
                     onBlur={stopEditDescription}>
-                </input>
+                </TextField>
                 ) : (
-                    <span onDoubleClick={shouldEditDescription}>
+                    <div onDoubleClick={shouldEditDescription}>
                         {props.checkpointInfo.checkpointDescription}
-                    </span>)
+                    </div>)
             }
-
+            <br></br>
+            <br></br>
             <Button onClick={showCheckpoint}>Show details</Button>
             <Button onClick={deleteCheckpoint}>Delete checkpoint</Button>
             <Button onClick={showNavigation}>Show navigation</Button>

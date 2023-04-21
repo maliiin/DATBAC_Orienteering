@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from "react";
 import { Grid, Button} from '@mui/material';
+import { Margin } from "../../../node_modules/@mui/icons-material/index";
 
 
 export default function CheckpointDescription(props) {
@@ -24,7 +25,11 @@ export default function CheckpointDescription(props) {
             direction="column"
             alignItems="center"
             justifyContent="center"
-            style={{ minHeight: '50vh' }}
+            style={{
+                minHeight: '50vh',
+                padding: "3em"
+
+            }}
         >
             <Grid item>
                 <div>{description}</div>
@@ -36,7 +41,8 @@ export default function CheckpointDescription(props) {
             justifyContent="space-around"
             style={{
                 bottom: "10px",
-                position: "absolute"
+                position: "absolute",
+                
             }}>
             <Grid item>
                 <Button onClick={props.hideDescription}>Continue</Button>
