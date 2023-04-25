@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Navigation.Dto;
 using orienteering_backend.Infrastructure.Data;
 
 // License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
+// License Automapper (MIT): https://github.com/AutoMapper/AutoMapper/blob/master/LICENSE.txt
+
 
 namespace orienteering_backend.Core.Domain.Navigation.Pipelines
 {

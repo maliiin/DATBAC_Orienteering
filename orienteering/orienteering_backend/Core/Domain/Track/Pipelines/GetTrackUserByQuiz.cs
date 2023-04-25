@@ -6,6 +6,7 @@ using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Infrastructure.Data;
 
 // License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
+// License Automapper (MIT): https://github.com/AutoMapper/AutoMapper/blob/master/LICENSE.txt
 
 namespace orienteering_backend.Core.Domain.Track.Pipelines;
 

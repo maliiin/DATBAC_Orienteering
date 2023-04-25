@@ -10,6 +10,7 @@ using AutoMapper;
 
 //License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
 //License quickchart api (GNU): https://github.com/typpo/quickchart/blob/master/LICENSE
+// License Automapper (MIT): https://github.com/AutoMapper/AutoMapper/blob/master/LICENSE.txt
 
 namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 
