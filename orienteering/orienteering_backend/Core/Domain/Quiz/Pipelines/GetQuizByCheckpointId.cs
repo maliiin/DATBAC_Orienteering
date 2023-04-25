@@ -5,7 +5,7 @@ using orienteering_backend.Core.Domain.Quiz.Dto;
 using AutoMapper;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 
-// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+// License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Core.Domain.Quiz.Pipelines;
 

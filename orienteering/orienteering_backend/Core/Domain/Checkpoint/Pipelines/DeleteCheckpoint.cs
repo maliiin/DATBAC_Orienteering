@@ -8,7 +8,7 @@ using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Track.Pipelines;
 
 namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines;
-// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+// License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 public static class DeleteCheckpoint
 {

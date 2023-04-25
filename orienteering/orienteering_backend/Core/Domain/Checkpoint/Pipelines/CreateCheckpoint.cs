@@ -6,10 +6,10 @@ using orienteering_backend.Core.Domain.Track.Pipelines;
 using System.Security.Authentication;
 using System.Net;
 using orienteering_backend.Core.Domain.Authentication.Services;
-using System.Runtime.CompilerServices;
 using AutoMapper;
 
-// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+//License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
+//License quickchart api (GNU): https://github.com/typpo/quickchart/blob/master/LICENSE
 
 namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 
@@ -69,8 +69,7 @@ public static class CreateCheckpoint
                 url += "quiz/" + newCheckpoint.Id.ToString();
             }
 
-            //Kilder: https://www.c-sharpcorner.com/article/create-qr-code-using-google-charts-api-in-vb-net/ (31.01.2023)
-            //Lisens quickchart api: https://github.com/typpo/quickchart (31.01.2023)
+            //Sources: https://www.c-sharpcorner.com/article/create-qr-code-using-google-charts-api-in-vb-net/ (31.01.2023)
 
             string QrLink = "https://quickchart.io/qr?text=";
             QrLink = QrLink + url;

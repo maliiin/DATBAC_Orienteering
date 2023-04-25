@@ -15,8 +15,8 @@ using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint;
 using Xunit;
-// Lisens Xunit: https://github.com/xunit/xunit/blob/main/LICENSE
-// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+// Licence Xunit (Apache 2.0): https://github.com/xunit/xunit/blob/main/LICENSE
+// License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Tests.Helpers
 {

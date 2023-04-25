@@ -4,7 +4,7 @@ using orienteering_backend.Core.Domain.Checkpoint.Dto;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using System.Security.Authentication;
 
-// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+// License MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE 
 
 namespace orienteering_backend.Controllers
 {
