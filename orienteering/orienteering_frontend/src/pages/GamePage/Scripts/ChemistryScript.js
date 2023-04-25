@@ -1,5 +1,7 @@
 import addScore from "./AddScoreToSession";
 
+// License interact.js (MIT): https://github.com/taye/interact.js/blob/main/LICENSE
+
 var interact = require("interactjs");
 var correctMix;
 var GameInitialized = false;

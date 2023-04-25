@@ -2,7 +2,7 @@
 using orienteering_backend.Infrastructure.Data;
 using orienteering_backend.Core.Domain.Checkpoint.Events;
 
-// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+// License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
 
 namespace orienteering_backend.Core.Domain.Quiz.Handlers;
 

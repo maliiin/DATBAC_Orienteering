@@ -7,8 +7,11 @@ using System.Security.Authentication;
 using orienteering_backend.Core.Domain.Track.Dto;
 using orienteering_backend.Core.Domain.Track.Pipelines;
 
+// License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
+// License .NET EFCore (MIT) https://github.com/dotnet/efcore/blob/main/LICENSE.txt
+
 namespace orienteering_backend.Core.Domain.Checkpoint.Pipelines;
-// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+
 
 public static class DeleteCheckpoint
 {

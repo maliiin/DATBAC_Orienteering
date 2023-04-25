@@ -13,8 +13,12 @@ using MediatR;
 using orienteering_backend.Core.Domain.Checkpoint.Pipelines;
 using orienteering_backend.Core.Domain.Checkpoint;
 using Xunit;
-// Lisens Xunit: https://github.com/xunit/xunit/blob/main/LICENSE
-// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+// license Xunit (Apache 2.0): https://github.com/xunit/xunit/blob/main/LICENSE
+// License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
+// License Automapper (MIT): https://github.com/AutoMapper/AutoMapper/blob/master/LICENSE.txt
+// License .NET EFCore (MIT) https://github.com/dotnet/efcore/blob/main/LICENSE.txt
+// License Newtonsoft Json (MIT): https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md
+// License Moq (MIT): https://github.com/moq/moq/blob/main/LICENSE
 
 
 namespace orienteering_backend.Tests.Helpers

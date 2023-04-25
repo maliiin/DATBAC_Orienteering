@@ -6,7 +6,9 @@ using AutoMapper;
 using System.Security.Authentication;
 using orienteering_backend.Core.Domain.Authentication.Services;
 
-// Lisens MediatR: https://github.com/jbogard/MediatR/blob/master/LICENSE
+// License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
+// License Automapper (MIT): https://github.com/AutoMapper/AutoMapper/blob/master/LICENSE.txt
+// License .NET EFCore (MIT) https://github.com/dotnet/efcore/blob/main/LICENSE.txt
 
 namespace orienteering_backend.Core.Domain.Track.Pipelines;
 
