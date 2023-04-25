@@ -18,6 +18,7 @@ using Xunit;
 // license Xunit (Apache 2.0): https://github.com/xunit/xunit/blob/main/LICENSE
 // License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
 // License Automapper (MIT): https://github.com/AutoMapper/AutoMapper/blob/master/LICENSE.txt
+// License .NET EFCore (MIT) https://github.com/dotnet/efcore/blob/main/LICENSE.txt
 
 
 namespace orienteering_backend.Tests.Helpers

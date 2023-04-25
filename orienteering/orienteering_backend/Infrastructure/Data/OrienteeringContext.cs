@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using orienteering_backend.Core.Domain.Checkpoint;
 using orienteering_backend.Core.Domain.Quiz;
 
+// License .NET EFCore (MIT) https://github.com/dotnet/efcore/blob/main/LICENSE.txt
+
+
 namespace orienteering_backend.Infrastructure.Data;
 
 public class OrienteeringContext : IdentityUserContext<IdentityUser>

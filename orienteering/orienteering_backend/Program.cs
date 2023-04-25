@@ -1,10 +1,13 @@
 using MediatR;
-// License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
 using Microsoft.EntityFrameworkCore;
 using orienteering_backend.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using orienteering_backend.Core.Domain.Authentication.Services;
 using orienteering_backend.Core.Domain.Track.Services;
+
+// License MediatR (Apache 2.0): https://github.com/jbogard/MediatR/blob/master/LICENSE
+// Licence Pomelo (MIT): https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql/blob/master/LICENSE
+// License .NET EFCore (MIT) https://github.com/dotnet/efcore/blob/main/LICENSE.txt
 
 var builder = WebApplication.CreateBuilder(args);
 
