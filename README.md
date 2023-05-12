@@ -1,7 +1,3 @@
 # DATBAC_Orienteering
 
-Oppgavetekst:
 
-Oppgaven er å lage en mobil-app eller mobiltilpasset nettside som lar deg arrangere innendørs orienteering. Tanken er at spillerne gjennom en lek skal gjøre deg kjent i en stor bygning som for eksempel Kjølv Egelands hus. Krav til applikasjonen
-
-Appen må kunne identifisere at spilleren er ved en post og hvilken post spilleren er ved. Den enkleste løsningen er QR-koder som er hengt opp på hver post, men gruppa kan gjerne se på mer avanserte løsninger som for eksempel å kjenne igjen landemerker med mobil-kameraet. Registrer brukeren på hver post Gi en visuell retningsanvisning til neste post Lag små-spill for noen poster basert på fagene som undervises der Lag en quiz modul for de postene som ikke har småspill Lag en nettside som lar deg redigere løypa, postene og quiz-spillene slik at du kan oppdatere og/eller endre løypa etter at systemet er ferdig lagd. Du skal ikke trenge å være IT-kyndig for å gjøre slik oppdatering Hvis det blir tid kan dere teste mulighetene for en «tampen brenner» form for innendørs posisjonering basert på for eksempel wi-fi nett. Dette vil ikke være nøyaktig nok til å identifisere eksakt hvor du er, men kan gi den en retning og/eller pekepinn på at du er i riktig område. Denne kan være lagbasert, hvor spillerne kommer fra ulike retninger og/eller i ulike etasjer og kommuniserer med hverandre for å finne noe. Deretter kan man sjekke hvor lang tid de ulike gruppene bruker og hvor mange som er bra i hver gruppe.
